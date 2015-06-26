@@ -1,0 +1,7 @@
+name 'systemd'
+maintainer 'The Authors'
+maintainer_email 'nath.e.will@gmail.com'
+license 'apache2'
+description 'Installs/Configures systemd'
+long_description 'Installs/Configures systemd'
+version '0.1.0'

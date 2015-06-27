@@ -10,6 +10,7 @@ class Chef::Provider
       )
     end
 
+    # rubocop: disable AbcSize
     def load_current_resource
       @current_resource ||= Chef::Resource::SystemdUnit.new(new_resource.name)
       @current_resource.type new_resource.type
@@ -18,6 +19,7 @@ class Chef::Provider
       @current_resource.drop_in new_resource.drop_in
       @current_resource
     end
+    # rubocop: enable AbcSize
 
     def action_create
       new_resource.updated_by_last_action(edit_unit(:create))
@@ -30,7 +32,8 @@ class Chef::Provider
     private
 
     def edit_unit(exec_action)
-
+      @unit_file.run_action(exec_action)
+      @unit_file.updated_by_last_action?
     end
   end
 end

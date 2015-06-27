@@ -9,7 +9,7 @@ module Systemd
       opts = test_module::OPTIONS
 
       config.all? do |c|
-        opts.any? { |o| o.start_with? c }
+        opts.any? { |o| c.start_with? o }
       end
     end
   end

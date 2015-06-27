@@ -15,6 +15,7 @@ class Chef::Provider
       @current_resource.type new_resource.type
       @current_resource.unit new_resource.unit
       @current_resource.install new_resource.install
+      @current_resource.drop_in new_resource.drop_in
       @current_resource
     end
 

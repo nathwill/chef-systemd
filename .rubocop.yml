@@ -1,0 +1,14 @@
+AllCops:
+  Exclude:
+    - Rakefile
+    - Berksfile
+    - metadata.rb
+    - vendor/**/*
+    - spec/**/*
+    - test/**/*
+Documentation:
+  Enabled: false
+ClassAndModuleChildren:
+  Enabled: false
+HashSyntax:
+  EnforcedStyle: hash_rockets

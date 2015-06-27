@@ -5,7 +5,7 @@ class Chef::Provider
     def initialize(*args)
       super
       @unit_file = Chef::Resource::File.new(
-        "sd-unit-#{new_resource.type}-#{new_resource.name}",
+        "systemd-#{new_resource.type}-unit-#{new_resource.name}",
         run_context
       )
     end

@@ -24,6 +24,15 @@ class Chef::Resource
       )
     end
 
+    def drop_in(arg = nil)
+      set_or_return(
+        :drop_in, arg,
+        :required => true,
+        :kind_of => [TrueClass, FalseClass],
+        :default => false
+      )
+    end
+
     def unit(arg = nil)
       set_or_return(
         :unit, arg,

@@ -1,6 +1,5 @@
 
 systemd_service 'test-unit' do
-  type :service
   unit %w(
     Description=Test
     Documentation=http://example.com

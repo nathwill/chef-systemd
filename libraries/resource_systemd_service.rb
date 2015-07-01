@@ -12,7 +12,7 @@ class Chef::Resource
     end
 
     def type(_ = nil)
-      'service'
+      :service
     end
 
     def service(arg = nil)

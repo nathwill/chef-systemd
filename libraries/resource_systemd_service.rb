@@ -1,5 +1,6 @@
 
 require_relative 'resource_systemd_unit'
+require_relative 'systemd_helpers'
 
 class Chef::Resource
   class SystemdService < Chef::Resource::SystemdUnit

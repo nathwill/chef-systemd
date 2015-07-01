@@ -1,4 +1,5 @@
 
+require 'chef/resource'
 require_relative 'systemd_helpers'
 
 class Chef::Resource

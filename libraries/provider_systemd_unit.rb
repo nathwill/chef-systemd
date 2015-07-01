@@ -1,4 +1,5 @@
 
+require 'chef/provider'
 require 'chef/resource/file'
 require_relative 'systemd_helpers'
 require_relative 'resource_systemd_unit'

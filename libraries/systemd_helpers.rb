@@ -27,7 +27,7 @@ module Systemd
       }
       content.merge!(r.type => r.send(r.type))
       sections = content.map do |section, params|
-        "[#{section.capitalize}]\n#{params.join("\n")}"
+        "[#{section.capitalize}]\n#{params.join("\n")}\n"
       end
       sections.join("\n")
     end

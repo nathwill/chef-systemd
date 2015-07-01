@@ -1,4 +1,7 @@
 
+require 'chef/resource/file'
+require_relative 'systemd_helpers'
+require_relative 'resource_systemd_unit'
 
 class Chef::Provider
   class SystemdUnit < Chef::Provider

@@ -23,9 +23,9 @@ module Systemd
     def self.ini_config(r)
       content = {
         'unit' => r.unit,
-        'install' => r.install,
+        'install' => r.install
       }
-      content.merge!({ r.type => r.send(r.type) })
+      content.merge!(r.type => r.send(r.type))
       sections = content.map do |section, params|
         "[#{section.capitalize}]\n#{params.join("\n")}"
       end

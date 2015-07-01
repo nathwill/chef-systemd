@@ -33,7 +33,7 @@ class Chef::Provider
     def edit_unit(exec_action)
       @unit_file.mode '0640'
       @unit_file.path ::File.join(
-        "/etc/systemd/system",
+        '/etc/systemd/system',
         "#{@current_resource.name}.#{@current_resource.type}"
       )
       @unit_file.content Systemd::Helpers.ini_config(@current_resource)

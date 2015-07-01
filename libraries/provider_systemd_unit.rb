@@ -16,7 +16,6 @@ class Chef::Provider
       @current_resource.type new_resource.type
       @current_resource.unit new_resource.unit
       @current_resource.install new_resource.install
-      @current_resource.drop_in new_resource.drop_in
       @current_resource
     end
     # rubocop: enable AbcSize
@@ -26,13 +25,19 @@ class Chef::Provider
     end
 
     def action_delete
-      new_resource.updated_by_last_aciton(edit_unit(:delete))
+      new_resource.updated_by_last_action(edit_unit(:delete))
     end
 
     private
 
     def edit_unit(exec_action)
-      @unit_file.run_action(exec_action)
+      @unit_file.mode '0640'
+      @unit_file.path ::File.join(
+        "/etc/systemd/system",
+        "#{@current_resource.name}.#{@current_resource.type}"
+      )
+      @unit_file.content Systemd::Helpers.ini_config(@current_resource)
+      @unit_file.run_action exec_action
       @unit_file.updated_by_last_action?
     end
   end

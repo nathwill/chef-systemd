@@ -11,5 +11,6 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[systemd::default]
+      - recipe[systemd]
+      - recipe[setup]
     attributes:

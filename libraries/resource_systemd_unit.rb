@@ -18,18 +18,9 @@ class Chef::Resource
       set_or_return(
         :type, arg,
         :required => true,
-        :kind_of => String,
-        :equal_to => %w( service socket device mount automount swap target path timer snapshot slice scope ), # rubocop:disable Metrics/LineLength
-        :default => 'service'
-      )
-    end
-
-    def drop_in(arg = nil)
-      set_or_return(
-        :drop_in, arg,
-        :required => true,
-        :kind_of => [TrueClass, FalseClass],
-        :default => false
+        :kind_of => Symbol,
+        :equal_to => Systemd::Helpers.unit_types,
+        :default => :service
       )
     end
 

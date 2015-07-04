@@ -6,6 +6,8 @@ provisioner:
   name: chef_zero
 
 platforms:
+  - name: ubuntu-15.04
+  - name: debian-8.1
   - name: centos-7.1
 
 suites:

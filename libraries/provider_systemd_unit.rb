@@ -1,48 +1,54 @@
 
-require 'chef/provider'
-require 'chef/resource/file'
-require_relative 'systemd_helpers'
-require_relative 'resource_systemd_unit'
+require 'chef/provider/lwrp_base'
+require_relative 'helpers'
 
 class Chef::Provider
-  class SystemdUnit < Chef::Provider
-    def initialize(*args)
-      super
-      @unit_file = Chef::Resource::File.new(
-        "systemd-#{new_resource.type}-unit-#{new_resource.name}",
-        run_context
-      )
+  class SystemdUnit < Chef::Provider::LWRPBase
+    provides :systemd_unit
+
+    Systemd::Helpers.unit_types.each do |type|
+      provides "systemd_#{type}".to_sym
     end
 
-    # rubocop: disable AbcSize
-    def load_current_resource
-      @current_resource ||= Chef::Resource::SystemdUnit.new(new_resource.name)
-      @current_resource.type new_resource.type
-      @current_resource.unit new_resource.unit
-      @current_resource.install new_resource.install
-      @current_resource
-    end
-    # rubocop: enable AbcSize
+    use_inline_resources
 
-    def action_create
-      new_resource.updated_by_last_action(edit_unit(:create))
+    def whyrun_supported?
+      true
     end
 
-    def action_delete
-      new_resource.updated_by_last_action(edit_unit(:delete))
-    end
-
-    private
-
-    def edit_unit(exec_action)
-      @unit_file.mode '0640'
-      @unit_file.path ::File.join(
+    action :create do
+      unit_path = ::File.join(
         '/etc/systemd/system',
-        "#{@current_resource.name}.#{@current_resource.type}"
+        "#{new_resource.name}.#{new_resource.unit_type}"
       )
-      @unit_file.content Systemd::Helpers.ini_config(@current_resource)
-      @unit_file.run_action exec_action
-      @unit_file.updated_by_last_action?
+
+      execute 'reload-sytemd' do
+        command 'systemctl daemon-reload'
+        action :nothing
+        subscribes :run, "file[#{unit_path}]", :immediately
+      end
+
+      file unit_path do
+        content Systemd::Helpers.ini_config(new_resource)
+        action :create
+      end
+    end
+
+    action :delete do
+      unit_path = ::File.join(
+        '/etc/systemd/system',
+        "#{new_resource.name}.#{new_resource.unit_type}"
+      )
+
+      execute 'reload-sytemd' do
+        command 'systemctl daemon-reload'
+        action :nothing
+        subscribes :run, "file[#{unit_path}]", :immediately
+      end
+
+      file unit_path do
+        action :delete
+      end
     end
   end
 end

@@ -1,54 +1,40 @@
 
-require 'chef/resource'
-require_relative 'systemd_helpers'
+require 'chef/resource/lwrp_base'
+require_relative 'systemd_install'
+require_relative 'systemd_unit'
+require_relative 'helpers'
 
 class Chef::Resource
-  class SystemdUnit < Chef::Resource
-    identity_attr :name
+  class SystemdUnit < Chef::Resource::LWRPBase
+    self.resource_name = :systemd_unit
+    provides :systemd_unit
 
-    def initialize(name, run_context = nil)
-      super
-      @name = name
-      @resource_name = :systemd_unit
-      @provider = Chef::Provider::SystemdUnit
-      @allowed_actions = [:create, :delete]
-      @action = :create
+    actions :create, :delete
+    default_action :create
+
+    attribute(:unit_type, {
+      :kind_of => Symbol,
+      :equal_to => Systemd::Helpers.unit_types,
+      :default => :service,
+      :required => true
+    })
+
+    %w( unit install ).each do |section|
+      Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
+        attribute option.underscore.to_sym, kind_of: String, default: nil
+      end
     end
 
-    def type(arg = nil)
-      set_or_return(
-        :type, arg,
-        :required => true,
-        :kind_of => Symbol,
-        :equal_to => Systemd::Helpers.unit_types,
-        :default => :service
-      )
-    end
-
-    def unit(arg = nil)
-      set_or_return(
-        :unit, arg,
-        :required => true,
-        :kind_of => Array,
-        :callbacks => {
-          'is a valid unit configuration' => lambda do |spec|
-            Systemd::Helpers.validate_config('unit', spec)
-          end
-        }
-      )
-    end
-
-    def install(arg = nil)
-      set_or_return(
-        :install, arg,
-        :required => true,
-        :kind_of => Array,
-        :callbacks => {
-          'is a valid install configuration' => lambda do |spec|
-            Systemd::Helpers.validate_config('install', spec)
-          end
-        }
-      )
+    def to_hash
+      conf = {}
+      [ 'unit', 'install', self.unit_type.to_s ].each do |section|
+        conf[section] = []
+        Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
+          attr = self.send(option.underscore.to_sym)
+          conf[section] << "#{option.camelize}=#{attr}" unless attr.nil?
+        end
+      end
+      conf
     end
   end
 end

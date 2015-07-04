@@ -1,15 +1,8 @@
 
 systemd_service 'test-unit' do
-  unit %w(
-    Description=Test
-    Documentation=http://example.com
-  )
-  install %w(
-    Alias=testing-unit.service
-    WantedBy=multi-user.target
-  )
-  service %w(
-    Type=oneshot
-    ExecStart=/usr/bin/true
-  )
+  description 'Test'
+  documentation 'man:true(1)'
+  wanted_by 'multi-user.target'
+  type 'oneshot'
+  exec_start '/usr/bin/true'
 end

@@ -8,8 +8,8 @@ module Systemd
 
     def unit_types
       %w(
-        service socket device mount automount swap
-        target path timer snapshot slice scope
+        service socket mount automount swap
+        path timer slice
       ).map(&:to_sym)
     end
 

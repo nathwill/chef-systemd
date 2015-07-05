@@ -8,6 +8,7 @@ class Chef::Resource
     self.resource_name = :systemd_unit
     provides :systemd_unit
 
+    # TODO: enable, disable, start, stop
     actions :create, :delete
     default_action :create
 

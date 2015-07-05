@@ -1,4 +1,3 @@
-
 systemd_service 'test-unit' do
   description 'Test'
   documentation 'man:true(1)'

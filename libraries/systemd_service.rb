@@ -38,4 +38,3 @@ module Systemd
     )
   end
 end
-

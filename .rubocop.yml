@@ -10,5 +10,3 @@ Documentation:
   Enabled: false
 ClassAndModuleChildren:
   Enabled: false
-HashSyntax:
-  EnforcedStyle: hash_rockets

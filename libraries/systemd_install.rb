@@ -1,7 +1,7 @@
 module Systemd
   module Install
     OPTIONS ||= %w(
-      Alias # this conflicts with "alias" method :/
+      Alias
       WantedBy
       RequiredBy
       Also

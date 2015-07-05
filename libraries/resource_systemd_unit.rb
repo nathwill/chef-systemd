@@ -12,12 +12,13 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    attribute(:unit_type, {
-      :kind_of => Symbol,
-      :equal_to => Systemd::Helpers.unit_types,
-      :default => :service,
-      :required => true
-    })
+    attribute(
+      :unit_type,
+      kind_of: Symbol,
+      equal_to: Systemd::Helpers.unit_types,
+      default: :service,
+      required: true
+    )
 
     %w( unit install ).each do |section|
       Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
@@ -27,10 +28,10 @@ class Chef::Resource
 
     def to_hash
       conf = {}
-      [ 'unit', 'install', self.unit_type.to_s ].each do |section|
+      ['unit', 'install', unit_type.to_s].each do |section|
         conf[section] = []
         Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
-          attr = self.send(option.underscore.to_sym)
+          attr = send(option.underscore.to_sym)
           conf[section] << "#{option.camelize}=#{attr}" unless attr.nil?
         end
       end

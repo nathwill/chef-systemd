@@ -1,5 +1,6 @@
 
 require_relative 'resource_systemd_unit'
+require_relative 'systemd_service'
 
 class Chef::Resource
   class SystemdService < Chef::Resource::SystemdUnit
@@ -8,6 +9,10 @@ class Chef::Resource
 
     def unit_type(_ = nil)
       :service
+    end
+
+    Systemd::Service::OPTIONS.each do |option|
+      attribute option.underscore.to_sym, kind_of: String, default: nil
     end
   end
 end

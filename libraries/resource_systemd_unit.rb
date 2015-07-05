@@ -32,6 +32,8 @@ class Chef::Resource
     def to_hash
       conf = {}
       ['unit', 'install', unit_type.to_s].each do |section|
+        # Some units types don't have type-specific config blocks
+        next if Systemd::Helpers.stub_units.include? section
         conf[section] = []
         Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
           attr = send(option.underscore.to_sym)

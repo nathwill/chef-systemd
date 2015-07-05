@@ -28,9 +28,11 @@ class Chef::Provider
         subscribes :run, "file[#{unit_path}]", :immediately
       end
 
-      file unit_path do
-        content Systemd::Helpers.ini_config(new_resource)
-        action :create
+      converge_by "Creating systemd unit #{new_resource.name}" do
+        file unit_path do
+          content Systemd::Helpers.ini_config(new_resource)
+          action :create
+        end
       end
     end
 
@@ -46,8 +48,10 @@ class Chef::Provider
         subscribes :run, "file[#{unit_path}]", :immediately
       end
 
-      file unit_path do
-        action :delete
+      converge_by "Removing systemd unit #{new_resource.name}" do
+        file unit_path do
+          action :delete
+        end
       end
     end
   end

@@ -7,14 +7,14 @@ module Systemd
     end
 
     def unit_types
-      %w(
+      %i(
         service socket device mount automount
         swap target path timer slice
-      ).map(&:to_sym)
+      )
     end
 
     def stub_units
-      %w( device target ).map(&:to_sym)
+      %i( device target )
     end
 
     def unit_path(unit)

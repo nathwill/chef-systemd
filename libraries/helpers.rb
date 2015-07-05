@@ -1,6 +1,8 @@
 module Systemd
   module Helpers
-    def self.ini_config(unit)
+    extend self
+
+    def ini_config(unit)
       conf = unit.to_hash
 
       sections = conf.map do |section, params|
@@ -10,7 +12,7 @@ module Systemd
       sections.join("\n")
     end
 
-    def self.unit_types
+    def unit_types
       %w(
         service socket device mount automount swap
         target path timer snapshot slice scope

@@ -13,9 +13,5 @@ class Chef::Resource
     Systemd::Slice::OPTIONS.each do |option|
       attribute option.underscore.to_sym, kind_of: String, default: nil
     end
-
-    def slice
-      yield
-    end
   end
 end

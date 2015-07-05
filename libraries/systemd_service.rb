@@ -1,5 +1,3 @@
-
-
 module Systemd
   module Service
     OPTIONS ||= %w(

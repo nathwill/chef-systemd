@@ -1,4 +1,3 @@
-
 module Systemd
   module Unit
     OPTIONS ||= %w(

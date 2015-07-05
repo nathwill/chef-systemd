@@ -23,14 +23,10 @@ class Chef::Resource
       Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
         attribute option.underscore.to_sym, kind_of: String, default: nil
       end
-    end
 
-    def unit
-      yield
-    end
-
-    def install
-      yield
+      define_method(section) do |&b|
+        b.call
+      end
     end
 
     def to_hash

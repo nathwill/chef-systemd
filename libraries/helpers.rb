@@ -1,7 +1,5 @@
 module Systemd
   module Helpers
-    extend self
-
     def ini_config(unit)
       conf = unit.to_hash
 
@@ -18,6 +16,8 @@ module Systemd
         target path timer snapshot slice scope
       ).map(&:to_sym)
     end
+
+    module_function :ini_config, :unit_types
   end
 end
 

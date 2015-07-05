@@ -19,10 +19,17 @@ class Chef::Resource
       required: true
     )
 
-    %w( unit install ).each do |section|
-      Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
+
+    # define class method for defining resource
+    # attributes from the resource module options
+    def self.option_attributes(options)
+      options.each do |option|
         attribute option.underscore.to_sym, kind_of: String, default: nil
       end
+    end
+
+    %w( unit install ).each do |section|
+      option_attributes Systemd.const_get(section.capitalize)::OPTIONS
 
       define_method(section) do |&b|
         b.call

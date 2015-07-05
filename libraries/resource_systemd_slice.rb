@@ -10,8 +10,6 @@ class Chef::Resource
       :slice
     end
 
-    Systemd::Slice::OPTIONS.each do |option|
-      attribute option.underscore.to_sym, kind_of: String, default: nil
-    end
+    option_attributes Systemd::Slice::OPTIONS
   end
 end

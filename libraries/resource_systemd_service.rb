@@ -10,9 +10,7 @@ class Chef::Resource
       :service
     end
 
-    Systemd::Service::OPTIONS.each do |option|
-      attribute option.underscore.to_sym, kind_of: String, default: nil
-    end
+    option_attributes Systemd::Service::OPTIONS
 
     def service
       yield

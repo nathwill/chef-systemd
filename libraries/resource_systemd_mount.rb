@@ -10,9 +10,7 @@ class Chef::Resource
       :mount
     end
 
-    Systemd::Mount::OPTIONS.each do |option|
-      attribute option.underscore.to_sym, kind_of: String, default: nil
-    end
+    option_attributes Systemd::Mount::OPTIONS
 
     def mount
       yield

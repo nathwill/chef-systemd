@@ -10,9 +10,7 @@ class Chef::Resource
       :path
     end
 
-    Systemd::Path::OPTIONS.each do |option|
-      attribute option.underscore.to_sym, kind_of: String, default: nil
-    end
+    option_attributes Systemd::Path::OPTIONS
 
     def path
       yield

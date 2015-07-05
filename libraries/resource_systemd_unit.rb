@@ -25,11 +25,11 @@ class Chef::Resource
       end
     end
 
-    def unit(&block)
+    def unit
       yield
     end
 
-    def install(&block)
+    def install
       yield
     end
 

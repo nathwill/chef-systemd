@@ -15,7 +15,7 @@ class Chef::Resource
       attribute option.underscore.to_sym, kind_of: String, default: nil
     end
 
-    def service(&block)
+    def service
       yield
     end
   end

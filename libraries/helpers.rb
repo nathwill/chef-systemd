@@ -14,7 +14,7 @@ module Systemd
     end
 
     def stub_units
-      %w( device target )
+      %w( device target ).map(&:to_sym)
     end
 
     def unit_path(unit)

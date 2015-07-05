@@ -8,6 +8,7 @@ describe 'systemd::default' do
     its(:content) { should match /\[Install\]/ }
     its(:content) { should match /WantedBy=multi-user.target/ }
     its(:content) { should match /\[Service\]/ }
+    its(:content) { should match /User=nobody/ }
     its(:content) { should match /Type=oneshot/ }
     its(:content) { should match /ExecStart=\/usr\/bin\/true/ }
   end

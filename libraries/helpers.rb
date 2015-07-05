@@ -21,7 +21,7 @@ module Systemd
       ::File.join('/etc/systemd/system', "#{unit.name}.#{unit.unit_type}")
     end
 
-    module_function :ini_config, :unit_types, :unit_path
+    module_function :ini_config, :unit_types, :stub_units, :unit_path
   end
 end
 

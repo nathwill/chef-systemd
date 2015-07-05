@@ -7,6 +7,7 @@ systemd_service 'test-unit' do
     wanted_by 'multi-user.target'
   end
   service do
+    user 'nobody'
     type 'oneshot'
     exec_start '/usr/bin/true'
   end

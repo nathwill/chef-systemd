@@ -1,13 +1,9 @@
 module Systemd
   module Helpers
-    def ini_config(unit)
-      conf = unit.to_hash
-
-      sections = conf.map do |section, params|
+    def ini_config(conf = {})
+      conf.map do |section, params|
         "[#{section.capitalize}]\n#{params.join("\n")}\n"
-      end
-
-      sections.join("\n")
+      end.join("\n")
     end
 
     def unit_types
@@ -17,7 +13,11 @@ module Systemd
       ).map(&:to_sym)
     end
 
-    module_function :ini_config, :unit_types
+    def unit_path(unit)
+      ::File.join('/etc/systemd/system', "#{unit.name}.#{unit.unit_type}")
+    end
+
+    module_function :ini_config, :unit_types, :unit_path
   end
 end
 

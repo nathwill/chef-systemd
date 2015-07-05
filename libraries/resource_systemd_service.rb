@@ -1,4 +1,3 @@
-
 require_relative 'resource_systemd_unit'
 require_relative 'systemd_service'
 

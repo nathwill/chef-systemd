@@ -1,4 +1,3 @@
-
 require 'chef/resource/lwrp_base'
 require_relative 'systemd_install'
 require_relative 'systemd_unit'
@@ -24,6 +23,14 @@ class Chef::Resource
       Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
         attribute option.underscore.to_sym, kind_of: String, default: nil
       end
+    end
+
+    def unit(&block)
+      yield
+    end
+
+    def install(&block)
+      yield
     end
 
     def to_hash

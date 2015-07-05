@@ -14,5 +14,9 @@ class Chef::Resource
     Systemd::Service::OPTIONS.each do |option|
       attribute option.underscore.to_sym, kind_of: String, default: nil
     end
+
+    def service(&block)
+      yield
+    end
   end
 end

@@ -29,6 +29,7 @@ class Chef::Resource
       end
     end
 
+    # rubocop: disable AbcSize
     def to_hash
       conf = {}
       ['unit', 'install', unit_type.to_s].each do |section|
@@ -42,5 +43,6 @@ class Chef::Resource
       end
       conf
     end
+    # rubocop: enable AbcSize
   end
 end

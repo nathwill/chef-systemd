@@ -20,7 +20,6 @@ class Chef::Resource
     )
 
     attribute :aliases, kind_of: Array, default: []
-
     attribute :drop_in, kind_of: [TrueClass, FalseClass], default: false
     attribute :override, kind_of: String, default: nil
     attribute :overrides, kind_of: Array, default: []
@@ -54,19 +53,23 @@ class Chef::Resource
         # some unit types don't have type-specific config blocks
         next if Systemd::Helpers.stub_units.include? section.to_sym
 
+        section_options = Systemd.const_get(section.capitalize)::OPTIONS
+
         conf[section] = []
+
+        # handle overrides if resource is a drop-in unit
+        if drop_in
+          overrides.each do |over_ride|
+            if section_options.include?(over_ride) || over_ride == "Alias"
+              conf[section] << "#{over_ride}="
+            end
+          end
+        end
 
         # handle Alias special case
         if section == 'install' && !aliases.empty?
           conf[section] << "Alias=#{aliases.join(' ')}"
         end
-
-        # handle overrides if resource is a drop-in unit
-        overrides.each do |override|
-          if Systemd.const_get(section.capitalize)::OPTIONS.include? override
-            conf[section] << "#{override}="
-          end
-        end if drop_in
 
         # convert resource attributes to KV-pair values in the hash
         Systemd.const_get(section.capitalize)::OPTIONS.each do |option|

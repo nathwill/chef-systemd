@@ -17,11 +17,24 @@ module Systemd
       %i( device target )
     end
 
-    def unit_path(unit)
-      ::File.join('/etc/systemd/system', "#{unit.name}.#{unit.unit_type}")
+    def local_conf_root
+      '/etc/systemd/system'
     end
 
-    module_function :ini_config, :unit_types, :stub_units, :unit_path
+    def drop_in_root(unit)
+      ::File.join(local_conf_root, "#{unit.override}.d")
+    end
+
+    def unit_path(unit)
+      if unit.drop_in
+        ::File.join(drop_in_root(unit), "#{unit.name}.conf")
+      else
+        ::File.join(local_conf_root, "#{unit.name}.#{unit.unit_type}")
+      end
+    end
+
+    module_function :ini_config, :unit_types, :drop_in_root,
+                    :unit_path, :local_conf_root, :stub_units
   end
 end
 

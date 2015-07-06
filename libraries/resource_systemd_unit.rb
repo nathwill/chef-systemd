@@ -21,6 +21,10 @@ class Chef::Resource
 
     attribute :aliases, kind_of: Array, default: []
 
+    attribute :drop_in, kind_of: [TrueClass, FalseClass], default: false
+    attribute :override, kind_of: String, default: nil
+    attribute :overrides, kind_of: Array, default: []
+
     # define class method for defining resource
     # attributes from the resource module options
     def self.option_attributes(options)
@@ -40,13 +44,14 @@ class Chef::Resource
       end
     end
 
+    # rubocop: disable CyclomaticComplexity
     # rubocop: disable AbcSize
     # rubocop: disable MethodLength
     def to_hash
       conf = {}
 
       ['unit', 'install', unit_type.to_s].each do |section|
-        # some units types don't have type-specific config blocks
+        # some unit types don't have type-specific config blocks
         next if Systemd::Helpers.stub_units.include? section.to_sym
 
         conf[section] = []
@@ -55,6 +60,13 @@ class Chef::Resource
         if section == 'install' && !aliases.empty?
           conf[section] << "Alias=#{aliases.join(' ')}"
         end
+
+        # handle overrides if resource is a drop-in unit
+        overrides.each do |override|
+          if Systemd.const_get(section.capitalize)::OPTIONS.include? override
+            conf[section] << "#{override}="
+          end
+        end if drop_in
 
         # convert resource attributes to KV-pair values in the hash
         Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
@@ -67,6 +79,7 @@ class Chef::Resource
     end
     # rubocop: enable MethodLength
     # rubocop: enable AbcSize
+    # rubocop: enable CyclomaticComplexity
 
     alias_method :to_h, :to_hash
   end

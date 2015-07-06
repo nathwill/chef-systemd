@@ -12,6 +12,16 @@ systemd_service 'test-unit' do
   end
 end
 
+systemd_service 'my-override' do
+  drop_in true
+  override 'sshd.service'
+  overrides %w(
+    Alias
+  )
+  aliases %w( ssh.service openssh.service )
+  cpu_quota '10%'
+end
+
 systemd_socket 'sshd' do
   description 'SSH Socket for Per-Connection Servers'
   install do

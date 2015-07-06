@@ -68,5 +68,7 @@ class Chef::Resource
     end
     # rubocop: enable MethodLength
     # rubocop: enable AbcSize
+
+    alias_method :to_h, :to_hash
   end
 end

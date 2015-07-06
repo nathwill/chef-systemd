@@ -11,14 +11,7 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    attribute(
-      :unit_type,
-      kind_of: Symbol,
-      equal_to: Systemd::Helpers.unit_types,
-      default: :service,
-      required: true
-    )
-
+    attribute :unit_type, kind_of: Symbol, equal_to: Systemd::Helpers.unit_types, default: :service, required: true # rubocop: disable LineLength
     attribute :aliases, kind_of: Array, default: []
     attribute :drop_in, kind_of: [TrueClass, FalseClass], default: false
     attribute :override, kind_of: String, default: nil
@@ -43,47 +36,51 @@ class Chef::Resource
       end
     end
 
-    # rubocop: disable CyclomaticComplexity
-    # rubocop: disable PerceivedComplexity
-    # rubocop: disable MethodLength
-    # rubocop: disable AbcSize
     def to_hash
       conf = {}
 
-      ['unit', 'install', unit_type.to_s].each do |section|
+      [:unit, :install, unit_type].each do |section|
         # some unit types don't have type-specific config blocks
-        next if Systemd::Helpers.stub_units.include? section.to_sym
-
-        section_options = Systemd.const_get(section.capitalize)::OPTIONS
-
-        conf[section] = []
-
-        # handle overrides if resource is a drop-in unit
-        overrides.each do |over_ride|
-          if section_options.include?(over_ride) || over_ride == 'Alias'
-            conf[section] << "#{over_ride}="
-          end
-        end if drop_in
-
-        # handle Alias special case
-        if section == 'install' && !aliases.empty?
-          conf[section] << "Alias=#{aliases.join(' ')}"
-        end
-
-        # convert resource attributes to KV-pair values in the hash
-        section_options.each do |option|
-          attr = send(option.underscore.to_sym)
-          conf[section] << "#{option.camelize}=#{attr}" unless attr.nil?
-        end
+        next if Systemd::Helpers.stub_units.include?(section)
+        conf[section] = section_values(section)
       end
 
       conf
     end
-    # rubocop: enable AbcSize
-    # rubocop: enable MethodLength
-    # rubocop: enable PerceivedComplexity
-    # rubocop: enable CyclomaticComplexity
 
     alias_method :to_h, :to_hash
+
+    private
+
+    def section_values(section)
+      opts = Systemd.const_get(section.capitalize)::OPTIONS
+
+      [].concat handle_overrides(section, opts)
+        .concat handle_alias(section)
+        .concat handle_options(opts)
+    end
+
+    def handle_overrides(section, opts)
+      return [] unless drop_in
+
+      section_overrides = overrides.select do |o|
+        opts.include?(o) || (section == 'install' && o == 'Alias')
+      end
+
+      section_overrides.map do |over_ride|
+        "#{over_ride}="
+      end
+    end
+
+    def handle_alias(section)
+      return [] unless section == 'install' && !aliases.empty?
+      ["Alias=#{aliases.join(' ')}"]
+    end
+
+    def handle_options(opts)
+      opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
+        "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
+      end
+    end
   end
 end

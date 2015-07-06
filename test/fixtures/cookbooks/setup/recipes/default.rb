@@ -2,7 +2,7 @@ systemd_service 'test-unit' do
   description 'Test Service'
   documentation 'man:true(1)'
   install do
-    aliases %w( testing-unit.service testd.service )
+    aliases %w( testing-unit testd )
     wanted_by 'multi-user.target'
   end
   service do

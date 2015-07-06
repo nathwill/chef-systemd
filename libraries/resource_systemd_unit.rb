@@ -31,30 +31,42 @@ class Chef::Resource
     end
 
     %w( unit install ).each do |section|
+      # convert the section options to resource attributes
       option_attributes Systemd.const_get(section.capitalize)::OPTIONS
 
+      # define organizational attributes to allow
+      # attributes to be grouped by section
       define_method(section) do |&b|
         b.call
       end
     end
 
     # rubocop: disable AbcSize
+    # rubocop: disable MethodLength
     def to_hash
       conf = {}
+
       ['unit', 'install', unit_type.to_s].each do |section|
-        # Some units types don't have type-specific config blocks
+        # some units types don't have type-specific config blocks
         next if Systemd::Helpers.stub_units.include? section.to_sym
+
         conf[section] = []
+
+        # handle Alias special case
         if section == 'install' && !aliases.empty?
           conf[section] << "Alias=#{aliases.join(' ')}"
         end
+
+        # convert resource attributes to KV-pair values in the hash
         Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
           attr = send(option.underscore.to_sym)
           conf[section] << "#{option.camelize}=#{attr}" unless attr.nil?
         end
       end
+
       conf
     end
+    # rubocop: enable MethodLength
     # rubocop: enable AbcSize
   end
 end

@@ -13,10 +13,12 @@ systemd_service 'test-unit' do
 end
 
 systemd_service 'my-override' do
+  description 'Test Override'
   drop_in true
   override 'sshd.service'
   overrides %w(
     Alias
+    Description
   )
   aliases %w( ssh.service openssh.service )
   cpu_quota '10%'

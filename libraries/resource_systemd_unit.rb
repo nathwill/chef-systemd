@@ -55,12 +55,12 @@ class Chef::Resource
     def section_values(section)
       opts = Systemd.const_get(section.capitalize)::OPTIONS
 
-      [].concat handle_overrides(section, opts)
-        .concat handle_alias(section)
-        .concat handle_options(opts)
+      [].concat overrides_config(section, opts)
+        .concat alias_config(section)
+        .concat options_config(opts)
     end
 
-    def handle_overrides(section, opts)
+    def overrides_config(section, opts)
       return [] unless drop_in
 
       section_overrides = overrides.select do |o|
@@ -72,12 +72,12 @@ class Chef::Resource
       end
     end
 
-    def handle_alias(section)
+    def alias_config(section)
       return [] unless section == 'install' && !aliases.empty?
       ["Alias=#{aliases.join(' ')}"]
     end
 
-    def handle_options(opts)
+    def options_config(opts)
       opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
         "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
       end

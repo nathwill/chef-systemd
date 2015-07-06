@@ -22,7 +22,7 @@ module Systemd
     end
 
     def drop_in_root(unit)
-      ::File.join(local_conf_root, "#{unit.override}.d")
+      ::File.join(local_conf_root, "#{unit.override}.#{unit.unit_type}.d")
     end
 
     def unit_path(unit)

@@ -15,7 +15,7 @@ end
 systemd_service 'my-override' do
   description 'Test Override'
   drop_in true
-  override 'sshd.service'
+  override 'sshd'
   overrides %w(
     Alias
     Description

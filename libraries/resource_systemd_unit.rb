@@ -64,7 +64,7 @@ class Chef::Resource
       return [] unless drop_in
 
       section_overrides = overrides.select do |o|
-        opts.include?(o) || (section == 'install' && o == 'Alias')
+        opts.include?(o) || (section == :install && o == 'Alias')
       end
 
       section_overrides.map do |over_ride|

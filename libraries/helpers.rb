@@ -1,7 +1,7 @@
 module Systemd
   module Helpers
     def ini_config(conf = {})
-      conf.map do |section, params|
+      conf.delete_if { |_, v| v.empty? }.map do |section, params|
         "[#{section.capitalize}]\n#{params.join("\n")}\n"
       end.join("\n")
     end

@@ -3,7 +3,7 @@ require_relative 'systemd_slice'
 
 class Chef::Resource
   class SystemdSlice < Chef::Resource::SystemdUnit
-    resource_name = :systemd_slice
+    self.resource_name = :systemd_slice
     provides :systemd_slice
 
     def unit_type(_ = nil)

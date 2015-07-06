@@ -3,7 +3,7 @@ require_relative 'systemd_swap'
 
 class Chef::Resource
   class SystemdSwap < Chef::Resource::SystemdUnit
-    resource_name = :systemd_swap
+    self.resource_name = :systemd_swap
     provides :systemd_swap
 
     def unit_type(_ = nil)

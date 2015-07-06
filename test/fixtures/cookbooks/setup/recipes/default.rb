@@ -20,7 +20,7 @@ systemd_service 'my-override' do
     Alias
     Description
   )
-  aliases %w( ssh.service openssh.service )
+  aliases %w( ssh openssh )
   cpu_quota '10%'
 end
 

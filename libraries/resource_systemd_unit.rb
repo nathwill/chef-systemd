@@ -44,8 +44,9 @@ class Chef::Resource
     end
 
     # rubocop: disable CyclomaticComplexity
-    # rubocop: disable AbcSize
+    # rubocop: disable PerceivedComplexity
     # rubocop: disable MethodLength
+    # rubocop: disable AbcSize
     def to_hash
       conf = {}
 
@@ -58,13 +59,11 @@ class Chef::Resource
         conf[section] = []
 
         # handle overrides if resource is a drop-in unit
-        if drop_in
-          overrides.each do |over_ride|
-            if section_options.include?(over_ride) || over_ride == "Alias"
-              conf[section] << "#{over_ride}="
-            end
+        overrides.each do |over_ride|
+          if section_options.include?(over_ride) || over_ride == 'Alias'
+            conf[section] << "#{over_ride}="
           end
-        end
+        end if drop_in
 
         # handle Alias special case
         if section == 'install' && !aliases.empty?
@@ -72,7 +71,7 @@ class Chef::Resource
         end
 
         # convert resource attributes to KV-pair values in the hash
-        Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
+        section_options.each do |option|
           attr = send(option.underscore.to_sym)
           conf[section] << "#{option.camelize}=#{attr}" unless attr.nil?
         end
@@ -80,8 +79,9 @@ class Chef::Resource
 
       conf
     end
-    # rubocop: enable MethodLength
     # rubocop: enable AbcSize
+    # rubocop: enable MethodLength
+    # rubocop: enable PerceivedComplexity
     # rubocop: enable CyclomaticComplexity
 
     alias_method :to_h, :to_hash

@@ -3,7 +3,7 @@ require_relative 'systemd_path'
 
 class Chef::Resource
   class SystemdPath < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_path
+    resource_name = :systemd_path
     provides :systemd_path
 
     def unit_type(_ = nil)

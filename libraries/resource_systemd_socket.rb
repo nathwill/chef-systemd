@@ -3,7 +3,7 @@ require_relative 'systemd_socket'
 
 class Chef::Resource
   class SystemdSocket < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_socket
+    resource_name = :systemd_socket
     provides :systemd_socket
 
     def unit_type(_ = nil)

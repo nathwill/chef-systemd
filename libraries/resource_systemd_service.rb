@@ -3,7 +3,7 @@ require_relative 'systemd_service'
 
 class Chef::Resource
   class SystemdService < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_service
+    resource_name = :systemd_service
     provides :systemd_service
 
     def unit_type(_ = nil)

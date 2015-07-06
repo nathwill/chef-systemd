@@ -3,7 +3,7 @@ require_relative 'systemd_device'
 
 class Chef::Resource
   class SystemdDevice < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_device
+    resource_name = :systemd_device
     provides :systemd_device
 
     def unit_type(_ = nil)

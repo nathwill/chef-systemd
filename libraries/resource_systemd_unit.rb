@@ -5,7 +5,7 @@ require_relative 'helpers'
 
 class Chef::Resource
   class SystemdUnit < Chef::Resource::LWRPBase
-    self.resource_name = :systemd_unit
+    resource_name = :systemd_unit
     provides :systemd_unit
 
     # TODO: enable, disable, start, stop

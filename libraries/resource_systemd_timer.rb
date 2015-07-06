@@ -3,7 +3,7 @@ require_relative 'systemd_timer'
 
 class Chef::Resource
   class SystemdTimer < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_timer
+    resource_name = :systemd_timer
     provides :systemd_timer
 
     def unit_type(_ = nil)

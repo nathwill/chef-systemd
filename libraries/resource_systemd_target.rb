@@ -3,7 +3,7 @@ require_relative 'systemd_target'
 
 class Chef::Resource
   class SystemdTarget < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_target
+    resource_name = :systemd_target
     provides :systemd_target
 
     def unit_type(_ = nil)

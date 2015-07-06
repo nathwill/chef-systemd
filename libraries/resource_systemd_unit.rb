@@ -74,7 +74,7 @@ class Chef::Resource
 
     def alias_config(section)
       return [] unless section == 'install' && !aliases.empty?
-      ["Alias=#{aliases.join(' ')}"]
+      ["Alias=#{aliases.map { |a| "#{a}.#{unit_type}" }.join(' ')}"]
     end
 
     def options_config(opts)

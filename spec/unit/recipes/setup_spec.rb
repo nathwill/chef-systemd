@@ -19,8 +19,12 @@
 require 'spec_helper'
 
 describe 'setup' do
+  let(:unit_types) do
+    %w(service socket device mount automount swap target path timer slice)
+  end
+
   cached(:chef_run) do
-    runner = ChefSpec::SoloRunner.new(step_into: ['systemd_service'])
+    runner = ChefSpec::SoloRunner.new(step_into: unit_types)
     runner.converge(described_recipe)
   end
 

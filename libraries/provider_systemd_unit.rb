@@ -17,13 +17,6 @@ class Chef::Provider
     action :create do
       unit_path = Systemd::Helpers.unit_path(new_resource)
 
-      if new_resource.drop_in && new_resource.override.nil?
-        fail(
-          Chef::Exceptions::ValidationFailed,
-          'Required argument override is missing!'
-        )
-      end
-
       directory Systemd::Helpers.drop_in_root(new_resource) do
         only_if { new_resource.drop_in }
       end

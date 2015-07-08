@@ -1,3 +1,4 @@
+require 'chef/mixin/params_validate'
 require 'chef/resource/lwrp_base'
 require_relative 'systemd_install'
 require_relative 'systemd_unit'
@@ -5,6 +6,8 @@ require_relative 'helpers'
 
 class Chef::Resource
   class SystemdUnit < Chef::Resource::LWRPBase
+    include Chef::Mixin::ParamsValidate
+
     self.resource_name = :systemd_unit
     provides :systemd_unit
 
@@ -13,9 +16,24 @@ class Chef::Resource
 
     attribute :unit_type, kind_of: Symbol, equal_to: Systemd::Helpers.unit_types, default: :service, required: true # rubocop: disable LineLength
     attribute :aliases, kind_of: Array, default: []
-    attribute :drop_in, kind_of: [TrueClass, FalseClass], default: false
-    attribute :override, kind_of: String, default: nil
     attribute :overrides, kind_of: Array, default: []
+
+    def drop_in(arg = nil)
+      set_or_return(
+        :drop_in, arg,
+        kind_of: [TrueClass, FalseClass],
+        default: false
+      )
+    end
+
+    def override(arg = nil)
+      set_or_return(
+        :override, arg,
+        kind_of: String,
+        default: nil,
+        required: drop_in
+      )
+    end
 
     # define class method for defining resource
     # attributes from the resource module options

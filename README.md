@@ -88,10 +88,11 @@ Unit which describes a file system mount point controlled by systemd.
 Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_path
-[Docuemtnation][path]
 
 Unit which describes information about a path monitored by systemd for
 path-based activities.
+[Documentation][path]
+
 
 |Attribute|Description|Default|
 |---------|-----------|-------|

@@ -73,45 +73,63 @@ Also supports: [unit][common_unit], [install][common_install]
 |Attribute|Description|Default|
 |---------|-----------|-------|
 
+Also supports: [unit][common_unit], [install][common_install]
+
 ### systemd_mount
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
+
+Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_path
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
 
+Also supports: [unit][common_unit], [install][common_install]
+
 ### systemd_service
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
+
+Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_slice
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
 
+Also supports: [unit][common_unit], [install][common_install]
+
 ### systemd_socket
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
+
+Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_swap
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
 
+Also supports: [unit][common_unit], [install][common_install]
+
 ### systemd_target
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
 
+Also supports: [unit][common_unit], [install][common_install]
+
 ### systemd_timer
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
+
+Also supports: [unit][common_unit], [install][common_install]
 
 ## Common Attributes
 
@@ -139,7 +157,6 @@ Also supports: [unit][common_unit], [install][common_install]
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-
 
 [automount]: http://www.freedesktop.org/software/systemd/man/systemd.automount.html
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html

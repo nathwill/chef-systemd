@@ -4,18 +4,8 @@ A resource-drive [Chef][chef] cookbook for [systemd][docs]. Currently under
 construction; see issues for list of ways to contribute :)
 
 Cookbook builds on a core systemd_unit resource in order to provide resources
-for the following unit types:
-
-- automount
-- device
-- mount
-- path
-- service
-- slice
-- socket
-- swap
-- target
-- timer
+for the following unit types: automount, device, mount, path, service, slice,
+socket, swap, target, timer.
 
 Recommended reading:
 - This README!

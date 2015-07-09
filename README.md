@@ -67,32 +67,83 @@ Hey! That sounds pretty easy, right?
 
 ### systemd_automount
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|where||nil|
+|directory_mode||nil|
+|timeout_idle_sec||nil|
+
 ### systemd_device
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
 
 ### systemd_mount
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+
 ### systemd_path
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
 
 ### systemd_service
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+
 ### systemd_slice
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
 
 ### systemd_socket
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+
 ### systemd_swap
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
 
 ### systemd_target
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+
 ### systemd_timer
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
 
 ## Common Attributes
 
+### unit
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+
+### install
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+
 ### kill
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
 
 ### exec
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+
 ### resource-control
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
 
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html
 [chef]: https://chef.io

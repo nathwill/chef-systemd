@@ -62,9 +62,9 @@ Unit which describes a file system automount point controlled by systemd.
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|where||nil|
-|directory_mode||nil|
-|timeout_idle_sec||nil|
+|where|absolute path of automount directory|nil|
+|directory_mode|access mode when creating automount directory|nil|
+|timeout_idle_sec|idleness timeout before attempting to unmount|nil|
 
 Also supports: [unit][common_unit], [install][common_install]
 
@@ -163,11 +163,19 @@ Also supports: [unit][common_unit], [install][common_install]
 [chef]: https://chef.io
 [common_install]: #install
 [common_unit]: #unit
+[device]: http://www.freedesktop.org/software/systemd/man/systemd.device.html
 [docs]: http://www.freedesktop.org/wiki/Software/systemd/
 [ini]: https://en.wikipedia.org/wiki/INI_file
 [install]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#%5BInstall%5D%20Section%20Options
+[mount]: http://www.freedesktop.org/software/systemd/man/systemd.mount.html
+[path]: http://www.freedesktop.org/software/systemd/man/systemd.path.html
 [rhel]: https://access.redhat.com/articles/754933
+[service]: http://www.freedesktop.org/software/systemd/man/systemd.service.html
+[slice]: http://www.freedesktop.org/software/systemd/man/systemd.slice.html
+[socket]: http://www.freedesktop.org/software/systemd/man/systemd.socket.html
+[swap]: http://www.freedesktop.org/software/systemd/man/systemd.swap.html
+[target]: http://www.freedesktop.org/software/systemd/man/systemd.target.html
+[timer]: http://www.freedesktop.org/software/systemd/man/systemd.timer.html
 [travis]: https://travis-ci.org/nathwill/chef-systemd
 [unit]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#%5BUnit%5D%20Section%20Options
 [units]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html
-

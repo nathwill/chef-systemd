@@ -145,7 +145,7 @@ Also supports: [unit][common_unit], [install][common_install]
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html
 [chef]: https://chef.io
 [common_install]: #install
-[common_unit]: #unit 
+[common_unit]: #unit
 [docs]: http://www.freedesktop.org/wiki/Software/systemd/
 [ini]: https://en.wikipedia.org/wiki/INI_file
 [install]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#%5BInstall%5D%20Section%20Options

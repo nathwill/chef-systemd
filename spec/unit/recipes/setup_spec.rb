@@ -32,7 +32,7 @@ describe 'setup' do
     expect(chef_run).to create_systemd_service('test-unit').with(
       description: 'Test Service',
       documentation: 'man:true(1)',
-      aliases: %w( testing-unit.service testd.service ),
+      aliases: %w( testing-unit testd ),
       wanted_by: 'multi-user.target',
       user: 'nobody',
       type: 'oneshot',

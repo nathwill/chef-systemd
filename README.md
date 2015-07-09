@@ -72,6 +72,19 @@ attributes.
 
 Hey! That sounds pretty easy, right?
 
+#### A quick word about drop-ins
+
+In systemd, there are 2 ways to override a vendor setting: copying the unit
+from the vendor config location ('/usr/lib/systemd/system') to the local
+configuration path ('/etc/systemd/system') in order to override the entire
+unit configuration, or using a "drop-in" unit to override just the settings
+one specifically wants while keeping track of your explicit requirements and
+still support receiving vendor updates.
+
+The unit resources in this cookbook support a "drop-in" mode for managing
+drop-in units to override units of the same unit type. For more information,
+see the [drop-in](#drop-in) common configuration attributes.
+
 ### systemd_automount
 
 Unit which describes a file system automount point controlled by systemd.
@@ -86,6 +99,7 @@ Unit which describes a file system automount point controlled by systemd.
 Also supports:
 - [unit](#unit)
 - [install](#install)
+- [drop-in](#drop-in)
 
 ### systemd_device
 
@@ -97,6 +111,7 @@ This resource has no specific options.
 Also supports:
 - [unit](#unit)
 - [install](#install)
+- [drop-in](#drop-in)
 
 ### systemd_mount
 
@@ -120,6 +135,7 @@ Unit which describes a file system mount point controlled by systemd.
 Also supports:
 - [unit](#unit)
 - [install](#install)
+- [drop-in](#drop-in)
 - [exec](#exec)
 - [kill](#kill)
 - [resource-control](#resource-control)
@@ -129,7 +145,6 @@ Also supports:
 Unit which describes information about a path monitored by systemd for
 path-based activities.
 [Documentation][path]
-
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -145,6 +160,7 @@ path-based activities.
 Also supports:
 - [unit](#unit)
 - [install](#install)
+- [drop-in](#drop-in)
 
 ### systemd_service
 
@@ -189,6 +205,7 @@ Unit which describes information about a process controlled and supervised by sy
 Also supports:
 - [unit](#unit)
 - [install](#install)
+- [drop-in](#drop-in)
 - [exec](#exec)
 - [kill](#kill)
 - [resource-control](#resource-control)
@@ -204,6 +221,7 @@ This resource has no specific options.
 Also supports:
 - [unit](#unit)
 - [install](#install)
+- [drop-in](#drop-in)
 - [resource-control](#resource-control)
 
 ### systemd_socket
@@ -268,6 +286,7 @@ and supervised by systemd for socket-based service activation.
 Also supports:
 - [unit](#unit)
 - [install](#install)
+- [drop-in](#drop-in)
 - [exec](#exec)
 - [kill](#kill)
 - [resource-control](#resource-control)
@@ -287,6 +306,7 @@ Unit which describes a swap device or file for memory paging.
 Also supports:
 - [unit](#unit)
 - [install](#install)
+- [drop-in](#drop-in)
 - [exec](#exec)
 - [kill](#kill)
 - [resource-control](#resource-control)
@@ -302,6 +322,7 @@ This unit has no specific options.
 Also supports:
 - [unit](#unit)
 - [install](#install)
+- [drop-in](#drop-in)
 
 ### systemd_timer
 
@@ -325,6 +346,7 @@ activation (typically a service of the same name).
 Also supports:
 - [unit](#unit)
 - [install](#install)
+- [drop-in](#drop-in)
 
 ## Common Attributes
 
@@ -403,16 +425,28 @@ Common configuration options of all the unit types.
 
 ### install
 
-Carries installation information for units. Used exclusively by enable/disable
-commands of `systemctl`. [Documentation][install]
+Carries installation information for units. Used exclusively by
+enable/disable commands of `systemctl`. [Documentation][install]
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|aliases|see docs|nil|
+|aliases|array of aliases|[]|
 |also|see docs|nil|
 |default_instance|see docs|nil|
 |required_by|see docs|nil|
 |wanted_by|see docs|nil|
+
+### drop-in
+
+Cookbook-specific attributes that activate and control drop-in mode for units.
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|drop_in|boolean which sets where resource is a drop-in unit|false|
+|override|which unit to override, prefix only. suffix determined by resource
+unit type (e.g. "ssh" on a systemd_service -> "ssh.service.d")|nil|
+|overrides|drop-in unit options that require a reset (e.g. "ExecStart" ->
+"ExecStart=" at top of section)|[]|
 
 ### kill
 

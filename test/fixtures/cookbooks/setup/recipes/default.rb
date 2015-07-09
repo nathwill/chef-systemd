@@ -43,13 +43,11 @@ systemd_device 'vdb' do
 end
 
 systemd_mount 'tmp-mount' do
-  unit do
-    description 'Test Mount'
-    documentation 'man:hier(7)'
-    default_dependencies 'no'
-    conflicts 'umount.target'
-    before 'local-fs.target umount.target'
-  end
+  description 'Test Mount'
+  documentation 'man:hier(7)'
+  default_dependencies 'no'
+  conflicts 'umount.target'
+  before 'local-fs.target umount.target'
   install do
     wanted_by 'local-fs.target'
   end

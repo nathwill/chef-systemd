@@ -57,11 +57,16 @@ Hey! That sounds pretty easy, right?
 
 ### systemd_automount
 
+Unit which describes a file system automount point controlled by systemd.
+[Documentation][automount]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |where||nil|
 |directory_mode||nil|
 |timeout_idle_sec||nil|
+
+Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_device
 
@@ -135,10 +140,17 @@ Hey! That sounds pretty easy, right?
 |Attribute|Description|Default|
 |---------|-----------|-------|
 
+
+[automount]: http://www.freedesktop.org/software/systemd/man/systemd.automount.html
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html
 [chef]: https://chef.io
+[common_install]: #install
+[common_unit]: #unit 
 [docs]: http://www.freedesktop.org/wiki/Software/systemd/
 [ini]: https://en.wikipedia.org/wiki/INI_file
+[install]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#%5BInstall%5D%20Section%20Options
 [rhel]: https://access.redhat.com/articles/754933
 [travis]: https://travis-ci.org/nathwill/chef-systemd
+[unit]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#%5BUnit%5D%20Section%20Options
 [units]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html
+

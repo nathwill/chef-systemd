@@ -79,11 +79,13 @@ Unit which describes a file system automount point controlled by systemd.
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|where|absolute path of automount directory|nil|
-|directory_mode|access mode when creating automount directory|nil|
-|timeout_idle_sec|idleness timeout before attempting to unmount|nil|
+|where|see docs|nil|
+|directory_mode|see docs|nil|
+|timeout_idle_sec|see docs|nil|
 
-Also supports: [unit][common_unit], [install][common_install]
+Also supports:
+- [unit](#unit)
+- [install](#install)
 
 ### systemd_device
 
@@ -93,8 +95,8 @@ Unit which describes a device as exposed in the sysfs/udev device tree.
 This resource has no specific options.
 
 Also supports:
-- [unit][common_unit]
-- [install][common_install]
+- [unit](#unit)
+- [install](#install)
 
 ### systemd_mount
 
@@ -103,21 +105,24 @@ Unit which describes a file system mount point controlled by systemd.
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|directory_mode|||
-|kill_mode|||
-|kill_signal|||
-|options|||
-|send_sighup|||
-|send_sigkill|||
-|sloppy_options|||
-|timeout_sec|||
-|type|||
-|what|||
-|where|||
+|directory_mode|see docs|nil|
+|kill_mode|see docs|nil|
+|kill_signal|see docs|nil|
+|options|see docs|nil|
+|send_sighup|see docs|nil|
+|send_sigkill|see docs|nil|
+|sloppy_options|see docs|nil|
+|timeout_sec|see docs|nil|
+|type|see docs|nil|
+|what|see docs|nil|
+|where|see docs|nil|
 
 Also supports:
-- [unit][common_unit]
-- [install][common_install]
+- [unit](#unit)
+- [install](#install)
+- [exec](#exec)
+- [kill](#kill)
+- [resource-control](#resource-control)
 
 ### systemd_path
 
@@ -128,18 +133,18 @@ path-based activities.
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|directory_mode|||
-|directory_not_empty|||
-|make_directory|||
-|path_changed|||
-|path_exists|||
-|path_exists_glob|||
-|path_modified|||
-|unit|||
+|directory_mode|see docs|nil|
+|directory_not_empty|see docs|nil|
+|make_directory|see docs|nil|
+|path_changed|see docs|nil|
+|path_exists|see docs|nil|
+|path_exists_glob|see docs|nil|
+|path_modified|see docs|nil|
+|unit|see docs|nil|
 
 Also supports:
-- [unit][common_unit]
-- [install][common_install]
+- [unit](#unit)
+- [install](#install)
 
 ### systemd_service
 
@@ -148,42 +153,45 @@ Unit which describes information about a process controlled and supervised by sy
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|bus_name|||
-|bus_policy|||
-|exec_reload|||
-|exec_start|||
-|exec_start_post|||
-|exec_start_pre|||
-|exec_stop|||
-|exec_stop_post|||
-|failure_action|||
-|file_descriptor_store_max|||
-|guess_main_pid|||
-|non_blocking|||
-|notify_access|||
-|permissions_start_only|||
-|pid_file|||
-|reboot_argument|||
-|remain_after_exit|||
-|restart|||
-|restart_force_exit_status|||
-|restart_prevent_exit_status|||
-|restart_sec|||
-|root_directory_start_only|||
-|sockets|||
-|start_limit_action|||
-|start_limit_burst|||
-|start_limit_interval|||
-|success_exit_status|||
-|timeout_sec|||
-|timeout_start_sec|||
-|timeout_stop_sec|||
-|type|||
-|watchdog_sec|||
+|bus_name|see docs|nil|
+|bus_policy|see docs|nil|
+|exec_reload|see docs|nil|
+|exec_start|see docs|nil|
+|exec_start_post|see docs|nil|
+|exec_start_pre|see docs|nil|
+|exec_stop|see docs|nil|
+|exec_stop_post|see docs|nil|
+|failure_action|see docs|nil|
+|file_descriptor_store_max|see docs|nil|
+|guess_main_pid|see docs|nil|
+|non_blocking|see docs|nil|
+|notify_access|see docs|nil|
+|permissions_start_only|see docs|nil|
+|pid_file|see docs|nil|
+|reboot_argument|see docs|nil|
+|remain_after_exit|see docs|nil|
+|restart|see docs|nil|
+|restart_force_exit_status|see docs|nil|
+|restart_prevent_exit_status|see docs|nil|
+|restart_sec|see docs|nil|
+|root_directory_start_only|see docs|nil|
+|sockets|see docs|nil|
+|start_limit_action|see docs|nil|
+|start_limit_burst|see docs|nil|
+|start_limit_interval|see docs|nil|
+|success_exit_status|see docs|nil|
+|timeout_sec|see docs|nil|
+|timeout_start_sec|see docs|nil|
+|timeout_stop_sec|see docs|nil|
+|type|see docs|nil|
+|watchdog_sec|see docs|nil|
 
 Also supports:
-- [unit][common_unit]
-- [install][common_install]
+- [unit](#unit)
+- [install](#install)
+- [exec](#exec)
+- [kill](#kill)
+- [resource-control](#resource-control)
 
 ### systemd_slice
 
@@ -194,9 +202,9 @@ for of a group of processes.
 This resource has no specific options.
 
 Also supports:
-- [unit][common_unit]
-- [install][common_install]
-- [resource-control][resource_control]
+- [unit](#unit)
+- [install](#install)
+- [resource-control](#resource-control)
 
 ### systemd_socket
 
@@ -206,60 +214,63 @@ and supervised by systemd for socket-based service activation.
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|accept|||
-|backlog|||
-|bind_i_pv6_only|||
-|bind_to_device|||
-|broadcast|||
-|defer_accept_sec|||
-|directory_mode|||
-|exec_start_post|||
-|exec_start_pre|||
-|exec_stop_post|||
-|exec_stop_pre|||
-|free_bind|||
-|iptos|||
-|ipttl|||
-|keep_alive|||
-|keep_alive_interval_sec|||
-|keep_alive_probes|||
-|keep_alive_time_sec|||
-|listen_datagram|||
-|listen_fifo|||
-|listen_message_queue|||
-|listen_netlink|||
-|listen_sequential_packet|||
-|listen_special|||
-|listen_stream|||
-|mark|||
-|max_connections|||
-|message_queue_max_messages|||
-|message_queue_message_size|||
-|no_delay|||
-|pass_credentials|||
-|pass_security|||
-|pipe_size|||
-|priority|||
-|receive_buffer|||
-|remove_on_stop|||
-|reuse_port|||
-|se_linux_context_from_net|||
-|send_buffer|||
-|service|||
-|smack_label|||
-|smack_label_ip_in|||
-|smack_label_ip_out|||
-|socket_group|||
-|socket_mode|||
-|socket_user|||
-|symlinks|||
-|tcp_congestion|||
-|timeout_sec|||
-|transparent|||
+|accept|see docs|nil|
+|backlog|see docs|nil|
+|bind_i_pv6_only|see docs|nil|
+|bind_to_device|see docs|nil|
+|broadcast|see docs|nil|
+|defer_accept_sec|see docs|nil|
+|directory_mode|see docs|nil|
+|exec_start_post|see docs|nil|
+|exec_start_pre|see docs|nil|
+|exec_stop_post|see docs|nil|
+|exec_stop_pre|see docs|nil|
+|free_bind|see docs|nil|
+|iptos|see docs|nil|
+|ipttl|see docs|nil|
+|keep_alive|see docs|nil|
+|keep_alive_interval_sec|see docs|nil|
+|keep_alive_probes|see docs|nil|
+|keep_alive_time_sec|see docs|nil|
+|listen_datagram|see docs|nil|
+|listen_fifo|see docs|nil|
+|listen_message_queue|see docs|nil|
+|listen_netlink|see docs|nil|
+|listen_sequential_packet|see docs|nil|
+|listen_special|see docs|nil|
+|listen_stream|see docs|nil|
+|mark|see docs|nil|
+|max_connections|see docs|nil|
+|message_queue_max_messages|see docs|nil|
+|message_queue_message_size|see docs|nil|
+|no_delay|see docs|nil|
+|pass_credentials|see docs|nil|
+|pass_security|see docs|nil|
+|pipe_size|see docs|nil|
+|priority|see docs|nil|
+|receive_buffer|see docs|nil|
+|remove_on_stop|see docs|nil|
+|reuse_port|see docs|nil|
+|se_linux_context_from_net|see docs|nil|
+|send_buffer|see docs|nil|
+|service|see docs|nil|
+|smack_label|see docs|nil|
+|smack_label_ip_in|see docs|nil|
+|smack_label_ip_out|see docs|nil|
+|socket_group|see docs|nil|
+|socket_mode|see docs|nil|
+|socket_user|see docs|nil|
+|symlinks|see docs|nil|
+|tcp_congestion|see docs|nil|
+|timeout_sec|see docs|nil|
+|transparent|see docs|nil|
 
 Also supports:
-- [unit][common_unit]
-- [install][common_install]
+- [unit](#unit)
+- [install](#install)
+- [exec](#exec)
+- [kill](#kill)
+- [resource-control](#resource-control)
 
 ### systemd_swap
 
@@ -268,14 +279,17 @@ Unit which describes a swap device or file for memory paging.
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|options|||
-|priority|||
-|timeout_sec|||
-|what|||
+|options|see docs|nil|
+|priority|see docs|nil|
+|timeout_sec|see docs|nil|
+|what|see docs|nil|
 
 Also supports:
-- [unit][common_unit]
-- [install][common_install]
+- [unit](#unit)
+- [install](#install)
+- [exec](#exec)
+- [kill](#kill)
+- [resource-control](#resource-control)
 
 ### systemd_target
 
@@ -286,8 +300,8 @@ synchronization points during system start-up.
 This unit has no specific options.
 
 Also supports:
-- [unit][common_unit]
-- [install][common_install]
+- [unit](#unit)
+- [install](#install)
 
 ### systemd_timer
 
@@ -297,222 +311,234 @@ activation (typically a service of the same name).
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|accuracy_sec|||
-|on_active_sec|||
-|on_boot_sec|||
-|on_calendar|||
-|on_startup_sec|||
-|on_unit_active_sec|||
-|on_unit_inactive_sec|||
-|persistent|||
-|unit|||
-|wake_system|||
+|accuracy_sec|see docs|nil|
+|on_active_sec|see docs|nil|
+|on_boot_sec|see docs|nil|
+|on_calendar|see docs|nil|
+|on_startup_sec|see docs|nil|
+|on_unit_active_sec|see docs|nil|
+|on_unit_inactive_sec|see docs|nil|
+|persistent|see docs|nil|
+|unit|see docs|nil|
+|wake_system|see docs|nil|
 
 Also supports:
-- [unit][common_unit]
-- [install][common_install]
+- [unit](#unit)
+- [install](#install)
 
 ## Common Attributes
 
 ### unit
 
+Common configuration options of all the unit types.
+[Documentation][unit]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|after|||
-|allow_isolate|||
-|assert_ac_power|||
-|assert_architecture|||
-|assert_capability|||
-|assert_directory_not_empty|||
-|assert_file_is_executable|||
-|assert_file_not_empty|||
-|assert_first_boot|||
-|assert_host|||
-|assert_kernel_command_line|||
-|assert_needs_update|||
-|assert_path_exists|||
-|assert_path_exists_glob|||
-|assert_path_is_directory|||
-|assert_path_is_mount_point|||
-|assert_path_is_read_write|||
-|assert_path_is_symbolic_link|||
-|assert_security|||
-|assert_virtualization|||
-|before|||
-|binds_to|||
-|condition_ac_power|||
-|condition_architecture|||
-|condition_capability|||
-|condition_directory_not_empty|||
-|condition_file_is_executable|||
-|condition_file_not_empty|||
-|condition_first_boot|||
-|condition_host|||
-|condition_kernel_command_line|||
-|condition_needs_update|||
-|condition_path_exists|||
-|condition_path_exists_glob|||
-|condition_path_is_directory|||
-|condition_path_is_mount_point|||
-|condition_path_is_read_write|||
-|condition_path_is_symbolic_link|||
-|condition_security|||
-|condition_virtualization|||
-|conflicts|||
-|default_dependencies|||
-|description|||
-|documentation|||
-|ignore_on_isolate|||
-|ignore_on_snapshot|||
-|job_timeout_action|||
-|job_timeout_reboot_argument|||
-|job_timeout_sec|||
-|joins_namespace_of|||
-|on_failure|||
-|on_failure_job_mode|||
-|part_of|||
-|propagates_reload_to|||
-|refuse_manual_start|||
-|refuse_manual_stop|||
-|reload_propagated_from|||
-|requires|||
-|requires_mounts_for|||
-|requires_overridable|||
-|requisite|||
-|requisite_overridable|||
-|source_path|||
-|stop_when_unneeded|||
-|wants|||
+|after|see docs|nil|
+|allow_isolate|see docs|nil|
+|assert_ac_power|see docs|nil|
+|assert_architecture|see docs|nil|
+|assert_capability|see docs|nil|
+|assert_directory_not_empty|see docs|nil|
+|assert_file_is_executable|see docs|nil|
+|assert_file_not_empty|see docs|nil|
+|assert_first_boot|see docs|nil|
+|assert_host|see docs|nil|
+|assert_kernel_command_line|see docs|nil|
+|assert_needs_update|see docs|nil|
+|assert_path_exists|see docs|nil|
+|assert_path_exists_glob|see docs|nil|
+|assert_path_is_directory|see docs|nil|
+|assert_path_is_mount_point|see docs|nil|
+|assert_path_is_read_write|see docs|nil|
+|assert_path_is_symbolic_link|see docs|nil|
+|assert_security|see docs|nil|
+|assert_virtualization|see docs|nil|
+|before|see docs|nil|
+|binds_to|see docs|nil|
+|condition_ac_power|see docs|nil|
+|condition_architecture|see docs|nil|
+|condition_capability|see docs|nil|
+|condition_directory_not_empty|see docs|nil|
+|condition_file_is_executable|see docs|nil|
+|condition_file_not_empty|see docs|nil|
+|condition_first_boot|see docs|nil|
+|condition_host|see docs|nil|
+|condition_kernel_command_line|see docs|nil|
+|condition_needs_update|see docs|nil|
+|condition_path_exists|see docs|nil|
+|condition_path_exists_glob|see docs|nil|
+|condition_path_is_directory|see docs|nil|
+|condition_path_is_mount_point|see docs|nil|
+|condition_path_is_read_write|see docs|nil|
+|condition_path_is_symbolic_link|see docs|nil|
+|condition_security|see docs|nil|
+|condition_virtualization|see docs|nil|
+|conflicts|see docs|nil|
+|default_dependencies|see docs|nil|
+|description|see docs|nil|
+|documentation|see docs|nil|
+|ignore_on_isolate|see docs|nil|
+|ignore_on_snapshot|see docs|nil|
+|job_timeout_action|see docs|nil|
+|job_timeout_reboot_argument|see docs|nil|
+|job_timeout_sec|see docs|nil|
+|joins_namespace_of|see docs|nil|
+|on_failure|see docs|nil|
+|on_failure_job_mode|see docs|nil|
+|part_of|see docs|nil|
+|propagates_reload_to|see docs|nil|
+|refuse_manual_start|see docs|nil|
+|refuse_manual_stop|see docs|nil|
+|reload_propagated_from|see docs|nil|
+|requires|see docs|nil|
+|requires_mounts_for|see docs|nil|
+|requires_overridable|see docs|nil|
+|requisite|see docs|nil|
+|requisite_overridable|see docs|nil|
+|source_path|see docs|nil|
+|stop_when_unneeded|see docs|nil|
+|wants|see docs|nil|
 
 ### install
 
+Carries installation information for units. Used exclusively by enable/disable
+commands of `systemctl`. [Documentation][install]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|aliases||||
-|also|||
-|default_instance|||
-|required_by|||
-|wanted_by|||
+|aliases|see docs|nil|
+|also|see docs|nil|
+|default_instance|see docs|nil|
+|required_by|see docs|nil|
+|wanted_by|see docs|nil|
 
 ### kill
 
+Process killing procedure configuration. [Documentation][kill]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|kill_mode|||
-|kill_signal|||
-|send_sighup|||
-|send_sigkill|||
+|kill_mode|see docs|nil|
+|kill_signal|see docs|nil|
+|send_sighup|see docs|nil|
+|send_sigkill|see docs|nil|
 
 ### exec
 
+Execution environment configuration. [Documentation][exec]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|app_armor_profile|||
-|capabilities|||
-|capability_bounding_set|||
-|cpu_affinity|||
-|cpu_scheduling_policy|||
-|cpu_scheduling_priority|||
-|cpu_scheduling_reset_on_fork|||
-|environment|||
-|environment_file|||
-|group|||
-|ignore_sigpipe|||
-|inaccessible_directories|||
-|io_scheduling_class|||
-|io_scheduling_priority|||
-|limit_as|||
-|limit_core|||
-|limit_cpu|||
-|limit_data|||
-|limit_fsize|||
-|limit_locks|||
-|limit_memlock|||
-|limit_msgqueue|||
-|limit_nice|||
-|limit_nofile|||
-|limit_nproc|||
-|limit_rss|||
-|limit_rtprio|||
-|limit_rttime|||
-|limit_sigpending|||
-|limit_stack|||
-|mount_flags|||
-|nice|||
-|no_new_privileges|||
-|oom_score_adjust|||
-|pam_name|||
-|personality|||
-|private_devices|||
-|private_network|||
-|private_tmp|||
-|protect_home|||
-|protect_system|||
-|read_only_directories|||
-|read_write_directories|||
-|restrict_address_families|||
-|root_directory|||
-|runtime_directory|||
-|runtime_directory_mode|||
-|se_linux_context|||
-|secure_bits|||
-|smack_process_label|||
-|standard_error|||
-|standard_input|||
-|standard_output|||
-|supplementary_groups|||
-|syslog_facility|||
-|syslog_identifier|||
-|syslog_level|||
-|syslog_level_prefix|||
-|system_call_architectures|||
-|system_call_error_number|||
-|system_call_filter|||
-|timer_slack_n_sec|||
-|tty_path|||
-|tty_reset|||
-|ttyv_hangup|||
-|ttyvt_disallocate|||
-|u_mask|||
-|user|||
-|utmp_identifier|||
-|working_directory|||
+|app_armor_profile|see docs|nil|
+|capabilities|see docs|nil|
+|capability_bounding_set|see docs|nil|
+|cpu_affinity|see docs|nil|
+|cpu_scheduling_policy|see docs|nil|
+|cpu_scheduling_priority|see docs|nil|
+|cpu_scheduling_reset_on_fork|see docs|nil|
+|environment|see docs|nil|
+|environment_file|see docs|nil|
+|group|see docs|nil|
+|ignore_sigpipe|see docs|nil|
+|inaccessible_directories|see docs|nil|
+|io_scheduling_class|see docs|nil|
+|io_scheduling_priority|see docs|nil|
+|limit_as|see docs|nil|
+|limit_core|see docs|nil|
+|limit_cpu|see docs|nil|
+|limit_data|see docs|nil|
+|limit_fsize|see docs|nil|
+|limit_locks|see docs|nil|
+|limit_memlock|see docs|nil|
+|limit_msgqueue|see docs|nil|
+|limit_nice|see docs|nil|
+|limit_nofile|see docs|nil|
+|limit_nproc|see docs|nil|
+|limit_rss|see docs|nil|
+|limit_rtprio|see docs|nil|
+|limit_rttime|see docs|nil|
+|limit_sigpending|see docs|nil|
+|limit_stack|see docs|nil|
+|mount_flags|see docs|nil|
+|nice|see docs|nil|
+|no_new_privileges|see docs|nil|
+|oom_score_adjust|see docs|nil|
+|pam_name|see docs|nil|
+|personality|see docs|nil|
+|private_devices|see docs|nil|
+|private_network|see docs|nil|
+|private_tmp|see docs|nil|
+|protect_home|see docs|nil|
+|protect_system|see docs|nil|
+|read_only_directories|see docs|nil|
+|read_write_directories|see docs|nil|
+|restrict_address_families|see docs|nil|
+|root_directory|see docs|nil|
+|runtime_directory|see docs|nil|
+|runtime_directory_mode|see docs|nil|
+|se_linux_context|see docs|nil|
+|secure_bits|see docs|nil|
+|smack_process_label|see docs|nil|
+|standard_error|see docs|nil|
+|standard_input|see docs|nil|
+|standard_output|see docs|nil|
+|supplementary_groups|see docs|nil|
+|syslog_facility|see docs|nil|
+|syslog_identifier|see docs|nil|
+|syslog_level|see docs|nil|
+|syslog_level_prefix|see docs|nil|
+|system_call_architectures|see docs|nil|
+|system_call_error_number|see docs|nil|
+|system_call_filter|see docs|nil|
+|timer_slack_n_sec|see docs|nil|
+|tty_path|see docs|nil|
+|tty_reset|see docs|nil|
+|ttyv_hangup|see docs|nil|
+|ttyvt_disallocate|see docs|nil|
+|u_mask|see docs|nil|
+|user|see docs|nil|
+|utmp_identifier|see docs|nil|
+|working_directory|see docs|nil|
 
 ### resource-control
 
+Resource control unit settings. [Documentation][resource_control]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|block_io_accounting|||
-|block_io_device_weight|||
-|block_io_read_bandwidth|||
-|block_io_weight|||
-|block_io_write_bandwidth|||
-|cpu_accounting|||
-|cpu_quota|||
-|cpu_shares|||
-|delegate|||
-|device_allow|||
-|device_policy|||
-|memory_accounting|||
-|memory_limit|||
-|slice|||
-|startup_block_io_weight|||
-|startup_cpu_shares|||
+|block_io_accounting|see docs|nil|
+|block_io_device_weight|see docs|nil|
+|block_io_read_bandwidth|see docs|nil|
+|block_io_weight|see docs|nil|
+|block_io_write_bandwidth|see docs|nil|
+|cpu_accounting|see docs|nil|
+|cpu_quota|see docs|nil|
+|cpu_shares|see docs|nil|
+|delegate|see docs|nil|
+|device_allow|see docs|nil|
+|device_policy|see docs|nil|
+|memory_accounting|see docs|nil|
+|memory_limit|see docs|nil|
+|slice|see docs|nil|
+|startup_block_io_weight|see docs|nil|
+|startup_cpu_shares|see docs|nil|
 
 ---
 [automount]: http://www.freedesktop.org/software/systemd/man/systemd.automount.html
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html
 [chef]: https://chef.io
-[common_install]: #install
-[common_unit]: #unit
 [device]: http://www.freedesktop.org/software/systemd/man/systemd.device.html
 [docs]: http://www.freedesktop.org/wiki/Software/systemd/
+[exec]: http://www.freedesktop.org/software/systemd/man/systemd.exec.html
 [ini]: https://en.wikipedia.org/wiki/INI_file
 [install]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#%5BInstall%5D%20Section%20Options
+[kill]: http://www.freedesktop.org/software/systemd/man/systemd.kill.html
 [mount]: http://www.freedesktop.org/software/systemd/man/systemd.mount.html
 [path]: http://www.freedesktop.org/software/systemd/man/systemd.path.html
 [rhel]: https://access.redhat.com/articles/754933
-[resource_control]: 
+[resource_control]: http://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
 [service]: http://www.freedesktop.org/software/systemd/man/systemd.service.html
 [slice]: http://www.freedesktop.org/software/systemd/man/systemd.slice.html
 [socket]: http://www.freedesktop.org/software/systemd/man/systemd.socket.html

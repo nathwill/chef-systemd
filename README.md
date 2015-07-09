@@ -70,8 +70,10 @@ Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_device
 
-|Attribute|Description|Default|
-|---------|-----------|-------|
+Unit which describes a device as exposed in the sysfs/udev device tree.
+[Documentation][device]
+
+This resource has no specific options.
 
 Also supports: [unit][common_unit], [install][common_install]
 
@@ -119,8 +121,7 @@ Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_target
 
-|Attribute|Description|Default|
-|---------|-----------|-------|
+This unit has no specific options.
 
 Also supports: [unit][common_unit], [install][common_install]
 

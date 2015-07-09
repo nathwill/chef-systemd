@@ -20,7 +20,7 @@ require 'spec_helper'
 
 describe 'setup' do
   let(:unit_types) do
-    %w(service socket device mount automount swap target path timer slice)
+    %w(service socket device mount automount swap target path timer slice).map{|t| "systemd_#{t}"}
   end
 
   cached(:chef_run) do
@@ -38,6 +38,8 @@ describe 'setup' do
       type: 'oneshot',
       exec_start: '/usr/bin/true'
     )
+
+    expect(chef_run).to create_file('/etc/systemd/system/test-unit.service')
   end
 
   it '#socket' do

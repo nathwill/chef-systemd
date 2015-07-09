@@ -17,7 +17,6 @@ Recommended reading:
 
 ## Recipes
 
-
 ## Resources
 
 ### Foreword
@@ -79,47 +78,78 @@ Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_mount
 
+Unit which describes a file system mount point controlled by systemd.
+[Documentation][mount]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_path
+[Docuemtnation][path]
+
+Unit which describes information about a path monitored by systemd for
+path-based activities.
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_service
 
+Unit which describes information about a process controlled and supervised by systemd.
+[Documentation][service]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_slice
 
+Unit which describes a "slice" of the system; useful for managing resources
+for of a group of processes.
+[Documentation][slice]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_socket
 
+Unit which describes an IPC, network socket, or file-system FIFO controlled
+and supervised by systemd for socket-based service activation.
+[Documentation][socket]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_swap
 
+Unit which describes a swap device or file for memory paging.
+[Documentation][swap]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_target
+
+Unit which describes a systemd target, used for grouping units and
+synchronization points during system start-up.
+[Documentation][target]
 
 This unit has no specific options.
 
@@ -127,8 +157,13 @@ Also supports: [unit][common_unit], [install][common_install]
 
 ### systemd_timer
 
+Unit which describes a timer managed by systemd, for timer-based unit
+activation (typically a service of the same name).
+[Documentation][timer]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 Also supports: [unit][common_unit], [install][common_install]
 
@@ -138,27 +173,33 @@ Also supports: [unit][common_unit], [install][common_install]
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 ### install
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 ### kill
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 ### exec
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
 ### resource-control
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
+||||
 
+---
 [automount]: http://www.freedesktop.org/software/systemd/man/systemd.automount.html
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html
 [chef]: https://chef.io

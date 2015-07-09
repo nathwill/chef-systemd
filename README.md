@@ -58,9 +58,10 @@ There are also 3 special groups of unit options that are common between several
 types of units: exec, kill, and resource-control, which handle common options
 re: execution environment configuration (e.g. "WorkingDirectory"), process
 killing procedure configuration (e.g. "KillSignal"), and resource control
-settings (e.g. "MemoryLimit"). Resources which support these attributes along
-with their type-specific attributes are explicitly noted in the resource
-documentation below, and linked to the documentation for those attributes.
+settings (e.g. "MemoryLimit"). Cookbook resources which support these common
+attributes along with their type-specific attributes are explicitly noted in
+the resource documentation below, and linked to the documentation for those
+attributes.
 
 Hey! That sounds pretty easy, right?
 

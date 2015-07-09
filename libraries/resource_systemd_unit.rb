@@ -46,12 +46,11 @@ class Chef::Resource
     %w( unit install ).each do |section|
       # convert the section options to resource attributes
       option_attributes Systemd.const_get(section.capitalize)::OPTIONS
+    end
 
-      # define organizational attributes to allow
-      # attributes to be grouped by section
-      define_method(section) do |&b|
-        b.call
-      end
+    # useful for grouping install-section attributes
+    def install
+      yield
     end
 
     def to_hash

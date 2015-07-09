@@ -2,7 +2,7 @@ systemd_service 'test-unit' do
   description 'Test Service'
   documentation 'man:true(1)'
   install do
-    aliases %w( testing-unit.service testd.service )
+    aliases %w( testing-unit testd )
     wanted_by 'multi-user.target'
   end
   service do
@@ -10,6 +10,18 @@ systemd_service 'test-unit' do
     type 'oneshot'
     exec_start '/usr/bin/true'
   end
+end
+
+systemd_service 'my-override' do
+  description 'Test Override'
+  drop_in true
+  override 'sshd'
+  overrides %w(
+    Alias
+    Description
+  )
+  aliases %w( ssh openssh )
+  cpu_quota '10%'
 end
 
 systemd_socket 'sshd' do

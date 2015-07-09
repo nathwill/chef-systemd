@@ -1,3 +1,4 @@
+require 'chef/mixin/params_validate'
 require 'chef/resource/lwrp_base'
 require_relative 'systemd_install'
 require_relative 'systemd_unit'
@@ -5,21 +6,34 @@ require_relative 'helpers'
 
 class Chef::Resource
   class SystemdUnit < Chef::Resource::LWRPBase
+    include Chef::Mixin::ParamsValidate
+
     self.resource_name = :systemd_unit
     provides :systemd_unit
 
     actions :create, :delete
     default_action :create
 
-    attribute(
-      :unit_type,
-      kind_of: Symbol,
-      equal_to: Systemd::Helpers.unit_types,
-      default: :service,
-      required: true
-    )
-
+    attribute :unit_type, kind_of: Symbol, equal_to: Systemd::Helpers.unit_types, default: :service, required: true # rubocop: disable LineLength
     attribute :aliases, kind_of: Array, default: []
+    attribute :overrides, kind_of: Array, default: []
+
+    def drop_in(arg = nil)
+      set_or_return(
+        :drop_in, arg,
+        kind_of: [TrueClass, FalseClass],
+        default: false
+      )
+    end
+
+    def override(arg = nil)
+      set_or_return(
+        :override, arg,
+        kind_of: String,
+        default: nil,
+        required: drop_in
+      )
+    end
 
     # define class method for defining resource
     # attributes from the resource module options
@@ -40,34 +54,51 @@ class Chef::Resource
       end
     end
 
-    # rubocop: disable AbcSize
-    # rubocop: disable MethodLength
     def to_hash
       conf = {}
 
-      ['unit', 'install', unit_type.to_s].each do |section|
-        # some units types don't have type-specific config blocks
-        next if Systemd::Helpers.stub_units.include? section.to_sym
-
-        conf[section] = []
-
-        # handle Alias special case
-        if section == 'install' && !aliases.empty?
-          conf[section] << "Alias=#{aliases.join(' ')}"
-        end
-
-        # convert resource attributes to KV-pair values in the hash
-        Systemd.const_get(section.capitalize)::OPTIONS.each do |option|
-          attr = send(option.underscore.to_sym)
-          conf[section] << "#{option.camelize}=#{attr}" unless attr.nil?
-        end
+      [:unit, :install, unit_type].each do |section|
+        # some unit types don't have type-specific config blocks
+        next if Systemd::Helpers.stub_units.include?(section)
+        conf[section] = section_values(section)
       end
 
       conf
     end
-    # rubocop: enable MethodLength
-    # rubocop: enable AbcSize
 
     alias_method :to_h, :to_hash
+
+    private
+
+    def section_values(section)
+      opts = Systemd.const_get(section.capitalize)::OPTIONS
+
+      [].concat overrides_config(section, opts)
+        .concat alias_config(section)
+        .concat options_config(opts)
+    end
+
+    def overrides_config(section, opts)
+      return [] unless drop_in
+
+      section_overrides = overrides.select do |o|
+        opts.include?(o) || (section == :install && o == 'Alias')
+      end
+
+      section_overrides.map do |over_ride|
+        "#{over_ride}="
+      end
+    end
+
+    def alias_config(section)
+      return [] unless section == :install && !aliases.empty?
+      ["Alias=#{aliases.map { |a| "#{a}.#{unit_type}" }.join(' ')}"]
+    end
+
+    def options_config(opts)
+      opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
+        "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
+      end
+    end
   end
 end

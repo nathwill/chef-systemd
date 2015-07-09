@@ -17,6 +17,10 @@ class Chef::Provider
     action :create do
       unit_path = Systemd::Helpers.unit_path(new_resource)
 
+      directory Systemd::Helpers.drop_in_root(new_resource) do
+        only_if { new_resource.drop_in }
+      end
+
       execute 'reload-sytemd' do
         command 'systemctl daemon-reload'
         action :nothing

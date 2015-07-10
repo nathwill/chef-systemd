@@ -58,13 +58,13 @@ class Chef::Provider
 
           match = case a
                   when :enable
-                    %w( static enabled ).include? state
+                    %w( static enabled enabled-runtime ).include? state
                   when :disable
-                    %w( static disabled ).include? state
+                    %w( static disabled masked masked-runtime ).include? state
                   when :start
                     state == 'active'
                   when :stop
-                    state == 'inactive'
+                    %w( inactive unknown ).include? state
                   end
         end
 

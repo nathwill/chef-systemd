@@ -1,4 +1,5 @@
 require 'chef/provider/lwrp_base'
+require 'mixlib/shellout'
 require_relative 'helpers'
 
 class Chef::Provider
@@ -42,11 +43,32 @@ class Chef::Provider
     %i( enable disable start stop ).each do |a|
       action a do
         r = new_resource
-        done = Systemd::Helpers.unit_state_matches?(r, a)
+
+        state = case a
+                when :enable, :disable
+                  Mixlib::ShellOut.new(
+                    "systemctl is-enabled #{r.name}.#{r.unit_type}"
+                  ).tap { |s| s.run_command }.stdout.chomp
+                when :start, :stop
+                  Mixlib::ShellOut.new(
+                    "systemctl is-active #{r.name}.#{r.unit_type}"
+                  ).tap { |s| s.run_command }.stdout.chomp
+                end
+
+        match = case a
+                when :enable
+                  state == "enabled"
+                when :disable
+                  state == "disabled"
+                when :start
+                  state == "active"
+                when :stop
+                  state == "inactive"
+                end
 
         e = execute "systemctl-#{a}-#{r.name}.#{r.unit_type}" do
           command "systemctl #{a} #{r.name}.#{r.unit_type}"
-          not_if { done }
+          not_if { match }
         end
 
         new_resource.updated_by_last_action(e.updated_by_last_action?)

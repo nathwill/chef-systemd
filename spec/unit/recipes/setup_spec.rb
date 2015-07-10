@@ -35,6 +35,8 @@ describe 'setup' do
       aliases: %w( testing-unit testd ),
       wanted_by: 'multi-user.target',
       user: 'nobody',
+      kill_signal: 'SIGTERM',
+      memory_limit: '5M',
       type: 'oneshot',
       exec_start: '/usr/bin/true'
     )
@@ -42,11 +44,23 @@ describe 'setup' do
     expect(chef_run).to create_file('/etc/systemd/system/test-unit.service')
   end
 
+  it '#drop_in' do
+    expect(chef_run).to create_systemd_service('my-override').with(
+      description: 'Test Override',
+      drop_in: true,
+      aliases: %w( ssh openssh ),
+      cpu_quota: '10%'
+    )
+  end
+
   it '#socket' do
     expect(chef_run).to create_systemd_socket('sshd').with(
       description: 'SSH Socket for Per-Connection Servers',
       listen_stream: '22',
       accept: 'yes',
+      protect_system: 'full',
+      kill_mode: 'control-group',
+      cpu_quota: '20%',
       wanted_by: 'sockets.target'
     )
   end
@@ -69,6 +83,10 @@ describe 'setup' do
       what: 'tmpfs',
       where: '/tmp',
       type: 'tmpfs',
+      timeout_sec: '300',
+      io_scheduling_priority: '0',
+      kill_mode: 'mixed',
+      slice: 'system.slice',
       options: 'mode=1777,strictatime'
     )
   end
@@ -86,7 +104,10 @@ describe 'setup' do
       description: 'Test Swap',
       wanted_by: 'local-fs.target',
       what: '/dev/swap',
-      timeout_sec: '5'
+      timeout_sec: '5',
+      personality: 'x86',
+      send_sighup: 'no',
+      block_io_accounting: 'true'
     )
   end
 
@@ -94,7 +115,8 @@ describe 'setup' do
     expect(chef_run).to create_systemd_target('test').with(
       description: 'Test Target',
       documentation: 'man:systemd.special(7)',
-      stop_when_unneeded: 'yes'
+      stop_when_unneeded: 'yes',
+      aliases: %w( tested )
     )
   end
 
@@ -113,7 +135,8 @@ describe 'setup' do
       description: 'Test Timer',
       documentation: 'man:tmpfiles.d(5) man:systemd-tmpfiles(8)',
       on_boot_sec: '15min',
-      on_unit_active_sec: '1d'
+      on_unit_active_sec: '1d',
+      wanted_by: 'multi-user.target'
     )
   end
 
@@ -121,7 +144,8 @@ describe 'setup' do
     expect(chef_run).to create_systemd_slice('customer-1').with(
       description: 'Test Slice',
       memory_limit: '1G',
-      cpu_shares: '1024'
+      cpu_shares: '1024',
+      wanted_by: 'multi-user.target'
     )
   end
 end

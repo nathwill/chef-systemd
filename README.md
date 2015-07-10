@@ -1,7 +1,10 @@
 # systemd chef cookbook [![Build Status](https://travis-ci.org/nathwill/chef-systemd.svg?branch=master)][travis]
 
-A resource-drive [Chef][chef] cookbook for [systemd][docs]. Currently under
-construction; see issues for list of ways to contribute :)
+A resource-driven [Chef][chef] cookbook for [systemd][docs].
+
+Currently under construction; early adopters wanted!
+
+See issues for a list of ways to contribute :)
 
 Cookbook builds on a core systemd_unit resource in order to provide resources
 for the following unit types: automount, device, mount, path, service, slice,
@@ -16,6 +19,8 @@ Recommended reading:
 - test cookbooks under `test/fixtures/cookbooks/setup`
 
 ## Recipes
+
+In progress...
 
 ### systemd::hostnamed
 
@@ -70,8 +75,6 @@ attributes along with their type-specific attributes are explicitly noted in
 the resource documentation below, and linked to the documentation for those
 attributes.
 
-Hey! That sounds pretty easy, right?
-
 #### A quick word about drop-ins
 
 In systemd, there are 2 ways to override a vendor setting: copying the unit
@@ -97,6 +100,7 @@ Unit which describes a file system automount point controlled by systemd.
 |timeout_idle_sec|see docs|nil|
 
 Also supports:
+- [organization](#organization)
 - [unit](#unit)
 - [install](#install)
 - [drop-in](#drop-in)
@@ -109,6 +113,7 @@ Unit which describes a device as exposed in the sysfs/udev device tree.
 This resource has no specific options.
 
 Also supports:
+- [organization](#organization)
 - [unit](#unit)
 - [install](#install)
 - [drop-in](#drop-in)
@@ -133,6 +138,7 @@ Unit which describes a file system mount point controlled by systemd.
 |where|see docs|nil|
 
 Also supports:
+- [organization](#organization)
 - [unit](#unit)
 - [install](#install)
 - [drop-in](#drop-in)
@@ -158,6 +164,7 @@ path-based activities.
 |unit|see docs|nil|
 
 Also supports:
+- [organization](#organization)
 - [unit](#unit)
 - [install](#install)
 - [drop-in](#drop-in)
@@ -203,6 +210,7 @@ Unit which describes information about a process controlled and supervised by sy
 |watchdog_sec|see docs|nil|
 
 Also supports:
+- [organization](#organization)
 - [unit](#unit)
 - [install](#install)
 - [drop-in](#drop-in)
@@ -219,6 +227,7 @@ for of a group of processes.
 This resource has no specific options.
 
 Also supports:
+- [organization](#organization)
 - [unit](#unit)
 - [install](#install)
 - [drop-in](#drop-in)
@@ -284,6 +293,7 @@ and supervised by systemd for socket-based service activation.
 |transparent|see docs|nil|
 
 Also supports:
+- [organization](#organization)
 - [unit](#unit)
 - [install](#install)
 - [drop-in](#drop-in)
@@ -304,6 +314,7 @@ Unit which describes a swap device or file for memory paging.
 |what|see docs|nil|
 
 Also supports:
+- [organization](#organization)
 - [unit](#unit)
 - [install](#install)
 - [drop-in](#drop-in)
@@ -320,6 +331,7 @@ synchronization points during system start-up.
 This unit has no specific options.
 
 Also supports:
+- [organization](#organization)
 - [unit](#unit)
 - [install](#install)
 - [drop-in](#drop-in)
@@ -344,11 +356,36 @@ activation (typically a service of the same name).
 |wake_system|see docs|nil|
 
 Also supports:
+- [organization](#organization)
 - [unit](#unit)
 - [install](#install)
 - [drop-in](#drop-in)
 
 ## Common Attributes
+
+### organization
+
+special no-op attributes that yield to a block for the purpose of being
+able to group attributes of a resource similar to their rendered grouping.
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|install|no-op block yielder|nil|
+|$unit_type|no-op block yielder|nil|
+
+By way of explanation:
+
+```ruby
+systemd_automount 'vagrant-home' do
+  description 'Test Automount'
+  install do
+    wanted_by 'local-fs.target'
+  end
+  automount do
+    where '/home/vagrant'
+  end
+end
+```
 
 ### unit
 

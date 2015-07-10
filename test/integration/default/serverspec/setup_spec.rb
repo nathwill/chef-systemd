@@ -43,4 +43,74 @@ describe 'setup::default' do
     its(:content) { should match /ListenStream=22/ }
     its(:content) { should match /Accept=yes/ }
   end
+
+  describe file('/etc/systemd/system/vdb.device') do
+    its(:content) { should match /\[Unit\]/ }
+    its(:content) { should match /Description=Test Device/ }
+    its(:content) { should match /\[Install\]/ }
+    its(:content) { should match /WantedBy=multi-user.target/ }
+  end
+
+  describe file('/etc/systemd/system/tmp-mount.mount') do
+    its(:content) { should match /\[Unit\]/ }
+    its(:content) { should match /Description=Test Mount/ }
+    its(:content) { should match /Documentation=man:hier\(7\)/ }
+    its(:content) { should match /Conflicts=umount.target/ }
+    its(:content) { should match /Before=local-fs.target umount.target/ }
+    its(:content) { should match /DefaultDependencies=no/ }
+    its(:content) { should match /\[Install\]/ }
+    its(:content) { should match /WantedBy=local-fs.target/ }
+    its(:content) { should match /\[Mount\]/ }
+    its(:content) { should match /Slice=system.slice/ }
+    its(:content) { should match /IOSchedulingPriority=0/ }
+    its(:content) { should match /KillMode=mixed/ }
+    its(:content) { should match /What=tmpfs/ }
+    its(:content) { should match /Where=\/tmp/ }
+    its(:content) { should match /Type=tmpfs/ }
+    its(:content) { should match /Options=mode=1777,strictatime/ }
+    its(:content) { should match /TimeoutSec=300/ }
+  end
+
+  describe file('/etc/systemd/system/vagrant-home.automount') do
+    its(:content) { should match /\[Unit\]/ }
+    its(:content) { should match /Description=Test Automount/ }
+    its(:content) { should match /\[Install\]/ }
+    its(:content) { should match /WantedBy=local-fs.target/ }
+    its(:content) { should match /\[Automount\]/ }
+    its(:content) { should match /Where=\/home\/vagrant/ }
+  end
+
+  describe file('/etc/systemd/system/swap.swap') do
+    its(:content) { should match /\[Unit\]/ }
+    its(:content) { should match /Description=Test Swap/ }
+    its(:content) { should match /\[Install\]/ }
+    its(:content) { should match /WantedBy=local-fs.target/ }
+    its(:content) { should match /\[Swap\]/ }
+    its(:content) { should match /BlockIOAccounting=true/ }
+    its(:content) { should match /Personality=x86/ }
+    its(:content) { should match /SendSIGHUP=no/ }
+    its(:content) { should match /What=\/dev\/swap/ }
+    its(:content) { should match /TimeoutSec=5/ }
+  end
+
+  describe file('/etc/systemd/system/test.target') do
+    its(:content) { should match /\[Unit\]/ }
+    its(:content) { should match /Description=Test Target/ }
+    its(:content) { should match /Documentation=man:systemd.special\(7\)/ }
+    its(:content) { should match /StopWhenUnneeded=yes/ }
+    its(:content) { should match /\[Install\]/ }
+    its(:content) { should match /Alias=tested.target/ }
+  end
+
+  describe file('/etc/systemd/system/dummy.path') do
+    its(:content) { should match /\[Unit\]/ }
+    its(:content) { should match /Description=Test Path/ }
+    its(:content) { should match /\[Install\]/ }
+    its(:content) { should match /WantedBy=multi-user.target/ }
+    its(:content) { should match /\[Path\]/ }
+    its(:content) { should match /DirectoryNotEmpty=\/var\/run\/queue/ }
+    its(:content) { should match /Unit=queue-worker.service/ }
+    its(:content) { should match /MakeDirectory=true/ }
+  end
+
 end

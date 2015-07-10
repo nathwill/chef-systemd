@@ -42,9 +42,14 @@ class Chef::Provider
     %i( enable disable start stop ).each do |a|
       action a do
         r = new_resource
-        execute "systemctl-#{a}-#{r.name}.#{r.unit_type}" do
+        done = Systemd::Helpers.unit_state_matches?(r, a)
+
+        e = execute "systemctl-#{a}-#{r.name}.#{r.unit_type}" do
           command "systemctl #{a} #{r.name}.#{r.unit_type}"
+          not_if { done }
         end
+
+        new_resource.updated_by_last_action(e.updated_by_last_action?)
       end
     end
   end

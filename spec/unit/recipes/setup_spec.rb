@@ -148,4 +148,9 @@ describe 'setup' do
       wanted_by: 'multi-user.target'
     )
   end
+
+  it '#lifecycle' do
+    expect(chef_run).to disable_systemd_service('rsyslog')
+    expect(chef_run).to stop_systemd_service('rsyslog')
+  end
 end

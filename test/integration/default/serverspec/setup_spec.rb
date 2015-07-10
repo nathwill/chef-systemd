@@ -141,4 +141,9 @@ describe 'setup::default' do
     its(:content) { should match /CPUShares=1024/ }
     its(:content) { should match /MemoryLimit=1G/ }
   end
+
+  describe service('rsyslog') do
+    it { should_not be_enabled }
+    it { should_not be_running }
+  end
 end

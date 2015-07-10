@@ -44,27 +44,29 @@ class Chef::Provider
       action a do
         r = new_resource
 
-        state = case a
-                when :enable, :disable
-                  Mixlib::ShellOut.new(
-                    "systemctl is-enabled #{r.name}.#{r.unit_type}"
-                  ).tap(&:run_command).stdout.chomp
-                when :start, :stop
-                  Mixlib::ShellOut.new(
-                    "systemctl is-active #{r.name}.#{r.unit_type}"
-                  ).tap(&:run_command).stdout.chomp
-                end
+        unless defined?(ChefSpec)
+          state = case a
+                  when :enable, :disable
+                    Mixlib::ShellOut.new(
+                      "systemctl is-enabled #{r.name}.#{r.unit_type}"
+                    ).tap(&:run_command).stdout.chomp
+                  when :start, :stop
+                    Mixlib::ShellOut.new(
+                      "systemctl is-active #{r.name}.#{r.unit_type}"
+                    ).tap(&:run_command).stdout.chomp
+                  end
 
-        match = case a
-                when :enable
-                  state == 'enabled'
-                when :disable
-                  state == 'disabled'
-                when :start
-                  state == 'active'
-                when :stop
-                  state == 'inactive'
-                end
+          match = case a
+                  when :enable
+                    state == 'enabled'
+                  when :disable
+                    state == 'disabled'
+                  when :start
+                    state == 'active'
+                  when :stop
+                    state == 'inactive'
+                  end
+        end
 
         e = execute "systemctl-#{a}-#{r.name}.#{r.unit_type}" do
           command "systemctl #{a} #{r.name}.#{r.unit_type}"

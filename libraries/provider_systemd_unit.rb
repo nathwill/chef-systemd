@@ -48,22 +48,22 @@ class Chef::Provider
                 when :enable, :disable
                   Mixlib::ShellOut.new(
                     "systemctl is-enabled #{r.name}.#{r.unit_type}"
-                  ).tap { |s| s.run_command }.stdout.chomp
+                  ).tap(&:run_command).stdout.chomp
                 when :start, :stop
                   Mixlib::ShellOut.new(
                     "systemctl is-active #{r.name}.#{r.unit_type}"
-                  ).tap { |s| s.run_command }.stdout.chomp
+                  ).tap(&:run_command).stdout.chomp
                 end
 
         match = case a
                 when :enable
-                  state == "enabled"
+                  state == 'enabled'
                 when :disable
-                  state == "disabled"
+                  state == 'disabled'
                 when :start
-                  state == "active"
+                  state == 'active'
                 when :stop
-                  state == "inactive"
+                  state == 'inactive'
                 end
 
         e = execute "systemctl-#{a}-#{r.name}.#{r.unit_type}" do

@@ -44,6 +44,7 @@ describe 'setup::default' do
     its(:content) { should match /Accept=yes/ }
   end
 
+  # Test the device resource
   describe file('/etc/systemd/system/vdb.device') do
     its(:content) { should match /\[Unit\]/ }
     its(:content) { should match /Description=Test Device/ }
@@ -51,6 +52,7 @@ describe 'setup::default' do
     its(:content) { should match /WantedBy=multi-user.target/ }
   end
 
+  # Test the mount resource
   describe file('/etc/systemd/system/tmp-mount.mount') do
     its(:content) { should match /\[Unit\]/ }
     its(:content) { should match /Description=Test Mount/ }
@@ -71,6 +73,7 @@ describe 'setup::default' do
     its(:content) { should match /TimeoutSec=300/ }
   end
 
+  # Test the automount resource
   describe file('/etc/systemd/system/vagrant-home.automount') do
     its(:content) { should match /\[Unit\]/ }
     its(:content) { should match /Description=Test Automount/ }
@@ -80,6 +83,7 @@ describe 'setup::default' do
     its(:content) { should match /Where=\/home\/vagrant/ }
   end
 
+  # Test the swap resource
   describe file('/etc/systemd/system/swap.swap') do
     its(:content) { should match /\[Unit\]/ }
     its(:content) { should match /Description=Test Swap/ }
@@ -93,6 +97,7 @@ describe 'setup::default' do
     its(:content) { should match /TimeoutSec=5/ }
   end
 
+  # Test the target resource
   describe file('/etc/systemd/system/test.target') do
     its(:content) { should match /\[Unit\]/ }
     its(:content) { should match /Description=Test Target/ }
@@ -102,6 +107,7 @@ describe 'setup::default' do
     its(:content) { should match /Alias=tested.target/ }
   end
 
+  # Test the path resource
   describe file('/etc/systemd/system/dummy.path') do
     its(:content) { should match /\[Unit\]/ }
     its(:content) { should match /Description=Test Path/ }
@@ -113,4 +119,26 @@ describe 'setup::default' do
     its(:content) { should match /MakeDirectory=true/ }
   end
 
+  # Test the timer resource
+  describe file('/etc/systemd/system/clean-tmp.timer') do
+    its(:content) { should match /\[Unit\]/ }
+    its(:content) { should match /Description=Test Timer/ }
+    its(:content) { should match /Documentation=man:tmpfiles.d\(5\) man:systemd-tmpfiles\(8\)/ }
+    its(:content) { should match /\[Install\]/ }
+    its(:content) { should match /WantedBy=multi-user.target/ }
+    its(:content) { should match /\[Timer\]/ }
+    its(:content) { should match /OnBootSec=15min/ }
+    its(:content) { should match /OnUnitActiveSec=1d/ }
+  end
+
+  # Test the slice resource
+  describe file('/etc/systemd/system/customer-1.slice') do
+    its(:content) { should match /\[Unit\]/ }
+    its(:content) { should match /Description=Test Slice/ }
+    its(:content) { should match /\[Install\]/ }
+    its(:content) { should match /WantedBy=multi-user.target/ }
+    its(:content) { should match /\[Slice\]/ }
+    its(:content) { should match /CPUShares=1024/ }
+    its(:content) { should match /MemoryLimit=1G/ }
+  end
 end

@@ -481,8 +481,7 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 |---------|-----------|-------|
 |drop_in|boolean which sets where resource is a drop-in unit|false|
 |override|which unit to override, prefix only. suffix determined by resource unit type (e.g. "ssh" on a systemd_service -> "ssh.service.d")|nil|
-|overrides|drop-in unit options that require a reset (e.g. "ExecStart" ->
-"ExecStart=" at top of section)|[]|
+|overrides|drop-in unit options that require a reset (e.g. "ExecStart" -> "ExecStart=" at top of section)|[]|
 
 ### kill
 

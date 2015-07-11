@@ -11,7 +11,7 @@ if defined?(ChefSpec)
     service
     slice
   )
-  actions = %w(create delete)
+  actions = %w(create delete enable disable start stop)
   unit_types.each do |type|
     ChefSpec.define_matcher("systemd_#{type}".to_sym)
     actions.each do |action|

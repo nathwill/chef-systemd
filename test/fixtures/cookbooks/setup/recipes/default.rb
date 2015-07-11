@@ -184,3 +184,8 @@ systemd_slice 'customer-1' do
   memory_limit '1G'
   cpu_shares '1024'
 end
+
+# Test the lifecycle events
+systemd_service 'rsyslog' do
+  action [:disable, :stop]
+end

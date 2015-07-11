@@ -11,10 +11,11 @@ class Chef::Resource
     self.resource_name = :systemd_unit
     provides :systemd_unit
 
-    actions :create, :delete
+    actions :create, :delete, :enable, :disable, :start, :stop
     default_action :create
 
-    attribute :unit_type, kind_of: Symbol, equal_to: Systemd::Helpers.unit_types, default: :service, required: true # rubocop: disable LineLength
+    attribute :unit_type, kind_of: Symbol, default: :service, required: true,
+                          equal_to: Systemd::Helpers.unit_types
     attribute :aliases, kind_of: Array, default: []
     attribute :overrides, kind_of: Array, default: []
 

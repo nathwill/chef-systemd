@@ -2,7 +2,7 @@
 
 A resource-driven [Chef][chef] cookbook for [systemd][docs].
 
-Currently under construction; early adopters wanted!
+Currently considered alpha-quality; early adopters' feedback wanted!
 
 See issues for a list of ways to contribute :)
 

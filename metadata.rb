@@ -7,10 +7,10 @@ long_description 'Installs/Configures systemd'
 version '0.1.0'
 
 %w( rhel centos scientific ).each do |p|
-  supports p, '>= 7'
+  supports p, '>= 7.0'
 end
 
-supports 'debian', '>= 8'
+supports 'debian', '>= 8.0'
 supports 'ubuntu', '>= 15.04'
 
 unless defined?(Ridley::Chef::Cookbook::Metadata)

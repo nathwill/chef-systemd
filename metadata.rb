@@ -6,7 +6,7 @@ description 'Installs/Configures systemd'
 long_description 'Installs/Configures systemd'
 version '0.1.1'
 
-%w( rhel centos scientific ).each do |p|
+%w( redhat centos scientific ).each do |p|
   supports p, '>= 7.0'
 end
 

@@ -1,0 +1,49 @@
+require 'chef/provider/lwrp_base'
+require_relative 'helpers'
+
+class Chef::Provider
+  class SystemdDaemon < Chef::Provider::LWRPBase
+    use_inline_resources
+
+    def whyrun_supported?
+      true
+    end
+
+    provides :systemd_daemon
+    Systemd::Helpers.daemons.each do |unit_type|
+      provides "systemd_#{unit_type}".to_sym
+    end
+
+    %i( create delete ).each do |a|
+      action a do
+        r = new_resource
+        daemon_conf_path = Systemd::Helpers.daemon_conf_path(r)
+
+        directory Systemd::Helpers.daemon_drop_in_root(r) do
+          only_if { r.drop_in }
+          not_if { r.action == :delete }
+        end
+
+        execute "#{r.name}-systemd-reload" do
+          command 'systemctl daemon-reload'
+          action :nothing
+          subscribes :run, "file[#{daemon_conf_path}]", :immediately
+        end
+
+        f = file daemon_conf_path do
+          content Systemd::Helpers.ini_config(r.to_hash)
+          action r.action
+        end
+
+        new_resource.updated_by_last_action(f.updated_by_last_action?)
+      end
+    end
+
+    %i( enable disable start stop ).each do |a|
+      action a do
+
+        new_resource.updated_by_last_action(e.updated_by_last_action?)
+      end
+    end
+  end
+end

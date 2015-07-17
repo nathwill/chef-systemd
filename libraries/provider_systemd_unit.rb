@@ -11,7 +11,7 @@ class Chef::Provider
     end
 
     provides :systemd_unit
-    Systemd::Helpers.unit_types.each do |unit_type|
+    Systemd::Helpers::UNIT_TYPES.each do |unit_type|
       provides "systemd_#{unit_type}".to_sym
     end
 
@@ -20,7 +20,7 @@ class Chef::Provider
         r = new_resource
         unit_path = Systemd::Helpers.unit_path(r)
 
-        directory Systemd::Helpers.drop_in_root(r) do
+        directory Systemd::Helpers.unit_drop_in_root(r) do
           only_if { r.drop_in }
           not_if { r.action == :delete }
         end

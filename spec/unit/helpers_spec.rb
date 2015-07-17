@@ -13,11 +13,11 @@ describe Systemd::Helpers do
   end
 
   it 'lists the correct stub units' do
-    expect(Systemd::Helpers.stub_units).to match_array [:device, :target]
+    expect(Systemd::Helpers::STUB_UNITS).to match_array [:device, :target]
   end
 
   it 'lists the correct unit types' do
-    expect(Systemd::Helpers.unit_types).to match_array [
+    expect(Systemd::Helpers::UNIT_TYPES).to match_array [
       :service, :socket, :device, :mount, :automount,
       :swap, :target, :path, :timer, :slice
     ]
@@ -32,7 +32,7 @@ describe Systemd::Helpers do
   end
 
   it 'sets the appropriate drop_in root' do
-    expect(Systemd::Helpers.drop_in_root(drop_in)).to eq '/etc/systemd/system/httpd.service.d'
+    expect(Systemd::Helpers.unit_drop_in_root(drop_in)).to eq '/etc/systemd/system/httpd.service.d'
   end
 
   it 'sets the appropriate drop_in path' do

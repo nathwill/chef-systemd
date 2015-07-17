@@ -1,27 +1,21 @@
 module Systemd
   module Helpers
+    UNIT_TYPES ||= %i(
+      service socket device mount automount
+      swap target path timer slice
+    )
+
+    STUB_UNITS ||= %i( device target )
+
+    DAEMONS ||= %i(
+      hostnamed journal_gatewayd journald logind
+      machined networkd resolved timedated timesyncd
+    )
+
     def ini_config(conf = {})
       conf.delete_if { |_, v| v.empty? }.map do |section, params|
         "[#{section.capitalize}]\n#{params.join("\n")}\n"
       end.join("\n")
-    end
-
-    def unit_types
-      %i(
-        service socket device mount automount
-        swap target path timer slice
-      )
-    end
-
-    def stub_units
-      %i( device target )
-    end
-
-    def daemons
-      %i(
-        hostnamed journal_gatewayd journald logind
-        machined networkd resolved timedated timesyncd
-      )
     end
 
     def local_conf_root
@@ -32,20 +26,32 @@ module Systemd
       ::File.join(local_conf_root, 'system')
     end
 
-    def drop_in_root(unit)
+    def unit_drop_in_root(unit)
       ::File.join(unit_conf_root, "#{unit.override}.#{unit.unit_type}.d")
+    end
+
+    def daemon_drop_in_root(daemon)
+      ::File.join(local_conf_root, "#{daemon.type.gsub('_', '-')}.conf.d")
     end
 
     def unit_path(unit)
       if unit.drop_in
-        ::File.join(drop_in_root(unit), "#{unit.name}.conf")
+        ::File.join(unit_drop_in_root(unit), "#{unit.name}.conf")
       else
         ::File.join(unit_conf_root, "#{unit.name}.#{unit.unit_type}")
       end
     end
 
-    module_function :ini_config, :unit_types, :drop_in_root, :local_conf_root,
-                    :unit_conf_root, :stub_units, :daemons, :unit_path
+    def daemon_path(daemon)
+      if daemon.drop_in
+        ::File.join(daemon_drop_in_root, "#{daemon.name}.conf")
+      else
+        ::File.join(local_conf_root, "#{daemon.type}.conf")
+      end
+    end
+
+    module_function :ini_config, :local_conf_root, :unit_conf_root,
+                    :unit_drop_in_root, :daemon_drop_in_root, :unit_path
   end
 end
 

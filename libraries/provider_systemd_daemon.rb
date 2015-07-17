@@ -10,7 +10,7 @@ class Chef::Provider
     end
 
     provides :systemd_daemon
-    Systemd::Helpers.daemons.each do |unit_type|
+    Systemd::Helpers::DAEMONS.each do |unit_type|
       provides "systemd_#{unit_type}".to_sym
     end
 

@@ -41,7 +41,6 @@ class Chef::Provider
 
     %i( enable disable start stop ).each do |a|
       action a do
-
         new_resource.updated_by_last_action(e.updated_by_last_action?)
       end
     end

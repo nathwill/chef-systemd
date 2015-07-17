@@ -24,7 +24,11 @@ describe Systemd::Helpers do
   end
 
   it 'sets the appropriate local configuration root' do
-    expect(Systemd::Helpers.local_conf_root).to eq '/etc/systemd/system'
+    expect(Systemd::Helpers.local_conf_root).to eq '/etc/systemd'
+  end
+
+  it 'sets the appropriate unit configuration root' do
+    expect(Systemd::Helpers.unit_conf_root).to eq '/etc/systemd/system'
   end
 
   it 'sets the appropriate drop_in root' do

@@ -17,24 +17,35 @@ module Systemd
       %i( device target )
     end
 
+    def daemons
+      %i(
+        hostnamed journal_gatewayd journald logind
+        machined networkd resolved timedated timesyncd
+      )
+    end
+
     def local_conf_root
-      '/etc/systemd/system'
+      '/etc/systemd'
+    end
+
+    def unit_conf_root
+      ::File.join(local_conf_root, 'system')
     end
 
     def drop_in_root(unit)
-      ::File.join(local_conf_root, "#{unit.override}.#{unit.unit_type}.d")
+      ::File.join(unit_conf_root, "#{unit.override}.#{unit.unit_type}.d")
     end
 
     def unit_path(unit)
       if unit.drop_in
         ::File.join(drop_in_root(unit), "#{unit.name}.conf")
       else
-        ::File.join(local_conf_root, "#{unit.name}.#{unit.unit_type}")
+        ::File.join(unit_conf_root, "#{unit.name}.#{unit.unit_type}")
       end
     end
 
-    module_function :ini_config, :unit_types, :drop_in_root,
-                    :unit_path, :local_conf_root, :stub_units
+    module_function :ini_config, :unit_types, :drop_in_root, :local_conf_root,
+                    :unit_conf_root, :stub_units, :daemons, :unit_path
   end
 end
 

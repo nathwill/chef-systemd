@@ -13,8 +13,6 @@ platforms:
 
 suites:
   - name: default
-    excludes:
-      - fedora-21
     run_list:
       - recipe[systemd]
       - recipe[setup]

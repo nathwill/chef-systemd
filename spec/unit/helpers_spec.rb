@@ -16,6 +16,13 @@ describe Systemd::Helpers do
     expect(Systemd::Helpers::STUB_UNITS).to match_array [:device, :target]
   end
 
+  it 'lists the correct daemons' do
+    expect(Systemd::Helpers::DAEMONS).to match_array [
+      :hostnamed, :journal_gatewayd, :journald, :logind,
+      :machined, :networkd, :resolved, :timedated, :timesyncd
+    ]
+  end
+
   it 'lists the correct unit types' do
     expect(Systemd::Helpers::UNIT_TYPES).to match_array [
       :service, :socket, :device, :mount, :automount,
@@ -31,7 +38,7 @@ describe Systemd::Helpers do
     expect(Systemd::Helpers.unit_conf_root).to eq '/etc/systemd/system'
   end
 
-  it 'sets the appropriate drop_in root' do
+  it 'sets the appropriate unit drop_in root' do
     expect(Systemd::Helpers.unit_drop_in_root(drop_in)).to eq '/etc/systemd/system/httpd.service.d'
   end
 

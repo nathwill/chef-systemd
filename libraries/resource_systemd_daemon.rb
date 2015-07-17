@@ -9,6 +9,10 @@ class Chef::Resource
     actions :create, :delete, :enable, :disable, :start, :stop
     default_action :create
 
+    attribute :daemon_type, kind_of: Symbol, default: :journald, required:true,
+                            equal_to: Systemd::Helpers::DAEMONS
+    attribute :drop_in, kind_of: [TrueClass, FalseClass], default: false
+
     # define class method for defining resource
     # attributes from the resource module options
     def self.option_attributes(options)

@@ -33,7 +33,7 @@ class Chef::Provider
 
         f = file unit_path do
           content Systemd::Helpers.ini_config(r.to_hash)
-          action r.action
+          action a
         end
 
         new_resource.updated_by_last_action(f.updated_by_last_action?)

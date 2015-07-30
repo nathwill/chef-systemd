@@ -6,7 +6,7 @@ class Chef::Resource
     self.resource_name = :systemd_daemon
     provides :systemd_daemon
 
-    actions :create, :delete, :enable, :disable, :start, :stop
+    actions :create, :delete
     default_action :create
 
     attribute :daemon_type, kind_of: Symbol, default: :journald, required:true,

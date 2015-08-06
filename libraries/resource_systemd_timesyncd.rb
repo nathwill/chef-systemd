@@ -10,6 +10,10 @@ class Chef::Resource
       :timesyncd
     end
 
+    def label(_ = nil)
+      'Time'
+    end
+
     option_attributes Systemd::Timesyncd::OPTIONS
   end
 end

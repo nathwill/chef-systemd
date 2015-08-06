@@ -17,8 +17,8 @@
 # limitations under the License.
 
 default['systemd']['timesyncd'].tap do |ts|
-  ts['ntp'] = 0.upto(3).map { |i| "#{i}.pool.ntp.org" }
+  ts['ntp'] = 0.upto(3).map { |i| "#{i}.pool.ntp.org" }.join(' ')
   ts['fallback_ntp'] = 0.upto(3).map do |i|
     "#{i}.#{node['platform']}.pool.ntp.org"
-  end
+  end.join(' ')
 end

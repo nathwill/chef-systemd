@@ -22,9 +22,17 @@ class Chef::Resource
     end
 
     def to_hash
-      conf = {}
+      opts = Systemd.const_get(daemon_type.to_s.gsub('_', '').capitalize)::OPTIONS
 
+      conf = {}
+      conf[label] = options_config(opts)
       conf
+    end
+
+    def options_config(opts)
+      opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
+        "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
+      end
     end
 
     alias_method :to_h, :to_hash

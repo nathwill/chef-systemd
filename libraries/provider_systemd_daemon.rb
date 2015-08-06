@@ -38,17 +38,5 @@ class Chef::Provider
         new_resource.updated_by_last_action(f.updated_by_last_action?)
       end
     end
-
-    %i( enable disable start stop ).each do |a|
-      action a do
-        r = new_resource
-
-        s = service r.daemon_type.gsub('_', '-') do
-          action a
-        end
-
-        new_resource.updated_by_last_action(s.updated_by_last_action?)
-      end
-    end
   end
 end

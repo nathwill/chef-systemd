@@ -22,3 +22,7 @@ systemd_timesyncd 'timesyncd' do
   ntp ts['ntp']
   fallback_ntp ts['fallback_ntp']
 end
+
+service 'systemd-timesyncd' do
+  action [:enable, :start]
+end

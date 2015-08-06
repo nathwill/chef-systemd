@@ -32,7 +32,7 @@ module Systemd
 
     def daemon_drop_in_root(daemon)
       ::File.join(
-        local_conf_root, "#{daemon.daemon_type.gsub('_', '-')}.conf.d"
+        local_conf_root, "#{daemon.daemon_type.to_s.gsub('_', '-')}.conf.d"
       )
     end
 
@@ -46,11 +46,11 @@ module Systemd
 
     def daemon_path(daemon)
       if daemon.drop_in
-        ::File.join(daemon_drop_in_root, "#{daemon.name}.conf")
+        ::File.join(daemon_drop_in_root(daemon), "#{daemon.name}.conf")
       else
         ::File.join(
           local_conf_root,
-          "#{daemon.daemon_type.gsub('_', '-')}.conf"
+          "#{daemon.daemon_type.to_s.gsub('_', '-')}.conf"
         )
       end
     end

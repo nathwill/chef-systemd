@@ -10,8 +10,8 @@ class Chef::Provider
     end
 
     provides :systemd_daemon
-    Systemd::Helpers::DAEMONS.each do |unit_type|
-      provides "systemd_#{unit_type}".to_sym
+    Systemd::Helpers::DAEMONS.each do |daemon_type|
+      provides "systemd_#{daemon_type}".to_sym
     end
 
     %i( create delete ).each do |a|
@@ -43,7 +43,7 @@ class Chef::Provider
       action a do
         r = new_resource
 
-        s = service r.type do
+        s = service r.daemon_type.gsub('_', '-') do
           action a
         end
 

@@ -10,7 +10,7 @@ class Chef::Resource
     default_action :create
 
     attribute :drop_in, kind_of: [TrueClass, FalseClass], default: false
-    attribute :daemon_type, kind_of: Symbol, default: :journald, required:true,
+    attribute :daemon_type, kind_of: Symbol, default: :journald, required: true,
                             equal_to: Systemd::Helpers::DAEMONS
 
     # define class method for defining resource

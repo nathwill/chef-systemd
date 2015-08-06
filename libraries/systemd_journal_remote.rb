@@ -5,7 +5,7 @@ module Systemd
       SplitMode
       ServerKeyFile
       ServerCertificateFile
-			TrustedCertificateFile
+      TrustedCertificateFile
     )
   end
 end

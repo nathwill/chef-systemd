@@ -3,11 +3,11 @@ module Systemd
   module Sleep
     OPTIONS ||= %w(
       SuspendMode
-			HibernateMode
-			HybridSleepMode
-			SuspendState
-			HibernateState
-			HybridSleepState
-		)
-	end
+      HibernateMode
+      HybridSleepMode
+      SuspendState
+      HibernateState
+      HybridSleepState
+    )
+  end
 end

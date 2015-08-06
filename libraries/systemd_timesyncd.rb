@@ -3,7 +3,7 @@ module Systemd
   module Timesyncd
     OPTIONS ||= %w(
       NTP
-			FallbackNTP
-		)
-	end
+      FallbackNTP
+    )
+  end
 end

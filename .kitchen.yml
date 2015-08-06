@@ -12,14 +12,15 @@ platforms:
   - name: fedora-21
 
 suites:
-  - name: default
+  - name: resources
     run_list:
       - recipe[systemd]
       - recipe[setup]
-  - name: timesyncd
+  - name: daemons
     excludes:
       - ubuntu-15.04
       - debian-8.1
       - centos-7.1
     run_list:
+      - recipe[systemd::timesyncd]
       - recipe[setup::timesyncd]

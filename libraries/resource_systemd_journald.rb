@@ -4,7 +4,7 @@ require_relative 'systemd_journald'
 class Chef::Resource
   class SystemdJournald < Chef::Resource::SystemdDaemon
     self.resource_name = :systemd_journald
-    provides :systemd_timesyncd
+    provides :systemd_journald
 
     def daemon_type(_ = nil)
       :journald

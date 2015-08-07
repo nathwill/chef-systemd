@@ -24,3 +24,5 @@ suites:
     run_list:
       - recipe[systemd::timesyncd]
       - recipe[setup::timesyncd]
+      - recipe[systemd::journald]
+      - recipe[setup::journald]

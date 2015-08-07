@@ -26,3 +26,5 @@ suites:
       - recipe[setup::timesyncd]
       - recipe[systemd::journald]
       - recipe[setup::journald]
+      - recipe[systemd::logind]
+      - recipe[setup::logind]

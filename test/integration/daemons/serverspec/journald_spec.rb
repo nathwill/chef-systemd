@@ -13,7 +13,7 @@ describe 'Journald' do
     describe file('/etc/systemd/journald.conf.d/local-syslog.conf') do
       it { should be_file }
       its(:content) { should match %r{[Journal]} }
-      its(:content) { should match /ForwardToSyslog=true/ }
+      its(:content) { should match /ForwardToSyslog=yes/ }
     end
   end
 

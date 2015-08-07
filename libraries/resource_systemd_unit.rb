@@ -15,7 +15,7 @@ class Chef::Resource
     default_action :create
 
     attribute :unit_type, kind_of: Symbol, default: :service, required: true,
-                          equal_to: Systemd::Helpers.unit_types
+                          equal_to: Systemd::Helpers::UNIT_TYPES
     attribute :aliases, kind_of: Array, default: []
     attribute :overrides, kind_of: Array, default: []
 
@@ -59,7 +59,7 @@ class Chef::Resource
 
       [:unit, :install, unit_type].each do |section|
         # some unit types don't have type-specific config blocks
-        next if Systemd::Helpers.stub_units.include?(section)
+        next if Systemd::Helpers::STUB_UNITS.include?(section)
         conf[section] = section_values(section)
       end
 

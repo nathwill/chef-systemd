@@ -9,10 +9,18 @@ platforms:
   - name: ubuntu-15.04
   - name: debian-8.1
   - name: centos-7.1
+  - name: fedora-21
 
 suites:
-  - name: default
+  - name: resources
     run_list:
       - recipe[systemd]
       - recipe[setup]
-    attributes:
+  - name: daemons
+    excludes:
+      - ubuntu-15.04
+      - debian-8.1
+      - centos-7.1
+    run_list:
+      - recipe[systemd::timesyncd]
+      - recipe[setup::timesyncd]

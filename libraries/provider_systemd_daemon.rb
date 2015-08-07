@@ -24,12 +24,6 @@ class Chef::Provider
           not_if { r.action == :delete }
         end
 
-        execute "#{r.name}-systemd-reload" do
-          command 'systemctl daemon-reload'
-          action :nothing
-          subscribes :run, "file[#{daemon_path}]", :immediately
-        end
-
         f = file daemon_path do
           content Systemd::Helpers.ini_config(r.to_hash)
           action a

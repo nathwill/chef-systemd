@@ -28,3 +28,5 @@ suites:
       - recipe[setup::journald]
       - recipe[systemd::logind]
       - recipe[setup::logind]
+      - recipe[systemd::resolved]
+      - recipe[setup::resolved]

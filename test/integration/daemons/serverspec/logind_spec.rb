@@ -20,6 +20,7 @@ describe 'Logind' do
   describe 'enables the service' do
     describe service('systemd-logind') do
       it { should be_enabled }
+      it { should be_running }
     end
   end
 end

@@ -19,8 +19,8 @@ class Chef::Resource
     attribute :unit_type, kind_of: Symbol, default: :service, required: true,
                           equal_to: Systemd::Helpers::UNIT_TYPES
 
-    def action(arg=nil)
-      @allowed_actions = %i( create delete ) if self.drop_in
+    def action(arg = nil)
+      @allowed_actions = %i( create delete ) if drop_in
       super
     end
 

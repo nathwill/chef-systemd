@@ -22,18 +22,24 @@ systemd_service 'test-unit' do
 end
 
 # Test drop-in unit
-systemd_service 'my-override' do
-  description 'Test Override'
-  drop_in true
-  override 'sshd'
-  overrides %w(
-    Alias
-    Description
-  )
-  aliases %w( ssh openssh )
-  service do
-    cpu_quota '10%'
+begin
+  systemd_service 'my-override' do
+    description 'Test Override'
+    drop_in true
+    override 'sshd'
+    overrides %w(
+      Alias
+      Description
+    )
+    aliases %w( ssh openssh )
+    service do
+      cpu_quota '10%'
+    end
+    action [:create, :enable]
   end
+rescue Chef::Exceptions::ValidationFailed
+  # Verify restricted action set for drop-in units
+  Chef::Log.warn("Caught invalid option exception!")
 end
 
 # Test the socket resource

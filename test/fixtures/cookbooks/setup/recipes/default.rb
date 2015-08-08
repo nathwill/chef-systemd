@@ -37,9 +37,9 @@ begin
     end
     action [:create, :enable]
   end
-rescue Chef::Exceptions::ValidationFailed
+rescue Chef::Exceptions::ValidationFailed => e
   # Verify restricted action set for drop-in units
-  Chef::Log.warn("Caught invalid option exception!")
+  Chef::Log.warn(e.to_s)
 end
 
 # Test the socket resource

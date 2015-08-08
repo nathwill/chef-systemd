@@ -44,12 +44,6 @@ class Chef::Provider
       action a do
         r = new_resource
 
-        if r.drop_in
-          Chef::Application.fatal!(
-            "Unsupported action for drop-in #{r.unit_type} unit: #{r.name}!"
-          )
-        end
-
         unless defined?(ChefSpec)
           state = case a
                   when :enable, :disable

@@ -19,7 +19,7 @@
 file '/etc/hostname' do
   content node['systemd']['hostname']
   only_if { node['systemd']['hostname'] }
-  notifies :start, 'service[systemd-hostnamed]', :immediately
+  notifies :restart, 'service[systemd-hostnamed]', :immediately
 end
 
 service 'systemd-hostnamed' do

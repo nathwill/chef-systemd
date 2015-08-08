@@ -1,2 +1,2 @@
 
-default['systemd']['hostname'] = "#{node['platform']}-#{node['platform_version']}.localdomain"
+default['systemd']['hostname'] = 'systemd-hostnamed-test.localdomain'

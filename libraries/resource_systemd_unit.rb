@@ -11,7 +11,7 @@ class Chef::Resource
     self.resource_name = :systemd_unit
     provides :systemd_unit
 
-    actions :create, :delete, :enable, :disable, :start, :stop
+    actions :create, :delete, :enable, :disable, :start, :stop, :restart
     default_action :create
 
     attribute :unit_type, kind_of: Symbol, default: :service, required: true,

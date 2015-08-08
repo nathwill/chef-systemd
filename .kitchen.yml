@@ -30,3 +30,5 @@ suites:
       - recipe[setup::logind]
       - recipe[systemd::resolved]
       - recipe[setup::resolved]
+      - recipe[systemd::hostnamed]
+      - recipe[systemd::journal_gatewayd]

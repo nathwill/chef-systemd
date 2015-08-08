@@ -40,7 +40,7 @@ class Chef::Provider
       end
     end
 
-    %i( enable disable start stop ).each do |a|
+    %i( enable disable start stop restart ).each do |a|
       action a do
         r = new_resource
 
@@ -54,6 +54,8 @@ class Chef::Provider
                     Mixlib::ShellOut.new(
                       "systemctl is-active #{r.name}.#{r.unit_type}"
                     ).tap(&:run_command).stdout.chomp
+                  when :restart
+                    nil
                   end
 
           match = case a
@@ -65,6 +67,8 @@ class Chef::Provider
                     state == 'active'
                   when :stop
                     %w( inactive unknown ).include? state
+                  when :restart
+                    false
                   end
         end
 

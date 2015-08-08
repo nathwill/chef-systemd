@@ -22,7 +22,7 @@ systemd_resolved 'resolved' do
   dns r['dns']
   fallback_dns r['fallback_dns']
   llmnr r['llmnr']
-  notifies :restart, 'service[systemd-logind]', :delayed
+  notifies :restart, 'service[systemd-resolved]', :delayed
 end
 
 service 'systemd-resolved' do

@@ -22,7 +22,7 @@ class Chef::Resource
     end
 
     def to_hash
-      opts = Systemd.const_get(daemon_type.to_s.delete('_').capitalize)::OPTIONS
+      opts = Systemd.const_get(daemon_type.capitalize)::OPTIONS
 
       conf = {}
       conf[label] = options_config(opts)

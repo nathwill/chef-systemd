@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: locale
+# Attributes:: locale
 #
 # Copyright 2015 The Authors
 #
@@ -16,10 +16,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-l = node['systemd']['locale']
-
-opts = l.reject { |_, v| v.nil? }
-
-file '/etc/locale.conf' do
-  content opts.map { |k, v| "#{k.upcase}=#{v}" }.join("\n")
+default['systemd']['locale'].tap do |l|
+  l['lang'] = 'en_US.UTF-8'
+  l['language'] = nil
+  l['lc_ctype'] = nil
+  l['lc_numeric'] = nil
+  l['lc_time'] = nil
+  l['lc_collate'] = nil
+  l['lc_monetary'] = nil
+  l['lc_messages'] = nil
+  l['lc_paper'] = nil
+  l['lc_name'] = nil
+  l['lc_address'] = nil
+  l['lc_telephone'] = nil
+  l['lc_measurement'] = nil
+  l['lc_identification'] = nil
 end

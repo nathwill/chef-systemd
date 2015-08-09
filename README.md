@@ -1,14 +1,10 @@
 # systemd chef cookbook [![Build Status](https://travis-ci.org/nathwill/chef-systemd.svg?branch=master)][travis]
 
-A resource-driven [Chef][chef] cookbook for [systemd][docs].
+A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [systemd][docs].
 
-Currently considered alpha-quality; early adopters' feedback wanted!
+Currently under active development; early adopters' feedback wanted!
 
 See issues for a list of ways to contribute :)
-
-Cookbook builds on a core systemd_unit resource in order to provide resources
-for the following unit types: automount, device, mount, path, service, slice,
-socket, swap, target, timer.
 
 Recommended reading:
 - This README!
@@ -593,6 +589,12 @@ Resource control unit settings. [Documentation][resource_control]
 |slice|see docs|nil|
 |startup_block_io_weight|see docs|nil|
 |startup_cpu_shares|see docs|nil|
+
+## Daemons
+
+
+## Utilities
+
 
 ---
 [automount]: http://www.freedesktop.org/software/systemd/man/systemd.automount.html

@@ -1,12 +1,12 @@
-require_relative 'resource_systemd_daemon'
+require_relative 'resource_systemd_conf'
 require_relative 'systemd_journald'
 
 class Chef::Resource
-  class SystemdJournald < Chef::Resource::SystemdDaemon
+  class SystemdJournald < Chef::Resource::SystemdConf
     self.resource_name = :systemd_journald
     provides :systemd_journald
 
-    def daemon_type(_ = nil)
+    def conf_type(_ = nil)
       :journald
     end
 

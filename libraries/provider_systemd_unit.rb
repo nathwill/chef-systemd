@@ -11,7 +11,7 @@ class Chef::Provider
     end
 
     provides :systemd_unit
-    Systemd::Helpers::UNIT_TYPES.each do |unit_type|
+    Systemd::Helpers::UNITS.each do |unit_type|
       provides "systemd_#{unit_type}".to_sym
     end
 

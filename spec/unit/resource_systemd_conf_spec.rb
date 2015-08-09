@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdDaemon do
+describe Chef::Resource::SystemdConf do
   let(:daemon) do
     d = Chef::Resource::SystemdJournald.new('journal')
     d.storage 'auto'

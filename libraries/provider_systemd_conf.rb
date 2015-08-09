@@ -2,7 +2,7 @@ require 'chef/provider/lwrp_base'
 require_relative 'helpers'
 
 class Chef::Provider
-  class SystemdDaemon < Chef::Provider::LWRPBase
+  class SystemdConf < Chef::Provider::LWRPBase
     use_inline_resources
 
     def whyrun_supported?
@@ -10,16 +10,16 @@ class Chef::Provider
     end
 
     provides :systemd_daemon
-    Systemd::Helpers::DAEMONS.each do |daemon_type|
-      provides "systemd_#{daemon_type}".to_sym
+    (Systemd::Helpers::DAEMONS | Systemd::Helpers::UTILS).each do |conf_type|
+      provides "systemd_#{conf_type}".to_sym
     end
 
     %i( create delete ).each do |a|
       action a do
         r = new_resource
-        daemon_path = Systemd::Helpers.daemon_path(r)
+        daemon_path = Systemd::Helpers.conf_path(r)
 
-        directory Systemd::Helpers.daemon_drop_in_root(r) do
+        directory Systemd::Helpers.conf_drop_in_root(r) do
           only_if { r.drop_in }
           not_if { r.action == :delete }
         end

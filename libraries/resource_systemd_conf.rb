@@ -2,16 +2,18 @@ require 'chef/resource/lwrp_base'
 require_relative 'helpers'
 
 class Chef::Resource
-  class SystemdDaemon < Chef::Resource::LWRPBase
-    self.resource_name = :systemd_daemon
-    provides :systemd_daemon
+  class SystemdConf < Chef::Resource::LWRPBase
+    self.resource_name = :systemd_conf
+    provides :systemd_conf
 
     actions :create, :delete
     default_action :create
 
-    attribute :drop_in, kind_of: [TrueClass, FalseClass], default: false
-    attribute :daemon_type, kind_of: Symbol, default: :journald, required: true,
-                            equal_to: Systemd::Helpers::DAEMONS
+    attribute :drop_in, kind_of: [TrueClass, FalseClass], default: true
+    attribute :conf_type, kind_of: Symbol, required: true,
+                          equal_to: (
+                            Systemd::Helpers::DAEMONS | Systemd::Helpers::UTILS
+                          )
 
     # define class method for defining resource
     # attributes from the resource module options
@@ -22,7 +24,7 @@ class Chef::Resource
     end
 
     def to_hash
-      opts = Systemd.const_get(daemon_type.capitalize)::OPTIONS
+      opts = Systemd.const_get(conf_type.capitalize)::OPTIONS
 
       conf = {}
       conf[label] = options_config(opts)

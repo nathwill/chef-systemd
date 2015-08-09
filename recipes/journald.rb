@@ -19,6 +19,7 @@
 j = node['systemd']['journald']
 
 systemd_journald 'journald' do
+  drop_in false
   storage j['storage']
   compress j['compress']
   seal j['seal']

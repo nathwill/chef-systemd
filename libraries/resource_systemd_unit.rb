@@ -17,7 +17,7 @@ class Chef::Resource
     attribute :aliases, kind_of: Array, default: []
     attribute :overrides, kind_of: Array, default: []
     attribute :unit_type, kind_of: Symbol, default: :service, required: true,
-                          equal_to: Systemd::Helpers::UNIT_TYPES
+                          equal_to: Systemd::Helpers::UNITS
 
     def action(arg = nil)
       @allowed_actions = %i( create delete ) if drop_in

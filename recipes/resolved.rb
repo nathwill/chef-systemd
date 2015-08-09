@@ -19,6 +19,7 @@
 r = node['systemd']['resolved']
 
 systemd_resolved 'resolved' do
+  drop_in false
   dns r['dns']
   fallback_dns r['fallback_dns']
   llmnr r['llmnr']

@@ -1,12 +1,12 @@
-require_relative 'resource_systemd_daemon'
+require_relative 'resource_systemd_conf'
 require_relative 'systemd_timesyncd'
 
 class Chef::Resource
-  class SystemdTimesyncd < Chef::Resource::SystemdDaemon
+  class SystemdTimesyncd < Chef::Resource::SystemdConf
     self.resource_name = :systemd_timesyncd
     provides :systemd_timesyncd
 
-    def daemon_type(_ = nil)
+    def conf_type(_ = nil)
       :timesyncd
     end
 

@@ -28,8 +28,7 @@ describe Systemd::Helpers do
 
   it 'lists the correct daemons' do
     expect(Systemd::Helpers::DAEMONS).to match_array [
-      :hostnamed, :journal_gatewayd, :journald, :logind,
-      :machined, :networkd, :resolved, :timedated, :timesyncd
+      :journald, :logind, :resolved, :timesyncd
     ]
   end
 

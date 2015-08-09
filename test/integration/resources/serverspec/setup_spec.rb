@@ -146,4 +146,22 @@ describe 'setup::default' do
     it { should_not be_enabled }
     it { should_not be_running }
   end
+
+  describe file('/etc/systemd/network/wireless0.link') do
+    it { should be_file }
+    its(:content) { should match %r{[Match]} }
+    its(:content) { should match /Path=pci-0000:02:00.0-*/ }
+    its(:content) { should match /Driver=brcmsmac/ }
+    its(:content) { should match /Type=wlan/ }
+    its(:content) { should match /Host=my-laptop/ }
+    its(:content) { should match /Virtualization=no/ }
+    its(:content) { should match /Architecture=x86-64/ }
+    its(:content) { should match /MACAddress=12:34:56:78:9a:bc/ }
+    its(:content) { should match %r{[Link]} }
+    its(:content) { should match /Name=wireless0/ }
+    its(:content) { should match /MTUBytes=1450/ }
+    its(:content) { should match /BitsPerSecond=10M/ }
+    its(:content) { should match /WakeOnLan=magic/ }
+    its(:content) { should match /MACAddress=cb:a9:87:65:43:21/ }
+  end
 end

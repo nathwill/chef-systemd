@@ -15,6 +15,7 @@ suites:
       - recipe[setup]
   - name: daemons
     run_list:
+      - recipe[systemd::journal_gatewayd]
       - recipe[systemd::journald]
       - recipe[setup::journald]
       - recipe[systemd::logind]
@@ -28,7 +29,6 @@ suites:
       - recipe[systemd::bootchart]
       - recipe[systemd::locale]
       - recipe[systemd::hostnamed]
-      - recipe[systemd::journal_gatewayd]
       - recipe[systemd::machined]
       - recipe[systemd::networkd]
       - recipe[systemd::sleep]

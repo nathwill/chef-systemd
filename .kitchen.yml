@@ -20,6 +20,7 @@ suites:
       - recipe[setup::journald]
       - recipe[systemd::logind]
       - recipe[setup::logind]
+      - recipe[systemd::networkd]
       - recipe[systemd::resolved]
       - recipe[setup::resolved]
       - recipe[systemd::timesyncd]
@@ -27,10 +28,10 @@ suites:
   - name: utils
     run_list:
       - recipe[systemd::bootchart]
+      - recipe[systemd::coredump]
       - recipe[systemd::locale]
       - recipe[systemd::hostnamed]
       - recipe[systemd::machined]
-      - recipe[systemd::networkd]
       - recipe[systemd::sleep]
       - recipe[setup::sysctl]
       - recipe[systemd::system]

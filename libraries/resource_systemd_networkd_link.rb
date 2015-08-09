@@ -1,13 +1,11 @@
-require 'chef/mixin/params_validate'
 require 'chef/resource/lwrp_base'
 require_relative 'systemd_networkd'
 require_relative 'helpers'
 
 class Chef::Resource
   class SystemdNetworkdLink < Chef::Resource::LWRPBase
-    include Chef::Mixins::ParamsValidate
-
     self.resource_name = :systemd_networkd_link
+
     provides :systemd_networkd_link
 
     actions :create, :delete

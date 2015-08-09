@@ -4,6 +4,8 @@ require_relative 'helpers'
 
 class Chef::Resource
   class SystemdNetworkdLink < Chef::Resource::LWRPBase
+    include Systemd::Networkd
+
     self.resource_name = :systemd_networkd_link
 
     provides :systemd_networkd_link
@@ -11,9 +13,13 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    Systemd::Networkd::OPTIONS.each do |option|
-      attribute option.underscore.to_sym, kind_of: String, default: nil
+    OPTIONS.reject { |o| o.match(/(MACAddress|Alias)/) }.each do |opt|
+      attribute opt.underscore.to_sym, kind_of: String, default: nil
     end
+
+    attribute :match_mac_addr, kind_of: String, default: nil
+    attribute :link_mac_addr, kind_of: String, default: nil
+    attribute :link_alias, kind_of: String, default: nil
 
     def match
       yield
@@ -23,6 +29,8 @@ class Chef::Resource
       yield
     end
 
+    # rubocop: disable AbcSize
+    # rubocop: disable MethodLength
     def to_hash
       conf = {}
 
@@ -30,8 +38,14 @@ class Chef::Resource
         conf[s] = section_values(s)
       end
 
+      match_mac_addr.nil? || conf[:match].push("MACAddress=#{match_mac_addr}")
+      link_mac_addr.nil? || conf[:link].push("MACAddress=#{link_mac_addr}")
+      link_alias.nil? || conf[:link].push("Alias=#{link_alias}")
+
       conf
     end
+    # rubocop: enable MethodLength
+    # rubocop: enable AbcSize
 
     alias_method :to_h, :to_hash
 
@@ -41,8 +55,12 @@ class Chef::Resource
       options_config(Systemd::Networkd.const_get(section.capitalize)::OPTIONS)
     end
 
-    def options_config(opts)
-      opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
+    def options_config(options)
+      opts = options.reject do |o|
+        o.match(/(MACAddress|Alias)/) || send(o.underscore.to_sym).nil?
+      end
+
+      opts.map do |opt|
         "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
       end
     end

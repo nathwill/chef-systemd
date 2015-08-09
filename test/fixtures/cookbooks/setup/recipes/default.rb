@@ -203,7 +203,7 @@ end
 
 systemd_networkd_link 'wireless' do
   match do
-    mac_address '12:34:56:78:9a:bc'
+    match_mac_addr '12:34:56:78:9a:bc'
     driver 'brcmsmac'
     path 'pci-0000:02:00.0-*'
     type 'wlan'
@@ -217,6 +217,6 @@ systemd_networkd_link 'wireless' do
     mtu_bytes '1450'
     bits_per_second '10M'
     wake_on_lan 'magic'
-    mac_address 'cb:a9:87:65:43:21'
+    link_mac_addr 'cb:a9:87:65:43:21'
   end
 end

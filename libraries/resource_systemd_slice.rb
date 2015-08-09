@@ -6,7 +6,7 @@ class Chef::Resource
     self.resource_name = :systemd_slice
     provides :systemd_slice
 
-    def unit_type(_ = nil)
+    def conf_type(_ = nil)
       :slice
     end
 

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: resolved
+# Attributes:: journal_gatewayd
 #
 # Copyright 2015 The Authors
 #
@@ -16,15 +16,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-r = node['systemd']['resolved']
+default['systemd']['journal_gatewayd'].tap do |jg|
+  jg['package'] = 'systemd-journal-gateway'
 
-systemd_resolved 'resolved' do
-  dns r['dns']
-  fallback_dns r['fallback_dns']
-  llmnr r['llmnr']
-  notifies :restart, 'service[systemd-resolved]', :delayed
-end
+  jg['listen_stream'] = nil
 
-service 'systemd-resolved' do
-  action [:enable, :start]
+  jg['options'].tap do |o|
+    o['cert'] = nil
+    o['key'] = nil
+  end
 end

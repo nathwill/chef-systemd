@@ -36,6 +36,17 @@ systemd_service 'my-override' do
   end
 end
 
+begin
+  systemd_service 'raises-error' do
+    drop_in true
+    override 'sshd'
+    action [:create, :enable]
+  end
+rescue Chef::Exceptions::ValidationFailed => e
+  # Verify restricted action set for drop-in units
+  Chef::Log.warn(e.to_s)
+end
+
 # Test the socket resource
 systemd_socket 'sshd' do
   # Unit options

@@ -17,10 +17,6 @@ suites:
       - recipe[systemd]
       - recipe[setup]
   - name: daemons
-    excludes:
-      - ubuntu-15.04
-      - debian-8.1
-      - centos-7.1
     run_list:
       - recipe[systemd::timesyncd]
       - recipe[setup::timesyncd]
@@ -30,3 +26,5 @@ suites:
       - recipe[setup::logind]
       - recipe[systemd::resolved]
       - recipe[setup::resolved]
+      - recipe[systemd::hostnamed]
+      - recipe[systemd::journal_gatewayd]

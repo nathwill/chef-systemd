@@ -11,13 +11,18 @@ class Chef::Resource
     self.resource_name = :systemd_unit
     provides :systemd_unit
 
-    actions :create, :delete, :enable, :disable, :start, :stop
+    actions :create, :delete, :enable, :disable, :start, :stop, :restart
     default_action :create
 
-    attribute :unit_type, kind_of: Symbol, default: :service, required: true,
-                          equal_to: Systemd::Helpers::UNIT_TYPES
     attribute :aliases, kind_of: Array, default: []
     attribute :overrides, kind_of: Array, default: []
+    attribute :unit_type, kind_of: Symbol, default: :service, required: true,
+                          equal_to: Systemd::Helpers::UNIT_TYPES
+
+    def action(arg = nil)
+      @allowed_actions = %i( create delete ) if drop_in
+      super
+    end
 
     def drop_in(arg = nil)
       set_or_return(

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: resolved
+# Attributes:: hostnamed
 #
 # Copyright 2015 The Authors
 #
@@ -16,15 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-r = node['systemd']['resolved']
-
-systemd_resolved 'resolved' do
-  dns r['dns']
-  fallback_dns r['fallback_dns']
-  llmnr r['llmnr']
-  notifies :restart, 'service[systemd-resolved]', :delayed
-end
-
-service 'systemd-resolved' do
-  action [:enable, :start]
-end
+default['systemd']['hostname'] = nil

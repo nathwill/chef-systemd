@@ -1,15 +1,12 @@
 module Systemd
   module Helpers
-    UNIT_TYPES ||= %i(
-      service socket device mount automount
-      swap target path timer slice
-    )
+    DAEMONS ||= %i( journald logind resolved timesyncd )
 
     STUB_UNITS ||= %i( device target )
 
-    DAEMONS ||= %i(
-      hostnamed journal_gatewayd journald logind
-      machined networkd resolved timedated timesyncd
+    UNIT_TYPES ||= %i(
+      service socket device mount automount
+      swap target path timer slice
     )
 
     def ini_config(conf = {})

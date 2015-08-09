@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: bootchart
+# Attributes:: bootchart
 #
 # Copyright 2015 The Authors
 #
@@ -16,19 +16,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-b = node['systemd']['bootchart']
-
-systemd_bootchart 'bootchart' do
-  drop_in false
-  samples b['samples']
-  frequency b['frequency']
-  relative b['relative']
-  filter b['filter']
-  output b['output']
-  init b['init']
-  plot_memory_usage b['plot_memory_usage']
-  plot_entropy_graph b['plot_entropy_graph']
-  scale_x b['scale_x']
-  scale_y b['scale_y']
-  control_group b['control_group']
+default['systemd']['bootchart'].tap do |b|
+  b['samples'] = nil
+  b['frequency'] = nil
+  b['relative'] = nil
+  b['filter'] = nil
+  b['output'] = '/run/log'
+  b['init'] = nil
+  b['plot_memory_usage'] = nil
+  b['plot_entropy_graph'] = nil
+  b['scale_x'] = nil
+  b['scale_y'] = nil
+  b['control_group'] = nil
 end

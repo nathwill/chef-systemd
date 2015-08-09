@@ -33,7 +33,7 @@ describe Systemd::Helpers do
   end
 
   it 'lists the correct unit types' do
-    expect(Systemd::Helpers::UNIT_TYPES).to match_array [
+    expect(Systemd::Helpers::UNITS).to match_array [
       :service, :socket, :device, :mount, :automount,
       :swap, :target, :path, :timer, :slice
     ]
@@ -47,24 +47,24 @@ describe Systemd::Helpers do
     expect(Systemd::Helpers.unit_conf_root).to eq '/etc/systemd/system'
   end
 
-  it 'sets the appropriate daemon path' do
-    expect(Systemd::Helpers.daemon_path(daemon)).to eq '/etc/systemd/timesyncd.conf'
+  it 'sets the appropriate conf path' do
+    expect(Systemd::Helpers.conf_path(daemon)).to eq '/etc/systemd/timesyncd.conf.d/daemon.conf'
   end
 
-  it 'sets the appropriate daemon drop_in path' do
-    expect(Systemd::Helpers.daemon_path(drop_in_daemon)).to eq '/etc/systemd/timesyncd.conf.d/drop_in.conf'
+  it 'sets the appropriate conf drop_in path' do
+    expect(Systemd::Helpers.conf_path(drop_in_daemon)).to eq '/etc/systemd/timesyncd.conf.d/drop_in.conf'
   end
 
   it 'sets the appropriate unit drop_in root' do
-    expect(Systemd::Helpers.unit_drop_in_root(drop_in_unit)).to eq '/etc/systemd/system/httpd.service.d'
+    expect(Systemd::Helpers.conf_drop_in_root(drop_in_unit)).to eq '/etc/systemd/system/httpd.service.d'
   end
 
   it 'sets the appropriate unit drop_in path' do
-    expect(Systemd::Helpers.unit_path(drop_in_unit)).to eq '/etc/systemd/system/httpd.service.d/drop_in.conf'
+    expect(Systemd::Helpers.conf_path(drop_in_unit)).to eq '/etc/systemd/system/httpd.service.d/drop_in.conf'
   end
 
   it 'sets the appropriate unit path' do
-    expect(Systemd::Helpers.unit_path(unit)).to eq '/etc/systemd/system/unit.service'
+    expect(Systemd::Helpers.conf_path(unit)).to eq '/etc/systemd/system/unit.service'
   end
 
   it 'performs a correct unit hash->ini conversion' do

@@ -2,9 +2,11 @@ module Systemd
   module Helpers
     DAEMONS ||= %i( journald logind resolved timesyncd )
 
+    UTILS ||= %i( bootchart coredump sleep system user )
+
     STUB_UNITS ||= %i( device target )
 
-    UNIT_TYPES ||= %i(
+    UNITS ||= %i(
       service socket device mount automount
       swap target path timer slice
     )
@@ -23,34 +25,28 @@ module Systemd
       ::File.join(local_conf_root, 'system')
     end
 
-    def unit_drop_in_root(unit)
-      ::File.join(unit_conf_root, "#{unit.override}.#{unit.unit_type}.d")
-    end
-
-    def daemon_drop_in_root(daemon)
-      ::File.join(
-        local_conf_root, "#{daemon.daemon_type}.conf.d"
-      )
-    end
-
-    def unit_path(unit)
-      if unit.drop_in
-        ::File.join(unit_drop_in_root(unit), "#{unit.name}.conf")
+    def conf_drop_in_root(conf)
+      if conf.is_a?(Chef::Resource::SystemdUnit)
+        ::File.join(unit_conf_root, "#{conf.override}.#{conf.conf_type}.d")
       else
-        ::File.join(unit_conf_root, "#{unit.name}.#{unit.unit_type}")
+        ::File.join(local_conf_root, "#{conf.conf_type}.conf.d")
       end
     end
 
-    def daemon_path(daemon)
-      if daemon.drop_in
-        ::File.join(daemon_drop_in_root(daemon), "#{daemon.name}.conf")
+    def conf_path(conf)
+      if conf.drop_in
+        ::File.join(conf_drop_in_root(conf), "#{conf.name}.conf")
       else
-        ::File.join(local_conf_root, "#{daemon.daemon_type}.conf")
+        if conf.is_a?(Chef::Resource::SystemdUnit)
+          ::File.join(unit_conf_root, "#{conf.name}.#{conf.conf_type}")
+        else
+          ::File.join(local_conf_root, "#{conf.conf_type}.conf")
+        end
       end
     end
 
-    module_function :ini_config, :local_conf_root, :unit_conf_root, :unit_path,
-                    :unit_drop_in_root, :daemon_drop_in_root, :daemon_path
+    module_function :ini_config, :local_conf_root, :unit_conf_root,
+                    :conf_drop_in_root, :conf_path
   end
 end
 

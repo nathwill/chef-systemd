@@ -6,7 +6,7 @@ class Chef::Resource
     self.resource_name = :systemd_service
     provides :systemd_service
 
-    def unit_type(_ = nil)
+    def conf_type(_ = nil)
       :service
     end
 

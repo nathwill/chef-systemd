@@ -6,7 +6,7 @@ class Chef::Resource
     self.resource_name = :systemd_journald
     provides :systemd_journald
 
-    def daemon_type(_ = nil)
+    def conf_type(_ = nil)
       :journald
     end
 

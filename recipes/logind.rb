@@ -19,6 +19,7 @@
 l = node['systemd']['logind']
 
 systemd_logind 'logind' do
+  drop_in false
   n_auto_v_ts l['n_auto_v_ts']
   reserve_vt l['reserve_vt']
   kill_user_processes l['kill_user_processes']

@@ -1,13 +1,13 @@
 require_relative 'resource_systemd_conf'
 
 class Chef::Resource
-  class SystemdDaemon < Chef::Resource::SystemdConf
-    self.resource_name = :systemd_daemon
-    provides :systemd_daemon
+  class SystemdUtil < Chef::Resource::SystemdConf
+    self.resource_name = :systemd_util
+    provides :systemd_util
 
     attribute :drop_in, kind_of: [TrueClass, FalseClass], default: true
-    attribute :conf_type, kind_of: Symbol, required: true, default: :journald,
-                          equal_to: Systemd::Helpers::DAEMONS
+    attribute :conf_type, kind_of: Symbol, required: true, default: :bootchart,
+                          equal_to: Systemd::Helpers::UTILS
 
     def to_hash
       opts = Systemd.const_get(conf_type.capitalize)::OPTIONS

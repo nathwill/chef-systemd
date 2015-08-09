@@ -19,6 +19,7 @@
 ts = node['systemd']['timesyncd']
 
 systemd_timesyncd 'timesyncd' do
+  drop_in false
   ntp ts['ntp']
   fallback_ntp ts['fallback_ntp']
   notifies :restart, 'service[systemd-timesyncd]', :delayed

@@ -6,7 +6,7 @@ class Chef::Resource
     self.resource_name = :systemd_target
     provides :systemd_target
 
-    def unit_type(_ = nil)
+    def conf_type(_ = nil)
       :target
     end
   end

@@ -1,43 +1,11 @@
-require 'chef/provider/lwrp_base'
+require_relative 'provider_systemd_conf'
 require 'mixlib/shellout'
-require_relative 'helpers'
 
 class Chef::Provider
-  class SystemdUnit < Chef::Provider::LWRPBase
-    use_inline_resources
-
-    def whyrun_supported?
-      true
-    end
-
+  class SystemdUnit < Chef::Provider::SystemdConf
     provides :systemd_unit
-    Systemd::Helpers::UNIT_TYPES.each do |unit_type|
+    Systemd::Helpers::UNITS.each do |unit_type|
       provides "systemd_#{unit_type}".to_sym
-    end
-
-    %i( create delete ).each do |a|
-      action a do
-        r = new_resource
-        unit_path = Systemd::Helpers.unit_path(r)
-
-        directory Systemd::Helpers.unit_drop_in_root(r) do
-          only_if { r.drop_in }
-          not_if { r.action == :delete }
-        end
-
-        execute "#{r.name}.#{r.unit_type}-systemd-reload" do
-          command 'systemctl daemon-reload'
-          action :nothing
-          subscribes :run, "file[#{unit_path}]", :immediately
-        end
-
-        f = file unit_path do
-          content Systemd::Helpers.ini_config(r.to_hash)
-          action a
-        end
-
-        new_resource.updated_by_last_action(f.updated_by_last_action?)
-      end
     end
 
     %i( enable disable start stop restart ).each do |a|
@@ -48,11 +16,11 @@ class Chef::Provider
           state = case a
                   when :enable, :disable
                     Mixlib::ShellOut.new(
-                      "systemctl is-enabled #{r.name}.#{r.unit_type}"
+                      "systemctl is-enabled #{r.name}.#{r.conf_type}"
                     ).tap(&:run_command).stdout.chomp
                   when :start, :stop
                     Mixlib::ShellOut.new(
-                      "systemctl is-active #{r.name}.#{r.unit_type}"
+                      "systemctl is-active #{r.name}.#{r.conf_type}"
                     ).tap(&:run_command).stdout.chomp
                   when :restart
                     nil
@@ -72,8 +40,7 @@ class Chef::Provider
                   end
         end
 
-        e = execute "systemctl-#{a}-#{r.name}.#{r.unit_type}" do
-          command "systemctl #{a} #{r.name}.#{r.unit_type}"
+        e = execute "systemctl #{a} #{r.name}.#{r.conf_type}" do
           not_if { match }
         end
 

@@ -6,7 +6,7 @@ class Chef::Resource
     self.resource_name = :systemd_automount
     provides :systemd_automount
 
-    def unit_type(_ = nil)
+    def conf_type(_ = nil)
       :automount
     end
 

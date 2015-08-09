@@ -6,7 +6,7 @@ class Chef::Resource
     self.resource_name = :systemd_swap
     provides :systemd_swap
 
-    def unit_type(_ = nil)
+    def conf_type(_ = nil)
       :swap
     end
 

@@ -6,7 +6,7 @@ class Chef::Resource
     self.resource_name = :systemd_logind
     provides :systemd_logind
 
-    def daemon_type(_ = nil)
+    def conf_type(_ = nil)
       :logind
     end
 

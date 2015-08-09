@@ -29,8 +29,6 @@ class Chef::Resource
       yield
     end
 
-    # rubocop: disable AbcSize
-    # rubocop: disable MethodLength
     def to_hash
       conf = {}
 
@@ -38,14 +36,8 @@ class Chef::Resource
         conf[s] = section_values(s)
       end
 
-      match_mac_addr.nil? || conf[:match].push("MACAddress=#{match_mac_addr}")
-      link_mac_addr.nil? || conf[:link].push("MACAddress=#{link_mac_addr}")
-      link_alias.nil? || conf[:link].push("Alias=#{link_alias}")
-
-      conf
+      odd_opts(conf)
     end
-    # rubocop: enable MethodLength
-    # rubocop: enable AbcSize
 
     alias_method :to_h, :to_hash
 
@@ -64,5 +56,14 @@ class Chef::Resource
         "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
       end
     end
+
+    # rubocop: disable AbcSize
+    def odd_opts(conf)
+      match_mac_addr.nil? || conf[:match].push("MACAddress=#{match_mac_addr}")
+      link_mac_addr.nil? || conf[:link].push("MACAddress=#{link_mac_addr}")
+      link_alias.nil? || conf[:link].push("Alias=#{link_alias}")
+      conf
+    end
+    # rubocop: enable AbcSize
   end
 end

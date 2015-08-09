@@ -1,5 +1,4 @@
 require 'chef/resource/lwrp_base'
-require_relative 'helpers'
 
 class Chef::Resource
   class SystemdConf < Chef::Resource::LWRPBase
@@ -9,12 +8,6 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    attribute :drop_in, kind_of: [TrueClass, FalseClass], default: true
-    attribute :conf_type, kind_of: Symbol, required: true,
-                          equal_to: (
-                            Systemd::Helpers::DAEMONS | Systemd::Helpers::UTILS
-                          )
-
     # define class method for defining resource
     # attributes from the resource module options
     def self.option_attributes(options)
@@ -23,20 +16,10 @@ class Chef::Resource
       end
     end
 
-    def to_hash
-      opts = Systemd.const_get(conf_type.capitalize)::OPTIONS
-
-      conf = {}
-      conf[label] = options_config(opts)
-      conf
-    end
-
     def options_config(opts)
       opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
         "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
       end
     end
-
-    alias_method :to_h, :to_hash
   end
 end

@@ -6,7 +6,7 @@ class Chef::Resource
     self.resource_name = :systemd_device
     provides :systemd_device
 
-    def unit_type(_ = nil)
+    def conf_type(_ = nil)
       :device
     end
   end

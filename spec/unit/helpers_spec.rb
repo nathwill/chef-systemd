@@ -56,15 +56,15 @@ describe Systemd::Helpers do
   end
 
   it 'sets the appropriate unit drop_in root' do
-    expect(Systemd::Helpers.unit_drop_in_root(drop_in_unit)).to eq '/etc/systemd/system/httpd.service.d'
+    expect(Systemd::Helpers.conf_drop_in_root(drop_in_unit)).to eq '/etc/systemd/system/httpd.service.d'
   end
 
   it 'sets the appropriate unit drop_in path' do
-    expect(Systemd::Helpers.unit_path(drop_in_unit)).to eq '/etc/systemd/system/httpd.service.d/drop_in.conf'
+    expect(Systemd::Helpers.conf_path(drop_in_unit)).to eq '/etc/systemd/system/httpd.service.d/drop_in.conf'
   end
 
   it 'sets the appropriate unit path' do
-    expect(Systemd::Helpers.unit_path(unit)).to eq '/etc/systemd/system/unit.service'
+    expect(Systemd::Helpers.conf_path(unit)).to eq '/etc/systemd/system/unit.service'
   end
 
   it 'performs a correct unit hash->ini conversion' do

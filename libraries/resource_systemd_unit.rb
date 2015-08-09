@@ -1,22 +1,21 @@
 require 'chef/mixin/params_validate'
-require 'chef/resource/lwrp_base'
+require_relative 'resource_systemd_conf'
 require_relative 'systemd_install'
 require_relative 'systemd_unit'
 require_relative 'helpers'
 
 class Chef::Resource
-  class SystemdUnit < Chef::Resource::LWRPBase
+  class SystemdUnit < Chef::Resource::SystemdConf
     include Chef::Mixin::ParamsValidate
 
     self.resource_name = :systemd_unit
     provides :systemd_unit
 
     actions :create, :delete, :enable, :disable, :start, :stop, :restart
-    default_action :create
 
     attribute :aliases, kind_of: Array, default: []
     attribute :overrides, kind_of: Array, default: []
-    attribute :unit_type, kind_of: Symbol, default: :service, required: true,
+    attribute :conf_type, kind_of: Symbol, required: true, default: :service,
                           equal_to: Systemd::Helpers::UNITS
 
     def action(arg = nil)
@@ -41,14 +40,6 @@ class Chef::Resource
       )
     end
 
-    # define class method for defining resource
-    # attributes from the resource module options
-    def self.option_attributes(options)
-      options.each do |option|
-        attribute option.underscore.to_sym, kind_of: String, default: nil
-      end
-    end
-
     %w( unit install ).each do |section|
       # convert the section options to resource attributes
       option_attributes Systemd.const_get(section.capitalize)::OPTIONS
@@ -62,7 +53,7 @@ class Chef::Resource
     def to_hash
       conf = {}
 
-      [:unit, :install, unit_type].each do |section|
+      [:unit, :install, conf_type].each do |section|
         # some unit types don't have type-specific config blocks
         next if Systemd::Helpers::STUB_UNITS.include?(section)
         conf[section] = section_values(section)
@@ -98,12 +89,6 @@ class Chef::Resource
     def alias_config(section)
       return [] unless section == :install && !aliases.empty?
       ["Alias=#{aliases.map { |a| "#{a}.#{unit_type}" }.join(' ')}"]
-    end
-
-    def options_config(opts)
-      opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
-        "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
-      end
     end
   end
 end

@@ -25,21 +25,11 @@ module Systemd
       ::File.join(local_conf_root, 'system')
     end
 
-    def unit_drop_in_root(unit)
-      ::File.join(unit_conf_root, "#{unit.override}.#{unit.unit_type}.d")
-    end
-
     def conf_drop_in_root(conf)
-      ::File.join(
-        local_conf_root, "#{conf.conf_type}.conf.d"
-      )
-    end
-
-    def unit_path(unit)
-      if unit.drop_in
-        ::File.join(unit_drop_in_root(unit), "#{unit.name}.conf")
+      if conf.is_a?(Chef::Resource::SystemdUnit)
+        ::File.join(unit_conf_root, "#{conf.override}.#{conf.conf_type}.d")
       else
-        ::File.join(unit_conf_root, "#{unit.name}.#{unit.unit_type}")
+        ::File.join(local_conf_root, "#{conf.conf_type}.conf.d")
       end
     end
 
@@ -47,12 +37,16 @@ module Systemd
       if conf.drop_in
         ::File.join(conf_drop_in_root(conf), "#{conf.name}.conf")
       else
-        ::File.join(local_conf_root, "#{conf.conf_type}.conf")
+        if conf.is_a?(Chef::Resource::SystemdUnit)
+          ::File.join(unit_conf_root, "#{conf.name}.#{conf.conf_type}")
+        else
+          ::File.join(local_conf_root, "#{conf.conf_type}.conf")
+        end
       end
     end
 
-    module_function :ini_config, :local_conf_root, :unit_conf_root, :unit_path,
-                    :unit_drop_in_root, :conf_drop_in_root, :conf_path
+    module_function :ini_config, :local_conf_root, :unit_conf_root,
+                    :conf_drop_in_root, :conf_path
   end
 end
 

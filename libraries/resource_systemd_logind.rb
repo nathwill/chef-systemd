@@ -1,8 +1,8 @@
-require_relative 'resource_systemd_conf'
+require_relative 'resource_systemd_daemon'
 require_relative 'systemd_logind'
 
 class Chef::Resource
-  class SystemdLogind < Chef::Resource::SystemdConf
+  class SystemdLogind < Chef::Resource::SystemdDaemon
     self.resource_name = :systemd_logind
     provides :systemd_logind
 

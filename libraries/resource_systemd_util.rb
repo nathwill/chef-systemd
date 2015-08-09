@@ -1,4 +1,5 @@
 require_relative 'resource_systemd_conf'
+require_relative 'helpers'
 
 class Chef::Resource
   class SystemdUtil < Chef::Resource::SystemdConf

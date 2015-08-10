@@ -8,6 +8,8 @@ resource_systemd_mount.rb
 resource_systemd_path.rb
 resource_systemd_service.rb
 resource_systemd_slice.rb
+- snapshot
+- scope
 resource_systemd_socket.rb
 resource_systemd_swap.rb
 resource_systemd_target.rb

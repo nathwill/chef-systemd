@@ -18,7 +18,7 @@
 
 v = node['systemd']['vconsole']
 
-opts = l.reject { |_, o| o.nil? }
+opts = v.reject { |_, o| o.nil? }
 
 file '/etc/vconsole.conf' do
   content opts.map { |k, o| "#{k.upcase}=#{o}" }.join("\n")

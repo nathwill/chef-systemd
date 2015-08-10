@@ -35,7 +35,7 @@ class Chef::Provider
         dir = '/etc/sysctl.d'
 
         f = file ::File.join(dir, "#{r.name}.conf") do
-          content "#{r.name}=#{r.value}" 
+          content "#{r.name}=#{r.value}"
           action a
         end
 

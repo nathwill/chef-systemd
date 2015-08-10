@@ -35,7 +35,7 @@ class Chef::Resource
     attribute :age, kind_of: String, default: '-'
     attribute :argument, kind_of: String, default: '-'
     attribute :type, kind_of: String, default: 'f',
-                     equal_to: %w( 
+                     equal_to: %w(
                        f F w d D v p,p+ L,L+ c,c+ b,b+
                        C x X r R z Z t T h H a,a+ A,A+
                      )

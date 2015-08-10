@@ -18,7 +18,7 @@
 
 require 'spec_helper'
 
-describe 'systemd::hostnamed' do
+describe 'systemd::hostname' do
   context 'When all attributes are default, on an unspecified platform' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new

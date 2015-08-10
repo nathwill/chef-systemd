@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: sleep
+# Attributes:: sleep
 #
 # Copyright 2015 The Authors
 #
@@ -16,12 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-systemd_sleep 'sleep' do
-  drop_in false
-  suspend_mode s['suspend_mode']
-  hibernate_mode s['hibernate_mode']
-  hybrid_sleep_mode s['hybrid_sleep_mode']
-  suspend_state s['suspend_state']
-  hibernate_state s['hibernate_state']
-  hybrid_sleep_state s['hybrid_sleep_state']
+default['systemd']['sleep'].tap do |s|
+  s['suspendmode'] = nil
+  s['hibernatemode'] = nil
+  s['hybridsleepmode'] = nil
+  s['suspendstate'] = nil
+  s['hibernatestate'] = nil
+  s['hybridsleepstate'] = nil
 end

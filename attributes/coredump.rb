@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: coredump
+# Attributes:: coredump
 #
 # Copyright 2015 The Authors
 #
@@ -16,15 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-c = node['systemd']['coredump']
-
-systemd_coredump 'coredump' do
-  drop_in false
-  storage c['storage']
-  compress c['compress']
-  process_size_max c['process_size_max']
-  external_size_max c['external_size_max']
-  journal_size_max c['journal_size_max']
-  max_use c['max_use']
-  keep_free c['keep_free']
+default['systemd']['coredump'].tap do |c|
+  c['storage'] = nil
+  c['compress'] = 'yes'
+  c['process_size_max'] = nil
+  c['external_size_max'] = nil
+  c['journal_size_max'] = nil
+  c['max_use'] = nil
+  c['keep_free'] = nil
 end

@@ -15,3 +15,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+l = node['systemd']['locale']
+
+opts = l.reject { |_, v| v.nil? }
+
+file '/etc/locale.conf' do
+  content opts.map { |k, v| "#{k.upcase}=#{v}" }.join("\n")
+  notifies :restart, 'service[systemd-localed]', :immediately
+end
+
+service 'systemd-localed' do
+  action :nothing
+end

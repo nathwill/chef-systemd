@@ -16,6 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+s = node['systemd']['sleep']
+
 systemd_sleep 'sleep' do
   drop_in false
   suspend_mode s['suspend_mode']

@@ -17,5 +17,5 @@
 # limitations under the License.
 
 service 'systemd-timedated' do
-  action [:enable, :start]
+  action :nothing
 end

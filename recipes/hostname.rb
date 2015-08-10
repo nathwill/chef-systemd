@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: hostnamed
+# Recipe:: hostname
 #
 # Copyright 2015 The Authors
 #

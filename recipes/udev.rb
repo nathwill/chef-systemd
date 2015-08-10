@@ -21,4 +21,9 @@ u = node['systemd']['udev']
 file '/etc/udev/udev.conf' do
   content "udev_log=#{u['udev_log']}"
   not_if { u['udev_log'].nil? }
+  notifies :restart, 'service[systemd-udevd]', :immediately
+end
+
+service 'systemd-udevd' do
+  action :nothing
 end

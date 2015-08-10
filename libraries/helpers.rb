@@ -21,13 +21,16 @@ module Systemd
       '/etc/systemd'
     end
 
-    def unit_conf_root
-      ::File.join(local_conf_root, 'system')
+    def unit_conf_root(conf)
+      ::File.join(local_conf_root, conf.mode.to_s)
     end
 
     def conf_drop_in_root(conf)
       if conf.is_a?(Chef::Resource::SystemdUnit)
-        ::File.join(unit_conf_root, "#{conf.override}.#{conf.conf_type}.d")
+        ::File.join(
+          unit_conf_root(conf),
+          "#{conf.override}.#{conf.conf_type}.d"
+        )
       else
         ::File.join(local_conf_root, "#{conf.conf_type}.conf.d")
       end
@@ -38,7 +41,7 @@ module Systemd
         ::File.join(conf_drop_in_root(conf), "#{conf.name}.conf")
       else
         if conf.is_a?(Chef::Resource::SystemdUnit)
-          ::File.join(unit_conf_root, "#{conf.name}.#{conf.conf_type}")
+          ::File.join(unit_conf_root(conf), "#{conf.name}.#{conf.conf_type}")
         else
           ::File.join(local_conf_root, "#{conf.conf_type}.conf")
         end

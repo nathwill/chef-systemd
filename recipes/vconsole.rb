@@ -15,3 +15,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+v = node['systemd']['vconsole']
+
+opts = v.reject { |_, o| o.nil? }
+
+file '/etc/vconsole.conf' do
+  content opts.map { |k, o| "#{k.upcase}=#{o}" }.join("\n")
+  notifies :restart, 'service[systemd-vconsole-setup]', :immediately
+end
+
+service 'systemd-vconsole-setup' do
+  action :nothing
+end

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: coredump
+# Attributes:: bootchart
 #
 # Copyright 2015 The Authors
 #
@@ -16,15 +16,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-c = node['systemd']['coredump']
-
-systemd_coredump 'coredump' do
-  drop_in false
-  storage c['storage']
-  compress c['compress']
-  process_size_max c['process_size_max']
-  external_size_max c['external_size_max']
-  journal_size_max c['journal_size_max']
-  max_use c['max_use']
-  keep_free c['keep_free']
+default['systemd']['bootchart'].tap do |b|
+  b['samples'] = nil
+  b['frequency'] = nil
+  b['relative'] = nil
+  b['filter'] = nil
+  b['output'] = '/run/log'
+  b['init'] = nil
+  b['plot_memory_usage'] = nil
+  b['plot_entropy_graph'] = nil
+  b['scale_x'] = nil
+  b['scale_y'] = nil
+  b['control_group'] = nil
 end

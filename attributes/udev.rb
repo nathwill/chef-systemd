@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: udev
+# Attributes:: udev
 #
 # Copyright 2015 The Authors
 #
@@ -16,9 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-u = node['systemd']['udev']
-
-file '/etc/udev/udev.conf' do
-  content "udev_log=#{u['udev_log']}"
-  not_if { u['udev_log'].nil? }
-end
+default['systemd']['udev']['udev_log'] = nil

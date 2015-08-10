@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: udev
+# Attributes:: vconsole
 #
 # Copyright 2015 The Authors
 #
@@ -16,9 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-u = node['systemd']['udev']
-
-file '/etc/udev/udev.conf' do
-  content "udev_log=#{u['udev_log']}"
-  not_if { u['udev_log'].nil? }
+default['systemd']['vconsole'].tap do |v|
+  v['keymap'] = 'us'
+  v['keymap_toggle'] = nil
+  v['font'] = 'latarcyrheb-sun16'
+  v['font_map'] = nil
+  v['font_unimap'] = nil
 end

@@ -9,6 +9,6 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    attribute :value, kind_of: [String, Number], default: nil
+    attribute :value, kind_of: [String, Numeric], default: nil
   end
 end

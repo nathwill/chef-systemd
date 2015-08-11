@@ -69,6 +69,28 @@ module Systemd
 
     module_function :ini_config, :local_conf_root, :unit_conf_root,
                     :conf_drop_in_root, :conf_path
+
+    module Init
+      def systemd?
+        ::File.symlink?('/sbin/init') &&
+          ::File.readlink('/sbin/init').match(/systemd/)
+      end
+
+      def upstart?
+        ::File.executable?('/sbin/initctl')
+      end
+
+      def runit?
+        ::File.executable?('/sbin/runit-init')
+      end
+
+      def sysv?
+        !systemd? &&
+          !upstart? &&
+          !runit? &&
+          ::File.directory?('/etc/init.d')
+      end
+    end
   end
 end
 
@@ -85,3 +107,5 @@ class String
     gsub(/(^|_)(.)/) { Regexp.last_match(2).upcase }
   end
 end
+
+::Chef::Recipe.send(:include, Systemd::Helpers::Init)

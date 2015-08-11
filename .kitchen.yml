@@ -27,16 +27,22 @@ suites:
       - recipe[setup::timer]
   - name: daemons
     run_list:
-      - recipe[systemd::journal_gatewayd]
       - recipe[systemd::journald]
       - recipe[setup::journald]
       - recipe[systemd::logind]
       - recipe[setup::logind]
       - recipe[systemd::machined]
+      - recipe[systemd::timedated]
+  - name: new-daemons
+    excludes:
+      - ubuntu-15.04
+      - debian-8.1
+      - centos-7.1
+    run_list:
+      - recipe[systemd::journal_gatewayd]
       - recipe[systemd::networkd]
       - recipe[systemd::resolved]
       - recipe[setup::resolved]
-      - recipe[systemd::timedated]
       - recipe[systemd::timesyncd]
       - recipe[setup::timesyncd]
   - name: utils

@@ -6,7 +6,7 @@ describe 'Timesyncd' do
       it { should be_file }
       its(:content) { should match %r{[Time]} }
       its(:content) { should match /NTP=0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org/ }
-      its(:content) { should match /FallbackNTP=0.fedora.pool.ntp.org 1.fedora.pool.ntp.org 2.fedora.pool.ntp.org 3.fedora.pool.ntp.org/ }
+      its(:content) { should match /FallbackNTP=0.(fedora|debian|ubuntu|centos).pool.ntp.org 1.(fedora|debian|ubuntu|centos).pool.ntp.org 2.(fedora|debian|ubuntu|centos).pool.ntp.org 3.(fedora|debian|ubuntu|centos).pool.ntp.org/ }
     end
   end
 

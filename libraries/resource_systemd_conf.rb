@@ -27,14 +27,6 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    # define class method for defining resource
-    # attributes from the resource module options
-    def self.option_attributes(options)
-      options.each do |option|
-        attribute option.underscore.to_sym, kind_of: String, default: nil
-      end
-    end
-
     def to_hash
       opts = Systemd.const_get(conf_type.capitalize)::OPTIONS
 
@@ -44,6 +36,14 @@ class Chef::Resource
     end
 
     alias_method :to_h, :to_hash
+
+    private
+
+    def self.option_attributes(options)
+      options.each do |option|
+        attribute option.underscore.to_sym, kind_of: String, default: nil
+      end
+    end
 
     def options_config(opts)
       opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|

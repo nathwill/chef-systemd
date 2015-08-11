@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_util'
 require_relative 'systemd_bootchart'
 
+# manage systemd-bootchart
+# http://www.freedesktop.org/software/systemd/man/systemd-bootchart.html
 class Chef::Resource
   class SystemdBootchart < Chef::Resource::SystemdUtil
     self.resource_name = :systemd_bootchart

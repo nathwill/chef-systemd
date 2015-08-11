@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_unit'
 require_relative 'systemd_path'
 
+# manage systemd path units
+# http://www.freedesktop.org/software/systemd/man/systemd.path.html
 class Chef::Resource
   class SystemdPath < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_path

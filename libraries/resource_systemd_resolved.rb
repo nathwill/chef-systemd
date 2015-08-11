@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_daemon'
 require_relative 'systemd_resolved'
 
+# manage systemd-resolved
+# http://www.freedesktop.org/software/systemd/man/systemd-resolved.html
 class Chef::Resource
   class SystemdResolved < Chef::Resource::SystemdDaemon
     self.resource_name = :systemd_resolved

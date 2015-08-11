@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_unit'
 require_relative 'systemd_target'
 
+# manage systemd target units
+# http://www.freedesktop.org/software/systemd/man/systemd.target.html
 class Chef::Resource
   class SystemdTarget < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_target

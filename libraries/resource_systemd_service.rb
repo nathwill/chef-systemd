@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_unit'
 require_relative 'systemd_service'
 
+# manage systemd service units
+# http://www.freedesktop.org/software/systemd/man/systemd.service.html
 class Chef::Resource
   class SystemdService < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_service

@@ -19,6 +19,7 @@
 
 require 'chef/resource/lwrp_base'
 
+# This is the base class for daemons, utils, and units
 class Chef::Resource
   class SystemdConf < Chef::Resource::LWRPBase
     self.resource_name = :systemd_conf
@@ -27,6 +28,7 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
+    # generate hash suitable for ini-converge (see helpers lib)
     def to_hash
       opts = Systemd.const_get(conf_type.capitalize)::OPTIONS
 
@@ -39,13 +41,15 @@ class Chef::Resource
 
     private
 
-    def self.option_attributes(options)
+    # generates chef attributes from options array
+    def self.option_attributes(options = [])
       options.each do |option|
         attribute option.underscore.to_sym, kind_of: String, default: nil
       end
     end
 
-    def options_config(opts)
+    # generates kv pairs from resource attributes
+    def options_config(opts = [])
       opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
         "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
       end

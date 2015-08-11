@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_util'
 require_relative 'systemd_system'
 
+# manage systemd system.conf
+# http://www.freedesktop.org/software/systemd/man/systemd-system.conf.html
 class Chef::Resource
   class SystemdSystem < Chef::Resource::SystemdUtil
     self.resource_name = :systemd_system

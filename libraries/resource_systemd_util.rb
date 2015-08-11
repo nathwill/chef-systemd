@@ -20,6 +20,7 @@
 require_relative 'resource_systemd_conf'
 require_relative 'helpers'
 
+# base class for utils (see base class)
 class Chef::Resource
   class SystemdUtil < Chef::Resource::SystemdConf
     self.resource_name = :systemd_util
@@ -29,6 +30,7 @@ class Chef::Resource
     attribute :conf_type, kind_of: Symbol, required: true, default: :bootchart,
                           equal_to: Systemd::Helpers::UTILS
 
+    # default config header
     def label
       conf_type.capitalize
     end

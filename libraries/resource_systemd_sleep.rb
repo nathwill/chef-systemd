@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_util'
 require_relative 'systemd_sleep'
 
+# manage systemd-sleep
+# http://www.freedesktop.org/software/systemd/man/systemd-sleep.html
 class Chef::Resource
   class SystemdSleep < Chef::Resource::SystemdUtil
     self.resource_name = :systemd_sleep

@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_unit'
 require_relative 'systemd_device'
 
+# manage systemd device units
+# http://www.freedesktop.org/software/systemd/man/systemd.device.html
 class Chef::Resource
   class SystemdDevice < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_device

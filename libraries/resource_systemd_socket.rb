@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_unit'
 require_relative 'systemd_socket'
 
+# manage systemd socket units
+# http://www.freedesktop.org/software/systemd/man/systemd.socket.html
 class Chef::Resource
   class SystemdSocket < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_socket

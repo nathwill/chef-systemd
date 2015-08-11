@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_unit'
 require_relative 'systemd_automount'
 
+# manage systemd automount units
+# http://www.freedesktop.org/software/systemd/man/systemd.automount.html
 class Chef::Resource
   class SystemdAutomount < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_automount

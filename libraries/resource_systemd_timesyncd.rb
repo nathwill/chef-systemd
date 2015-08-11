@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_daemon'
 require_relative 'systemd_timesyncd'
 
+# manage systemd-timesyncd
+# http://www.freedesktop.org/software/systemd/man/systemd-timesyncd.html
 class Chef::Resource
   class SystemdTimesyncd < Chef::Resource::SystemdDaemon
     self.resource_name = :systemd_timesyncd

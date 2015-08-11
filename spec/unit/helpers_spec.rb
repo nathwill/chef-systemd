@@ -12,6 +12,12 @@ describe Systemd::Helpers do
     d
   end
 
+  let(:user_unit) do
+    d = Chef::Resource::SystemdService.new('user')
+    d.mode :user
+    d
+  end
+
   let(:daemon) do
     Chef::Resource::SystemdTimesyncd.new('daemon')
   end
@@ -43,11 +49,15 @@ describe Systemd::Helpers do
     expect(Systemd::Helpers.local_conf_root).to eq '/etc/systemd'
   end
 
-  it 'sets the appropriate unit configuration root' do
+  it 'sets the appropriate system unit configuration root' do
     expect(Systemd::Helpers.unit_conf_root(unit)).to eq '/etc/systemd/system'
   end
 
-  it 'sets the appropriate conf path' do
+  it 'sets the appropriate user unit configuration root' do
+    expect(Systemd::Helpers.unit_conf_root(user_unit)).to eq '/etc/systemd/user'
+  end
+
+  it 'sets the appropriate daemon conf path' do
     expect(Systemd::Helpers.conf_path(daemon)).to eq '/etc/systemd/timesyncd.conf.d/daemon.conf'
   end
 

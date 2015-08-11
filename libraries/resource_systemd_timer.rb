@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_unit'
 require_relative 'systemd_timer'
 
+# manage systemd timer units
+# http://www.freedesktop.org/software/systemd/man/systemd.timer.html
 class Chef::Resource
   class SystemdTimer < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_timer

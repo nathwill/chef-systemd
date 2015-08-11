@@ -21,6 +21,8 @@ require 'chef/resource/lwrp_base'
 require_relative 'systemd_networkd'
 require_relative 'helpers'
 
+# manage systemd networkd device configuration
+# http://www.freedesktop.org/software/systemd/man/systemd.link.html
 class Chef::Resource
   class SystemdNetworkdLink < Chef::Resource::LWRPBase
     include Systemd::Networkd
@@ -32,6 +34,7 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
+    # alias is a reserved word, mac_address is duped between sections
     OPTIONS.reject { |o| o.match(/(MACAddress|Alias)/) }.each do |opt|
       attribute opt.underscore.to_sym, kind_of: String, default: nil
     end
@@ -52,7 +55,9 @@ class Chef::Resource
       conf = {}
 
       %i( match link ).each do |s|
-        conf[s] = section_values(s)
+        conf[s] = options_config(
+          Systemd::Networkd.const_get(s.capitalize)::OPTIONS
+        )
       end
 
       odd_opts(conf)
@@ -61,10 +66,6 @@ class Chef::Resource
     alias_method :to_h, :to_hash
 
     private
-
-    def section_values(section)
-      options_config(Systemd::Networkd.const_get(section.capitalize)::OPTIONS)
-    end
 
     def options_config(options)
       opts = options.reject do |o|

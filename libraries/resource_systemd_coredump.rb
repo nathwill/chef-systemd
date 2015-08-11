@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_util'
 require_relative 'systemd_coredump'
 
+# manage systemd-coredump
+# http://www.freedesktop.org/software/systemd/man/systemd-coredump.html
 class Chef::Resource
   class SystemdCoredump < Chef::Resource::SystemdUtil
     self.resource_name = :systemd_coredump

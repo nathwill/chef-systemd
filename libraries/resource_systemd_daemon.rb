@@ -20,6 +20,7 @@
 require_relative 'resource_systemd_conf'
 require_relative 'helpers'
 
+# base class for daemons (see helper lib)
 class Chef::Resource
   class SystemdDaemon < Chef::Resource::SystemdConf
     self.resource_name = :systemd_daemon

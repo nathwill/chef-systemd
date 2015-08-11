@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_daemon'
 require_relative 'systemd_logind'
 
+# manage systemd-logind
+# http://www.freedesktop.org/software/systemd/man/systemd-logind.html
 class Chef::Resource
   class SystemdLogind < Chef::Resource::SystemdDaemon
     self.resource_name = :systemd_logind

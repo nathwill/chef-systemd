@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_unit'
 require_relative 'systemd_swap'
 
+# manage systemd swap units
+# http://www.freedesktop.org/software/systemd/man/systemd.swap.html
 class Chef::Resource
   class SystemdSwap < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_swap

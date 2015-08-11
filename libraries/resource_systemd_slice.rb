@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_unit'
 require_relative 'systemd_slice'
 
+# manage systemd slice units
+# http://www.freedesktop.org/software/systemd/man/systemd.slice.html
 class Chef::Resource
   class SystemdSlice < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_slice

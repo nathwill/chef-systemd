@@ -19,6 +19,9 @@
 
 require 'chef/resource/lwrp_base'
 
+# manage systemd-sysctl configuration
+# http://www.freedesktop.org/software/systemd/man/systemd-sysctl.html
+# http://man7.org/linux/man-pages/man5/sysctl.d.5.html
 class Chef::Resource
   class SystemdSysctl < Chef::Resource::LWRPBase
     self.resource_name = :systemd_sysctl

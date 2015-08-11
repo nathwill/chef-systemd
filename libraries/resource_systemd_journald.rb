@@ -20,6 +20,8 @@
 require_relative 'resource_systemd_daemon'
 require_relative 'systemd_journald'
 
+# manage systemd-journald
+# http://www.freedesktop.org/software/systemd/man/systemd-journald.html
 class Chef::Resource
   class SystemdJournald < Chef::Resource::SystemdDaemon
     self.resource_name = :systemd_journald
@@ -29,7 +31,7 @@ class Chef::Resource
       :journald
     end
 
-    def label(_ = nil)
+    def label
       'Journal'
     end
 

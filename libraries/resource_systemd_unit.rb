@@ -23,6 +23,7 @@ require_relative 'systemd_install'
 require_relative 'systemd_unit'
 require_relative 'helpers'
 
+# base class for unit resources (see helper lib)
 class Chef::Resource
   class SystemdUnit < Chef::Resource::SystemdConf
     include Chef::Mixin::ParamsValidate
@@ -39,6 +40,8 @@ class Chef::Resource
     attribute :mode, kind_of: Symbol, default: :system,
                      equal_to: %i( system user )
 
+    # it doesn't make sense to perform lifecycle actions
+    # against drop-in units, so limit their allowed actions
     def action(arg = nil)
       @allowed_actions = %i( create delete ) if drop_in
       super
@@ -71,6 +74,8 @@ class Chef::Resource
       yield
     end
 
+    # units have multiple sections, so override the base class
+    # method to produce a suitable hash for ini generation
     def to_hash
       conf = {}
 

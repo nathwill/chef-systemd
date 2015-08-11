@@ -19,9 +19,15 @@
 file '/etc/hostname' do
   content node['systemd']['hostname']
   only_if { node['systemd']['hostname'] }
-  notifies :restart, 'service[systemd-hostnamed]', :immediately
+end
+
+execute 'hostnamectl-set-hostname' do
+  command "hostnamectl set-hostname #{node['systemd']['hostname']}"
+  action :nothing
+  subscribes :run, 'file[/etc/hostname]', :immediately
 end
 
 service 'systemd-hostnamed' do
-  action :nothing
+  action [:enable, :start]
+  subscribes :restart, 'file[/etc/hostname]', :immediately
 end

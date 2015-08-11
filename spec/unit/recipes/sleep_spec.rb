@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Spec:: hostnamed
+# Spec:: default
 #
 # Copyright 2015 The Authors
 #
@@ -18,43 +18,21 @@
 
 require 'spec_helper'
 
-describe 'systemd::hostname' do
+describe 'systemd::sleep' do
   context 'When all attributes are default, on an unspecified platform' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
     end
 
-    it 'does not set the hostname' do
-      expect(chef_run).to_not create_file('/etc/hostname')
+    it 'configures sleep.conf' do
+      expect(chef_run).to create_systemd_sleep('sleep').with(
+        drop_in: false,
+      )
     end
 
-    it 'enables/starts the service' do
-      expect(chef_run).to enable_service('systemd-hostnamed')
-      expect(chef_run).to start_service('systemd-hostnamed')
-    end
-    
     it 'converges successfully' do
       chef_run # This should not raise an error
-    end
-  end
-
-  context 'When the hostname is set, on an unspecified platform' do
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new do |node|
-        node.set['systemd']['hostname'] = 'jabberwocky.localdomain'
-      end
-
-      runner.converge(described_recipe)
-    end
-
-    it 'sets the hostname' do
-      expect(chef_run).to create_file('/etc/hostname').with(content: 'jabberwocky.localdomain')
-    end
-
-    it 'restarts the service' do
-      file = chef_run.file('/etc/hostname')
-      expect(file).to notify('service[systemd-hostnamed]').to(:restart).immediately
     end
   end
 end

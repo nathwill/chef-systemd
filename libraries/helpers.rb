@@ -72,8 +72,7 @@ module Systemd
 
     module Init
       def systemd?
-        ::File.symlink?('/sbin/init') &&
-          ::File.readlink('/sbin/init').match(/systemd/)
+        IO.read('/proc/1/comm').chomp == 'systemd'
       end
 
       def upstart?

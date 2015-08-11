@@ -46,7 +46,6 @@ suites:
       - recipe[systemd::sysctl]
       - recipe[setup::sysctl]
       - recipe[systemd::system]
-      - recipe[systemd::timedated]
       - recipe[setup::tmpfiles]
       - recipe[systemd::udev]
       - recipe[systemd::user]

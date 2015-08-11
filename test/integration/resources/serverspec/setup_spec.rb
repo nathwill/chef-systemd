@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'setup::default' do
+describe 'Systemd Resources' do
   # Test the service resource
   describe file('/etc/systemd/system/test-unit.service') do
     it { should be_file }
@@ -45,7 +45,7 @@ describe 'setup::default' do
   end
 
   # Test the device resource
-  describe file('/etc/systemd/system/vdb.device') do
+  describe file('/etc/systemd/system/dev-vdb.device') do
     its(:content) { should match /\[Unit\]/ }
     its(:content) { should match /Description=Test Device/ }
     its(:content) { should match /\[Install\]/ }
@@ -142,11 +142,13 @@ describe 'setup::default' do
     its(:content) { should match /MemoryLimit=1G/ }
   end
 
+  # Test lifecycle actions
   describe service('rsyslog') do
     it { should_not be_enabled }
     it { should_not be_running }
   end
 
+  # Test the networkd_link resource
   describe file('/etc/systemd/network/wireless0.link') do
     it { should be_file }
     its(:content) { should match %r{[Match]} }

@@ -29,10 +29,6 @@ class Chef::Resource
       :coredump
     end
 
-    def label(_ = nil)
-      'Coredump'
-    end
-
     option_attributes Systemd::Coredump::OPTIONS
   end
 end

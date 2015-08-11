@@ -29,10 +29,6 @@ class Chef::Resource
       :sleep
     end
 
-    def label(_ = nil)
-      'Sleep'
-    end
-
     option_attributes Systemd::Sleep::OPTIONS
   end
 end

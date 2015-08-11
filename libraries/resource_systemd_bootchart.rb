@@ -29,10 +29,6 @@ class Chef::Resource
       :bootchart
     end
 
-    def label(_ = nil)
-      'Bootchart'
-    end
-
     option_attributes Systemd::Bootchart::OPTIONS
   end
 end

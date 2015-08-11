@@ -29,7 +29,7 @@ class Chef::Resource
       :system
     end
 
-    def label(_ = nil)
+    def label
       'Manager'
     end
 

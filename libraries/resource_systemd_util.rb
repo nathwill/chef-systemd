@@ -28,5 +28,9 @@ class Chef::Resource
     attribute :drop_in, kind_of: [TrueClass, FalseClass], default: true
     attribute :conf_type, kind_of: Symbol, required: true, default: :bootchart,
                           equal_to: Systemd::Helpers::UTILS
+
+    def label
+      conf_type.capitalize
+    end
   end
 end

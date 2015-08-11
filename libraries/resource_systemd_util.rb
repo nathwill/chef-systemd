@@ -27,7 +27,7 @@ class Chef::Resource
     provides :systemd_util
 
     attribute :drop_in, kind_of: [TrueClass, FalseClass], default: true
-    attribute :conf_type, kind_of: Symbol, required: true, default: :bootchart,
+    attribute :conf_type, kind_of: Symbol, required: true,
                           equal_to: Systemd::Helpers::UTILS
 
     # default config header

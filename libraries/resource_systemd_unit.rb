@@ -35,7 +35,7 @@ class Chef::Resource
 
     attribute :aliases, kind_of: Array, default: []
     attribute :overrides, kind_of: Array, default: []
-    attribute :conf_type, kind_of: Symbol, required: true, default: :service,
+    attribute :conf_type, kind_of: Symbol, required: true,
                           equal_to: Systemd::Helpers::UNITS
     attribute :mode, kind_of: Symbol, default: :system,
                      equal_to: %i( system user )

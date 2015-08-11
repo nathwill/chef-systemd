@@ -11,7 +11,17 @@ platforms:
 suites:
   - name: resources
     run_list:
-      - recipe[setup]
+      - recipe[setup::automount]
+      - recipe[setup::device]
+      - recipe[setup::mount]
+      - recipe[setup::networkd_link]
+      - recipe[setup::path]
+      - recipe[setup::service]
+      - recipe[setup::slice]
+      - recipe[setup::socket]
+      - recipe[setup::swap]
+      - recipe[setup::target]
+      - recipe[setup::timer]
   - name: daemons
     run_list:
       - recipe[systemd::journal_gatewayd]
@@ -19,9 +29,11 @@ suites:
       - recipe[setup::journald]
       - recipe[systemd::logind]
       - recipe[setup::logind]
+      - recipe[systemd::machined]
       - recipe[systemd::networkd]
       - recipe[systemd::resolved]
       - recipe[setup::resolved]
+      - recipe[systemd::timedated]
       - recipe[systemd::timesyncd]
       - recipe[setup::timesyncd]
   - name: utils
@@ -30,7 +42,6 @@ suites:
       - recipe[systemd::coredump]
       - recipe[systemd::locale]
       - recipe[systemd::hostname]
-      - recipe[systemd::machined]
       - recipe[systemd::sleep]
       - recipe[systemd::sysctl]
       - recipe[setup::sysctl]

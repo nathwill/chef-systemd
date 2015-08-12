@@ -17,10 +17,10 @@
 # limitations under the License.
 
 default['systemd']['sleep'].tap do |s|
-  s['suspendmode'] = nil
-  s['hibernatemode'] = nil
-  s['hybridsleepmode'] = nil
-  s['suspendstate'] = nil
-  s['hibernatestate'] = nil
-  s['hybridsleepstate'] = nil
+  s['suspend_mode'] = nil
+  s['hibernate_mode'] = nil
+  s['hybrid_sleep_mode'] = nil
+  s['suspend_state'] = nil
+  s['hibernate_state'] = nil
+  s['hybrid_sleep_state'] = nil
 end

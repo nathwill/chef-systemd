@@ -33,7 +33,7 @@ suites:
       - recipe[setup::logind]
       - recipe[systemd::machined]
       - recipe[systemd::timedated]
-  - name: new-daemons
+  - name: daemons-new
     excludes:
       - ubuntu-15.04
       - debian-8.1
@@ -58,7 +58,7 @@ suites:
       - recipe[setup::tmpfiles]
       - recipe[systemd::udev]
       - recipe[systemd::user]
-  - name: new-utils
+  - name: utils-new
     excludes:
       - debian-8.1
     run_list:

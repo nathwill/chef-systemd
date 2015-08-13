@@ -74,21 +74,6 @@ module Systemd
       def systemd?
         IO.read('/proc/1/comm').chomp == 'systemd'
       end
-
-      def upstart?
-        ::File.executable?('/sbin/initctl')
-      end
-
-      def runit?
-        ::File.executable?('/sbin/runit-init')
-      end
-
-      def sysv?
-        !systemd? &&
-          !upstart? &&
-          !runit? &&
-          ::File.directory?('/etc/init.d')
-      end
     end
   end
 end

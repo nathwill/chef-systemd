@@ -16,75 +16,95 @@ Recommended reading:
 
 ## Recipes
 
-In progress...
+### systemd::bootchart
 
-### systemd::hostnamed
+manages systemd-bootchart via attributes
+namespaced under `node['systemd']['bootchart']`.
 
-### systemd::journal_gatewayd
+### systemd::coredump
+
+manages systemd-coredump via attributes
+namespaced under `node['systemd']['coredump']`.
+
+### systemd::default
+
+no-op
+
+### systemd::hostname
+
+manages system hostname via `node['systemd']['hostname']` attribute.
 
 ### systemd::journald
 
+manages systemd-journald via attributes namespaced
+under `node['systemd']['journald']`.
+
+### systemd::journal_gatewayd
+
+manages systemd-journal-gatewayd via attributes
+namespaced under `node['systemd']['journal_gatewayd']`.
+
+### systemd::locale
+
+manages system locale via systemd-localed and
+attributes namespaced under `node['systemd']['locale']`.
+
 ### systemd::logind
+
+manages systemd-logind via attributes namespaced
+under `node['systemd']['logind']`.
 
 ### systemd::machined
 
+provides a no-op 'systemd-machined' service resource.
+
 ### systemd::networkd
+
+enables, starts systemd-networkd daemon
 
 ### systemd::resolved
 
+manages systemd-resolved via attributes namespaced
+under `node['systemd']['resolved']`.
+
+### systemd::sleep
+
+manages systemd-sleep via attributes namespaced
+under `node['systemd']['sleep']`.
+
+### systemd::sysctl
+
+provides a no-op systemd-sysctl service resource.
+
+### systemd::system
+
+manage systemd system-mode defaults via attributes
+namespaced under `node['systemd']['system']`.
+
 ### systemd::timedated
+
+provides a no-op systemd-timedated resource
 
 ### systemd::timesyncd
 
+manages systemd-timesyncd via attributes namespaced
+under `node['systemd']['timesyncd']`.
+
+### systemd::udev
+
+manages systemd-udevd via attributes namespaced
+under `node['systemd']['udev']`.
+
+### systemd::vconsole
+
+manages system console via systemd-vconsole-setup and
+attributes namespaced under `node['systemd']['vconsole']`.
+
 ## Resources
 
-### Foreword
+### Units
 
-#### Unit basics
-
-[Systemd units][units] are files that describe a system resource, like a
-socket, a device, a service, etc. They're written in [INI][ini] format, an
-easy and readable format for describing simple configurations.
-
-Admin-generated configurations are stored under '/etc/systemd/system', and
-override system-level units located under '/usr/lib/systemd/system'.
-
-Every unit type supports at least a "Unit" and "Install" section. The "Unit"
-section carries information about the unit itself, that does not vary between
-unit types; attributes like "Requires", "Description", "Conflicts", or
-assertions about the unit's expectations about its environment. The "Install"
-section carries information about the unit installation, and is only used by
-systemd when a unit is enabled or disabled; attributes like "Wants" or "Alias".
-
-Almost every unit unit type (with a couple minor exceptions in device and
-target), also support a configuration section based on their own "type". For
-example, service units have service-specific configuration in the "Service"
-section for configuration options like "ExecStart", and mount units have a
-"Mount" section for options like "What", and "Where".
-
-There are also 3 special groups of unit options that are common between several
-types of units: exec, kill, and resource-control, which handle common options
-re: execution environment configuration (e.g. "WorkingDirectory"), process
-killing procedure configuration (e.g. "KillSignal"), and resource control
-settings (e.g. "MemoryLimit"). Cookbook resources which support these common
-attributes along with their type-specific attributes are explicitly noted in
-the resource documentation below, and linked to the documentation for those
-attributes.
-
-#### A quick word about drop-ins
-
-In systemd, there are 2 ways to override a vendor setting: copying the unit
-from the vendor config location ('/usr/lib/systemd/system') to the local
-configuration path ('/etc/systemd/system') in order to override the entire
-unit configuration, or using a "drop-in" unit to override just the settings
-one specifically wants while keeping track of your explicit requirements and
-still support receiving vendor updates.
-
-The unit resources in this cookbook support a "drop-in" mode for managing
-drop-in units to override units of the same unit type. For more information,
-see the [drop-in](#drop-in) common configuration attributes.
-
-### systemd_automount
+##### systemd_automount
 
 Unit which describes a file system automount point controlled by systemd.
 [Documentation][automount]
@@ -101,7 +121,7 @@ Also supports:
 - [install](#install)
 - [drop-in](#drop-in)
 
-### systemd_device
+##### systemd_device
 
 Unit which describes a device as exposed in the sysfs/udev device tree.
 [Documentation][device]
@@ -114,7 +134,7 @@ Also supports:
 - [install](#install)
 - [drop-in](#drop-in)
 
-### systemd_mount
+##### systemd_mount
 
 Unit which describes a file system mount point controlled by systemd.
 [Documentation][mount]
@@ -142,7 +162,7 @@ Also supports:
 - [kill](#kill)
 - [resource-control](#resource-control)
 
-### systemd_path
+##### systemd_path
 
 Unit which describes information about a path monitored by systemd for
 path-based activities.
@@ -165,7 +185,7 @@ Also supports:
 - [install](#install)
 - [drop-in](#drop-in)
 
-### systemd_service
+##### systemd_service
 
 Unit which describes information about a process controlled and supervised by systemd.
 [Documentation][service]
@@ -214,7 +234,7 @@ Also supports:
 - [kill](#kill)
 - [resource-control](#resource-control)
 
-### systemd_slice
+##### systemd_slice
 
 Unit which describes a "slice" of the system; useful for managing resources
 for of a group of processes.
@@ -229,7 +249,7 @@ Also supports:
 - [drop-in](#drop-in)
 - [resource-control](#resource-control)
 
-### systemd_socket
+##### systemd_socket
 
 Unit which describes an IPC, network socket, or file-system FIFO controlled
 and supervised by systemd for socket-based service activation.
@@ -297,7 +317,7 @@ Also supports:
 - [kill](#kill)
 - [resource-control](#resource-control)
 
-### systemd_swap
+##### systemd_swap
 
 Unit which describes a swap device or file for memory paging.
 [Documentation][swap]
@@ -318,7 +338,7 @@ Also supports:
 - [kill](#kill)
 - [resource-control](#resource-control)
 
-### systemd_target
+##### systemd_target
 
 Unit which describes a systemd target, used for grouping units and
 synchronization points during system start-up.
@@ -332,7 +352,7 @@ Also supports:
 - [install](#install)
 - [drop-in](#drop-in)
 
-### systemd_timer
+##### systemd_timer
 
 Unit which describes a timer managed by systemd, for timer-based unit
 activation (typically a service of the same name).
@@ -357,9 +377,9 @@ Also supports:
 - [install](#install)
 - [drop-in](#drop-in)
 
-## Common Attributes
+#### Common Unit Attributes
 
-### organization
+##### organization
 
 special no-op attributes that yield to a block for the purpose of being
 able to group attributes of a resource similar to their rendered grouping.
@@ -383,7 +403,7 @@ systemd_automount 'vagrant-home' do
 end
 ```
 
-### unit
+##### unit
 
 Common configuration options of all the unit types.
 [Documentation][unit]
@@ -456,7 +476,7 @@ Common configuration options of all the unit types.
 |stop_when_unneeded|see docs|nil|
 |wants|see docs|nil|
 
-### install
+##### install
 
 Carries installation information for units. Used exclusively by
 enable/disable commands of `systemctl`. [Documentation][install]
@@ -469,7 +489,7 @@ enable/disable commands of `systemctl`. [Documentation][install]
 |required_by|see docs|nil|
 |wanted_by|see docs|nil|
 
-### drop-in
+##### drop-in
 
 Cookbook-specific attributes that activate and control drop-in mode for units.
 
@@ -479,7 +499,7 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 |override|which unit to override, prefix only. suffix determined by resource unit type (e.g. "ssh" on a systemd_service -> "ssh.service.d")|nil|
 |overrides|drop-in unit options that require a reset (e.g. "ExecStart" -> "ExecStart=" at top of section)|[]|
 
-### kill
+##### kill
 
 Process killing procedure configuration. [Documentation][kill]
 
@@ -490,7 +510,7 @@ Process killing procedure configuration. [Documentation][kill]
 |send_sighup|see docs|nil|
 |send_sigkill|see docs|nil|
 
-### exec
+##### exec
 
 Execution environment configuration. [Documentation][exec]
 
@@ -567,7 +587,7 @@ Execution environment configuration. [Documentation][exec]
 |utmp_identifier|see docs|nil|
 |working_directory|see docs|nil|
 
-### resource-control
+##### resource-control
 
 Resource control unit settings. [Documentation][resource_control]
 
@@ -590,10 +610,10 @@ Resource control unit settings. [Documentation][resource_control]
 |startup_block_io_weight|see docs|nil|
 |startup_cpu_shares|see docs|nil|
 
-## Daemons
+### Daemons
 
 
-## Utilities
+### Utilities
 
 
 ---

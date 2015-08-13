@@ -17,6 +17,9 @@
 # limitations under the License.
 #
 
+require 'chef/resource'
+require 'chef/recipe'
+
 module Systemd
   module Helpers
     DAEMONS ||= %i( journald logind resolved timesyncd )

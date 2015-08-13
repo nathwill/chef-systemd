@@ -495,7 +495,7 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|drop_in|boolean which sets where resource is a drop-in unit|false|
+|drop_in|boolean which sets if resource is a drop-in unit|false|
 |override|which unit to override, prefix only. suffix determined by resource unit type (e.g. "ssh" on a systemd_service -> "ssh.service.d")|nil|
 |overrides|drop-in unit options that require a reset (e.g. "ExecStart" -> "ExecStart=" at top of section)|[]|
 
@@ -612,30 +612,278 @@ Resource control unit settings. [Documentation][resource_control]
 
 ### Daemons
 
+##### systemd_journald
+
+resource for managing [systemd-journald][journald] configuration.
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|drop_in|boolean which sets if resource is a drop-in unit|true|
+|storage|see docs|nil|
+|compress|see docs|nil|
+|seal|see docs|nil|
+|split_mode|see docs|nil|
+|rate_limit_interval|see docs|nil|
+|rate_limit_burst|see docs|nil|
+|system_max_use|see docs|nil|
+|system_keep_free|see docs|nil|
+|system_max_file_size|see docs|nil|
+|runtime_max_use|see docs|nil|
+|runtime_keep_free|see docs|nil|
+|runtime_max_file_size|see docs|nil|
+|max_file_sec|see docs|nil|
+|max_retention_sec|see docs|nil|
+|sync_interval_sec|see docs|nil|
+|forward_to_syslog|see docs|nil|
+|forward_to_k_msg|see docs|nil|
+|forward_to_console|see docs|nil|
+|forward_to_wall|see docs|nil|
+|max_level_store|see docs|nil|
+|max_level_syslog|see docs|nil|
+|max_level_k_msg|see docs|nil|
+|max_level_console|see docs|nil|
+|max_level_wall|see docs|nil|
+|tty_path|see docs|nil|
+
+
+##### systemd_logind
+
+resource for managing [systemd-logind][logind] configuration.
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|drop_in|boolean which sets if resource is a drop-in unit|true|
+|n_auto_v_ts|see docs|nil|
+|reserve_vt|see docs|nil|
+|kill_user_processes|see docs|nil|
+|kill_only_users|see docs|nil|
+|kill_exclude_users|see docs|nil|
+|idle_action|see docs|nil|
+|idle_action_sec|see docs|nil|
+|inhibit_delay_max_sec|see docs|nil|
+|handle_power_key|see docs|nil|
+|handle_suspend_key|see docs|nil|
+|handle_hibernate_key|see docs|nil|
+|handle_lid_switch|see docs|nil|
+|handle_lid_switch_docked|see docs|nil|
+|power_key_ignore_inhibited|see docs|nil|
+|suspend_key_ignore_inhibited|see docs|nil|
+|hibernate_key_ignore_inhibited|see docs|nil|
+|lid_switch_ignore_inhibited|see docs|nil|
+|holdoff_timeout_sec|see docs|nil|
+|runtime_directory_size|see docs|nil|
+|remove_ipc|see docs|nil|
+
+##### systemd_resolved
+
+resource for managing [systemd-resolved][resolved] configuration.
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|drop_in|boolean which sets if resource is a drop-in unit|true|
+|dns|see docs|nil|
+|fallback_dns|see docs|nil|
+|llmnr|see docs|nil|
+
+##### systemd_timesyncd
+
+resource for managing [systemd-timesyncd][timesyncd] configuration.
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|drop_in|boolean which sets if resource is a drop-in unit|true|
+|ntp|see docs|nil|
+|fallback_ntp|see docs|nil|
 
 ### Utilities
 
+##### systemd_bootchart
+
+Configure [systemd-bootchart][bootchart].
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|drop_in|boolean which sets if resource is a drop-in unit|true|
+|samples|see docs|nil|
+|frequency|see docs|nil|
+|relative|see docs|nil|
+|filter|see docs|nil|
+|output|see docs|nil|
+|init|see docs|nil|
+|plot_memory_usage|see docs|nil|
+|plot_entropy_graph|see docs|nil|
+|scale_x|see docs|nil|
+|scale_y|see docs|nil|
+|control_group|see docs|nil|
+
+##### systemd_coredump
+
+Configure [systemd-coredump][coredump].
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|drop_in|boolean which sets if resource is a drop-in unit|true|
+|storage|see docs|nil|
+|compress|see docs|nil|
+|process_size_max|see docs|nil|
+|external_size_max|see docs|nil|
+|journal_size_max|see docs|nil|
+|max_use|see docs|nil|
+|keep_free|see docs|nil|
+
+##### systemd_sleep
+
+Configure [systemd-sleep][sleep].
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|drop_in|boolean which sets if resource is a drop-in unit|true|
+|suspend_mode|see docs|nil|
+|hibernate_mode|see docs|nil|
+|hybrid_sleep_mode|see docs|nil|
+|suspend_state|see docs|nil|
+|hibernate_state|see docs|nil|
+|hybrid_sleep_state|see docs|nil|
+
+##### systemd_system
+
+Configure systemd [system-mode][system] defaults.
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|drop_in|boolean which sets if resource is a drop-in unit|true|
+|log_level|see docs|nil|
+|log_target|see docs|nil|
+|log_color|see docs|nil|
+|log_location|see docs|nil|
+|dump_core|see docs|nil|
+|crash_shell|see docs|nil|
+|show_status|see docs|nil|
+|crash_ch_vt|see docs|nil|
+|default_standard_output|see docs|nil|
+|default_standard_error|see docs|nil|
+|cpu_affinity|see docs|nil|
+|join_controllers|see docs|nil|
+|runtime_watchdog_sec|see docs|nil|
+|shutdown_watchdog_sec|see docs|nil|
+|capability_bounding_set|see docs|nil|
+|system_call_architectures|see docs|nil|
+|timer_slack_n_sec|see docs|nil|
+|default_timer_accuracy_sec|see docs|nil|
+|default_timeout_start_sec|see docs|nil|
+|default_timeout_stop_sec|see docs|nil|
+|default_restart_sec|see docs|nil|
+|default_start_limit_interval|see docs|nil|
+|default_start_limit_burst|see docs|nil|
+|default_environment|see docs|nil|
+|default_cpu_accounting|see docs|nil|
+|default_block_io_accounting|see docs|nil|
+|default_memory_accounting|see docs|nil|
+|default_limit_cpu|see docs|nil|
+|default_limit_fsize|see docs|nil|
+|default_limit_data|see docs|nil|
+|default_limit_stack|see docs|nil|
+|default_limit_core|see docs|nil|
+|default_limit_rss|see docs|nil|
+|default_limit_nofile|see docs|nil|
+|default_limit_as|see docs|nil|
+|default_limit_nproc|see docs|nil|
+|default_limit_memlock|see docs|nil|
+|default_limit_locks|see docs|nil|
+|default_limit_sigpending|see docs|nil|
+|default_limit_msgqueue|see docs|nil|
+|default_limit_nice|see docs|nil|
+|default_limit_rtprio|see docs|nil|
+|default_limit_rttime|see docs|nil|
+
+##### systemd_user
+
+Configure systemd [user-mode][system] defaults.
+
+Has same attributes as systemd_user.
+
+### Misc
+
+##### systemd_networkd_link
+
+Configure network links via [systemd-networkd][networkd] link files.
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|link_mac_address|set Link section MACAddress option. see docs.|nil|
+|match_mac_address|set Match section MACAddress option. see docs.|nil|
+|original_name|see docs|nil|
+|path|see docs|nil|
+|driver|see docs|nil|
+|type|see docs|nil|
+|host|see docs|nil|
+|virtualization|see docs|nil|
+|kernel_command_line|see docs|nil|
+|architecture|see docs|nil|
+|description|see docs|nil|
+|link_alias|set link section Alias option. see docs.|nil|
+|mac_address_policy|see docs|nil|
+|name_policy|see docs|nil|
+|name|see docs|nil|
+|mtu_bytes|see docs|nil|
+|bits_per_second|see docs|nil|
+|duplex|see docs|nil|
+|wake_on_lan|see docs|nil|
+
+##### systemd_sysctl
+
+Configure sysctl settings via [systemd-sysctl][sysctl] sysctl.d.
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|name|sysctl name|resource name|
+|value|sysctl value|nil|
+
+##### systemd_tmpfile
+
+Configure system temporary files via [systemd-tmpfiles][tmpfiles] tmpfiles.d.
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|path|path config for tmpfiles|nil|
+|mode|mode config for tmpfiles|"-"|
+|uid|uid config for tmpfiles|"-"|
+|gid|gid config for tmpfiles|"-"|
+|age|age config for tmpfiles|"-"|
+|argument|argument config for tmpfiles|"-"|
+|type|type config for tmpfiles|"f"|
 
 ---
 [automount]: http://www.freedesktop.org/software/systemd/man/systemd.automount.html
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html
+[bootchart]: http://www.freedesktop.org/software/systemd/man/systemd-bootchart.html
 [chef]: https://chef.io
+[coredump]: http://www.freedesktop.org/software/systemd/man/systemd-coredump.html
 [device]: http://www.freedesktop.org/software/systemd/man/systemd.device.html
 [docs]: http://www.freedesktop.org/wiki/Software/systemd/
 [exec]: http://www.freedesktop.org/software/systemd/man/systemd.exec.html
 [ini]: https://en.wikipedia.org/wiki/INI_file
 [install]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#%5BInstall%5D%20Section%20Options
+[journald]: www.freedesktop.org/software/systemd/man/systemd-journald.html
 [kill]: http://www.freedesktop.org/software/systemd/man/systemd.kill.html
+[logind]: www.freedesktop.org/software/systemd/man/systemd-logind.html
 [mount]: http://www.freedesktop.org/software/systemd/man/systemd.mount.html
+[networkd]: http://www.freedesktop.org/software/systemd/man/systemd-networkd.service.html
 [path]: http://www.freedesktop.org/software/systemd/man/systemd.path.html
+[resolved]: www.freedesktop.org/software/systemd/man/systemd-resolved.html
 [rhel]: https://access.redhat.com/articles/754933
 [resource_control]: http://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
 [service]: http://www.freedesktop.org/software/systemd/man/systemd.service.html
+[sleep]: http://www.freedesktop.org/software/systemd/man/systemd-sleep.conf.html
 [slice]: http://www.freedesktop.org/software/systemd/man/systemd.slice.html
 [socket]: http://www.freedesktop.org/software/systemd/man/systemd.socket.html
 [swap]: http://www.freedesktop.org/software/systemd/man/systemd.swap.html
+[sysctl]: http://www.freedesktop.org/software/systemd/man/systemd-sysctl.html
+[system]: http://www.freedesktop.org/software/systemd/man/systemd-system.conf.html
 [target]: http://www.freedesktop.org/software/systemd/man/systemd.target.html
 [timer]: http://www.freedesktop.org/software/systemd/man/systemd.timer.html
+[timesyncd]: www.freedesktop.org/software/systemd/man/systemd-timesyncd.html
+[tmpfiles]: http://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
 [travis]: https://travis-ci.org/nathwill/chef-systemd
 [unit]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#%5BUnit%5D%20Section%20Options
 [units]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html

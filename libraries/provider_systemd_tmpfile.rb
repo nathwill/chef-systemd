@@ -32,6 +32,7 @@ class Chef::Provider
     %i( create delete ).each do |a|
       action a do
         r = new_resource
+
         dir = '/etc/tmpfiles.d'
         path = ::File.join(dir, "#{r.name}.conf")
 
@@ -42,8 +43,7 @@ class Chef::Provider
           when :delete
             command "systemd-tmpfiles --clean --remove #{path}"
           end
-          action :nothing
-          subscribes :run, "file[#{path}]", :immediately
+          only_if { ::File.exist?(path) }
         end
 
         f = file path do
@@ -51,6 +51,7 @@ class Chef::Provider
             r.type, r.path, r.mode, r.uid, r.gid, r.age, r.argument
           ].join(' ')
           action a
+          notifies :run, "execute[systemd-tmpfiles-#{r.name}]", :immediately
         end
 
         new_resource.updated_by_last_action(f.updated_by_last_action?)

@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+require 'mixlib/shellout'
 require 'chef/resource'
 require 'chef/recipe'
 
@@ -77,6 +78,17 @@ module Systemd
       def systemd?
         IO.read('/proc/1/comm').chomp == 'systemd'
       end
+    end
+
+    module NTP
+      def ntp_abled?(yn)
+        Mixlib::ShellOut.new('timedatectl')
+          .tap(&:run_command)
+          .stdout
+          .match(Regexp.new("NTP enabled: #{yn}")) unless defined?(ChefSpec)
+      end
+
+      module_function :ntp_abled?
     end
   end
 end

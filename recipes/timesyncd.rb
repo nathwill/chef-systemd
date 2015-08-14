@@ -16,12 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'mixlib/shellout'
-
-status = Mixlib::ShellOut.new("timedatectl")
-           .tap(&:run_command)
-           .stdout
-
 ts = node['systemd']['timesyncd']
 
 systemd_timesyncd 'timesyncd' do
@@ -31,10 +25,10 @@ systemd_timesyncd 'timesyncd' do
   notifies :restart, 'service[systemd-timesyncd]', :delayed
 end
 
-enabled = node['systemd']['enable_ntp']
+abled = node['systemd']['enable_ntp']
 
-execute "timedatectl set-ntp #{enabled}" do
-  not_if { status.match(Regexp.new("NTP enabled: #{enabled}")) }
+execute "timedatectl set-ntp #{abled}" do
+  not_if { Systemd::Helpers::NTP.ntp_abled?(abled) }
 end
 
 service 'systemd-timesyncd' do

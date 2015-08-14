@@ -26,5 +26,5 @@ file '/etc/locale.conf' do
 end
 
 service 'systemd-localed' do
-  action :nothing
+  action :enable
 end

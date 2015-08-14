@@ -17,5 +17,5 @@
 # limitations under the License.
 
 service 'systemd-machined' do
-  action :nothing
+  action [:enable, :start]
 end

@@ -53,7 +53,7 @@ class Chef::Provider
     action :delete do
       r = new_resource
 
-      path = ::File.join(DIR, "#{r.name.conf}")
+      path = ::File.join(DIR, "#{r.name}.conf")
 
       execute "systemd-tmpfiles --clean --remove #{path}" do
         only_if { ::File.exist?(path) }

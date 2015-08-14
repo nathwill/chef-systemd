@@ -21,7 +21,7 @@ v = node['systemd']['vconsole']
 opts = v.reject { |_, o| o.nil? }
 
 file '/etc/vconsole.conf' do
-  content opts.map { |k, o| "#{k.upcase}=#{o}" }.join("\n")
+  content opts.map { |k, o| "#{k.upcase}=\"#{o}\"" }.join("\n")
   notifies :restart, 'service[systemd-vconsole-setup]', :immediately
 end
 

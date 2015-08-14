@@ -21,7 +21,7 @@ l = node['systemd']['locale']
 opts = l.reject { |_, v| v.nil? }
 
 file '/etc/locale.conf' do
-  content opts.map { |k, v| "#{k.upcase}=#{v}" }.join("\n")
+  content opts.map { |k, v| "#{k.upcase}=\"#{v}\"" }.join("\n")
   notifies :restart, 'service[systemd-localed]', :immediately
 end
 

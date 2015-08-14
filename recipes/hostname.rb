@@ -28,6 +28,6 @@ execute 'hostnamectl-set-hostname' do
 end
 
 service 'systemd-hostnamed' do
-  action [:enable, :start]
+  action :enable
   subscribes :restart, 'file[/etc/hostname]', :immediately
 end

@@ -27,8 +27,8 @@ mode = case rtc['mode']
          Chef::Application.fatal! 'Unknown RTC mode!'
        end
 
-cmd = ['timedatectl set-local-rtc']
+cmd = ['timedatectl']
 cmd << '--adjust-system-clock' if rtc['adjust_system_clock']
-cmd << mode
+cmd << "set-local-rtc #{mode}"
 
 execute cmd.join(' ')

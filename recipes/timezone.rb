@@ -18,4 +18,6 @@
 
 tz = node['systemd']['timezone']
 
-execute "timedatectl set-timezone #{tz}"
+execute "timedatectl set-timezone #{tz}" do
+  not_if { File.readlink('/etc/localtime').match(Regexp.new("#{tz}$")) }
+end

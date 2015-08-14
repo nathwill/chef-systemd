@@ -55,6 +55,7 @@ suites:
       - recipe[systemd::sysctl]
       - recipe[setup::sysctl]
       - recipe[systemd::system]
+      - recipe[systemd::timezone]
       - recipe[setup::tmpfiles]
       - recipe[systemd::udev]
       - recipe[systemd::user]

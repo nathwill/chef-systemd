@@ -51,6 +51,7 @@ suites:
       - recipe[systemd::coredump]
       - recipe[systemd::locale]
       - recipe[systemd::hostname]
+      - recipe[systemd::real_time_clock]
       - recipe[systemd::sleep]
       - recipe[systemd::sysctl]
       - recipe[setup::sysctl]

@@ -20,7 +20,7 @@ default['systemd'].tap do |s|
   # See timedatectl list-timezones
   s['timezone'] = 'UTC'
 
-  s['enable_ntp'] = true
+  s['enable_ntp'] = 'yes'
 
   s['timesyncd'].tap do |ts|
     ts['ntp'] = 0.upto(3).map { |i| "#{i}.pool.ntp.org" }.join(' ')

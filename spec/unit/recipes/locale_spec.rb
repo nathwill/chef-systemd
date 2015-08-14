@@ -26,7 +26,9 @@ describe 'systemd::locale' do
     end
 
     it 'manages locale.conf' do
-      expect(chef_run).to create_file('/etc/locale.conf')
+      expect(chef_run).to create_file('/etc/locale.conf').with(
+        content: 'LANG="en_US.UTF-8"'
+      )
     end
 
     let(:file) do

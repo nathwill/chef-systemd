@@ -27,7 +27,7 @@ describe 'systemd::vconsole' do
 
     it 'manages vconsole.conf' do
       expect(chef_run).to create_file('/etc/vconsole.conf').with(
-        content: "KEYMAP=us\nFONT=latarcyrheb-sun16"
+        content: "KEYMAP=\"us\"\nFONT=\"latarcyrheb-sun16\""
       )
     end
 

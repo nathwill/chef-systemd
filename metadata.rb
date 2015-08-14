@@ -4,7 +4,7 @@ maintainer_email 'nath.e.will@gmail.com'
 license          'apache2'
 description      'Installs/Configures systemd'
 long_description 'Installs/Configures systemd'
-version          '0.1.2'
+version          '0.2.0'
 
 %w( redhat centos scientific ).each do |p|
   supports p, '>= 7.0'

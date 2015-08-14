@@ -21,6 +21,8 @@ require 'chef/provider/lwrp_base'
 
 class Chef::Provider
   class SystemdSysctl < Chef::Provider::LWRPBase
+    DIR = '/etc/sysctl.d'
+
     use_inline_resources
 
     def whyrun_supported?
@@ -32,10 +34,19 @@ class Chef::Provider
     %i( create delete ).each do |a|
       action a do
         r = new_resource
-        dir = '/etc/sysctl.d'
 
-        f = file ::File.join(dir, "#{r.name}.conf") do
-          content "#{r.name}=#{r.value}"
+        path = ::File.join(DIR, "#{r.name}.conf")
+
+        str = "#{r.name}=#{r.value}"
+
+        execute "sysctl -w #{str}" do
+          action :nothing
+          only_if { a == :create }
+          subscribes :run, "file[#{path}]", :immediately
+        end
+
+        f = file path do
+          content str
           action a
         end
 

@@ -16,8 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# it's recommended to include this recipe and have
-# sysctl resources notify this service to restart
 service 'systemd-sysctl' do
   action :nothing
 end

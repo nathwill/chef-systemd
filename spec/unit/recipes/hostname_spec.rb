@@ -31,7 +31,6 @@ describe 'systemd::hostname' do
 
     it 'enables/starts the service' do
       expect(chef_run).to enable_service('systemd-hostnamed')
-      expect(chef_run).to start_service('systemd-hostnamed')
     end
     
     it 'converges successfully' do

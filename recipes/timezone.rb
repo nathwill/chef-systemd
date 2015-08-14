@@ -19,5 +19,8 @@
 tz = node['systemd']['timezone']
 
 execute "timedatectl set-timezone #{tz}" do
-  not_if { File.readlink('/etc/localtime').match(Regexp.new("#{tz}$")) }
+  not_if do
+    File.symlink?('/etc/localtime') &&
+      File.readlink('/etc/localtime').match(Regexp.new("#{tz}$"))
+  end
 end

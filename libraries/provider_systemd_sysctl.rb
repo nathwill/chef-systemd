@@ -21,7 +21,7 @@ require 'chef/provider/lwrp_base'
 
 class Chef::Provider
   class SystemdSysctl < Chef::Provider::LWRPBase
-    DIR = '/etc/sysctl.d'
+    DIR ||= '/etc/sysctl.d'
 
     use_inline_resources
 

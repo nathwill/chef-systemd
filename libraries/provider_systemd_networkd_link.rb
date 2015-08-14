@@ -22,7 +22,7 @@ require_relative 'helpers'
 
 class Chef::Provider
   class SystemdNetworkdLink < Chef::Provider::LWRPBase
-    DIR = '/etc/systemd/network'
+    DIR ||= '/etc/systemd/network'
 
     use_inline_resources
 

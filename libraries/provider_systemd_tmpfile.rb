@@ -21,7 +21,7 @@ require 'chef/provider/lwrp_base'
 
 class Chef::Provider
   class SystemdTmpfile < Chef::Provider::LWRPBase
-    DIR = '/etc/tmpfiles.d'
+    DIR ||= '/etc/tmpfiles.d'
 
     use_inline_resources
 
@@ -53,7 +53,7 @@ class Chef::Provider
     action :delete do
       r = new_resource
 
-      path = ::File.join(DIR, "#{r.name.conf}"
+      path = ::File.join(DIR, "#{r.name.conf}")
 
       execute "systemd-tmpfiles --clean --remove #{path}" do
         only_if { ::File.exist?(path) }

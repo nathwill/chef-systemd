@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Attributes:: timesyncd
+# Recipe:: timezone
 #
 # Copyright 2015 The Authors
 #
@@ -16,9 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['systemd']['timesyncd'].tap do |ts|
-  ts['ntp'] = 0.upto(3).map { |i| "#{i}.pool.ntp.org" }.join(' ')
-  ts['fallback_ntp'] = 0.upto(3).map do |i|
-    "#{i}.#{node['platform']}.pool.ntp.org"
-  end.join(' ')
-end
+tz = node['systemd']['timezone']
+
+execute "timedatectl set-timezone #{tz}"

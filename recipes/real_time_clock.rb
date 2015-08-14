@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: timedated
+# Recipe:: real_time_clock
 #
 # Copyright 2015 The Authors
 #
@@ -16,6 +16,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-service 'systemd-timedated' do
-  action [:enable, :start]
-end
+rtc = node['systemd']['real_time_clock']
+
+mode = case rtc['mode']
+       when 'utc'
+         0
+       when 'local'
+         1
+       else
+         Chef::Application.fatal! 'Unknown RTC mode!'
+       end
+
+cmd = ['timedatectl set-local-rtc']
+cmd << '--adjust-system-clock' if rtc['adjust_system_clock']
+cmd << mode
+
+execute cmd.join(' ')

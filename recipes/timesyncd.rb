@@ -25,6 +25,8 @@ systemd_timesyncd 'timesyncd' do
   notifies :restart, 'service[systemd-timesyncd]', :delayed
 end
 
+execute "timedatectl set-ntp #{node['systemd']['enable_ntp']}"
+
 service 'systemd-timesyncd' do
   action [:enable, :start]
 end

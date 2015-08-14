@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: timedated
+# Attributes:: real_time_clock
 #
 # Copyright 2015 The Authors
 #
@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-service 'systemd-timedated' do
-  action [:enable, :start]
+default['systemd']['real_time_clock'].tap do |rtc|
+  rtc['mode'] = 'utc'
+  rtc['adjust_system_clock'] = false
 end

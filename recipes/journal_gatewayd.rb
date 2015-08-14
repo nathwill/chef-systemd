@@ -29,7 +29,7 @@ systemd_socket 'local-journal-gatewayd-listen-stream' do
   notifies :restart, 'systemd_socket[systemd-journal-gatewayd]', :delayed
 end
 
-opts = jg['options'].select { |_, v| !v.nil? }.map do |o, v|
+opts = jg['options'].reject { |_, v| v.nil? }.map do |o, v|
   "--#{o}=#{v}"
 end
 
@@ -41,13 +41,9 @@ systemd_service 'local-journal-gatewayd-options' do
     exec_start "/usr/lib/systemd/systemd-journal-gatewayd #{opts.join(' ')}"
   end
   not_if { opts.empty? }
-  # we don't want to restart, as that'd screw with the socket activation
-  # so we stop it if the config changes, relying on the socket activation
-  # to start it again if needed
   notifies :stop, 'service[systemd-journal-gatewayd]', :delayed
 end
 
-# socket activation, wahoo!
 systemd_socket 'systemd-journal-gatewayd' do
   action [:enable, :start]
 end

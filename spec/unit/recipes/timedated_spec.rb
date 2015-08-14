@@ -8,8 +8,8 @@ describe 'systemd::timedated' do
     end
 
     it 'does not enable/start the service' do
-      expect(chef_run).to_not enable_service('systemd-timedated')
-      expect(chef_run).to_not start_service('systemd-timedated')
+      expect(chef_run).to enable_service('systemd-timedated')
+      expect(chef_run).to start_service('systemd-timedated')
     end
   end
 end

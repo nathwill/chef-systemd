@@ -27,7 +27,6 @@ describe 'systemd::sysctl' do
 
     it 'has a service resource for systemd-sleep' do
       expect(chef_run).to enable_service('systemd-sysctl')
-      expect(chef_run).to start_service('systemd-sysctl')
     end
 
     it 'converges successfully' do

@@ -16,8 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# A oneshot early boot service to apply
-# sysctl settings under /etc/sysctl.d
 service 'systemd-sysctl' do
   action :enable
 end

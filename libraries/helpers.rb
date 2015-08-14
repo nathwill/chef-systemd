@@ -90,6 +90,18 @@ module Systemd
 
       module_function :ntp_abled?
     end
+
+    module RTC
+      def rtc_mode?(lu)
+        yn = lu == 'local' ? 'yes' : 'no'
+        Mixlib::ShellOut.new('timedatectl')
+          .tap(&:run_command)
+          .stdout
+          .match(Regexp.new("RTC in local TZ: #{yn}")) unless defined?(ChefSpec)
+      end
+
+      module_function :rtc_mode?
+    end
   end
 end
 

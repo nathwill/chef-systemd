@@ -18,6 +18,7 @@
 
 rtc = node['systemd']['real_time_clock']
 
+match = Systemd::Helpers::RTC.rtc_mode?(rtc['mode'])
 mode = case rtc['mode']
        when 'utc'
          0
@@ -31,4 +32,6 @@ cmd = ['timedatectl']
 cmd << '--adjust-system-clock' if rtc['adjust_system_clock']
 cmd << "set-local-rtc #{mode}"
 
-execute cmd.join(' ')
+execute cmd.join(' ') do
+  not_if { match }
+end

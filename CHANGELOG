@@ -1,3 +1,9 @@
+# 0.2.0 / 2015-08-??
+
+* add non-unit resources/providers
+* add recipes
+* expanded testing
+
 # 0.1.2 / 2015-07-29
 
 * hotfix provider

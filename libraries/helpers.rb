@@ -80,17 +80,6 @@ module Systemd
       end
     end
 
-    module NTP
-      def ntp_abled?(yn)
-        Mixlib::ShellOut.new('timedatectl')
-          .tap(&:run_command)
-          .stdout
-          .match(Regexp.new("NTP enabled: #{yn}")) unless defined?(ChefSpec)
-      end
-
-      module_function :ntp_abled?
-    end
-
     module RTC
       def rtc_mode?(lu)
         yn = lu == 'local' ? 'yes' : 'no'

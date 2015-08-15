@@ -31,6 +31,7 @@ class Chef::Resource
     actions :create, :delete, :load, :unload
     default_action :create
 
+    attribute :blacklist, kind_of: [TrueClass, FalseClass], default: false
     attribute :modules, kind_of: Array, default: %w(), required: true
   end
 end

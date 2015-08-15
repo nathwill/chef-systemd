@@ -1,8 +1,9 @@
 
 # Test removing, unloading
 systemd_modules 'die-beep-die' do
+  blacklist true
   modules %w( pcspkr )
-  action [:delete, :unload]
+  action [:create, :unload]
 end
 
 # Test creating, loading

@@ -10,7 +10,7 @@ version          '0.2.0'
   supports p, '>= 7.0'
 end
 
-supports 'fedora', '>= 15'
+supports 'fedora'
 supports 'debian', '>= 8.0'
 supports 'ubuntu', '>= 15.04'
 

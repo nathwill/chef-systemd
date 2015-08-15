@@ -19,9 +19,24 @@
 u = node['systemd']['udev']
 
 file '/etc/udev/udev.conf' do
-  content "udev_log=#{u['udev_log']}"
+  content "udev_log=\"#{u['udev_log']}\""
   not_if { u['udev_log'].nil? }
   notifies :restart, 'service[systemd-udevd]', :immediately
+end
+
+opts = u['options'].reject { |_, v| v.nil? }.map do |o, v|
+  "--#{o}=#{v}"
+end
+
+systemd_service 'local-udevd-options' do
+  drop_in true
+  override 'systemd-udevd'
+  overrides %w( ExecStart )
+  service do
+    exec_start "/usr/lib/systemd/systemd-udevd #{opts.join(' ')}"
+  end
+  not_if { opts.empty? }
+  notifies :restart, 'service[systemd-udevd]', :delayed
 end
 
 service 'systemd-udevd' do

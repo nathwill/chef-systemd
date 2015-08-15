@@ -16,4 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['systemd']['udev']['udev_log'] = nil
+default['systemd']['udev'].tap do |u|
+  u['udev_log'] = nil
+  u['options'].tap do |o|
+    o['children-max'] = nil
+    o['exec-delay'] = nil
+    o['event-timeout'] = nil
+    o['resolve-names'] = nil
+  end
+end

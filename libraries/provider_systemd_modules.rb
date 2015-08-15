@@ -21,8 +21,6 @@ require 'chef/provider/lwrp_base'
 
 class Chef::Provider
   class SystemdModules < Chef::Provider::LWRPBase
-    DIR ||= '/etc/modules-load.d'
-
     use_inline_resources
 
     def whyrun_supported?
@@ -35,10 +33,13 @@ class Chef::Provider
       action a do
         r = new_resource
 
-        path = ::File.join(DIR, "#{r.name}.conf")
+        dir = r.blacklist ? '/etc/modprobe.d' : '/etc/modules-load.d'
+
+        path = ::File.join(dir, "#{r.name}.conf")
+        mods = r.blacklist ? r.modules.map { |m| "blacklist #{m}" } : r.modules
 
         f = file path do
-          content r.modules.join("\n")
+          content mods.join("\n")
           action a
         end
 

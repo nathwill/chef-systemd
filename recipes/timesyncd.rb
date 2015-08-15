@@ -22,15 +22,13 @@ systemd_timesyncd 'timesyncd' do
   drop_in false
   ntp ts['ntp']
   fallback_ntp ts['fallback_ntp']
-  notifies :restart, 'service[systemd-timesyncd]', :delayed
-end
-
-abled = node['systemd']['enable_ntp']
-
-execute "timedatectl set-ntp #{abled}" do
-  not_if { Systemd::Helpers::NTP.ntp_abled?(abled) }
 end
 
 service 'systemd-timesyncd' do
-  action [:enable, :start]
+  if node['systemd']['enable_ntp']
+    action [:enable, :start]
+    subscribes :restart, 'systemd_timesyncd[timesyncd]', :delayed
+  else
+    action [:disable, :stop]
+  end
 end

@@ -102,6 +102,15 @@ module Systemd
 
       module_function :rtc_mode?
     end
+
+    module Timezone
+      def timezone?(tz)
+        File.symlink?('/etc/localtime') &&
+          File.readlink('/etc/localtime').match(Regexp.new("#{tz}$"))
+      end
+
+      module_function :timezone?
+    end
   end
 end
 

@@ -19,8 +19,5 @@
 tz = node['systemd']['timezone']
 
 execute "timedatectl set-timezone #{tz}" do
-  not_if do
-    File.symlink?('/etc/localtime') &&
-      File.readlink('/etc/localtime').match(Regexp.new("#{tz}$"))
-  end
+  not_if { Systemd::Helpers::Timezone.timezone?(tz) }
 end

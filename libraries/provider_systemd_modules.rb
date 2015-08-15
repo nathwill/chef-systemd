@@ -53,10 +53,10 @@ class Chef::Provider
 
       r.modules.each do |m|
         e = execute "modprobe #{m}" do
-          not_if { IO.read('/proc/modules').match(Regexp.new("^#{m}\s") }
+          not_if { IO.read('/proc/modules').match(Regexp.new("^#{m}\s")) }
         end
 
-        updated << m if e.updated_by_last_action?        
+        updated << m if e.updated_by_last_action?
       end
 
       new_resource.updated_by_last_action(!updated.empty?)
@@ -69,7 +69,7 @@ class Chef::Provider
 
       r.modules.each do |m|
         e = execute "modprobe -r #{m}" do
-          only_if { IO.read('/proc/modules').match(Regexp.new("^#{m}\s") }
+          only_if { IO.read('/proc/modules').match(Regexp.new("^#{m}\s")) }
         end
 
         updated << m if e.updated_by_last_action?

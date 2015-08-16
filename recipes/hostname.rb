@@ -16,18 +16,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-file '/etc/hostname' do
-  content node['systemd']['hostname']
-  only_if { node['systemd']['hostname'] }
+path = '/etc/hostname'
+hostname = node['systemd']['hostname']
+
+file path do
+  content hostname
+  not_if { hostname.nil? }
 end
 
-execute 'hostnamectl-set-hostname' do
-  command "hostnamectl set-hostname #{node['systemd']['hostname']}"
+execute "hostnamectl set-hostname #{hostname}" do
   action :nothing
-  subscribes :run, 'file[/etc/hostname]', :immediately
+  subscribes :run, "file[#{path}]", :immediately
 end
 
 service 'systemd-hostnamed' do
   action :enable
-  subscribes :restart, 'file[/etc/hostname]', :immediately
+  subscribes :restart, "file[#{path}]", :immediately
 end

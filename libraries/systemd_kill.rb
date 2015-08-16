@@ -27,4 +27,28 @@ module Systemd
       SendSIGKILL
     )
   end
+
+  def kill_mode(arg = nil)
+    set_or_return(
+      :kill_mode, arg,
+      :kind_of => String,
+      :equal_to => %w( control-group process mixed none )
+    )
+  end
+
+  def send_sighup(arg = nil)
+    set_or_return(
+      :send_sighup, arg,
+      :kind_of => String,
+      :equal_to => %w( yes no )
+    )
+  end
+
+  def send_sigkill(arg = nil)
+    set_or_return(
+      :send_sigkill, arg,
+      :kind_of => String,
+      :equal_to => %w( yes no )
+    )
+  end
 end

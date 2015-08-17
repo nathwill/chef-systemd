@@ -39,16 +39,14 @@ module Systemd
   def send_sighup(arg = nil)
     set_or_return(
       :send_sighup, arg,
-      kind_of: String,
-      equal_to: %w( yes no )
+      kind_of: [TrueClass, FalseClass]
     )
   end
 
   def send_sigkill(arg = nil)
     set_or_return(
       :send_sigkill, arg,
-      kind_of: String,
-      equal_to: %w( yes no )
+      kind_of: [TrueClass, FalseClass]
     )
   end
 end

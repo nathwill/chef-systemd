@@ -39,4 +39,61 @@ module Systemd
       Delegate
     )
   end
+
+  def cpu_accounting(arg = nil)
+    set_or_return(
+      :cpu_accounting, arg,
+      kind_of: [TrueClass, FalseClass]
+    )
+  end
+
+  def cpu_shares(arg = nil)
+    set_or_return(
+      :cpu_shares, arg,
+      kind_of: Integer
+    )
+  end
+
+  def startup_cpu_shares(arg = nil)
+    set_or_return(
+      :startup_cpu_shares, arg,
+      kind_of: Integer
+    )
+  end
+
+  def memory_accounting(arg = nil)
+    set_or_return(
+      :memory_accounting, arg,
+      kind_of: [TrueClass, FalseClass]
+    )
+  end
+
+  def block_io_accounting(arg = nil)
+    set_or_return(
+      :block_io_accounting, arg,
+      kind_of: [TrueClass, FalseClass]
+    )
+  end
+
+  def block_io_weight(arg = nil)
+    set_or_return(
+      :block_io_weight, arg,
+      kind_of: Integer
+    )
+  end
+
+  def startup_block_io_weight(arg = nil)
+    set_or_return(
+      :startup_block_io_weight, arg,
+      kind_of: Integer
+    )
+  end
+
+  def device_policy(arg = nil)
+    set_or_return(
+      :device_policy, arg,
+      kind_of: String,
+      equal_to: %w( strict closed auto )
+    )
+  end
 end

@@ -118,3 +118,4 @@ class String
 end
 
 ::Chef::Recipe.send(:include, Systemd::Helpers::Init)
+::Chef::Resource.send(:include, Systemd::Helpers::Init)

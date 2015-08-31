@@ -27,7 +27,7 @@ class Chef::Provider
       provides "systemd_#{unit_type}".to_sym
     end
 
-    %i( enable disable start stop restart ).each do |a|
+    %i( enable disable start stop restart reload ).each do |a|
       action a do
         r = new_resource
 
@@ -54,7 +54,7 @@ class Chef::Provider
                     state == 'active'
                   when :stop
                     %w( inactive unknown ).include? state
-                  when :restart
+                  when :restart, :reload
                     false
                   end
         end

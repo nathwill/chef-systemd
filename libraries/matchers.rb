@@ -34,7 +34,7 @@ if defined?(ChefSpec)
   )
 
   actions = %i(create delete )
-  unit_actions = %i( enable disable start stop restart )
+  unit_actions = %i( enable disable start stop restart reload )
 
   (units | daemons | utils | misc).each do |type|
     ChefSpec.define_matcher("systemd_#{type}".to_sym)

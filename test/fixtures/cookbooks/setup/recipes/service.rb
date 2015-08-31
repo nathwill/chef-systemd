@@ -37,6 +37,11 @@ systemd_service 'my-override' do
   end
 end
 
+# Test reload action
+systemd_service 'sshd' do
+  action :reload
+end
+
 # Confirm lifecycle actions not
 # supported for drop-in units
 begin

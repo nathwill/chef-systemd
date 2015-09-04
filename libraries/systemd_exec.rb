@@ -19,6 +19,7 @@
 #
 
 module Systemd
+  # rubocop: disable ModuleLength
   module Exec
     OPTIONS ||= %w(
       WorkingDirectory
@@ -79,6 +80,7 @@ module Systemd
       ProtectHome
       MountFlags
       UtmpIdentifier
+      UtmpMode
       SELinuxContext
       AppArmorProfile
       SmackProcessLabel
@@ -92,152 +94,81 @@ module Systemd
       RuntimeDirectory
       RuntimeDirectoryMode
     )
-  end
 
-  def supplementary_groups(arg = nil)
-    set_or_return(
-      :supplementary_groups, arg,
-      kind_of: Array
-    )
+    attribute :supplementary_groups, kind_of: [String, Array]
+    attribute :nice, kind_of: Integer, equal_to: -20.upto(19).to_a
+    attribute :oom_score_adjust, kind_of: Integer,
+                                 equal_to: -1_000.upto(1_000).to_a
+    attribute :io_scheduling_class, kind_of: [Integer, String],
+                                    equal_to: %w(none realtime best-effort idle)
+                                      .concat(0.upto(3).to_a)
+    attribute :io_scheduling_priority, kind_of: Integer,
+                                       equal_to: 0.upto(7).to_a
+    attribute :cpu_scheduling_policy, kind_of: String,
+                                      equal_to: %w(other batch idle fifo rr)
+    attribute :cpu_scheduling_priority, kind_of: Integer,
+                                        equal_to: 1.upto(99).to_a
+    attribute :cpu_scheduling_reset_on_fork, kind_of: [TrueClass, FalseClass]
+    attribute :cpu_affinity, kind_of: Integer
+    attribute :environment, kind_of: Hash
+    attribute :standard_input, kind_of: String,
+                               equal_to: %w(null tty tty-force tty-fail socket)
+    attribute :standard_output, kind_of: String,
+                                equal_to: %w(
+                                  inherit journal syslog kmsg journal+console
+                                  syslog+console kmsg+console socket null tty
+                                )
+    attribute :standard_error, kind_of: String,
+                               equal_to: %w(
+                                 inherit journal syslog kmsg journal+console
+                                 syslog+console kmsg+console socket null tty
+                               )
+    attribute :tty_reset, kind_of: [TrueClass, FalseClass]
+    attribute :ttyv_hangup, kind_of: [TrueClass, FalseClass]
+    attribute :ttyvt_disallocate, kind_of: [TrueClass, FalseClass]
+    attribute :syslog_facility, kind_of: String,
+                                equal_to: %w(
+                                  kern user mail daemon auth syslog lpr news
+                                  uucp cron authpriv ftp local0 local1 local2
+                                  local3 local4 local5 local6 local7
+                                )
+    attribute :syslog_level, kind_of: String,
+                             equal_to: %w(
+                               emerg alert crit debug
+                               warning notice info err
+                             )
+    attribute :syslog_level_prefix, kind_of: [TrueClass, FalseClass]
+    attribute :timer_slack_n_sec, kind_of: [Integer, String]
+    attribute :secure_bits, kind_of: [String, Array], callbacks: {
+      'valid opts' => lamda do |spec|
+        Array(spec).all? do |o|
+          %w(
+            keep-caps keep-caps-locked
+            no-setuid-fixup noroot
+            no-setuid-fixup-locked
+            noroot-locked
+          ).include?(o)
+        end
+      end
+    }
+    attribute :read_write_directories, kind_of: [String, Array]
+    attribute :read_only_directories, kind_of: [String, Array]
+    attribute :innaccessible_directories, kind_of: [String, Array]
+    attribute :private_tmp, kind_of: [TrueClass, FalseClass]
+    attribute :private_devices, kind_of: [TrueClass, FalseClass]
+    attribute :private_network, kind_of: [TrueClass, FalseClass]
+    attribute :protect_system, kind_of: [TrueClass, FalseClass, String],
+                               equal_to: [true, false, 'full']
+    attribute :protect_home, kind_of: [TrueClass, FalseClass, String],
+                             equal_to: [true, false, 'read-only']
+    attribute :mount_flags, kind_of: String, equal_to: %w(shared slave private)
+    attribute :utmp_mode, kind_of: String, equal_to: %w(init login user)
+    attribute :ignore_sigpipe, kind_of: [TrueClass, FalseClass]
+    attribute :no_new_privileges, kind_of: [TrueClass, FalseClass]
+    attribute :system_call_filter, kind_of: [String, Array]
+    attribute :personality, kind_of: String, equal_to: %w(x86 x86-64)
+    attribute :runtime_directory, kind_of: [String, Array]
+    attribute :runtime_directory_mode, kind_of: [String, Array]
   end
-
-  def nice(arg = nil)
-    set_or_return(
-      :nice, arg,
-      kind_of: Integer,
-      equal_to: -20.upto(19).to_a
-    )
-  end
-
-  def oom_score_adjust(arg = nil)
-    set_or_return(
-      :oom_score_adjust, arg,
-      kind_of: Integer,
-      equal_to: -1_000.upto(1_000).to_a
-    )
-  end
-
-  def io_scheduling_class(arg = nil)
-    set_or_return(
-      :io_scheduling_class, arg,
-      kind_of: String,
-      equal_to: %w( none realtime best-effort idle )
-    )
-  end
-
-  def io_scheduling_priority(arg = nil)
-    set_or_return(
-      :io_scheduling_priority, arg,
-      kind_of: Integer,
-      equal_to: 0.upto(7).to_a
-    )
-  end
-
-  def cpu_scheduling_policy(arg = nil)
-    set_or_return(
-      :cpu_scheduling_policy, arg,
-      kind_of: String,
-      equal_to: %w( other batch idle fifo rr )
-    )
-  end
-
-  def cpu_scheduling_priority(arg = nil)
-    set_or_return(
-      :cpu_scheduling_priority, arg,
-      kind_of: Integer
-    )
-  end
-
-  def cpu_scheduling_reset_on_fork(arg = nil)
-    set_or_return(
-      :cpu_scheduling_reset_on_fork, arg,
-      kind_of: [TrueClass, FalseClass]
-    )
-  end
-
-  def cpu_affinity(arg = nil)
-    set_or_return(
-      :cpu_affinity, arg,
-      kind_of: Array
-    )
-  end
-
-  def standard_input(arg = nil)
-    set_or_return(
-      :standard_input, arg,
-      kind_of: String,
-      equal_to: %w( null tty tty-force tty-fail socket )
-    )
-  end
-
-  def standard_output(arg = nil)
-    set_or_return(
-      :standard_output, arg,
-      kind_of: String,
-      equal_to: %w(
-        inherit null tty journal syslog
-        kmsg journal+console syslog+console
-        kmsg+console socket
-      )
-    )
-  end
-
-  def standard_error(arg = nil)
-    set_or_return(
-      :standard_error, arg,
-      kind_of: String,
-      equal_to: %w( null tty tty-force tty-fail socket )
-    )
-  end
-
-  def tty_reset(arg = nil)
-    set_or_return(
-      :tty_reset, arg,
-      kind_of: [TrueClass, FalseClass]
-    )
-  end
-
-  def ttyv_hangup(arg = nil)
-    set_or_return(
-      :ttyv_hangup, arg,
-      kind_of: [TrueClass, FalseClass]
-    )
-  end
-
-  def ttyvt_disallocate(arg = nil)
-    set_or_return(
-      :ttyvt_disallocate, arg,
-       kind_of: [TrueClass, FalseClass]
-    )
-  end
-
-  def syslog_level(arg = nil)
-    set_or_return(
-      :syslog_level, arg,
-      kind_of: String,
-      equal_to: %w(
-        kern user mail daemon auth syslog lpr news
-        uucp cron authpriv ftp local0 local1 local2
-        local3 local4 local5 local6 local7
-      )
-    )
-  end
-
-  def syslog_level_prefix(arg = nil)
-    set_or_return(
-      :syslog_level_prefix, arg,
-      kind_of: [TrueClass, FalseClass]
-    )
-  end
-
-  def secure_bits(arg = nil)
-    set_or_return(
-      :secure_bits, arg,
-      kind_of: String,
-      equal_to: %w(
-        keep-caps keep-caps-locked no-setuid-fixup
-        no-setuid-fixup-locked noroot noroot-locked
-      )
-    )
-  end
+  # rubocop: enable ModuleLength
 end

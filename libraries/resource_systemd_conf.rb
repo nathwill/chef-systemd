@@ -51,7 +51,21 @@ class Chef::Resource
     # generates kv pairs from resource attributes
     def options_config(opts = [])
       opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
-        "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
+        "#{opt.camelize}=#{conf_string(send(opt.underscore.to_sym))}"
+      end
+    end
+
+    # generates config strings from structured data
+    def conf_string(obj)
+      case obj.class
+      when Hash
+        obj.map { |k, v| "#{k}=#{v}" }.join(' ')
+      when Array
+        obj.join(' ')
+      when TrueClass, FalseClass
+        obj ? 'yes' : 'no'
+      else
+        obj.to_s
       end
     end
   end

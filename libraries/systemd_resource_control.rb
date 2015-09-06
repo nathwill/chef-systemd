@@ -78,14 +78,16 @@ module Systemd
   def block_io_weight(arg = nil)
     set_or_return(
       :block_io_weight, arg,
-      kind_of: Integer
+      kind_of: Integer,
+      equal_to: 10.upto(1_000)
     )
   end
 
   def startup_block_io_weight(arg = nil)
     set_or_return(
       :startup_block_io_weight, arg,
-      kind_of: Integer
+      kind_of: Integer,
+      equal_to: 10.upto(1_000)
     )
   end
 
@@ -94,6 +96,13 @@ module Systemd
       :device_policy, arg,
       kind_of: String,
       equal_to: %w( strict closed auto )
+    )
+  end
+
+  def delegate(arg = nil)
+    set_or_return(
+      :delegate, arg,
+      kind_of: [TrueClass, FalseClass]
     )
   end
 end

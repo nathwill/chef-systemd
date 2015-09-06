@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+require_relative 'systemd_mixin'
+
 module Systemd
   module ResourceControl
     OPTIONS ||= %w(
@@ -40,69 +42,73 @@ module Systemd
     )
   end
 
-  def cpu_accounting(arg = nil)
-    set_or_return(
-      :cpu_accounting, arg,
-      kind_of: [TrueClass, FalseClass]
-    )
-  end
+  module Mixin
+    module ResourceControl
+      def cpu_accounting(arg = nil)
+        set_or_return(
+          :cpu_accounting, arg,
+          kind_of: [TrueClass, FalseClass]
+        )
+      end
 
-  def cpu_shares(arg = nil)
-    set_or_return(
-      :cpu_shares, arg,
-      kind_of: Integer
-    )
-  end
+      def cpu_shares(arg = nil)
+        set_or_return(
+          :cpu_shares, arg,
+          kind_of: Integer
+        )
+      end
 
-  def startup_cpu_shares(arg = nil)
-    set_or_return(
-      :startup_cpu_shares, arg,
-      kind_of: Integer
-    )
-  end
+      def startup_cpu_shares(arg = nil)
+        set_or_return(
+          :startup_cpu_shares, arg,
+          kind_of: Integer
+        )
+      end
 
-  def memory_accounting(arg = nil)
-    set_or_return(
-      :memory_accounting, arg,
-      kind_of: [TrueClass, FalseClass]
-    )
-  end
+      def memory_accounting(arg = nil)
+        set_or_return(
+          :memory_accounting, arg,
+          kind_of: [TrueClass, FalseClass]
+        )
+      end
 
-  def block_io_accounting(arg = nil)
-    set_or_return(
-      :block_io_accounting, arg,
-      kind_of: [TrueClass, FalseClass]
-    )
-  end
+      def block_io_accounting(arg = nil)
+        set_or_return(
+          :block_io_accounting, arg,
+          kind_of: [TrueClass, FalseClass]
+        )
+      end
 
-  def block_io_weight(arg = nil)
-    set_or_return(
-      :block_io_weight, arg,
-      kind_of: Integer,
-      equal_to: 10.upto(1_000)
-    )
-  end
+      def block_io_weight(arg = nil)
+        set_or_return(
+          :block_io_weight, arg,
+          kind_of: Integer,
+          equal_to: 10.upto(1_000)
+        )
+      end
 
-  def startup_block_io_weight(arg = nil)
-    set_or_return(
-      :startup_block_io_weight, arg,
-      kind_of: Integer,
-      equal_to: 10.upto(1_000)
-    )
-  end
+      def startup_block_io_weight(arg = nil)
+        set_or_return(
+          :startup_block_io_weight, arg,
+          kind_of: Integer,
+          equal_to: 10.upto(1_000)
+        )
+      end
 
-  def device_policy(arg = nil)
-    set_or_return(
-      :device_policy, arg,
-      kind_of: String,
-      equal_to: %w( strict closed auto )
-    )
-  end
+      def device_policy(arg = nil)
+        set_or_return(
+          :device_policy, arg,
+          kind_of: String,
+          equal_to: %w( strict closed auto )
+        )
+      end
 
-  def delegate(arg = nil)
-    set_or_return(
-      :delegate, arg,
-      kind_of: [TrueClass, FalseClass]
-    )
+      def delegate(arg = nil)
+        set_or_return(
+          :delegate, arg,
+          kind_of: [TrueClass, FalseClass]
+        )
+      end
+    end
   end
 end

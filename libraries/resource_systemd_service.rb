@@ -31,10 +31,14 @@ class Chef::Resource
       :service
     end
 
-    option_attributes Systemd::Service::OPTIONS
-
     def service
       yield
     end
+
+    option_attributes Systemd::Service::OPTIONS
+
+    include Systemd::Mixin::Exec
+    include Systemd::Mixin::Kill
+    include Systemd::Mixin::ResourceControl
   end
 end

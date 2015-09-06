@@ -31,10 +31,14 @@ class Chef::Resource
       :socket
     end
 
-    option_attributes Systemd::Socket::OPTIONS
-
     def socket
       yield
     end
+
+    option_attributes Systemd::Socket::OPTIONS
+
+    include Systemd::Mixin::Exec
+    include Systemd::Mixin::Kill
+    include Systemd::Mixin::ResourceControl
   end
 end

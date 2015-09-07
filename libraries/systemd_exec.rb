@@ -264,7 +264,7 @@ module Systemd
       def secure_bits(arg = nil)
         set_or_return(
           :secure_bits, arg, kind_of: [String, Array], callbacks: {
-            'valid opts' => lamda do |spec|
+            'valid opts' => lambda do |spec|
               Array(spec).all? do |o|
                 %w( keep-caps keep-caps-locked no-setuid-fixup noroot
                     no-setuid-fixup-locked noroot-locked ).include?(o)

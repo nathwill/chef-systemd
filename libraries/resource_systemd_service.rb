@@ -35,10 +35,16 @@ class Chef::Resource
       yield
     end
 
-    option_attributes Systemd::Service::OPTIONS
-
     include Systemd::Mixin::Exec
     include Systemd::Mixin::Kill
     include Systemd::Mixin::ResourceControl
+
+    auto_attrs = Systemd::Service::OPTIONS.reject do |o|
+      Systemd::Mixin::Exec.instance_methods.include?(o.underscore.to_sym) ||
+      Systemd::Mixin::Kill.instance_methods.include?(o.underscore.to_sym) ||
+      Systemd::Mixin::ResourceControl.instance_methods.include?(o.underscore.to_sym)
+    end
+
+    option_attributes auto_attrs.to_a
   end
 end

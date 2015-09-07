@@ -57,7 +57,7 @@ class Chef::Resource
 
     # generates config strings from structured data
     def conf_string(obj)
-      case obj.class
+      case obj
       when Hash
         obj.map { |k, v| "#{k}=#{v}" }.join(' ')
       when Array

@@ -14,6 +14,7 @@ systemd_service 'test-unit' do
     type 'oneshot'
     exec_start '/usr/bin/true'
     # exec option
+    private_tmp true
     user 'nobody'
     # kill option
     kill_signal 'SIGTERM'

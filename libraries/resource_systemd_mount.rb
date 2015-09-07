@@ -31,10 +31,14 @@ class Chef::Resource
       :mount
     end
 
-    option_attributes Systemd::Mount::OPTIONS
-
     def mount
       yield
     end
+
+    option_attributes Systemd::Mount::OPTIONS
+
+    include Systemd::Mixin::Exec
+    include Systemd::Mixin::Kill
+    include Systemd::Mixin::ResourceControl
   end
 end

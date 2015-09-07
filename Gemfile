@@ -6,7 +6,8 @@ group :test do
   gem 'rake'
   gem 'chefspec'
   gem 'foodcritic'
-  gem 'rubocop'
+  # new rubocop go boom
+  gem 'rubocop', '~> 0.33.0'
 end
 
 group :integration do

@@ -42,7 +42,7 @@ class Chef::Resource
     auto_attrs = Systemd::Service::OPTIONS.reject do |o|
       Systemd::Mixin::Exec.instance_methods.include?(o.underscore.to_sym) ||
       Systemd::Mixin::Kill.instance_methods.include?(o.underscore.to_sym) ||
-      Systemd::Mixin::ResourceControl.instance_methods.include?(o.underscore.to_sym)
+      Systemd::Mixin::ResourceControl.instance_methods.include?(o.underscore.to_sym) # rubocop: disable LineLength
     end
 
     option_attributes auto_attrs.to_a

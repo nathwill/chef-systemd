@@ -20,6 +20,6 @@
 
 module Systemd
   module Device
-    OPTIONS ||= %w()
+    OPTIONS ||= {}
   end
 end

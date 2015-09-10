@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+require_relative 'systemd_mixin'
+
 module Systemd
   module Kill
     OPTIONS ||= %w(
@@ -26,5 +28,31 @@ module Systemd
       SendSIGHUP
       SendSIGKILL
     )
+  end
+
+  module Mixin
+    module Kill
+      def kill_mode(arg = nil)
+        set_or_return(
+          :kill_mode, arg,
+          kind_of: String,
+          equal_to: %w( control-group process mixed none )
+        )
+      end
+
+      def send_sighup(arg = nil)
+        set_or_return(
+          :send_sighup, arg,
+          kind_of: [TrueClass, FalseClass]
+        )
+      end
+
+      def send_sigkill(arg = nil)
+        set_or_return(
+          :send_sigkill, arg,
+          kind_of: [TrueClass, FalseClass]
+        )
+      end
+    end
   end
 end

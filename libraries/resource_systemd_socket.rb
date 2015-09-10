@@ -31,10 +31,20 @@ class Chef::Resource
       :socket
     end
 
-    option_attributes Systemd::Socket::OPTIONS
-
     def socket
       yield
     end
+
+    include Systemd::Mixin::Exec
+    include Systemd::Mixin::Kill
+    include Systemd::Mixin::ResourceControl
+
+    auto_attrs = Systemd::Socket::OPTIONS.reject do |o|
+      Systemd::Mixin::Exec.instance_methods.include?(o.underscore.to_sym) ||
+      Systemd::Mixin::Kill.instance_methods.include?(o.underscore.to_sym) ||
+      Systemd::Mixin::ResourceControl.instance_methods.include?(o.underscore.to_sym) # rubocop: disable LineLength
+    end
+
+    option_attributes auto_attrs.to_a
   end
 end

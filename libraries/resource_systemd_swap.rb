@@ -31,10 +31,14 @@ class Chef::Resource
       :swap
     end
 
-    option_attributes Systemd::Swap::OPTIONS
-
     def swap
       yield
     end
+
+    option_attributes Systemd::Swap::OPTIONS
+
+    include Systemd::Mixin::Exec
+    include Systemd::Mixin::Kill
+    include Systemd::Mixin::ResourceControl
   end
 end

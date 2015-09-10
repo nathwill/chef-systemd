@@ -31,10 +31,20 @@ class Chef::Resource
       :mount
     end
 
-    option_attributes Systemd::Mount::OPTIONS
-
     def mount
       yield
     end
+
+    include Systemd::Mixin::Exec
+    include Systemd::Mixin::Kill
+    include Systemd::Mixin::ResourceControl
+
+    auto_attrs = Systemd::Mount::OPTIONS.reject do |o|
+      Systemd::Mixin::Exec.instance_methods.include?(o.underscore.to_sym) ||
+      Systemd::Mixin::Kill.instance_methods.include?(o.underscore.to_sym) ||
+      Systemd::Mixin::ResourceControl.instance_methods.include?(o.underscore.to_sym) # rubocop: disable LineLength
+    end
+
+    option_attributes auto_attrs.to_a
   end
 end

@@ -3,6 +3,6 @@ sudo: false
 language: ruby
 cache: bundler
 rvm:
-- 2.2.2
+- 2.2.3
 
 script: bundle exec rake default

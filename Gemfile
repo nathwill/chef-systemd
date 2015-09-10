@@ -6,9 +6,7 @@ group :test do
   gem 'rake'
   gem 'chefspec'
   gem 'foodcritic'
-  # new rubocop go boom
-  # https://github.com/bbatsov/rubocop/issues/2218
-  gem 'rubocop', '~> 0.33.0'
+  gem 'rubocop'
 end
 
 group :integration do

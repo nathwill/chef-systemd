@@ -42,9 +42,9 @@ class Chef::Resource
     private
 
     # generates chef attributes from options array
-    def self.option_attributes(options = [])
-      options.each do |option|
-        attribute option.underscore.to_sym, kind_of: String, default: nil
+    def self.option_attributes(options = {})
+      options.each_pair do |name, config|
+        attribute name.underscore.to_sym, config
       end
     end
 

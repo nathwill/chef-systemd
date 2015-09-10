@@ -116,6 +116,3 @@ class String
     gsub(/(^|_)(.)/) { Regexp.last_match(2).upcase }
   end
 end
-
-::Chef::Recipe.send(:include, Systemd::Helpers::Init)
-::Chef::Resource.send(:include, Systemd::Helpers::Init)

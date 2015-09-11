@@ -15,6 +15,7 @@ describe 'Systemd Resources' do
     its(:content) { should match /User=nobody/ }
     its(:content) { should match /KillSignal=SIGTERM/ }
     its(:content) { should match /Type=oneshot/ }
+    its(:content) { should match /Nice=-5/ }
     its(:content) { should match /ExecStart=\/usr\/bin\/true/ }
   end
 
@@ -28,6 +29,7 @@ describe 'Systemd Resources' do
     its(:content) { should match /Alias=ssh.service openssh.service/ }
     its(:content) { should match /\[Service\]/ }
     its(:content) { should match /CPUQuota=10%/ }
+    its(:content) { should match %r{Environment="MY_ENV=IS AWESOME"} }
   end
 
   # Test the socket resource

@@ -12,6 +12,7 @@ systemd_service 'test-unit' do
   # Service options
   service do
     type 'oneshot'
+    nice -5
     exec_start '/usr/bin/true'
     # exec option
     user 'nobody'
@@ -33,6 +34,7 @@ systemd_service 'my-override' do
   )
   aliases %w( ssh openssh )
   service do
+    environment 'MY_ENV' => 'IS AWESOME'
     cpu_quota '10%'
   end
 end

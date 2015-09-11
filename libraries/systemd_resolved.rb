@@ -20,10 +20,10 @@
 
 module Systemd
   module Resolved
-    OPTIONS ||= %w(
-      DNS
-      FallbackDNS
-      LLMNR
-    )
+    OPTIONS ||= {
+      'DNS' => {},
+      'FallbackDNS' => {},
+      'LLMNR' => {}
+    }
   end
 end

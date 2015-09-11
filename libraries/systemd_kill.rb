@@ -20,11 +20,11 @@
 
 module Systemd
   module Kill
-    OPTIONS ||= %w(
-      KillMode
-      KillSignal
-      SendSIGHUP
-      SendSIGKILL
-    )
+    OPTIONS ||= {
+      'KillMode' => {},
+      'KillSignal' => {},
+      'SendSIGHUP' => {},
+      'SendSIGKILL' => {}
+    }
   end
 end

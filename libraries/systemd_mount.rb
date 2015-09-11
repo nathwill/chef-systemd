@@ -24,16 +24,15 @@ require_relative 'systemd_kill'
 
 module Systemd
   module Mount
-    OPTIONS ||= Systemd::ResourceControl::OPTIONS |
-                Systemd::Exec::OPTIONS |
-                Systemd::Kill::OPTIONS | %w(
-                  What
-                  Where
-                  Type
-                  Options
-                  SloppyOptions
-                  DirectoryMode
-                  TimeoutSec
-                )
+    OPTIONS ||= Systemd::ResourceControl::OPTIONS
+                .merge(Systemd::Exec::OPTIONS)
+                .merge(Systemd::Kill::OPTIONS)
+                .merge('What' => {},
+                       'Where' => {},
+                       'Type' => {},
+                       'Options' => {},
+                       'SloppyOptions' => {},
+                       'DirectoryMode' => {},
+                       'TimeoutSec' => {})
   end
 end

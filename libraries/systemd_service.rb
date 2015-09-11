@@ -24,41 +24,41 @@ require_relative 'systemd_kill'
 
 module Systemd
   module Service
-    OPTIONS ||= Systemd::ResourceControl::OPTIONS |
-                Systemd::Exec::OPTIONS |
-                Systemd::Kill::OPTIONS | %w(
-                  Type
-                  RemainAfterExit
-                  GuessMainPID
-                  PIDFile
-                  BusName
-                  BusPolicy
-                  ExecStart
-                  ExecStartPre
-                  ExecStartPost
-                  ExecReload
-                  ExecStop
-                  ExecStopPost
-                  RestartSec
-                  TimeoutStartSec
-                  TimeoutStopSec
-                  TimeoutSec
-                  WatchdogSec
-                  Restart
-                  SuccessExitStatus
-                  RestartPreventExitStatus
-                  RestartForceExitStatus
-                  PermissionsStartOnly
-                  RootDirectoryStartOnly
-                  NonBlocking
-                  NotifyAccess
-                  Sockets
-                  StartLimitInterval
-                  StartLimitBurst
-                  StartLimitAction
-                  FailureAction
-                  RebootArgument
-                  FileDescriptorStoreMax
-                )
+    OPTIONS ||= Systemd::ResourceControl::OPTIONS
+                .merge(Systemd::Exec::OPTIONS)
+                .merge(Systemd::Kill::OPTIONS)
+                .merge('Type' => {},
+                       'RemainAfterExit' => {},
+                       'GuessMainPID' => {},
+                       'PIDFile' => {},
+                       'BusName' => {},
+                       'BusPolicy' => {},
+                       'ExecStart' => {},
+                       'ExecStartPre' => {},
+                       'ExecStartPost' => {},
+                       'ExecReload' => {},
+                       'ExecStop' => {},
+                       'ExecStopPost' => {},
+                       'RestartSec' => {},
+                       'TimeoutStartSec' => {},
+                       'TimeoutStopSec' => {},
+                       'TimeoutSec' => {},
+                       'WatchdogSec' => {},
+                       'Restart' => {},
+                       'SuccessExitStatus' => {},
+                       'RestartPreventExitStatus' => {},
+                       'RestartForceExitStatus' => {},
+                       'PermissionsStartOnly' => {},
+                       'RootDirectoryStartOnly' => {},
+                       'NonBlocking' => {},
+                       'NotifyAccess' => {},
+                       'Sockets' => {},
+                       'StartLimitInterval' => {},
+                       'StartLimitBurst' => {},
+                       'StartLimitAction' => {},
+                       'FailureAction' => {},
+                       'RebootArgument' => {},
+                       'FileDescriptorStoreMax' => {}
+                      )
   end
 end

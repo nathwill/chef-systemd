@@ -20,17 +20,17 @@
 
 module Systemd
   module Timer
-    OPTIONS ||= %w(
-      OnActiveSec
-      OnBootSec
-      OnStartupSec
-      OnUnitActiveSec
-      OnUnitInactiveSec
-      OnCalendar
-      AccuracySec
-      Unit
-      Persistent
-      WakeSystem
-    )
+    OPTIONS ||= {
+      'OnActiveSec' => {},
+      'OnBootSec' => {},
+      'OnStartupSec' => {},
+      'OnUnitActiveSec' => {},
+      'OnUnitInactiveSec' => {},
+      'OnCalendar' => {},
+      'AccuracySec' => {},
+      'Unit' => {},
+      'Persistent' => {},
+      'WakeSystem' => {}
+    }
   end
 end

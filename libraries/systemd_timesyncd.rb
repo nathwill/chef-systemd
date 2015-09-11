@@ -20,9 +20,9 @@
 
 module Systemd
   module Timesyncd
-    OPTIONS ||= %w(
-      NTP
-      FallbackNTP
-    )
+    OPTIONS ||= {
+      'NTP' => {},
+      'FallbackNTP' => {}
+    }
   end
 end

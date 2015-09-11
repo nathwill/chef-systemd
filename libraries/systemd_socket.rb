@@ -76,7 +76,6 @@ module Systemd
                        'TimeoutSec' => {},
                        'Service' => {},
                        'RemoveOnStop' => {},
-                       'Symlinks' => {}
-                      )
+                       'Symlinks' => {})
   end
 end

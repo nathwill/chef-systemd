@@ -35,8 +35,8 @@ class Chef::Resource
     default_action :create
 
     # alias is a reserved word, mac_address is duped between sections
-    OPTIONS.reject { |o| o.match(/(MACAddress|Alias)/) }.each do |opt|
-      attribute opt.underscore.to_sym, kind_of: String, default: nil
+    OPTIONS.reject { |o, _| o.match(/(MACAddress|Alias)/) }.each_pair do |name, config| # rubocop: disable LineLength
+      attribute name.underscore.to_sym, config
     end
 
     attribute :match_mac_addr, kind_of: String, default: nil
@@ -67,13 +67,13 @@ class Chef::Resource
 
     private
 
-    def options_config(options)
+    def options_config(options = {})
       opts = options.reject do |o|
         o.match(/(MACAddress|Alias)/) || send(o.underscore.to_sym).nil?
       end
 
-      opts.map do |opt|
-        "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
+      opts.map do |name, _|
+        "#{name.camelize}=#{send(name.underscore.to_sym)}"
       end
     end
 

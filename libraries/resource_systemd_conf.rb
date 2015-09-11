@@ -49,9 +49,9 @@ class Chef::Resource
     end
 
     # generates kv pairs from resource attributes
-    def options_config(opts = [])
-      opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
-        "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
+    def options_config(opts = {})
+      opts.reject { |o, _| send(o.underscore.to_sym).nil? }.map do |name, _|
+        "#{name.camelize}=#{send(name.underscore.to_sym)}"
       end
     end
   end

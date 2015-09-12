@@ -20,14 +20,14 @@
 
 module Systemd
   module Coredump
-    OPTIONS ||= %w(
-      Storage
-      Compress
-      ProcessSizeMax
-      ExternalSizeMax
-      JournalSizeMax
-      MaxUse
-      KeepFree
-    )
+    OPTIONS ||= {
+      'Storage' => {},
+      'Compress' => {},
+      'ProcessSizeMax' => {},
+      'ExternalSizeMax' => {},
+      'JournalSizeMax' => {},
+      'MaxUse' => {},
+      'KeepFree' => {}
+    }
   end
 end

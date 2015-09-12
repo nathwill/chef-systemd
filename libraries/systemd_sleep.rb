@@ -20,13 +20,13 @@
 
 module Systemd
   module Sleep
-    OPTIONS ||= %w(
-      SuspendMode
-      HibernateMode
-      HybridSleepMode
-      SuspendState
-      HibernateState
-      HybridSleepState
-    )
+    OPTIONS ||= {
+      'SuspendMode' => {},
+      'HibernateMode' => {},
+      'HybridSleepMode' => {},
+      'SuspendState' => {},
+      'HibernateState' => {},
+      'HybridSleepState' => {}
+    }
   end
 end

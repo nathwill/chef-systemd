@@ -20,6 +20,6 @@
 
 module Systemd
   module Target
-    OPTIONS ||= %w()
+    OPTIONS ||= {}
   end
 end

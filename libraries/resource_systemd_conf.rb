@@ -42,16 +42,30 @@ class Chef::Resource
     private
 
     # generates chef attributes from options array
-    def self.option_attributes(options = [])
-      options.each do |option|
-        attribute option.underscore.to_sym, kind_of: String, default: nil
+    def self.option_attributes(options = {})
+      options.each_pair do |name, config|
+        attribute name.underscore.to_sym, config
       end
     end
 
     # generates kv pairs from resource attributes
-    def options_config(opts = [])
-      opts.reject { |o| send(o.underscore.to_sym).nil? }.map do |opt|
-        "#{opt.camelize}=#{send(opt.underscore.to_sym)}"
+    def options_config(opts = {})
+      opts.reject { |o, _| send(o.underscore.to_sym).nil? }.map do |name, _|
+        "#{name.camelize}=#{conf_string(send(name.underscore.to_sym))}"
+      end
+    end
+
+    # generates config strings from structured data
+    def conf_string(obj)
+      case obj
+      when Hash
+        obj.map { |k, v| "\"#{k}=#{v}\"" }.join(' ')
+      when Array
+        obj.join(' ')
+      when TrueClass, FalseClass
+        obj ? 'yes' : 'no'
+      else
+        obj.to_s
       end
     end
   end

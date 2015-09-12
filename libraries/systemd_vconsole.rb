@@ -20,12 +20,12 @@
 
 module Systemd
   module Vconsole
-    OPTIONS ||= %w(
-      KEYMAP
-      KEYMAP_TOGGLE
-      FONT
-      FONT_MAP
-      FONT_UNIMAP
-    )
+    OPTIONS ||= {
+      'KEYMAP' => {},
+      'KEYMAP_TOGGLE' => {},
+      'FONT' => {},
+      'FONT_MAP' => {},
+      'FONT_UNIMAP' => {}
+    }
   end
 end

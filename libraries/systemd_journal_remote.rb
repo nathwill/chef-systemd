@@ -20,11 +20,11 @@
 
 module Systemd
   module JournalRemote
-    OPTIONS ||= %w(
-      SplitMode
-      ServerKeyFile
-      ServerCertificateFile
-      TrustedCertificateFile
-    )
+    OPTIONS ||= {
+      'SplitMode' => {},
+      'ServerKeyFile' => {},
+      'ServerCertificateFile' => {},
+      'TrustedCertificateFile' => {}
+    }
   end
 end

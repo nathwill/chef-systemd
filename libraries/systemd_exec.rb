@@ -20,77 +20,78 @@
 
 module Systemd
   module Exec
-    OPTIONS ||= %w(
-      WorkingDirectory
-      RootDirectory
-      User
-      Group
-      SupplementaryGroups
-      Nice
-      OOMScoreAdjust
-      IOSchedulingClass
-      IOSchedulingPriority
-      CPUSchedulingPolicy
-      CPUSchedulingPriority
-      CPUSchedulingResetOnFork
-      CPUAffinity
-      UMask
-      Environment
-      EnvironmentFile
-      StandardInput
-      StandardOutput
-      StandardError
-      TTYPath
-      TTYReset
-      TTYVHangup
-      TTYVTDisallocate
-      SyslogIdentifier
-      SyslogFacility
-      SyslogLevel
-      SyslogLevelPrefix
-      TimerSlackNSec
-      LimitCPU
-      LimitFSIZE
-      LimitDATA
-      LimitSTACK
-      LimitCORE
-      LimitRSS
-      LimitNOFILE
-      LimitAS
-      LimitNPROC
-      LimitMEMLOCK
-      LimitLOCKS
-      LimitSIGPENDING
-      LimitMSGQUEUE
-      LimitNICE
-      LimitRTPRIO
-      LimitRTTIME
-      PAMName
-      CapabilityBoundingSet
-      SecureBits
-      Capabilities
-      ReadWriteDirectories
-      ReadOnlyDirectories
-      InaccessibleDirectories
-      PrivateTmp
-      PrivateDevices
-      PrivateNetwork
-      ProtectSystem
-      ProtectHome
-      MountFlags
-      UtmpIdentifier
-      SELinuxContext
-      AppArmorProfile
-      SmackProcessLabel
-      IgnoreSIGPIPE
-      NoNewPrivileges
-      SystemCallFilter
-      SystemCallErrorNumber
-      SystemCallArchitectures
-      RestrictAddressFamilies
-      Personality
-      RuntimeDirectory
-      RuntimeDirectoryMode
-    )
+    OPTIONS ||= {
+      'WorkingDirectory' => {},
+      'RootDirectory' => {},
+      'User' => {},
+      'Group' => {},
+      'SupplementaryGroups' => {},
+      'Nice' => { kind_of: Integer, equal_to: -20.upto(19).to_a },
+      'OOMScoreAdjust' => {},
+      'IOSchedulingClass' => {},
+      'IOSchedulingPriority' => {},
+      'CPUSchedulingPolicy' => {},
+      'CPUSchedulingPriority' => {},
+      'CPUSchedulingResetOnFork' => {},
+      'CPUAffinity' => {},
+      'UMask' => {},
+      'Environment' => { kind_of: Hash },
+      'EnvironmentFile' => {},
+      'StandardInput' => {},
+      'StandardOutput' => {},
+      'StandardError' => {},
+      'TTYPath' => {},
+      'TTYReset' => {},
+      'TTYVHangup' => {},
+      'TTYVTDisallocate' => {},
+      'SyslogIdentifier' => {},
+      'SyslogFacility' => {},
+      'SyslogLevel' => {},
+      'SyslogLevelPrefix' => {},
+      'TimerSlackNSec' => {},
+      'LimitCPU' => {},
+      'LimitFSIZE' => {},
+      'LimitDATA' => {},
+      'LimitSTACK' => {},
+      'LimitCORE' => {},
+      'LimitRSS' => {},
+      'LimitNOFILE' => {},
+      'LimitAS' => {},
+      'LimitNPROC' => {},
+      'LimitMEMLOCK' => {},
+      'LimitLOCKS' => {},
+      'LimitSIGPENDING' => {},
+      'LimitMSGQUEUE' => {},
+      'LimitNICE' => {},
+      'LimitRTPRIO' => {},
+      'LimitRTTIME' => {},
+      'PAMName' => {},
+      'CapabilityBoundingSet' => {},
+      'SecureBits' => {},
+      'Capabilities' => {},
+      'ReadWriteDirectories' => {},
+      'ReadOnlyDirectories' => {},
+      'InaccessibleDirectories' => {},
+      'PrivateTmp' => {},
+      'PrivateDevices' => {},
+      'PrivateNetwork' => {},
+      'ProtectSystem' => {},
+      'ProtectHome' => {},
+      'MountFlags' => {},
+      'UtmpIdentifier' => {},
+      'UtmpMode' => {},
+      'SELinuxContext' => {},
+      'AppArmorProfile' => {},
+      'SmackProcessLabel' => {},
+      'IgnoreSIGPIPE' => {},
+      'NoNewPrivileges' => {},
+      'SystemCallFilter' => {},
+      'SystemCallErrorNumber' => {},
+      'SystemCallArchitectures' => {},
+      'RestrictAddressFamilies' => {},
+      'Personality' => {},
+      'RuntimeDirectory' => {},
+      'RuntimeDirectoryMode' => {}
+    }
   end
 end

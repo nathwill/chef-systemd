@@ -20,15 +20,15 @@
 
 module Systemd
   module Path
-    OPTIONS ||= %w(
-      PathExists
-      PathExistsGlob
-      PathChanged
-      PathModified
-      DirectoryNotEmpty
-      Unit
-      MakeDirectory
-      DirectoryMode
-    )
+    OPTIONS ||= {
+      'PathExists' => {},
+      'PathExistsGlob' => {},
+      'PathChanged' => {},
+      'PathModified' => {},
+      'DirectoryNotEmpty' => {},
+      'Unit' => {},
+      'MakeDirectory' => {},
+      'DirectoryMode' => {}
+    }
   end
 end

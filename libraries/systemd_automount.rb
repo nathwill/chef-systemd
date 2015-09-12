@@ -20,10 +20,10 @@
 
 module Systemd
   module Automount
-    OPTIONS ||= %w(
-      Where
-      DirectoryMode
-      TimeoutIdleSec
-    )
+    OPTIONS ||= {
+      'Where' => {},
+      'DirectoryMode' => {},
+      'TimeoutIdleSec' => {}
+    }
   end
 end

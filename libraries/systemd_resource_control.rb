@@ -21,22 +21,22 @@
 module Systemd
   module ResourceControl
     OPTIONS ||= {
-      'CPUAccounting' => {},
-      'CPUShares' => {},
-      'StartupCPUShares' => {},
+      'CPUAccounting' => { kind_of: [TrueClass, FalseClass] },
+      'CPUShares' => { kind_of: Integer },
+      'StartupCPUShares' => { kind_of: Integer },
       'CPUQuota' => {},
-      'MemoryAccounting' => {},
+      'MemoryAccounting' => { kind_of: [TrueClass, FalseClass] },
       'MemoryLimit' => {},
-      'BlockIOAccounting' => {},
-      'BlockIOWeight' => {},
-      'StartupBlockIOWeight' => {},
+      'BlockIOAccounting' => { kind_of: [TrueClass, FalseClass] },
+      'BlockIOWeight' => { kind_of: Integer, equal_to: 10.upto(1_000) },
+      'StartupBlockIOWeight' => { kind_of: Integer, equal_to: 10.upto(1_000) },
       'BlockIODeviceWeight' => {},
       'BlockIOReadBandwidth' => {},
       'BlockIOWriteBandwidth' => {},
       'DeviceAllow' => {},
-      'DevicePolicy' => {},
+      'DevicePolicy' => { kind_of: String, equal_to: %w( strict closed auto ) },
       'Slice' => {},
-      'Delegate' => {}
+      'Delegate' => { kind_of: [TrueClass, FalseClass] }
     }
   end
 end

@@ -21,10 +21,13 @@
 module Systemd
   module Kill
     OPTIONS ||= {
-      'KillMode' => {},
+      'KillMode' => {
+        kind_of: String,
+        equal_to: %w( control-group process mixed none )
+      },
       'KillSignal' => {},
-      'SendSIGHUP' => {},
-      'SendSIGKILL' => {}
+      'SendSIGHUP' => { kind_of: [TrueClass, FalseClass] },
+      'SendSIGKILL' => { kind_of: [TrueClass, FalseClass] }
     }
   end
 end

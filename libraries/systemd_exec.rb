@@ -18,6 +18,7 @@
 # limitations under the License.
 #
 
+# rubocop: disable ModuleLength
 module Systemd
   module Exec
     OPTIONS ||= {
@@ -25,30 +26,67 @@ module Systemd
       'RootDirectory' => {},
       'User' => {},
       'Group' => {},
-      'SupplementaryGroups' => {},
+      'SupplementaryGroups' => { kind_of: [String, Array] },
       'Nice' => { kind_of: Integer, equal_to: -20.upto(19).to_a },
-      'OOMScoreAdjust' => {},
-      'IOSchedulingClass' => {},
-      'IOSchedulingPriority' => {},
-      'CPUSchedulingPolicy' => {},
-      'CPUSchedulingPriority' => {},
-      'CPUSchedulingResetOnFork' => {},
-      'CPUAffinity' => {},
+      'OOMScoreAdjust' => {
+        kind_of: Integer,
+        equal_to: -1_000.upto(1_000).to_a
+      },
+      'IOSchedulingClass' => {
+        kind_of: [Integer, String],
+        equal_to: %w(none realtime best-effort idle).concat(0.upto(3).to_a)
+      },
+      'IOSchedulingPriority' => { kind_of: Integer, equal_to: 0.upto(7).to_a },
+      'CPUSchedulingPolicy' => {
+        kind_of: String,
+        equal_to: %w( other batch idle fifo rr )
+      },
+      'CPUSchedulingPriority' => {
+        kind_of: Integer,
+        equal_to: 1.upto(99).to_a
+      },
+      'CPUSchedulingResetOnFork' => { kind_of: [TrueClass, FalseClass] },
+      'CPUAffinity' => { kind_of: Integer },
       'UMask' => {},
       'Environment' => { kind_of: Hash },
       'EnvironmentFile' => {},
-      'StandardInput' => {},
-      'StandardOutput' => {},
-      'StandardError' => {},
+      'StandardInput' => {
+        kind_of: String,
+        equal_to: %w( null tty tty-force tty-fail socket )
+      },
+      'StandardOutput' => {
+        kind_of: String,
+        equal_to: %w(
+          inherit journal syslog kmsg journal+console
+          syslog+console kmsg+console socket null tty
+        )
+      },
+      'StandardError' => {
+        kind_of: String,
+        equal_to: %w(
+          inherit journal syslog kmsg journal+console
+          syslog+console kmsg+console socket null tty
+        )
+      },
       'TTYPath' => {},
-      'TTYReset' => {},
-      'TTYVHangup' => {},
-      'TTYVTDisallocate' => {},
+      'TTYReset' => { kind_of: [TrueClass, FalseClass] },
+      'TTYVHangup' => { kind_of: [TrueClass, FalseClass] },
+      'TTYVTDisallocate' => { kind_of: [TrueClass, FalseClass] },
       'SyslogIdentifier' => {},
-      'SyslogFacility' => {},
-      'SyslogLevel' => {},
-      'SyslogLevelPrefix' => {},
-      'TimerSlackNSec' => {},
+      'SyslogFacility' => {
+        kind_of: String,
+        equal_to: %w(
+          kern user mail daemon auth syslog lpr news
+          uucp cron authpriv ftp local0 local1 local2
+          local3 local4 local5 local6 local7
+        )
+      },
+      'SyslogLevel' => {
+        kind_of: String,
+        equal_to: %w( emerg alert crit debug warning notice info err )
+      },
+      'SyslogLevelPrefix' => { kind_of: [TrueClass, FalseClass] },
+      'TimerSlackNSec' => { kind_of: [Integer, String] },
       'LimitCPU' => {},
       'LimitFSIZE' => {},
       'LimitDATA' => {},
@@ -67,31 +105,48 @@ module Systemd
       'LimitRTTIME' => {},
       'PAMName' => {},
       'CapabilityBoundingSet' => {},
-      'SecureBits' => {},
+      'SecureBits' => {
+        kind_of: [String, Array],
+        callbacks: {
+          'valid opts' => lambda do |spec|
+            Array(spec).all? do |o|
+              %w( keep-caps keep-caps-locked no-setuid-fixup noroot
+                  no-setuid-fixup-locked noroot-locked ).include?(o)
+            end
+          end
+        }
+      },
       'Capabilities' => {},
-      'ReadWriteDirectories' => {},
-      'ReadOnlyDirectories' => {},
-      'InaccessibleDirectories' => {},
-      'PrivateTmp' => {},
-      'PrivateDevices' => {},
-      'PrivateNetwork' => {},
-      'ProtectSystem' => {},
-      'ProtectHome' => {},
-      'MountFlags' => {},
+      'ReadWriteDirectories' => { kind_of: [String, Array] },
+      'ReadOnlyDirectories' => { kind_of: [String, Array] },
+      'InaccessibleDirectories' => { kind_of: [String, Array] },
+      'PrivateTmp' => { kind_of: [TrueClass, FalseClass] },
+      'PrivateDevices' => { kind_of: [TrueClass, FalseClass] },
+      'PrivateNetwork' => { kind_of: [TrueClass, FalseClass] },
+      'ProtectSystem' => { kind_of: [TrueClass, FalseClass] },
+      'ProtectHome' => {
+        kind_of: [TrueClass, FalseClass, String],
+        equal_to: [true, false, 'read-only']
+      },
+      'MountFlags' => {
+        kind_of: String,
+        equal_to: %w( shared slave private )
+      },
       'UtmpIdentifier' => {},
-      'UtmpMode' => {},
+      'UtmpMode' => { kind_of: String, equal_to: %w( init login user ) },
       'SELinuxContext' => {},
       'AppArmorProfile' => {},
       'SmackProcessLabel' => {},
-      'IgnoreSIGPIPE' => {},
-      'NoNewPrivileges' => {},
-      'SystemCallFilter' => {},
+      'IgnoreSIGPIPE' => { kind_of: [TrueClass, FalseClass] },
+      'NoNewPrivileges' => { kind_of: [TrueClass, FalseClass] },
+      'SystemCallFilter' => { kind_of: [String, Array] },
       'SystemCallErrorNumber' => {},
       'SystemCallArchitectures' => {},
       'RestrictAddressFamilies' => {},
-      'Personality' => {},
-      'RuntimeDirectory' => {},
-      'RuntimeDirectoryMode' => {}
+      'Personality' => { kind_of: String, equal_to: %w( x86 x86-64 ) },
+      'RuntimeDirectory' => { kind_of: [String, Array] },
+      'RuntimeDirectoryMode' => { kind_of: [String, Array] }
     }
   end
 end
+# rubocop: enable ModuleLength

@@ -7,9 +7,9 @@ systemd_swap 'swap' do
   end
   swap do
     what '/dev/swap'
-    timeout_sec '5'
+    timeout_sec 5
     personality 'x86'
-    send_sighup 'no'
-    block_io_accounting 'true'
+    send_sighup false
+    block_io_accounting true
   end
 end

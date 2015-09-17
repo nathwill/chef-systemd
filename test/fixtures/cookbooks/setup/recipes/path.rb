@@ -8,6 +8,6 @@ systemd_path 'dummy' do
   path do
     directory_not_empty '/var/run/queue'
     unit 'queue-worker.service'
-    make_directory 'true'
+    make_directory true
   end
 end

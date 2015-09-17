@@ -7,7 +7,7 @@ systemd_socket 'sshd' do
   end
   socket do
     listen_stream '22'
-    accept 'yes'
+    accept true
     protect_system 'full'
     kill_mode 'control-group'
     cpu_quota '20%'

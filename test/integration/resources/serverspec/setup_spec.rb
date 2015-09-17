@@ -92,7 +92,7 @@ describe 'Systemd Resources' do
     its(:content) { should match /\[Install\]/ }
     its(:content) { should match /WantedBy=local-fs.target/ }
     its(:content) { should match /\[Swap\]/ }
-    its(:content) { should match /BlockIOAccounting=true/ }
+    its(:content) { should match /BlockIOAccounting=yes/ }
     its(:content) { should match /Personality=x86/ }
     its(:content) { should match /SendSIGHUP=no/ }
     its(:content) { should match /What=\/dev\/swap/ }
@@ -118,7 +118,7 @@ describe 'Systemd Resources' do
     its(:content) { should match /\[Path\]/ }
     its(:content) { should match /DirectoryNotEmpty=\/var\/run\/queue/ }
     its(:content) { should match /Unit=queue-worker.service/ }
-    its(:content) { should match /MakeDirectory=true/ }
+    its(:content) { should match /MakeDirectory=yes/ }
   end
 
   # Test the timer resource

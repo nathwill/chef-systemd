@@ -123,7 +123,10 @@ module Systemd
       'PrivateTmp' => { kind_of: [TrueClass, FalseClass] },
       'PrivateDevices' => { kind_of: [TrueClass, FalseClass] },
       'PrivateNetwork' => { kind_of: [TrueClass, FalseClass] },
-      'ProtectSystem' => { kind_of: [TrueClass, FalseClass] },
+      'ProtectSystem' => {
+        kind_of: [TrueClass, FalseClass, String],
+        equal_to: [true, false, 'full']
+      },
       'ProtectHome' => {
         kind_of: [TrueClass, FalseClass, String],
         equal_to: [true, false, 'read-only']

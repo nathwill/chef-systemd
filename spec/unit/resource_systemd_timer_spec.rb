@@ -14,7 +14,7 @@ describe Chef::Resource::SystemdTimer do
     {
       :unit=>["After=network.target"],
       :install=>["WantedBy=multi-user.target"],
-      :timer=>["OnCalendar=hourly", "WakeSystem=true"]
+      :timer=>["OnCalendar=hourly", "WakeSystem=yes"]
     }
   end
 

@@ -27,9 +27,9 @@ module Systemd
     OPTIONS ||= Systemd::ResourceControl::OPTIONS
                 .merge(Systemd::Exec::OPTIONS)
                 .merge(Systemd::Kill::OPTIONS)
-                .merge('What' => {},
-                       'Priority' => {},
+                .merge('What' => { kind_of: String, required: true },
+                       'Priority' => { kind_of: Integer },
                        'Options' => {},
-                       'TimeoutSec' => {})
+                       'TimeoutSec' => { kind_of: [String, Integer] })
   end
 end

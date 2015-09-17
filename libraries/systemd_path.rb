@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+require_relative 'helpers'
+
 module Systemd
   module Path
     OPTIONS ||= {
@@ -26,9 +28,19 @@ module Systemd
       'PathChanged' => {},
       'PathModified' => {},
       'DirectoryNotEmpty' => {},
-      'Unit' => {},
-      'MakeDirectory' => {},
-      'DirectoryMode' => {}
+      'Unit' => {
+        kind_of: String,
+        callbacks: {
+          'is a valid unit ' => lambda do |spec|
+            !spec.match(/\.path$/) &&
+            (Systemd::Helpers::UNITS | Systemd::Helpers::STUB_UNITS).any? do |u|
+              spec.match(/\.#{u}$/)
+            end
+          end
+        }
+      },
+      'MakeDirectory' => { kind_of: [TrueClass, FalseClass] },
+      'DirectoryMode' => { kind_of: [String, Integer] }
     }
   end
 end

@@ -18,19 +18,31 @@
 # limitations under the License.
 #
 
+require_relative 'helpers'
+
 module Systemd
   module Timer
     OPTIONS ||= {
-      'OnActiveSec' => {},
-      'OnBootSec' => {},
-      'OnStartupSec' => {},
-      'OnUnitActiveSec' => {},
-      'OnUnitInactiveSec' => {},
+      'OnActiveSec' => { kind_of: [String, Integer] },
+      'OnBootSec' => { kind_of: [String, Integer] },
+      'OnStartupSec' => { kind_of: [String, Integer] },
+      'OnUnitActiveSec' => { kind_of: [String, Integer] },
+      'OnUnitInactiveSec' => { kind_of: [String, Integer] },
       'OnCalendar' => {},
-      'AccuracySec' => {},
-      'Unit' => {},
-      'Persistent' => {},
-      'WakeSystem' => {}
+      'AccuracySec' => { kind_of: [String, Integer] },
+      'Unit' => {
+        kind_of: String,
+        callbacks: {
+          'is a valid unit ' => lambda do |spec|
+            !spec.match(/\.timer$/) &&
+            (Systemd::Helpers::UNITS | Systemd::Helpers::STUB_UNITS).any? do |u|
+              spec.match(/\.#{u}$/)
+            end
+          end
+        }
+      },
+      'Persistent' => { kind_of: [TrueClass, FalseClass] },
+      'WakeSystem' => { kind_of: [TrueClass, FalseClass] }
     }
   end
 end

@@ -31,8 +31,8 @@ module Systemd
                        'Where' => {},
                        'Type' => {},
                        'Options' => {},
-                       'SloppyOptions' => {},
-                       'DirectoryMode' => {},
-                       'TimeoutSec' => {})
+                       'SloppyOptions' => { kind_of: [TrueClass, FalseClass] },
+                       'DirectoryMode' => { kind_of: [String, Integer] },
+                       'TimeoutSec' => { kind_of: [String, Integer] })
   end
 end

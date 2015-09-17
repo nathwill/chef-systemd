@@ -27,9 +27,16 @@ module Systemd
     OPTIONS ||= Systemd::ResourceControl::OPTIONS
                 .merge(Systemd::Exec::OPTIONS)
                 .merge(Systemd::Kill::OPTIONS)
-                .merge('Type' => {},
-                       'RemainAfterExit' => {},
-                       'GuessMainPID' => {},
+                .merge('Type' => {
+                         kind_of: String,
+                         equal_to: %w( simple forking oneshot dbus notify idle )
+                       },
+                       'RemainAfterExit' => {
+                         kind_of: [TrueClass, FalseClass]
+                       },
+                       'GuessMainPID' => {
+                         kind_of: [TrueClass, FalseClass]
+                       },
                        'PIDFile' => {},
                        'BusName' => {},
                        'BusPolicy' => {},
@@ -39,26 +46,55 @@ module Systemd
                        'ExecReload' => {},
                        'ExecStop' => {},
                        'ExecStopPost' => {},
-                       'RestartSec' => {},
-                       'TimeoutStartSec' => {},
-                       'TimeoutStopSec' => {},
-                       'TimeoutSec' => {},
-                       'WatchdogSec' => {},
-                       'Restart' => {},
-                       'SuccessExitStatus' => {},
-                       'RestartPreventExitStatus' => {},
-                       'RestartForceExitStatus' => {},
-                       'PermissionsStartOnly' => {},
-                       'RootDirectoryStartOnly' => {},
-                       'NonBlocking' => {},
-                       'NotifyAccess' => {},
+                       'RestartSec' => { kind_of: [String, Integer] },
+                       'TimeoutStartSec' => { kind_of: [String, Integer] },
+                       'TimeoutStopSec' => { kind_of: [String, Integer] },
+                       'TimeoutSec' => { kind_of: [String, Integer] },
+                       'WatchdogSec' => { kind_of: [String, Integer] },
+                       'Restart' => {
+                         kind_of: String,
+                         equal_to: %w(
+                           on-success on-failure on-abnormal
+                           no on-watchdog on-abort always
+                         )
+                       },
+                       'SuccessExitStatus' => { kind_of: [String, Integer] },
+                       'RestartPreventExitStatus' => {
+                         kind_of: [String, Integer]
+                       },
+                       'RestartForceExitStatus' => {
+                         kind_of: [String, Integer]
+                       },
+                       'PermissionsStartOnly' => {
+                         kind_of: [TrueClass, FalseClass]
+                       },
+                       'RootDirectoryStartOnly' => {
+                         kind_of: [TrueClass, FalseClass]
+                       },
+                       'NonBlocking' => { kind_of: [TrueClass, FalseClass] },
+                       'NotifyAccess' => {
+                         kind_of: String,
+                         equal_to: %w( none main all )
+                       },
                        'Sockets' => {},
                        'StartLimitInterval' => {},
                        'StartLimitBurst' => {},
-                       'StartLimitAction' => {},
-                       'FailureAction' => {},
+                       'StartLimitAction' => {
+                         kind_of: String,
+                         equal_to: %w(
+                           none reboot reboot-force reboot-immediate
+                           poweroff poweroff-force poweroff-immediate
+                         )
+                       },
+                       'FailureAction' => {
+                         kind_of: String,
+                         equal_to: %w(
+                           none reboot reboot-force reboot-immediate
+                           poweroff poweroff-force poweroff-immediate
+                         )
+                       },
                        'RebootArgument' => {},
-                       'FileDescriptorStoreMax' => {}
+                       'FileDescriptorStoreMax' => { kind_of: Integer }
                       )
   end
 end

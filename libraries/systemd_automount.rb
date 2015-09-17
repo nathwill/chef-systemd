@@ -22,8 +22,8 @@ module Systemd
   module Automount
     OPTIONS ||= {
       'Where' => {},
-      'DirectoryMode' => {},
-      'TimeoutIdleSec' => {}
+      'DirectoryMode' => { kind_of: [Integer, String] },
+      'TimeoutIdleSec' => { kind_of: [Integer, String] }
     }
   end
 end

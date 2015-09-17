@@ -20,11 +20,11 @@
 
 module Systemd
   module Install
-    # excluded Alias option due to conflict
+    # excluded Alias option due to conflict with ruby reserved words
     OPTIONS ||= {
-      'WantedBy' => {},
-      'RequiredBy' => {},
-      'Also' => {},
+      'WantedBy' => { kind_of: [String, Array] },
+      'RequiredBy' => { kind_of: [String, Array] },
+      'Also' => { kind_of: [String, Array] },
       'DefaultInstance' => {}
     }
   end

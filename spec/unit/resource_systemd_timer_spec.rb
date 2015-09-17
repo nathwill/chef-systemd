@@ -6,7 +6,7 @@ describe Chef::Resource::SystemdTimer do
     t.wanted_by 'multi-user.target'
     t.after 'network.target'
     t.on_calendar 'hourly'
-    t.wake_system 'true'
+    t.wake_system true
     t
   end
 

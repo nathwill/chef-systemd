@@ -7,7 +7,7 @@ describe Chef::Resource::SystemdPath do
     p.after 'network.target'
     p.unit 'worker.service'
     p.directory_not_empty '/var/tmp/work'
-    p.make_directory 'yes'
+    p.make_directory true
     p
   end
 

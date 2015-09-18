@@ -21,10 +21,13 @@
 module Systemd
   module Journald
     OPTIONS ||= {
-      'Storage' => {},
-      'Compress' => {},
-      'Seal' => {},
-      'SplitMode' => {},
+      'Storage' => {
+        kind_of: String,
+        equal_to: %w( volatile persistent auto none )
+      },
+      'Compress' => { kind_of: [TrueClass, FalseClass] },
+      'Seal' => { kind_of: [TrueClass, FalseClass] },
+      'SplitMode' => { kind_of: String, equal_to: %w( uid login none ) },
       'RateLimitInterval' => {},
       'RateLimitBurst' => {},
       'SystemMaxUse' => {},
@@ -33,13 +36,13 @@ module Systemd
       'RuntimeMaxUse' => {},
       'RuntimeKeepFree' => {},
       'RuntimeMaxFileSize' => {},
-      'MaxFileSec' => {},
-      'MaxRetentionSec' => {},
-      'SyncIntervalSec' => {},
-      'ForwardToSyslog' => {},
-      'ForwardToKMsg' => {},
-      'ForwardToConsole' => {},
-      'ForwardToWall' => {},
+      'MaxFileSec' => { kind_of: [String, Integer] },
+      'MaxRetentionSec' => { kind_of: [String, Integer] },
+      'SyncIntervalSec' => { kind_of: [String, Integer] },
+      'ForwardToSyslog' => { kind_of: [TrueClass, FalseClass] },
+      'ForwardToKMsg' => { kind_of: [TrueClass, FalseClass] },
+      'ForwardToConsole' => { kind_of: [TrueClass, FalseClass] },
+      'ForwardToWall' => { kind_of: [TrueClass, FalseClass] },
       'MaxLevelStore' => {},
       'MaxLevelSyslog' => {},
       'MaxLevelKMsg' => {},

@@ -22,15 +22,25 @@ module Systemd
     module Link
       OPTIONS ||= {
         'Description' => {},
-        'Alias' => {},
-        'MACAddressPolicy' => {},
-        'MACAddress' => {},
-        'NamePolicy' => {},
+        'MACAddressPolicy' => {
+          kind_of: String,
+          equal_to: %w( persistent random )
+        },
+        'NamePolicy' => {
+          kind_of: [String, Array],
+          callbacks: {
+            'is a valid argument' => lambda do |spec|
+              Array(spec).all? do |arg|
+                %w( kernel database onboard slot path mac ).include? arg
+              end
+            end
+          }
+        },
         'Name' => {},
-        'MTUBytes' => {},
-        'BitsPerSecond' => {},
-        'Duplex' => {},
-        'WakeOnLan' => {}
+        'MTUBytes' => { kind_of: [String, Integer] },
+        'BitsPerSecond' => { kind_of: [String, Integer] },
+        'Duplex' => { kind_of: String, equal_to: %w( half full ) },
+        'WakeOnLan' => { kind_of: String, equal_to: %w( phy magic off ) }
       }
     end
   end

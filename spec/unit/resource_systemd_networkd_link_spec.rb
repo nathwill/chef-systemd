@@ -7,11 +7,11 @@ describe Chef::Resource::SystemdNetworkdLink do
     l.driver 'brcmsmac'
     l.path 'pci-0000:02:00.0-*'
     l.type 'wlan'
-    l.virtualization 'no'
+    l.virtualization false
     l.host 'my-laptop'
     l.architecture 'x86-64'
     l.name 'wireless0'
-    l.mtu_bytes '1450'
+    l.mtu_bytes 1_450
     l.bits_per_second '10M'
     l.wake_on_lan 'magic'
     l.link_mac_addr 'cb:a9:87:65:43:21'
@@ -22,7 +22,7 @@ describe Chef::Resource::SystemdNetworkdLink do
     {
       :match=>[
         "Path=pci-0000:02:00.0-*", "Driver=brcmsmac", "Type=wlan",
-        "Host=my-laptop", "Virtualization=no", "Architecture=x86-64",
+        "Host=my-laptop", "Virtualization=false", "Architecture=x86-64",
         "MACAddress=12:34:56:78:9a:bc"
       ],
       :link=>[

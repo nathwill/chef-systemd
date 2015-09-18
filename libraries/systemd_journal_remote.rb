@@ -21,7 +21,7 @@
 module Systemd
   module JournalRemote
     OPTIONS ||= {
-      'SplitMode' => {},
+      'SplitMode' => { kind_of: String, equal_to: %w( host none ) },
       'ServerKeyFile' => {},
       'ServerCertificateFile' => {},
       'TrustedCertificateFile' => {}

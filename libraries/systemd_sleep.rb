@@ -21,12 +21,12 @@
 module Systemd
   module Sleep
     OPTIONS ||= {
-      'SuspendMode' => {},
-      'HibernateMode' => {},
-      'HybridSleepMode' => {},
-      'SuspendState' => {},
-      'HibernateState' => {},
-      'HybridSleepState' => {}
+      'SuspendMode' => { kind_of: [String, Array] },
+      'HibernateMode' => { kind_of: [String, Array] },
+      'HybridSleepMode' => { kind_of: [String, Array] },
+      'SuspendState' => { kind_of: [String, Array] },
+      'HibernateState' => { kind_of: [String, Array] },
+      'HybridSleepState' => { kind_of: [String, Array] }
     }
   end
 end

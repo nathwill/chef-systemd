@@ -20,27 +20,49 @@
 
 module Systemd
   module Logind
+    POWER_OPTS ||= {
+      kind_of: String,
+      equal_to: %w(
+        ignore poweroff reboot halt kexec
+        suspend hibernate hybrid-sleep lock
+      )
+    }
+
     OPTIONS ||= {
-      'NAutoVTs' => {},
-      'ReserveVT' => {},
-      'KillUserProcesses' => {},
-      'KillOnlyUsers' => {},
-      'KillExcludeUsers' => {},
-      'IdleAction' => {},
-      'IdleActionSec' => {},
-      'InhibitDelayMaxSec' => {},
-      'HandlePowerKey' => {},
-      'HandleSuspendKey' => {},
-      'HandleHibernateKey' => {},
-      'HandleLidSwitch' => {},
-      'HandleLidSwitchDocked' => {},
-      'PowerKeyIgnoreInhibited' => {},
-      'SuspendKeyIgnoreInhibited' => {},
-      'HibernateKeyIgnoreInhibited' => {},
-      'LidSwitchIgnoreInhibited' => {},
-      'HoldoffTimeoutSec' => {},
+      'NAutoVTs' => {
+        kind_of: Integer,
+        callbacks: {
+          'is a valid argument' => lambda do |spec|
+            spec >= 0
+          end
+        }
+      },
+      'ReserveVT' => {
+        kind_of: Integer,
+        callbacks: {
+          'is a valid argument' => lambda do |spec|
+            spec >= 0
+          end
+        }
+      },
+      'KillUserProcesses' => { kind_of: [TrueClass, FalseClass] },
+      'KillOnlyUsers' => { kind_of: [String, Array] },
+      'KillExcludeUsers' => { kind_of: [String, Array] },
+      'IdleAction' => POWER_OPTS,
+      'IdleActionSec' => { kind_of: [String, Integer] },
+      'InhibitDelayMaxSec' => { kind_of: [String, Integer] },
+      'HandlePowerKey' => POWER_OPTS,
+      'HandleSuspendKey' => POWER_OPTS,
+      'HandleHibernateKey' => POWER_OPTS,
+      'HandleLidSwitch' => POWER_OPTS,
+      'HandleLidSwitchDocked' => POWER_OPTS,
+      'PowerKeyIgnoreInhibited' => { kind_of: [TrueClass, FalseClass] },
+      'SuspendKeyIgnoreInhibited' => { kind_of: [TrueClass, FalseClass] },
+      'HibernateKeyIgnoreInhibited' => { kind_of: [TrueClass, FalseClass] },
+      'LidSwitchIgnoreInhibited' => { kind_of: [TrueClass, FalseClass] },
+      'HoldoffTimeoutSec' => { kind_of: [String, Integer] },
       'RuntimeDirectorySize' => {},
-      'RemoveIPC' => {}
+      'RemoveIPC' => { kind_of: [TrueClass, FalseClass] }
     }
   end
 end

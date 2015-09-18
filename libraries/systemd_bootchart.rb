@@ -21,17 +21,17 @@
 module Systemd
   module Bootchart
     OPTIONS ||= {
-      'Samples' => {},
-      'Frequency' => {},
-      'Relative' => {},
-      'Filter' => {},
+      'Samples' => { kind_of: Integer },
+      'Frequency' => { kind_of: Integer },
+      'Relative' => { kind_of: [TrueClass, FalseClass] },
+      'Filter' => { kind_of: [TrueClass, FalseClass] },
       'Output' => {},
       'Init' => {},
-      'PlotMemoryUsage' => {},
-      'PlotEntropyGraph' => {},
-      'ScaleX' => {},
-      'ScaleY' => {},
-      'ControlGroup' => {}
+      'PlotMemoryUsage' => { kind_of: [TrueClass, FalseClass] },
+      'PlotEntropyGraph' => { kind_of: [TrueClass, FalseClass] },
+      'ScaleX' => { kind_of: Integer },
+      'ScaleY' => { kind_of: Integer },
+      'ControlGroup' => { kind_of: [TrueClass, FalseClass] }
     }
   end
 end

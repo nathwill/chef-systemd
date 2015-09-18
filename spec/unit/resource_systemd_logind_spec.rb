@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Chef::Resource::SystemdLogind do
   let(:logind) do
     l = Chef::Resource::SystemdLogind.new('logind')
-    l.remove_ipc 'yes'
+    l.remove_ipc true
     l
   end
 

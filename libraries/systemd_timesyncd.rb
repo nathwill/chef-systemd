@@ -21,8 +21,8 @@
 module Systemd
   module Timesyncd
     OPTIONS ||= {
-      'NTP' => {},
-      'FallbackNTP' => {}
+      'NTP' => { kind_of: [String, Array] },
+      'FallbackNTP' => { kind_of: [String, Array] }
     }
   end
 end

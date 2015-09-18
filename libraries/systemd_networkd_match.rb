@@ -21,15 +21,28 @@ module Systemd
   module Networkd
     module Match
       OPTIONS ||= {
-        'MACAddress' => {},
-        'OriginalName' => {},
-        'Path' => {},
-        'Driver' => {},
-        'Type' => {},
+        'OriginalName' => { kind_of: [String, Array] },
+        'Path' => { kind_of: [String, Array] },
+        'Driver' => { kind_of: [String, Array] },
+        'Type' => { kind_of: [String, Array] },
         'Host' => {},
-        'Virtualization' => {},
+        'Virtualization' => {
+          kind_of: [TrueClass, FalseClass, String],
+          equal_to: [
+            true, false, 'vm', 'container', 'qemu', 'kvm', 'zvm',
+            'vmware', 'microsoft', 'oracle', 'xen', 'bochs', 'uml',
+            'openvz', 'lxc', 'lxc-libvirt', 'systemd-nspawn', 'docker'
+          ]
+        },
         'KernelCommandLine' => {},
-        'Architecture' => {}
+        'Architecture' => {
+          kind_of: String,
+          equal_to: %w(
+            x86 x86-64 ppc ppc-le ppc64 ppc64-le ia64 parisc parisc64
+            s390 s390x sparc sparc64 mips mips-le mips64 mips64-le
+            alpha arm arm-be arm64 arm64-be sh sh64 m86k tilegx cris
+          )
+        }
       }
     end
   end

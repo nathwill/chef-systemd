@@ -9,7 +9,7 @@ describe 'systemd::resolved' do
 
     it 'configures resolved' do
       expect(chef_run).to create_systemd_resolved('resolved').with(
-        dns: '8.8.8.8 8.8.4.4',
+        dns: %w(8.8.8.8 8.8.4.4),
       )
     end
 

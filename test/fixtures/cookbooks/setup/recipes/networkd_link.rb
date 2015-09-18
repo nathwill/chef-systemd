@@ -6,14 +6,14 @@ systemd_networkd_link 'wireless' do
     driver 'brcmsmac'
     path 'pci-0000:02:00.0-*'
     type 'wlan'
-    virtualization 'no'
+    virtualization false
     host 'my-laptop'
     architecture 'x86-64'
   end
 
   link do
     name 'wireless0'
-    mtu_bytes '1450'
+    mtu_bytes 1_450
     bits_per_second '10M'
     wake_on_lan 'magic'
     link_mac_addr 'cb:a9:87:65:43:21'

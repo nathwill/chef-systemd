@@ -158,7 +158,7 @@ describe 'Systemd Resources' do
     its(:content) { should match /Driver=brcmsmac/ }
     its(:content) { should match /Type=wlan/ }
     its(:content) { should match /Host=my-laptop/ }
-    its(:content) { should match /Virtualization=no/ }
+    its(:content) { should match /Virtualization=false/ }
     its(:content) { should match /Architecture=x86-64/ }
     its(:content) { should match /MACAddress=12:34:56:78:9a:bc/ }
     its(:content) { should match %r{[Link]} }

@@ -28,7 +28,7 @@ describe 'systemd::coredump' do
     it 'manages coredump.conf' do
       expect(chef_run).to create_systemd_coredump('coredump').with(
         drop_in: false,
-        compress: 'yes'
+        compress: true
       )
     end
 

@@ -31,10 +31,8 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    %w( match link ).each do |s|
-      Systemd::Networkd.const_get(s.capitalize)::OPTIONS.each_pair do |name, config| # rubocop: disable LineLength
-        attribute name.underscore.to_sym, config
-      end
+    Systemd::Networkd::OPTIONS.each_pair do |name, config| # rubocop: disable LineLength
+      attribute name.underscore.to_sym, config
     end
 
     attribute :match_mac_addr, kind_of: String, default: nil

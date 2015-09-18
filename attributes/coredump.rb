@@ -18,7 +18,7 @@
 
 default['systemd']['coredump'].tap do |c|
   c['storage'] = nil
-  c['compress'] = 'yes'
+  c['compress'] = true
   c['process_size_max'] = nil
   c['external_size_max'] = nil
   c['journal_size_max'] = nil

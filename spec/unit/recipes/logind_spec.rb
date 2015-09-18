@@ -9,7 +9,7 @@ describe 'systemd::logind' do
 
     it 'configures logind' do
       expect(chef_run).to create_systemd_logind('logind').with(
-        n_auto_v_ts: '0'
+        n_auto_v_ts: 0
       )
     end
 

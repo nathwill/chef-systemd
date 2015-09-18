@@ -4,8 +4,8 @@ describe Chef::Resource::SystemdDaemon do
   let(:daemon) do
     d = Chef::Resource::SystemdJournald.new('journal')
     d.storage 'auto'
-    d.forward_to_syslog 'yes'
-    d.compress 'yes'
+    d.forward_to_syslog true
+    d.compress true
     d
   end
 

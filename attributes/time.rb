@@ -23,10 +23,10 @@ default['systemd'].tap do |s|
   s['enable_ntp'] = true
 
   s['timesyncd'].tap do |ts|
-    ts['ntp'] = 0.upto(3).map { |i| "#{i}.pool.ntp.org" }.join(' ')
+    ts['ntp'] = 0.upto(3).map { |i| "#{i}.pool.ntp.org" }
 
     ts['fallback_ntp'] = 0.upto(3).map do |i|
       "#{i}.#{node['platform']}.pool.ntp.org"
-    end.join(' ')
+    end
   end
 end

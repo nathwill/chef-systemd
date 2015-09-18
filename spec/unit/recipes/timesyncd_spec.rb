@@ -9,8 +9,8 @@ describe 'systemd::timesyncd' do
 
     it 'configures timesyncd' do
       expect(chef_run).to create_systemd_timesyncd('timesyncd').with(
-        ntp: '0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org',
-        fallback_ntp: '0.fedora.pool.ntp.org 1.fedora.pool.ntp.org 2.fedora.pool.ntp.org 3.fedora.pool.ntp.org'
+        ntp: %w(0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org),
+        fallback_ntp: %w(0.fedora.pool.ntp.org 1.fedora.pool.ntp.org 2.fedora.pool.ntp.org 3.fedora.pool.ntp.org)
       )
     end
 

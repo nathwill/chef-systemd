@@ -17,7 +17,7 @@
 # limitations under the License.
 
 default['systemd']['logind'].tap do |l|
-  l['n_auto_v_ts'] = '0'
+  l['n_auto_v_ts'] = 0
   l['reserve_vt'] = nil
   l['kill_user_processes'] = nil
   l['kill_only_users'] = nil

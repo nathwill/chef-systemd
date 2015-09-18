@@ -1,4 +1,10 @@
-# 0.2.0 / 2015-08-??
+# 0.3.0 / 2015-09-18
+
+* enhanced resource attributes (type, value appropriate)
+* add init helpers
+* add reload action for service resources
+
+# 0.2.0 / 2015-08-15
 
 * add non-unit resources/providers
 * add recipes

@@ -31,7 +31,7 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    Systemd::Networkd::OPTIONS.each_pair do |name, config| # rubocop: disable LineLength
+    Systemd::Networkd::OPTIONS.each_pair do |name, config|
       attribute name.underscore.to_sym, config
     end
 

@@ -25,18 +25,16 @@ require_relative 'helpers'
 # http://www.freedesktop.org/software/systemd/man/systemd.link.html
 class Chef::Resource
   class SystemdNetworkdLink < Chef::Resource::LWRPBase
-    include Systemd::Networkd
-
     self.resource_name = :systemd_networkd_link
-
     provides :systemd_networkd_link
 
     actions :create, :delete
     default_action :create
 
-    # alias is a reserved word, mac_address is duped between sections
-    OPTIONS.reject { |o, _| o.match(/(MACAddress|Alias)/) }.each_pair do |name, config| # rubocop: disable LineLength
-      attribute name.underscore.to_sym, config
+    %w( match link ).each do |s|
+      Systemd::Networkd.const_get(s.capitalize)::OPTIONS.each_pair do |name, config| # rubocop: disable LineLength
+        attribute name.underscore.to_sym, config
+      end
     end
 
     attribute :match_mac_addr, kind_of: String, default: nil

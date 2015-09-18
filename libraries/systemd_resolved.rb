@@ -21,9 +21,12 @@
 module Systemd
   module Resolved
     OPTIONS ||= {
-      'DNS' => {},
-      'FallbackDNS' => {},
-      'LLMNR' => {}
+      'DNS' => { kind_of: [String, Array] },
+      'FallbackDNS' => { kind_of: [String, Array] },
+      'LLMNR' => {
+        kind_of: [TrueClass, FalseClass, String],
+        equal_to: [true, false, 'resolve']
+      }
     }
   end
 end

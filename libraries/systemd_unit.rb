@@ -88,9 +88,9 @@ module Systemd
       'ConditionVirtualization' => {
         kind_of: [TrueClass, FalseClass, String],
         equal_to: [
-          true, false, 'qemu', 'kvm', 'zvm', 'vmware',
-          'microsoft', 'oracle', 'xen', 'bochs', 'openvz',
-          'lxc', 'lxc-libvirt', 'systemd-nspawn', 'docker', 'uml'
+          true, false, 'vm', 'container', 'qemu', 'kvm', 'zvm',
+          'vmware', 'microsoft', 'oracle', 'xen', 'bochs', 'uml',
+          'openvz', 'lxc', 'lxc-libvirt', 'systemd-nspawn', 'docker'
         ]
       },
       'ConditionHost' => {},

@@ -21,11 +21,14 @@
 module Systemd
   module Coredump
     OPTIONS ||= {
-      'Storage' => {},
-      'Compress' => {},
-      'ProcessSizeMax' => {},
-      'ExternalSizeMax' => {},
-      'JournalSizeMax' => {},
+      'Storage' => {
+        kind_of: String,
+        equal_to: %w( none external journal both )
+      },
+      'Compress' => { kind_of: [TrueClass, FalseClass] },
+      'ProcessSizeMax' => { kind_of: Integer },
+      'ExternalSizeMax' => { kind_of: Integer },
+      'JournalSizeMax' => { kind_of: Integer },
       'MaxUse' => {},
       'KeepFree' => {}
     }

@@ -7,12 +7,13 @@ Currently under active development; early adopters' feedback wanted!
 See issues for a list of ways to contribute :)
 
 Recommended reading:
-- This README!
-- [Overview of systemd for RHEL 7][rhel]
-- [systemd docs][docs]
-- [Lennart's blog series][blog]
-- libraries under `libraries/*.rb`
-- test cookbooks under `test/fixtures/cookbooks/setup`
+
+ - This README
+ - [Overview of systemd for RHEL 7][rhel]
+ - [systemd docs][docs]
+ - [Lennart's blog series][blog]
+ - libraries in `libraries/*.rb`
+ - test cookbook in `test/fixtures/cookbooks/setup`
 
 ## Recipes
 
@@ -116,10 +117,11 @@ Unit which describes a file system automount point controlled by systemd.
 |timeout_idle_sec|see docs|nil|
 
 Also supports:
-- [organization](#organization)
-- [unit](#unit)
-- [install](#install)
-- [drop-in](#drop-in)
+
+ - [organization](#organization)
+ - [unit](#unit)
+ - [install](#install)
+ - [drop-in](#drop-in)
 
 ##### systemd_device
 
@@ -129,10 +131,11 @@ Unit which describes a device as exposed in the sysfs/udev device tree.
 This resource has no specific options.
 
 Also supports:
-- [organization](#organization)
-- [unit](#unit)
-- [install](#install)
-- [drop-in](#drop-in)
+
+ - [organization](#organization)
+ - [unit](#unit)
+ - [install](#install)
+ - [drop-in](#drop-in)
 
 ##### systemd_mount
 
@@ -154,13 +157,14 @@ Unit which describes a file system mount point controlled by systemd.
 |where|see docs|nil|
 
 Also supports:
-- [organization](#organization)
-- [unit](#unit)
-- [install](#install)
-- [drop-in](#drop-in)
-- [exec](#exec)
-- [kill](#kill)
-- [resource-control](#resource-control)
+
+ - [organization](#organization)
+ - [unit](#unit)
+ - [install](#install)
+ - [drop-in](#drop-in)
+ - [exec](#exec)
+ - [kill](#kill)
+ - [resource-control](#resource-control)
 
 ##### systemd_path
 
@@ -180,10 +184,11 @@ path-based activities.
 |unit|see docs|nil|
 
 Also supports:
-- [organization](#organization)
-- [unit](#unit)
-- [install](#install)
-- [drop-in](#drop-in)
+
+ - [organization](#organization)
+ - [unit](#unit)
+ - [install](#install)
+ - [drop-in](#drop-in)
 
 ##### systemd_service
 
@@ -226,13 +231,14 @@ Unit which describes information about a process controlled and supervised by sy
 |watchdog_sec|see docs|nil|
 
 Also supports:
-- [organization](#organization)
-- [unit](#unit)
-- [install](#install)
-- [drop-in](#drop-in)
-- [exec](#exec)
-- [kill](#kill)
-- [resource-control](#resource-control)
+
+ - [organization](#organization)
+ - [unit](#unit)
+ - [install](#install)
+ - [drop-in](#drop-in)
+ - [exec](#exec)
+ - [kill](#kill)
+ - [resource-control](#resource-control)
 
 ##### systemd_slice
 
@@ -243,11 +249,12 @@ for of a group of processes.
 This resource has no specific options.
 
 Also supports:
-- [organization](#organization)
-- [unit](#unit)
-- [install](#install)
-- [drop-in](#drop-in)
-- [resource-control](#resource-control)
+
+ - [organization](#organization)
+ - [unit](#unit)
+ - [install](#install)
+ - [drop-in](#drop-in)
+ - [resource-control](#resource-control)
 
 ##### systemd_socket
 
@@ -309,13 +316,14 @@ and supervised by systemd for socket-based service activation.
 |transparent|see docs|nil|
 
 Also supports:
-- [organization](#organization)
-- [unit](#unit)
-- [install](#install)
-- [drop-in](#drop-in)
-- [exec](#exec)
-- [kill](#kill)
-- [resource-control](#resource-control)
+
+ - [organization](#organization)
+ - [unit](#unit)
+ - [install](#install)
+ - [drop-in](#drop-in)
+ - [exec](#exec)
+ - [kill](#kill)
+ - [resource-control](#resource-control)
 
 ##### systemd_swap
 
@@ -330,13 +338,14 @@ Unit which describes a swap device or file for memory paging.
 |what|see docs|nil|
 
 Also supports:
-- [organization](#organization)
-- [unit](#unit)
-- [install](#install)
-- [drop-in](#drop-in)
-- [exec](#exec)
-- [kill](#kill)
-- [resource-control](#resource-control)
+
+ - [organization](#organization)
+ - [unit](#unit)
+ - [install](#install)
+ - [drop-in](#drop-in)
+ - [exec](#exec)
+ - [kill](#kill)
+ - [resource-control](#resource-control)
 
 ##### systemd_target
 
@@ -347,10 +356,11 @@ synchronization points during system start-up.
 This unit has no specific options.
 
 Also supports:
-- [organization](#organization)
-- [unit](#unit)
-- [install](#install)
-- [drop-in](#drop-in)
+
+ - [organization](#organization)
+ - [unit](#unit)
+ - [install](#install)
+ - [drop-in](#drop-in)
 
 ##### systemd_timer
 
@@ -372,10 +382,11 @@ activation (typically a service of the same name).
 |wake_system|see docs|nil|
 
 Also supports:
-- [organization](#organization)
-- [unit](#unit)
-- [install](#install)
-- [drop-in](#drop-in)
+
+ - [organization](#organization)
+ - [unit](#unit)
+ - [install](#install)
+ - [drop-in](#drop-in)
 
 #### Common Unit Attributes
 

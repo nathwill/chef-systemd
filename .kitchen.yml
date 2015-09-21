@@ -66,3 +66,5 @@ suites:
       - debian-8.1
     run_list:
       - recipe[systemd::vconsole]
+      - recipe[systemd::binfmt]
+      - recipe[setup::binfmt]

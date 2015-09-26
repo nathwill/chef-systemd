@@ -45,7 +45,7 @@ class Chef::Resource
       send(:rules).map do |rules|
         rules.map do |rule|
           "#{rule['key']}#{rule['operator']}\"#{rule['value']}\""
-        end.join(", ")
+        end.join(', ')
       end.join("\n")
     end
   end

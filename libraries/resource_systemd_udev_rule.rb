@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Library:: Chef::Resource::SystemdUdevRules
+# Library:: Chef::Resource::SystemdUdevRule
 #
 # Copyright 2015 The Authors
 #
@@ -20,9 +20,9 @@
 require 'chef/resource/lwrp_base'
 
 class Chef::Resource
-  class SystemdUdevRules < Chef::Resource::LWRPBase
-    self.resource_name = :systemd_udev_rules
-    provides :systemd_udev_rules
+  class SystemdUdevRule < Chef::Resource::LWRPBase
+    self.resource_name = :systemd_udev_rule
+    provides :systemd_udev_rule
 
     actions :create, :delete, :disable
     default_action :create

@@ -31,10 +31,14 @@ class Chef::Resource
       'is a valid rule set' => lambda do |specs|
         specs.is_a?(Array) && specs.all? do |spec|
           spec.is_a?(Array) && spec.all? do |rule|
-            rule.keys.length == 3 &&
-              rule.keys.all? do |k|
-                %w( key operator value ).include?(k)
-              end
+            rule.length == 3 &&
+              rule.keys.all? { |k| %w( key operator value ).include? k } &&
+              %w(
+                ACTION DEVPATH KERNEL NAME SUBSYSTEMDRIVER OPTIONS
+                SYMLINK ATTR SYSCTL ENV TEST PROGRAM RESULT IMPORT
+                NAME OWNER GROUP MODE SECLABEL RUN LABEL GOTO TAG
+              ).any? { |k| rule['key'].start_with? k } &&
+              %w( == != = += -= := ).include?(rule['operator'])
           end
         end
       end

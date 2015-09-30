@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Library:: Chef::Resource::SystemdUdevRule
+# Library:: Chef::Resource::SystemdUdevRules
 #
 # Copyright 2015 The Authors
 #
@@ -20,26 +20,25 @@
 require 'chef/resource/lwrp_base'
 
 class Chef::Resource
-  class SystemdUdevRule < Chef::Resource::LWRPBase
-    self.resource_name = :systemd_udev_rule
-    provides :systemd_udev_rule
+  class SystemdUdevRules < Chef::Resource::LWRPBase
+    self.resource_name = :systemd_udev_rules
+    provides :systemd_udev_rules
 
     actions :create, :delete, :disable
     default_action :create
 
-    attribute :rules, kind_of: Array, default: [], required: true,
-                      callbacks: {
-                        'is a valid rule set' => lambda do |specs|
-                          specs.is_a?(Array) && specs.all? do |spec|
-                            spec.is_a?(Array) && spec.all? do |rule|
-                              rule.keys.length == 3 &&
-                                rule.keys.all? do |k|
-                                  %w( key operator value ).include?(k)
-                                end
-                            end
-                          end
-                        end
-                      }
+    attribute :rules, kind_of: Array, default: [], callbacks: {
+      'is a valid rule set' => lambda do |specs|
+        specs.is_a?(Array) && specs.all? do |spec|
+          spec.is_a?(Array) && spec.all? do |rule|
+            rule.keys.length == 3 &&
+              rule.keys.all? do |k|
+                %w( key operator value ).include?(k)
+              end
+          end
+        end
+      end
+    }
 
     def to_s
       send(:rules).map do |rules|

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Library:: Chef::Provider::SystemdUdevRule
+# Library:: Chef::Provider::SystemdUdevRules
 #
 # Copyright 2015 The Authors
 #
@@ -20,7 +20,7 @@
 require 'chef/provider/lwrp_base'
 
 class Chef::Provider
-  class SystemdUdevRule < Chef::Provider::LWRPBase
+  class SystemdUdevRules < Chef::Provider::LWRPBase
     DIR ||= '/etc/udev/rules.d'
 
     use_inline_resources
@@ -29,7 +29,7 @@ class Chef::Provider
       true
     end
 
-    provides :systemd_udev_rule
+    provides :systemd_udev_rules
 
     %i( create delete ).each do |a|
       action a do

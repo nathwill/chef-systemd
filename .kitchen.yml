@@ -60,6 +60,7 @@ suites:
       - recipe[systemd::timezone]
       - recipe[setup::tmpfiles]
       - recipe[systemd::udev]
+      - recipe[setup::udev]
       - recipe[systemd::user]
   - name: utils-new
     excludes:

@@ -34,7 +34,7 @@ class Chef::Resource
             rule.length == 3 &&
               rule.keys.all? { |k| %w( key operator value ).include? k } &&
               %w(
-                ACTION DEVPATH KERNEL NAME SUBSYSTEMDRIVER OPTIONS
+                ACTION DEVPATH KERNEL NAME SUBSYSTEM DRIVER OPTIONS
                 SYMLINK ATTR SYSCTL ENV TEST PROGRAM RESULT IMPORT
                 NAME OWNER GROUP MODE SECLABEL RUN LABEL GOTO TAG
               ).any? { |k| rule['key'].start_with? k } &&

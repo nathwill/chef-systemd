@@ -52,17 +52,16 @@ class Chef::Provider
       r = new_resource
 
       rule_path = ::File.join(DIR, "#{r.name}.rules")
-      null_path = '/dev/null'
 
       file rule_path do
         action :delete
         not_if do
-          ::File.symlink?(rule_path) && ::File.readlink(rule_path) == null_path
+          ::File.symlink?(rule_path) && ::File.readlink(rule_path) == File::NULL
         end
       end
 
       l = link rule_path do
-        to null_path
+        to File::NULL
       end
 
       new_resource.updated_by_last_action(l.updated_by_last_action?)

@@ -21,6 +21,14 @@ require 'chef/resource/lwrp_base'
 
 class Chef::Resource
   class SystemdUdevRules < Chef::Resource::LWRPBase
+    VALID_UDEV_OPERATORS ||= %w( == != = += -= := )
+    VALID_RULE_KEYS ||= %w( key operator value )
+    VALID_UDEV_KEYS ||= %w(
+      ACTION DEVPATH KERNEL NAME SUBSYSTEM DRIVER OPTIONS
+      SYMLINK ATTR SYSCTL ENV TEST PROGRAM RESULT IMPORT
+      NAME OWNER GROUP MODE SECLABEL RUN LABEL GOTO TAG
+    )
+
     self.resource_name = :systemd_udev_rules
     provides :systemd_udev_rules
 
@@ -32,21 +40,17 @@ class Chef::Resource
         specs.is_a?(Array) && specs.all? do |spec|
           spec.is_a?(Array) && spec.all? do |rule|
             rule.length == 3 &&
-              rule.keys.all? { |k| %w( key operator value ).include? k } &&
-              %w(
-                ACTION DEVPATH KERNEL NAME SUBSYSTEM DRIVER OPTIONS
-                SYMLINK ATTR SYSCTL ENV TEST PROGRAM RESULT IMPORT
-                NAME OWNER GROUP MODE SECLABEL RUN LABEL GOTO TAG
-              ).any? { |k| rule['key'].start_with? k } &&
-              %w( == != = += -= := ).include?(rule['operator'])
+              rule.keys.all? { |k| VALID_RULE_KEYS.include? k } &&
+              VALID_UDEV_KEYS.any? { |k| rule['key'].start_with? k } &&
+              VALID_UDEV_OPERATORS.include?(rule['operator'])
           end
         end
       end
     }
 
     def to_s
-      send(:rules).map do |rules|
-        rules.map do |rule|
+      rules.map do |line|
+        line.map do |rule|
           "#{rule['key']}#{rule['operator']}\"#{rule['value']}\""
         end.join(', ')
       end.join("\n")

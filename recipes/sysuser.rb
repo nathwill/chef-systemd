@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: sysusers
+# Recipe:: sysuser
 #
 # Copyright 2015 The Authors
 #
@@ -16,6 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-service 'systemd-sysusers' do
+service 'systemd-sysuser' do
   action :enable
 end

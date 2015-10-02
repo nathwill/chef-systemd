@@ -25,21 +25,21 @@ class Chef::Resource
     provides :systemd_sysuser
 
     attribute :type, kind_of: String, equal_to: %w( u g m r ), default: 'u'
-    attribute :name, kind_of: String, required: true, callbacks: {
+    attribute :name, kind_of: String, name_attribute: true, callbacks: {
       'is less than 31 characters' => ->(spec) { spec.length <= 31 },
       'is only ascii characters' => ->(spec) { spec.ascii_only? },
       'has a non-digit first-char' => ->(spec) { !spec[0].match(/\d/) }
-    }
+    }, required: true
     attribute :id, kind_of: [String, Integer], callbacks: {
       'is not a reserved id' => lambda do |spec|
         !%w( 65535 4294967295 ).include? spec.to_s
       end
     }
     attribute :gecos, kind_of: String, default: '-'
-    attribute :home, kind_of: String, default: '-', callbacks: {
-      'is applied to a sysuser type of u' => lambda do |spec|
-        spec == '-' || type == 'u'
-      end
-    }
+    attribute :home, kind_of: String, default: '-'
+
+    def to_s
+      "#{type} #{name} #{id} \"#{gecos}\" #{home}"
+    end
   end
 end

@@ -24,6 +24,6 @@ describe Chef::Resource::SystemdUdevRules do
   end
 
   it 'generates a proper hash' do
-    expect(udev_rules.to_s).to eq str
+    expect(udev_rules.as_string).to eq str
   end
 end

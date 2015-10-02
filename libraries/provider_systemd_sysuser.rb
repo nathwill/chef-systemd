@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Library:: Chef::Provider::SystemdBinfmtD
+# Library:: Chef::Provider::SystemdSysuser
 #
 # Copyright 2015 The Authors
 #
@@ -20,8 +20,8 @@
 require 'chef/provider/lwrp_base'
 
 class Chef::Provider
-  class SystemdBinfmtD < Chef::Provider::LWRPBase
-    DIR ||= '/etc/binfmt.d'
+  class SystemdSysuser < Chef::Provider::LWRPBase
+    DIR ||= '/etc/sysusers.d'
 
     use_inline_resources
 
@@ -29,7 +29,7 @@ class Chef::Provider
       true
     end
 
-    provides :systemd_binfmt_d
+    provides :systemd_sysuser
 
     %i( create delete ).each do |a|
       action a do
@@ -39,7 +39,15 @@ class Chef::Provider
           not_if { r.action == :delete }
         end
 
-        f = file ::File.join(DIR, "#{r.name}.conf") do
+        path = ::File.join(DIR, "#{r.name}.conf")
+
+        execute "systemd-sysusers #{path}" do
+          not_if { r.action == :delete }
+          action :nothing
+          subscribes :run, "file[#{path}]", :immediately
+        end
+
+        f = file path do
           content r.as_string
           action a
         end

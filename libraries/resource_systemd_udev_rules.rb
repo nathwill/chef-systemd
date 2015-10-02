@@ -48,7 +48,7 @@ class Chef::Resource
       end
     }
 
-    def to_s
+    def as_string
       rules.map do |line|
         line.map do |rule|
           "#{rule['key']}#{rule['operator']}\"#{rule['value']}\""

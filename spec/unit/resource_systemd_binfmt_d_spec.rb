@@ -11,6 +11,6 @@ describe Chef::Resource::SystemdBinfmtD do
   let(:string) { ':DOSWin:M::MZ::/usr/bin/wine:' }
 
   it 'generates a proper string' do
-    expect(binfmt_d.to_s).to eq string
+    expect(binfmt_d.as_string).to eq string
   end
 end

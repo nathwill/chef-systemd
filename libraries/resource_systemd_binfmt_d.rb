@@ -52,7 +52,7 @@ class Chef::Resource
       end
     }
 
-    def to_s
+    def as_string
       str = []
 
       %w( name type offset magic mask interpreter flags ).each do |a|

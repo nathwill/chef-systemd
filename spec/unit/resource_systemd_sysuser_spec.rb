@@ -14,6 +14,6 @@ describe Chef::Resource::SystemdSysuser do
   end
 
   it 'generates a proper string' do
-    expect(sysuser.to_s).to eq str
+    expect(sysuser.as_string).to eq str
   end
 end

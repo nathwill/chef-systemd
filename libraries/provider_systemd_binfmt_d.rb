@@ -40,7 +40,7 @@ class Chef::Provider
         end
 
         f = file ::File.join(DIR, "#{r.name}.conf") do
-          content r.to_s
+          content r.as_string
           action a
         end
 

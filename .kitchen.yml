@@ -66,9 +66,10 @@ suites:
     excludes:
       - debian-8.1
       - centos-7.1
+      - ubuntu-15.04
     run_list:
       - recipe[systemd::vconsole]
       - recipe[systemd::binfmt]
       - recipe[setup::binfmt]
-      - recipe[systemd::sysuser]
+      - recipe[systemd::sysusers]
       - recipe[setup::sysuser]

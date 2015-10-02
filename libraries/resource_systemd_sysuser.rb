@@ -24,6 +24,9 @@ class Chef::Resource
     self.resource_name = :systemd_sysuser
     provides :systemd_sysuser
 
+    actions :create, :delete
+    default_action :create
+
     attribute :type, kind_of: String, equal_to: %w( u g m r ), default: 'u'
     attribute :name, kind_of: String, name_attribute: true, callbacks: {
       'is less than 31 characters' => ->(spec) { spec.length <= 31 },
@@ -38,7 +41,7 @@ class Chef::Resource
     attribute :gecos, kind_of: String, default: '-'
     attribute :home, kind_of: String, default: '-'
 
-    def to_s
+    def as_string
       "#{type} #{name} #{id} \"#{gecos}\" #{home}"
     end
   end

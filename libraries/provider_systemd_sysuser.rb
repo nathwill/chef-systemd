@@ -48,7 +48,7 @@ class Chef::Provider
         end
 
         f = file path do
-          content r.to_s
+          content r.as_string
           action a
         end
 

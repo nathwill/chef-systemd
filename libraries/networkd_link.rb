@@ -20,8 +20,7 @@
 
 require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
-
-require_relative 'systemd_networkd'
+require_relative 'systemd'
 require_relative 'helpers'
 
 class Chef::Resource

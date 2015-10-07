@@ -20,10 +20,7 @@
 # limitations under the License.
 #
 
-require_relative 'systemd_journald'
-require_relative 'systemd_logind'
-require_relative 'systemd_resolved'
-require_relative 'systemd_timesyncd'
+require_relative 'systemd'
 require_relative 'daemon'
 
 class Chef::Resource

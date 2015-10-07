@@ -26,16 +26,7 @@
 # limitations under the License.
 #
 
-require_relative 'systemd_automount'
-require_relative 'systemd_device'
-require_relative 'systemd_mount'
-require_relative 'systemd_path'
-require_relative 'systemd_service'
-require_relative 'systemd_slice'
-require_relative 'systemd_socket'
-require_relative 'systemd_swap'
-require_relative 'systemd_target'
-require_relative 'systemd_timer'
+require_relative 'systemd'
 require_relative 'unit'
 
 class Chef::Resource

@@ -20,12 +20,10 @@
 
 require 'chef/mixin/params_validate'
 require 'mixlib/shellout'
-require_relative 'systemd_install'
-require_relative 'systemd_unit'
+require_relative 'systemd'
 require_relative 'helpers'
 require_relative 'conf'
 
-# base class for unit resources (see helper lib)
 class Chef::Resource
   class SystemdUnit < Chef::Resource::SystemdConf
     include Chef::Mixin::ParamsValidate

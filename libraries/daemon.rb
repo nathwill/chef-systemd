@@ -18,8 +18,8 @@
 # limitations under the License.
 #
 
-require_relative 'conf'
 require_relative 'helpers'
+require_relative 'conf'
 
 class Chef::Resource
   class SystemdDaemon < Chef::Resource::SystemdConf

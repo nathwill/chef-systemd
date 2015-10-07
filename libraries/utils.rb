@@ -20,11 +20,7 @@
 # limitations under the License.
 #
 
-require_relative 'systemd_bootchart'
-require_relative 'systemd_coredump'
-require_relative 'systemd_sleep'
-require_relative 'systemd_system'
-require_relative 'systemd_user'
+require_relative 'systemd'
 require_relative 'util'
 
 class Chef::Resource

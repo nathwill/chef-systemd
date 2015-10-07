@@ -22,7 +22,6 @@ require 'chef/resource'
 require 'chef/recipe'
 
 module Systemd
-
   # A set of helper methods and constants for in-cookbook
   # consumption. Not suitable for external use.
   module Helpers

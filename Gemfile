@@ -1,6 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'berkshelf'
+group :development do
+  gem 'berkshelf'
+  gem 'yard'
+end
 
 group :test do
   gem 'rake'

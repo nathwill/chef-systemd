@@ -1,6 +1,7 @@
 #
 # Cookbook Name:: systemd
 # Library:: Chef::Resource::SystemdSysuser
+# Library:: Chef::Provider::SystemdSysuser
 #
 # Copyright 2015 The Authors
 #

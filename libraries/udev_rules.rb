@@ -1,6 +1,7 @@
 #
 # Cookbook Name:: systemd
 # Library:: Chef::Resource::SystemdUdevRules
+# Library:: Chef::Provider::SystemdUdevRules
 #
 # Copyright 2015 The Authors
 #

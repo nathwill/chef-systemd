@@ -1,6 +1,7 @@
 #
 # Cookbook Name:: systemd
 # Library:: Chef::Resource::SystemdUnit
+# Library:: Chef::Provider::SystemdUnit
 #
 # Copyright 2015 The Authors
 #

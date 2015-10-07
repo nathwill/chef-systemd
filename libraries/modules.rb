@@ -21,9 +21,6 @@
 require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 
-# manage kernel modules
-# http://www.freedesktop.org/software/systemd/man/modules-load.d.html
-# http://www.freedesktop.org/software/systemd/man/systemd-modules-load.service.html
 class Chef::Resource
   class SystemdModules < Chef::Resource::LWRPBase
     self.resource_name = :systemd_modules

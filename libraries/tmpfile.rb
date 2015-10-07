@@ -21,9 +21,6 @@
 require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 
-# manage systemd-tmpfiles
-# http://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
-# http://www.freedesktop.org/software/systemd/man/tmpfiles.d.html
 class Chef::Resource
   class SystemdTmpfile < Chef::Resource::LWRPBase
     self.resource_name = :systemd_tmpfile

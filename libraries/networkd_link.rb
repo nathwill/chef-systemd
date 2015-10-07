@@ -1,6 +1,7 @@
 #
 # Cookbook Name:: systemd
 # Library:: Chef::Resource::SystemdNetworkdLink
+# Library:: Chef::Provider::SystemdNetworkdLink
 #
 # Copyright 2015 The Authors
 #
@@ -19,11 +20,10 @@
 
 require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
+
 require_relative 'systemd_networkd'
 require_relative 'helpers'
 
-# manage systemd networkd device configuration
-# http://www.freedesktop.org/software/systemd/man/systemd.link.html
 class Chef::Resource
   class SystemdNetworkdLink < Chef::Resource::LWRPBase
     self.resource_name = :systemd_networkd_link

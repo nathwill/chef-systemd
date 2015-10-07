@@ -19,8 +19,6 @@ end
 require 'yard'
 YARD::Rake::YardocTask.new do |t|
   t.files   = ['libraries/*.rb']
-  t.options = ['--any', '--extra', '--opts']
-  t.stats_options = ['--list-undoc']
 end
 
 task :default => %w( rubocop foodcritic chefspec )

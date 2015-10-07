@@ -8,7 +8,9 @@ describe 'systemd::journal_gatewayd' do
     end
 
     it 'installs package' do
-      expect(chef_run).to install_package('systemd-journal-gateway')
+      unless File.executable?("/usr/bin/dnf")
+        expect(chef_run).to install_package('systemd-journal-gateway')
+      end
     end
 
     it 'does not override socket options' do

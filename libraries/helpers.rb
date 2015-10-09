@@ -22,28 +22,18 @@ require 'chef/resource'
 require 'chef/recipe'
 
 module Systemd
-  # A set of helper methods and constants for in-cookbook
-  # consumption. Not suitable for external use.
   module Helpers
-    # list of supported systemd daemons
     DAEMONS ||= %i( journald logind resolved timesyncd )
 
-    # list of supported systemd utilities
     UTILS ||= %i( bootchart coredump sleep system user )
 
-    # unit types without custom options
     STUB_UNITS ||= %i( device target )
 
-    # list of supported systemd units
     UNITS ||= %i(
       service socket device mount automount
       swap target path timer slice
     )
 
-    # Returns an ini string given a config hash
-    #
-    # @param conf [Hash] a Hash object containing header(s) and options
-    # @return [String] an ini-formatted string
     def ini_config(conf = {})
       conf.delete_if { |_, v| v.empty? }.map do |section, params|
         "[#{section.capitalize}]\n#{params.join("\n")}\n"

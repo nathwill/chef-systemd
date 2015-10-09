@@ -29,7 +29,6 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    # binfmt_misc name
     attribute :name, kind_of: String, default: nil, name_attribute: true,
                      required: true, callbacks: {
                        'does not contain /' => lambda do |spec|

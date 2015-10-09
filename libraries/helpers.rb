@@ -91,7 +91,7 @@ module Systemd
     end
 
     module RTC
-      # ascertain if current real-time-clock mode (utc or local) matches argument
+      # ascertain if current real-time-clock mode (utc/local) matches argument
       def rtc_mode?(lu)
         yn = lu == 'local' ? 'yes' : 'no'
         Mixlib::ShellOut.new('timedatectl')

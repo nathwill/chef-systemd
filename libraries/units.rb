@@ -29,7 +29,10 @@
 require_relative 'systemd'
 require_relative 'unit'
 
+# resources for management of systemd units
 class Chef::Resource
+  # resource for configuration of systemd automount units
+  # http://www.freedesktop.org/software/systemd/man/systemd.automount.html
   class SystemdAutomount < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_automount
     provides :systemd_automount
@@ -45,6 +48,8 @@ class Chef::Resource
     end
   end
 
+  # resource for configuration of systemd device units
+  # http://www.freedesktop.org/software/systemd/man/systemd.device.html
   class SystemdDevice < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_device
     provides :systemd_device
@@ -54,6 +59,8 @@ class Chef::Resource
     end
   end
 
+  # resource for configuration of systemd mount units
+  # http://www.freedesktop.org/software/systemd/man/systemd.mount.html
   class SystemdMount < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_mount
     provides :systemd_mount
@@ -69,6 +76,8 @@ class Chef::Resource
     end
   end
 
+  # resource for configuration of systemd path units
+  # http://www.freedesktop.org/software/systemd/man/systemd.path.html
   class SystemdPath < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_path
     provides :systemd_path
@@ -84,6 +93,8 @@ class Chef::Resource
     end
   end
 
+  # resource for configuration of systemd service units
+  # http://www.freedesktop.org/software/systemd/man/systemd.service.html
   class SystemdService < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_service
     provides :systemd_service
@@ -99,6 +110,8 @@ class Chef::Resource
     end
   end
 
+  # resource for configuration of systemd slice units
+  # http://www.freedesktop.org/software/systemd/man/systemd.slice.html
   class SystemdSlice < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_slice
     provides :systemd_slice
@@ -110,6 +123,8 @@ class Chef::Resource
     option_attributes Systemd::Slice::OPTIONS
   end
 
+  # resource for configuration of systemd socket units
+  # http://www.freedesktop.org/software/systemd/man/systemd.socket.html
   class SystemdSocket < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_socket
     provides :systemd_socket
@@ -125,6 +140,8 @@ class Chef::Resource
     end
   end
 
+  # resource for configuration of systemd swap units
+  # http://www.freedesktop.org/software/systemd/man/systemd.swap.html
   class SystemdSwap < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_swap
     provides :systemd_swap
@@ -140,6 +157,8 @@ class Chef::Resource
     end
   end
 
+  # resource for configuration of systemd target units
+  # http://www.freedesktop.org/software/systemd/man/systemd.target.html
   class SystemdTarget < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_target
     provides :systemd_target
@@ -149,6 +168,8 @@ class Chef::Resource
     end
   end
 
+  # resource for configuration of systemd timer units
+  # http://www.freedesktop.org/software/systemd/man/systemd.timer.html
   class SystemdTimer < Chef::Resource::SystemdUnit
     self.resource_name = :systemd_timer
     provides :systemd_timer

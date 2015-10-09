@@ -21,6 +21,8 @@
 require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 
+# Configure additional binary formats for executables at boot
+# http://www.freedesktop.org/software/systemd/man/binfmt.d.html
 class Chef::Resource
   class SystemdBinfmtD < Chef::Resource::LWRPBase
     self.resource_name = :systemd_binfmt_d

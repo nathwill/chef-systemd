@@ -22,6 +22,9 @@ require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 
 class Chef::Resource
+  # manage system modules
+  # http://www.freedesktop.org/software/systemd/man/modules-load.d.html
+  # http://linux.die.net/man/5/modprobe.d
   class SystemdModules < Chef::Resource::LWRPBase
     self.resource_name = :systemd_modules
 

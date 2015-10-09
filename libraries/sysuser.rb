@@ -22,6 +22,8 @@ require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 
 class Chef::Resource
+  # resource for declarative allocation of system users and groups
+  # http://www.freedesktop.org/software/systemd/man/sysusers.d.html
   class SystemdSysuser < Chef::Resource::LWRPBase
     self.resource_name = :systemd_sysuser
     provides :systemd_sysuser

@@ -22,6 +22,7 @@ require_relative 'helpers'
 require_relative 'conf'
 
 class Chef::Resource
+  # base class for management of systemd utilities
   class SystemdUtil < Chef::Resource::SystemdConf
     self.resource_name = :systemd_util
     provides :systemd_util

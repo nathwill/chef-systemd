@@ -24,6 +24,8 @@ require_relative 'systemd'
 require_relative 'helpers'
 
 class Chef::Resource
+  # resource for systemd network device configuration
+  # http://www.freedesktop.org/software/systemd/man/systemd.link.html
   class SystemdNetworkdLink < Chef::Resource::LWRPBase
     self.resource_name = :systemd_networkd_link
     provides :systemd_networkd_link

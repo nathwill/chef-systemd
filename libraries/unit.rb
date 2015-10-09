@@ -25,6 +25,8 @@ require_relative 'helpers'
 require_relative 'conf'
 
 class Chef::Resource
+  # base class for systemd unit resources
+  # http://www.freedesktop.org/software/systemd/man/systemd.unit.html
   class SystemdUnit < Chef::Resource::SystemdConf
     include Chef::Mixin::ParamsValidate
 

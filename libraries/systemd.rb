@@ -20,6 +20,10 @@
 
 require_relative 'helpers'
 
+# systemd configuration for various resources
+# these hashes are passed into the the option_attributes
+# class method in Chef::Resource::Systemd::Conf to generate
+# LWRP attributes with minimal effort.
 module Systemd
   module Automount
     OPTIONS ||= {

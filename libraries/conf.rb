@@ -22,6 +22,7 @@ require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 require_relative 'helpers'
 
+# Base class for resources configured with ini-formatted files
 class Chef::Resource
   class SystemdConf < Chef::Resource::LWRPBase
     self.resource_name = :systemd_conf
@@ -30,7 +31,8 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    # generate hash suitable for ini-converge (see helpers lib)
+    # Converts resource to a hash with configuration sections
+    # as hash keys and configuration directives as values (arrays of strings)
     def to_hash
       opts = Systemd.const_get(conf_type.capitalize)::OPTIONS
 
@@ -43,21 +45,21 @@ class Chef::Resource
 
     private
 
-    # generates chef attributes from options array
     def self.option_attributes(options = {})
       options.each_pair do |name, config|
         attribute name.underscore.to_sym, config
       end
     end
 
-    # generates kv pairs from resource attributes
+    # converts configuration hash (keys as directives, config as values)
+    # to an array of strings with camelized directive and stringified values
     def options_config(opts = {})
       opts.reject { |o, _| send(o.underscore.to_sym).nil? }.map do |name, _|
         "#{name.camelize}=#{conf_string(send(name.underscore.to_sym))}"
       end
     end
 
-    # generates config strings from structured data
+    # converts configuration options into the appropriate string format
     def conf_string(obj)
       case obj
       when Hash

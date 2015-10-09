@@ -24,6 +24,8 @@ require_relative 'systemd'
 require_relative 'util'
 
 class Chef::Resource
+  # resource for managing systemd-bootchart
+  # http://www.freedesktop.org/software/systemd/man/systemd-bootchart.html
   class SystemdBootchart < Chef::Resource::SystemdUtil
     self.resource_name = :systemd_bootchart
     provides :systemd_bootchart
@@ -35,6 +37,8 @@ class Chef::Resource
     option_attributes Systemd::Bootchart::OPTIONS
   end
 
+  # resource for managing systemd-coredump
+  # http://www.freedesktop.org/software/systemd/man/systemd-coredump.html
   class SystemdCoredump < Chef::Resource::SystemdUtil
     self.resource_name = :systemd_coredump
     provides :systemd_coredump
@@ -46,6 +50,8 @@ class Chef::Resource
     option_attributes Systemd::Coredump::OPTIONS
   end
 
+  # resource for managing systemd-sleep
+  # http://www.freedesktop.org/software/systemd/man/systemd-sleep.html
   class SystemdSleep < Chef::Resource::SystemdUtil
     self.resource_name = :systemd_sleep
     provides :systemd_sleep
@@ -57,6 +63,8 @@ class Chef::Resource
     option_attributes Systemd::Sleep::OPTIONS
   end
 
+  # resource for managing systemd system mode defaults
+  # http://www.freedesktop.org/software/systemd/man/systemd-system.conf.html
   class SystemdSystem < Chef::Resource::SystemdUtil
     self.resource_name = :systemd_system
     provides :systemd_system
@@ -72,6 +80,8 @@ class Chef::Resource
     option_attributes Systemd::System::OPTIONS
   end
 
+  # resource for managing systemd user mode defaults
+  # http://www.freedesktop.org/software/systemd/man/systemd-user.conf.html
   class SystemdUser < Chef::Resource::SystemdUtil
     self.resource_name = :systemd_user
     provides :systemd_user

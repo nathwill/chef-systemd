@@ -22,6 +22,9 @@ require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 
 class Chef::Resource
+  # resource for configuration of files for creation,
+  # deletion and cleaning of volatile and temporary files
+  # http://www.freedesktop.org/software/systemd/man/tmpfiles.d.html
   class SystemdTmpfile < Chef::Resource::LWRPBase
     self.resource_name = :systemd_tmpfile
 

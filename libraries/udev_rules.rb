@@ -22,6 +22,8 @@ require 'chef/resource/lwrp_base'
 require 'chef/resource/lwrp_base'
 
 class Chef::Resource
+  # resource for managing udev rules
+  # http://www.freedesktop.org/software/systemd/man/udev.html
   class SystemdUdevRules < Chef::Resource::LWRPBase
     VALID_UDEV_OPERATORS ||= %w( == != = += -= := )
     VALID_RULE_KEYS ||= %w( key operator value )

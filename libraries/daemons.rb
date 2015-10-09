@@ -23,7 +23,10 @@
 require_relative 'systemd'
 require_relative 'daemon'
 
+# resources for systemd daemons
 class Chef::Resource
+  # resource for configuring systemd-journald
+  # http://www.freedesktop.org/software/systemd/man/systemd-journald.service.html
   class SystemdJournald < Chef::Resource::SystemdDaemon
     self.resource_name = :systemd_journald
     provides :systemd_journald
@@ -39,6 +42,8 @@ class Chef::Resource
     option_attributes Systemd::Journald::OPTIONS
   end
 
+  # resource for configuring systemd-logind
+  # http://www.freedesktop.org/software/systemd/man/systemd-logind.service.html
   class SystemdLogind < Chef::Resource::SystemdDaemon
     self.resource_name = :systemd_logind
     provides :systemd_logind
@@ -54,6 +59,8 @@ class Chef::Resource
     option_attributes Systemd::Logind::OPTIONS
   end
 
+  # resource for configuring systemd-resolved
+  # http://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html
   class SystemdResolved < Chef::Resource::SystemdDaemon
     self.resource_name = :systemd_resolved
     provides :systemd_resolved
@@ -69,6 +76,8 @@ class Chef::Resource
     option_attributes Systemd::Resolved::OPTIONS
   end
 
+  # resource for configuring systemd-timesyncd
+  # http://www.freedesktop.org/software/systemd/man/systemd-timesyncd.service.html
   class SystemdTimesyncd < Chef::Resource::SystemdDaemon
     self.resource_name = :systemd_timesyncd
     provides :systemd_timesyncd

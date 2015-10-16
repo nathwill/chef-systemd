@@ -59,7 +59,7 @@ suites:
       - recipe[systemd::system]
       - recipe[systemd::timezone]
       - recipe[setup::tmpfiles]
-      - recipe[systemd::udev]
+      - recipe[systemd::udevd]
       - recipe[setup::udev]
       - recipe[systemd::user]
   - name: utils-new

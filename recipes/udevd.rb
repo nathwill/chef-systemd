@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: udev
+# Recipe:: udevd
 #
 # Copyright 2015 The Authors
 #

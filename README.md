@@ -106,5 +106,6 @@ in general, the attributes correspond to the related resource attributes.
 
 --
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html
+[chef]: https://chef.io
 [docs]: http://www.freedesktop.org/wiki/Software/systemd/
 [rhel]: https://access.redhat.com/articles/754933

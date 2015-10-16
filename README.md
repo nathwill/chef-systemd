@@ -79,14 +79,73 @@ in general, the attributes correspond to the related resource attributes.
 <a name="resources"></a>Resources
 =================================
 
+<a name="unit-resources"></a>Unit Resources
+-------------------------------------------
+
+<a name="systemd_automount"></a>**systemd\_automount**
+
+<a name="systemd_device"></a>**systemd\_device**
+
+<a name="systemd_mount"></a>**systemd\_mount**
+
+<a name="systemd_path"></a>**systemd\_path**
+
+<a name="systemd_service"></a>**systemd\_service**
+
+<a name="systemd_slice"></a>**systemd\_slice**
+
+<a name="systemd_socket"></a>**systemd\_socket**
+
+<a name="systemd_swap"></a>**systemd\_swap**
+
+<a name="systemd_target"></a>**systemd\_target**
+
+<a name="systemd_timer"></a>**systemd\_timer**
+
+
 <a name="daemon-resources"></a>Daemon Resources
 -----------------------------------------------
+
+<a name="systemd_journald"></a>**systemd\_journald**
+
+<a name="systemd_logind"></a>**systemd\_logind**
+
+<a name="systemd_resolved"></a>**systemd\_resolved**
+
+<a name="systemd_timesyncd"></a>**systemd\_timesyncd**
 
 
 
 <a name="utility-resources"></a>Utility Resources
 -------------------------------------------------
 
+<a name="systemd_bootchart"></a>**systemd\_bootchart**
+
+<a name="systemd_coredump"></a>**systemd\_coredump**
+
+<a name="systemd_sleep"></a>**systemd\_sleep**
+
+<a name="systemd_system"></a>**systemd\_system**
+
+<a name="systemd_user"></a>**systemd\_user**
+
+
+<a name="misc-resources"></a>Miscellaneous Resources
+----------------------------------------------------
+
+<a name="systemd_binfmt_d"></a>**systemd\_binfmt\_d**
+
+<a name="systemd_modules"></a>**systemd\_modules**
+
+<a name="systemd_networkd_link"></a>**systemd\_networkd\_link**
+
+<a name="systemd_sysctl"></a>**systemd\_sysctl**
+
+<a name="systemd_sysuser"></a>**systemd\_sysuser**
+
+<a name="systemd_tmpfile"></a>**systemd\_tmpfile**
+
+<a name="systemd_udev_rules"></a>**systemd\_udev\_rules**
 
 
 <a name="common-resource-attributes"></a>Common Resource Attributes
@@ -103,6 +162,7 @@ in general, the attributes correspond to the related resource attributes.
 <a name="common-install"></a>**Install**
 
 <a name="common-drop-in"></a>**Drop-In**
+
 
 --
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html

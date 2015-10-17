@@ -132,7 +132,7 @@ Also supports:
  - [install](#common-install)
  - [drop-in](#common-drop-in)
 
----
+--
 
 <a name="systemd-device"></a>**systemd\_device**
 
@@ -148,7 +148,7 @@ Also supports:
  - [install](#common-install)
  - [drop-in](#common-drop-in)
 
----
+--
 
 <a name="systemd-mount"></a>**systemd\_mount**
 
@@ -179,7 +179,7 @@ Also supports:
  - [kill](#common-kill)
  - [resource-control](#common-resource-control)
 
----
+--
 
 <a name="systemd-path"></a>**systemd\_path**
 
@@ -205,7 +205,7 @@ Also supports:
  - [install](#common-install)
  - [drop-in](#common-drop-in)
 
----
+--
 
 <a name="systemd-service"></a>**systemd\_service**
 
@@ -257,7 +257,7 @@ Also supports:
  - [kill](#common-kill)
  - [resource-control](#common-resource-control)
 
----
+--
 
 <a name="systemd-slice"></a>**systemd\_slice**
 
@@ -275,7 +275,7 @@ Also supports:
  - [drop-in](#common-drop-in)
  - [resource-control](#common-resource-control)
 
----
+--
 
 <a name="systemd-socket"></a>**systemd\_socket**
 
@@ -346,7 +346,7 @@ Also supports:
  - [kill](#common-kill)
  - [resource-control](#common-resource-control)
 
----
+--
 
 <a name="systemd-swap"></a>**systemd\_swap**
 
@@ -370,7 +370,7 @@ Also supports:
  - [kill](#common-kill)
  - [resource-control](#common-resource-control)
 
----
+--
 
 <a name="systemd-target"></a>**systemd\_target**
 
@@ -387,7 +387,7 @@ Also supports:
  - [install](#common-install)
  - [drop-in](#common-drop-in)
 
----
+--
 
 <a name="systemd-timer"></a>**systemd\_timer**
 
@@ -454,7 +454,7 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
----
+--
 
 <a name="systemd-logind"></a>**systemd\_logind**
 
@@ -487,7 +487,7 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
----
+--
 
 <a name="systemd-resolved"></a>**systemd\_resolved**
 
@@ -503,7 +503,7 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
----
+--
 
 <a name="systemd-timesyncd"></a>**systemd\_timesyncd**
 
@@ -543,7 +543,7 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
----
+--
 
 <a name="systemd-coredump"></a>**systemd\_coredump**
 
@@ -563,7 +563,7 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
----
+--
 
 <a name="systemd-sleep"></a>**systemd\_sleep**
 
@@ -639,13 +639,13 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
----
+--
 
 <a name="systemd-user"></a>**systemd\_user**
 
 Supports same options as the `systemd_system` resource.
 
----
+--
 
 <a name="systemd-binfmt-d"></a>**systemd\_binfmt\_d**
 
@@ -662,7 +662,7 @@ Resource for managing [binfmt.d files][binfmt]
 |interpreter|see docs|nil|
 |flags|see docs|nil|
 
----
+--
 
 <a name="systemd-modules"></a>**systemd\_modules**
 
@@ -673,7 +673,7 @@ Resource for managing [modules][modules]
 |blacklist|boolean, controls whether to blacklist or load|false|
 |modules|Array, list of modules to act on|[]|
 
----
+--
 
 <a name="systemd-networkd-link"></a>**systemd\_networkd\_link**
 
@@ -701,7 +701,7 @@ Resource for managing network [devices][link]
 |link_mac_addr|MacAddr setting for link section|nil|
 |link_alias|Alias setting for link section|nil|
 
----
+--
 
 <a name="systemd-sysctl"></a>**systemd\_sysctl**
 
@@ -712,7 +712,7 @@ Resource for managing sysctls with [systemd-sysctl][sysctl]
 |name|resource name is sysctl name|resource name|
 |value|sysctl value|nil|
 
----
+--
 
 <a name="systemd-sysuser"></a>**systemd\_sysuser**
 
@@ -726,7 +726,7 @@ Resource for managing system users with [systemd-sysusers][sysusers]
 |gecos|see docs|-|
 |home|see docs|-|
 
----
+--
 
 <a name="systemd-tmpfile"></a>**systemd\_tmpfile**
 
@@ -742,7 +742,7 @@ Resource for managing tmp files with [systemd-tmpfiles][tmpfiles]
 |argument|see docs|-|
 |type|see docs|f|
 
----
+--
 
 <a name="systemd-udev-rules"></a>**systemd\_udev\_rules**
 
@@ -779,7 +779,7 @@ systemd_automount 'vagrant-home' do
 end
 ```
 
----
+--
 
 <a name="common-exec"></a>**Exec**
 
@@ -858,7 +858,7 @@ Execution environment configuration. [Documentation][exec]
 |utmp_identifier|see docs|nil|
 |working_directory|see docs|nil|
 
----
+--
 
 <a name="common-kill"></a>**Kill**
 
@@ -871,7 +871,7 @@ Process killing procedure configuration. [Documentation][kill]
 |send_sighup|see docs|nil|
 |send_sigkill|see docs|nil|
 
----
+--
 
 <a name="common-resource-control"></a>**Resource Control**
 
@@ -896,7 +896,7 @@ Resource control unit settings. [Documentation][resource_control]
 |startup_block_io_weight|see docs|nil|
 |startup_cpu_shares|see docs|nil|
 
----
+--
 
 <a name="common-unit"></a>**Unit**
 
@@ -971,7 +971,7 @@ Common configuration options of all the unit types.
 |stop_when_unneeded|see docs|nil|
 |wants|see docs|nil|
 
----
+--
 
 <a name="common-install"></a>**Install**
 
@@ -986,7 +986,7 @@ enable/disable commands of `systemctl`. [Documentation][install]
 |required_by|see docs|nil|
 |wanted_by|see docs|nil|
 
----
+--
 
 <a name="common-drop-in"></a>**Drop-In**
 

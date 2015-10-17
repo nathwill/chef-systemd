@@ -16,19 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-b = node['systemd']['bootchart']
-
 systemd_bootchart 'bootchart' do
   drop_in false
-  samples b['samples']
-  frequency b['frequency']
-  relative b['relative']
-  filter b['filter']
-  output b['output']
-  init b['init']
-  plot_memory_usage b['plot_memory_usage']
-  plot_entropy_graph b['plot_entropy_graph']
-  scale_x b['scale_x']
-  scale_y b['scale_y']
-  control_group b['control_group']
+  node['systemd']['bootchart'].each_pair do |config, value|
+    send(config.to_sym, value) unless value.nil?
+  end
 end

@@ -30,7 +30,7 @@ systemd_socket 'local-journal-gatewayd-listen-stream' do
   drop_in true
   override 'systemd-journal-gatewayd'
   overrides %w( ListenStream )
-  listen_stream jg['listen_stream']
+  listen_stream jg['listen_stream'] unless jg['listen_stream'].nil?
   only_if { jg['listen_stream'] }
   notifies :restart, 'systemd_socket[systemd-journal-gatewayd]', :delayed
 end

@@ -16,35 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-j = node['systemd']['journald']
-
 systemd_journald 'journald' do
   drop_in false
-  storage j['storage']
-  compress j['compress']
-  seal j['seal']
-  split_mode j['split_mode']
-  rate_limit_interval j['rate_limit_interval']
-  rate_limit_burst j['rate_limit_burst']
-  system_max_use j['system_max_use']
-  system_keep_free j['system_keep_free']
-  system_max_file_size j['system_max_file_size']
-  runtime_max_use j['runtime_max_use']
-  runtime_keep_free j['runtime_keep_free']
-  runtime_max_file_size j['runtime_max_file_size']
-  max_file_sec j['max_file_sec']
-  max_retention_sec j['max_retention_sec']
-  sync_interval_sec j['sync_interval_sec']
-  forward_to_syslog j['forward_to_syslog']
-  forward_to_k_msg j['forward_to_k_msg']
-  forward_to_console j['forward_to_console']
-  forward_to_wall j['forward_to_wall']
-  max_level_store j['max_level_store']
-  max_level_syslog j['max_level_syslog']
-  max_level_k_msg j['max_level_k_msg']
-  max_level_console j['max_level_console']
-  max_level_wall j['max_level_wall']
-  tty_path j['tty_path']
+  node['systemd']['journald'].each_pair do |config, value|
+    send(config.to_sym, value) unless value.nil?
+  end
   notifies :restart, 'service[systemd-journald]', :delayed
 end
 

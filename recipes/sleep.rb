@@ -16,14 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-s = node['systemd']['sleep']
-
 systemd_sleep 'sleep' do
   drop_in false
-  suspend_mode s['suspend_mode']
-  hibernate_mode s['hibernate_mode']
-  hybrid_sleep_mode s['hybrid_sleep_mode']
-  suspend_state s['suspend_state']
-  hibernate_state s['hibernate_state']
-  hybrid_sleep_state s['hybrid_sleep_state']
+  node['systemd']['sleep'].each_pair do |config, value|
+    send(config.to_sym, value) unless value.nil?
+  end
 end

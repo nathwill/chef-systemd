@@ -370,44 +370,283 @@ Also supports:
 
 <a name="systemd-journald"></a>**systemd\_journald**
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|storage|see docs|nil|
+|compress|see docs|nil|
+|seal|see docs|nil|
+|split_mode|see docs|nil|
+|rate_limit_interval|see docs|nil|
+|rate_limit_burst|see docs|nil|
+|system_max_use|see docs|nil|
+|system_keep_free|see docs|nil|
+|system_max_file_size|see docs|nil|
+|runtime_max_use|see docs|nil|
+|runtime_keep_free|see docs|nil|
+|runtime_max_file_size|see docs|nil|
+|max_file_sec|see docs|nil|
+|max_retention_sec|see docs|nil|
+|sync_interval_sec|see docs|nil|
+|forward_to_syslog|see docs|nil|
+|forward_to_k_msg|see docs|nil|
+|forward_to_console|see docs|nil|
+|forward_to_wall|see docs|nil|
+|max_level_store|see docs|nil|
+|max_level_syslog|see docs|nil|
+|max_level_k_msg|see docs|nil|
+|max_level_console|see docs|nil|
+|max_level_wall|see docs|nil|
+|tty_path|see docs|nil|
+
+Also supports:
+
+ - [drop-in](#common-drop-in)
+
 <a name="systemd-logind"></a>**systemd\_logind**
+
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|n_auto_v_ts|see docs|nil|
+|reserve_vt|see docs|nil|
+|kill_user_processes|see docs|nil|
+|kill_only_users|see docs|nil|
+|kill_exclude_users|see docs|nil|
+|idle_action|see docs|nil|
+|idle_action_sec|see docs|nil|
+|inhibit_delay_max_sec|see docs|nil|
+|handle_power_key|see docs|nil|
+|handle_suspend_key|see docs|nil|
+|handle_hibernate_key|see docs|nil|
+|handle_lid_switch|see docs|nil|
+|handle_lid_switch_docked|see docs|nil|
+|power_key_ignore_inhibited|see docs|nil|
+|suspend_key_ignore_inhibited|see docs|nil|
+|hibernate_key_ignore_inhibited|see docs|nil|
+|lid_switch_ignore_inhibited|see docs|nil|
+|holdoff_timeout_sec|see docs|nil|
+|runtime_directory_size|see docs|nil|
+|remove_ipc|see docs|nil|
+
+Also supports:
+
+ - [drop-in](#common-drop-in)
 
 <a name="systemd-resolved"></a>**systemd\_resolved**
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|dns|see docs|nil|
+|fallback_dns|see docs|nil|
+|llmnr|see docs|nil|
+
+Also supports:
+
+ - [drop-in](#common-drop-in)
+
 <a name="systemd-timesyncd"></a>**systemd\_timesyncd**
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|ntp|see docs|nil|
+|fallback_ntp|see docs|nil|
 
+Also supports:
+
+ - [drop-in](#common-drop-in)
 
 <a name="utility-resources"></a>Utility Resources
 -------------------------------------------------
 
 <a name="systemd-bootchart"></a>**systemd\_bootchart**
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|samples|see docs|nil|
+|frequency|see docs|nil|
+|relative|see docs|nil|
+|filter|see docs|nil|
+|output|see docs|nil|
+|init|see docs|nil|
+|plot_memory_usage|see docs|nil|
+|plot_entropy_graph|see docs|nil|
+|scale_x|see docs|nil|
+|scale_y|see docs|nil|
+|control_group|see docs|nil|
+
+Also supports:
+
+ - [drop-in](#common-drop-in)
+
 <a name="systemd-coredump"></a>**systemd\_coredump**
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|storage|see docs|nil|
+|compress|see docs|nil|
+|process_size_max|see docs|nil|
+|external_size_max|see docs|nil|
+|journal_size_max|see docs|nil|
+|max_use|see docs|nil|
+|keep_free|see docs|nil|
+
+Also supports:
+
+ - [drop-in](#common-drop-in)
 
 <a name="systemd-sleep"></a>**systemd\_sleep**
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|suspend_mode|see docs|nil|
+|hibernate_mode|see docs|nil|
+|hybrid_sleep_mode|see docs|nil|
+|suspend_state|see docs|nil|
+|hibernate_state|see docs|nil|
+|hybrid_sleep_state|see docs|nil|
+
+Also supports:
+
+ - [drop-in](#common-drop-in)
+
 <a name="systemd-system"></a>**systemd\_system**
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|log_level|see docs|nil|
+|log_target|see docs|nil|
+|log_color|see docs|nil|
+|log_location|see docs|nil|
+|dump_core|see docs|nil|
+|crash_shell|see docs|nil|
+|show_status|see docs|nil|
+|crash_ch_vt|see docs|nil|
+|default_standard_output|see docs|nil|
+|default_standard_error|see docs|nil|
+|cpu_affinity|see docs|nil|
+|join_controllers|see docs|nil|
+|runtime_watchdog_sec|see docs|nil|
+|shutdown_watchdog_sec|see docs|nil|
+|capability_bounding_set|see docs|nil|
+|system_call_architectures|see docs|nil|
+|timer_slack_n_sec|see docs|nil|
+|default_timer_accuracy_sec|see docs|nil|
+|default_timeout_start_sec|see docs|nil|
+|default_timeout_stop_sec|see docs|nil|
+|default_restart_sec|see docs|nil|
+|default_start_limit_interval|see docs|nil|
+|default_start_limit_burst|see docs|nil|
+|default_environment|see docs|nil|
+|default_cpu_accounting|see docs|nil|
+|default_block_io_accounting|see docs|nil|
+|default_memory_accounting|see docs|nil|
+|default_limit_cpu|see docs|nil|
+|default_limit_fsize|see docs|nil|
+|default_limit_data|see docs|nil|
+|default_limit_stack|see docs|nil|
+|default_limit_core|see docs|nil|
+|default_limit_rss|see docs|nil|
+|default_limit_nofile|see docs|nil|
+|default_limit_as|see docs|nil|
+|default_limit_nproc|see docs|nil|
+|default_limit_memlock|see docs|nil|
+|default_limit_locks|see docs|nil|
+|default_limit_sigpending|see docs|nil|
+|default_limit_msgqueue|see docs|nil|
+|default_limit_nice|see docs|nil|
+|default_limit_rtprio|see docs|nil|
+|default_limit_rttime|see docs|nil|
+
+Also supports:
+
+ - [drop-in](#common-drop-in)
 
 <a name="systemd-user"></a>**systemd\_user**
 
+Supports same options as the `systemd_system` resource.
 
 <a name="misc-resources"></a>Miscellaneous Resources
 ----------------------------------------------------
 
 <a name="systemd-binfmt-d"></a>**systemd\_binfmt\_d**
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|name|see docs|nil|
+|type|see docs|M|
+|offset|see docs|nil|
+|magic|see docs|nil|
+|mask|see docs|nil|
+|interpreter|see docs|nil|
+|flags|see docs|nil|
+
+
 <a name="systemd-modules"></a>**systemd\_modules**
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|blacklist|boolean, controls whether to blacklist or load|false|
+|modules|Array, list of modules to act on|[]|
 
 <a name="systemd-networkd-link"></a>**systemd\_networkd\_link**
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|original_name|see docs|nil|
+|path|see docs|nil|
+|driver|see docs|nil|
+|type|see docs|nil|
+|host|see docs|nil|
+|virtualization|see docs|nil|
+|kernel_command_line|see docs|nil|
+|architecture|see docs|nil|
+|description|see docs|nil|
+|mac_address_policy|see docs|nil|
+|name_policy|see docs|nil|
+|name|see docs|nil|
+|mtu_bytes|see docs|nil|
+|bits_per_second|see docs|nil|
+|duplex|see docs|nil|
+|wake_on_lan|see docs|nil|
+|match_mac_addr|MacAddr setting for match section|nil|
+|link_mac_addr|MacAddr setting for link section|nil|
+|link_alias|Alias setting for link section|nil|
+
 <a name="systemd-sysctl"></a>**systemd\_sysctl**
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|name|resource name is sysctl name|resource name|
+|value|sysctl value|nil|
 
 <a name="systemd-sysuser"></a>**systemd\_sysuser**
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|name|resource name is username|resource name|
+|type|see docs|u|
+|id|see docs|nil|
+|gecos|see docs|-|
+|home|see docs|-|
+
 <a name="systemd-tmpfile"></a>**systemd\_tmpfile**
 
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|path|see docs|nil|
+|mode|see docs|-|
+|uid|see docs|-|
+|gid|see docs|-|
+|age|see docs|-|
+|argument|see docs|-|
+|type|see docs|f|
+
+
 <a name="systemd-udev-rules"></a>**systemd\_udev\_rules**
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|rules|array of arrays of hashes (see docs & example below)|[]|
 
 
 <a name="common-resource-attributes"></a>Common Resource Attributes

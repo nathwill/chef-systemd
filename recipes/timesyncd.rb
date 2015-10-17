@@ -16,19 +16,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ts = node['systemd']['timesyncd']
-
 systemd_timesyncd 'timesyncd' do
   drop_in false
-  ntp ts['ntp']
-  fallback_ntp ts['fallback_ntp']
+  node['systemd']['timesyncd'].each_pair do |config, value|
+    send(config.to_sym, value) unless value.nil?
+  end
 end
 
 service 'systemd-timesyncd' do
-  if node['systemd']['enable_ntp']
-    action [:enable, :start]
-    subscribes :restart, 'systemd_timesyncd[timesyncd]', :delayed
-  else
-    action [:disable, :stop]
-  end
+  action [:enable, :start]
+  subscribes :restart, 'systemd_timesyncd[timesyncd]', :delayed
+  only_if { node['systemd']['enable_ntp'] }
 end

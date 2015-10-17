@@ -16,13 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-r = node['systemd']['resolved']
-
 systemd_resolved 'resolved' do
   drop_in false
-  dns r['dns']
-  fallback_dns r['fallback_dns']
-  llmnr r['llmnr']
+  node['systemd']['resolved'].each_pair do |config, value|
+    send(config.to_sym, value) unless value.nil?
+  end
   notifies :restart, 'service[systemd-resolved]', :delayed
 end
 

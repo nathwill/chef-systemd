@@ -23,31 +23,39 @@ require 'chef/recipe'
 
 module Systemd
   module Helpers
+    # list of supported systemd daemons
     DAEMONS ||= %i( journald logind resolved timesyncd )
 
+    # list of supported systemd utilities
     UTILS ||= %i( bootchart coredump sleep system user )
 
+    # unit types without dedicated configuration options
     STUB_UNITS ||= %i( device target )
 
+    # list of supported unit types
     UNITS ||= %i(
       service socket device mount automount
       swap target path timer slice
     )
 
+    # converts hash to ini-formatted string
     def ini_config(conf = {})
       conf.delete_if { |_, v| v.empty? }.map do |section, params|
         "[#{section.capitalize}]\n#{params.join("\n")}\n"
       end.join("\n")
     end
 
+    # systemd's administrator-managed load path
     def local_conf_root
       '/etc/systemd'
     end
 
+    # path for systemd units (varies by systemd mode (user, system))
     def unit_conf_root(conf)
       ::File.join(local_conf_root, conf.mode.to_s)
     end
 
+    # path for drop-in configuration of systemd resources
     def conf_drop_in_root(conf)
       if conf.is_a?(Chef::Resource::SystemdUnit)
         ::File.join(
@@ -59,6 +67,7 @@ module Systemd
       end
     end
 
+    # Full path for rendered resource config file
     def conf_path(conf)
       if conf.drop_in
         ::File.join(conf_drop_in_root(conf), "#{conf.name}.conf")
@@ -75,12 +84,14 @@ module Systemd
                     :conf_drop_in_root, :conf_path
 
     module Init
+      # systemd makes this way too easy
       def systemd?
         IO.read('/proc/1/comm').chomp == 'systemd'
       end
     end
 
     module RTC
+      # ascertain if current real-time-clock mode (utc/local) matches argument
       def rtc_mode?(lu)
         yn = lu == 'local' ? 'yes' : 'no'
         Mixlib::ShellOut.new('timedatectl')
@@ -93,6 +104,7 @@ module Systemd
     end
 
     module Timezone
+      # ascertain if current timezone matches argument
       def timezone?(tz)
         File.symlink?('/etc/localtime') &&
           File.readlink('/etc/localtime').match(Regexp.new("#{tz}$"))
@@ -104,6 +116,7 @@ module Systemd
 end
 
 class String
+  # converts camel-cased config directives to snake_cased attribute names
   def underscore
     gsub(/::/, '/')
       .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
@@ -112,6 +125,7 @@ class String
       .downcase
   end
 
+  # converts snake_cased attribute names to camel-cased config directives
   def camelize
     gsub(/(^|_)(.)/) { Regexp.last_match(2).upcase }
   end

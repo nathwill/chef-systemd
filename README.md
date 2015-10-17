@@ -15,9 +15,36 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
    - [Daemons](#daemon-recipes)
    - [Utilities](#utility-recipes)
  - [Resources](#resources)
+   - [Units](#unit-resources)
+     - [systemd_automount](#systemd-automount)
+     - [systemd_device](#systemd-device)
+     - [systemd_mount](#systemd-mount)
+     - [systemd_path](#systemd-path)
+     - [systemd_service](#systemd-service)
+     - [systemd_slice](#systemd-slice)
+     - [systemd_socket](#systemd-socket)
+     - [systemd_swap](#systemd-swap)
+     - [systemd_target](#systemd-target)
+     - [systemd_timer](#systmed-timer)
    - [Daemons](#daemon-resources)
+     - [systemd_journald](#systemd-journald)
+     - [systemd_logind](#systemd-logind)
+     - [systemd_resolved](#systemd-resolved)
+     - [systemd_timesyncd](#systemd-timesyncd)
    - [Utilities](#utility-resources)
+     - [systemd_bootchart](#systemd-bootchart)
+     - [systemd_coredump](#systemd-coredump)
+     - [systmd_sleep](#systemd-sleep)
    - [Miscellaneous](#misc-resources)
+     - [systemd_system](#systemd-system)
+     - [systemd_user](#systemd-user)
+     - [systemd_binfmt_d](#systemd-binfmt-d)
+     - [systemd_modules](#systemd-modules)
+     - [systemd_networkd_link](#systemd-networkd-link)
+     - [systemd_sysctl](#systemd-sysctl)
+     - [systemd_sysuser](#systemd-sysuser)
+     - [systemd_tmpfile](#systemd-tmpfile)
+     - [systemd_udev_rules](#systemd-udev-rules)
    - [Common Attributes](#common-resource-attributes)
      - [Organization](#common-organization)
      - [Exec](#common-exec)
@@ -524,6 +551,9 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
+<a name="misc-resources"></a>Miscellaneous Resources
+----------------------------------------------------
+
 <a name="systemd-system"></a>**systemd\_system**
 
 Resource for configuring systemd system service [manager][system]:
@@ -581,9 +611,6 @@ Also supports:
 <a name="systemd-user"></a>**systemd\_user**
 
 Supports same options as the `systemd_system` resource.
-
-<a name="misc-resources"></a>Miscellaneous Resources
-----------------------------------------------------
 
 <a name="systemd-binfmt-d"></a>**systemd\_binfmt\_d**
 

@@ -17,7 +17,9 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
  - [Resources](#resources)
    - [Daemons](#daemon-resources)
    - [Utilities](#utility-resources)
+   - [Miscellaneous](#misc-resources)
    - [Common Attributes](#common-resource-attributes)
+     - [Organization](#common-organization)
      - [Exec](#common-exec)
      - [Kill](#common-kill)
      - [Resource Control](#common-resource-control)
@@ -897,19 +899,29 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 |overrides|drop-in unit options that require a reset (e.g. "ExecStart" -> "ExecStart=" at top of section)|[]|
 
 --
+[automount]: http://www.freedesktop.org/software/systemd/man/systemd.automount.html
 [binfmt]: http://www.freedesktop.org/software/systemd/man/binfmt.d.html
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html
 [chef]: https://chef.io
+[device]: http://www.freedesktop.org/software/systemd/man/systemd.device.html
 [docs]: http://www.freedesktop.org/wiki/Software/systemd/
 [exec]: http://www.freedesktop.org/software/systemd/man/systemd.exec.html
 [install]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#[Install]%20Section%20Options
 [kill]: http://www.freedesktop.org/software/systemd/man/systemd.kill.html
 [link]: http://www.freedesktop.org/software/systemd/man/systemd.link.html
 [modules]: http://www.freedesktop.org/software/systemd/man/modules-load.d.html
+[mount]: http://www.freedesktop.org/software/systemd/man/systemd.mount.html
+[path]: http://www.freedesktop.org/software/systemd/man/systemd.path.html
 [resource_control]: http://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
 [rhel]: https://access.redhat.com/articles/754933
 [rules]: http://www.freedesktop.org/software/systemd/man/udev.html#Rules%20Files
+[service]: http://www.freedesktop.org/software/systemd/man/systemd.service.html
+[slice]: http://www.freedesktop.org/software/systemd/man/systemd.slice.html
+[socket]: http://www.freedesktop.org/software/systemd/man/systemd.socket.html
+[swap]: http://www.freedesktop.org/software/systemd/man/systemd.swap.html
 [sysctl]: http://www.freedesktop.org/software/systemd/man/systemd-sysctl.html
 [sysusers]: http://www.freedesktop.org/software/systemd/man/systemd-sysusers.html
+[target]: http://www.freedesktop.org/software/systemd/man/systemd.target.html
+[timer]: http://www.freedesktop.org/software/systemd/man/systemd.timer.html
 [tmpfiles]: http://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
 [unit]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#[Unit]%20Section%20Options

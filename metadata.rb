@@ -4,7 +4,7 @@ maintainer_email 'nath.e.will@gmail.com'
 license          'apache2'
 description      'Installs/Configures systemd'
 long_description 'Installs/Configures systemd'
-version          '0.3.0'
+version          '0.4.0'
 
 supports 'fedora'
 supports 'debian', '>= 8.0'

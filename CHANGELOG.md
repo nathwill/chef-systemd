@@ -1,3 +1,11 @@
+# 0.4.0 / 2015-10-16
+
+* add binfmt resource
+* add udev resource
+* add sysuser resource
+* reorganize libraries
+* reorganize and expand docs
+
 # 0.3.0 / 2015-09-18
 
 * enhanced resource attributes (type, value appropriate)

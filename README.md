@@ -570,6 +570,9 @@ Supports same options as the `systemd_system` resource.
 
 <a name="systemd-binfmt-d"></a>**systemd\_binfmt\_d**
 
+Resource for managing [binfmt.d files][binfmt]
+(configure binary formats for executables at boot)
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |name|see docs|nil|
@@ -583,12 +586,16 @@ Supports same options as the `systemd_system` resource.
 
 <a name="systemd-modules"></a>**systemd\_modules**
 
+Resource for managing [modules][modules]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |blacklist|boolean, controls whether to blacklist or load|false|
 |modules|Array, list of modules to act on|[]|
 
 <a name="systemd-networkd-link"></a>**systemd\_networkd\_link**
+
+Resource for managing network [devices][link]
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -614,12 +621,16 @@ Supports same options as the `systemd_system` resource.
 
 <a name="systemd-sysctl"></a>**systemd\_sysctl**
 
+Resource for managing sysctls with [systemd-sysctl][sysctl]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |name|resource name is sysctl name|resource name|
 |value|sysctl value|nil|
 
 <a name="systemd-sysuser"></a>**systemd\_sysuser**
+
+Resource for managing system users with [systemd-sysusers][sysusers]
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -631,6 +642,8 @@ Supports same options as the `systemd_system` resource.
 
 <a name="systemd-tmpfile"></a>**systemd\_tmpfile**
 
+Resource for managing tmp files with [systemd-tmpfiles][tmpfiles]
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |path|see docs|nil|
@@ -641,13 +654,13 @@ Supports same options as the `systemd_system` resource.
 |argument|see docs|-|
 |type|see docs|f|
 
-
 <a name="systemd-udev-rules"></a>**systemd\_udev\_rules**
+
+Resource for managing udev [rules][rules] files
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |rules|array of arrays of hashes (see docs & example below)|[]|
-
 
 <a name="common-resource-attributes"></a>Common Resource Attributes
 -------------------------------------------------------------------
@@ -884,7 +897,19 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 |overrides|drop-in unit options that require a reset (e.g. "ExecStart" -> "ExecStart=" at top of section)|[]|
 
 --
+[binfmt]: http://www.freedesktop.org/software/systemd/man/binfmt.d.html
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html
 [chef]: https://chef.io
 [docs]: http://www.freedesktop.org/wiki/Software/systemd/
+[exec]: http://www.freedesktop.org/software/systemd/man/systemd.exec.html
+[install]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#[Install]%20Section%20Options
+[kill]: http://www.freedesktop.org/software/systemd/man/systemd.kill.html
+[link]: http://www.freedesktop.org/software/systemd/man/systemd.link.html
+[modules]: http://www.freedesktop.org/software/systemd/man/modules-load.d.html
+[resource_control]: http://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
 [rhel]: https://access.redhat.com/articles/754933
+[rules]: http://www.freedesktop.org/software/systemd/man/udev.html#Rules%20Files
+[sysctl]: http://www.freedesktop.org/software/systemd/man/systemd-sysctl.html
+[sysusers]: http://www.freedesktop.org/software/systemd/man/systemd-sysusers.html
+[tmpfiles]: http://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
+[unit]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#[Unit]%20Section%20Options

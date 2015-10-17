@@ -64,11 +64,13 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
  - libraries in `libraries/*.rb`
  - test cookbook in `test/fixtures/cookbooks/setup`
 
+
 <a name="attributes">Attributes</a>
 ===================================
 
 too many to describe in detail ;).
 in general, the attributes correspond to the related resource attributes.
+
 
 <a name="recipes">Recipes</a>
 =============================
@@ -105,6 +107,7 @@ in general, the attributes correspond to the related resource attributes.
  - **user**: configure systemd manager user-mode defaults
  - **vconsole**: configure, manage virtual console font and keymap with systemd-vconsole
 
+
 <a name="resources"></a>Resources
 =================================
 
@@ -129,6 +132,8 @@ Also supports:
  - [install](#common-install)
  - [drop-in](#common-drop-in)
 
+---
+
 <a name="systemd-device"></a>**systemd\_device**
 
 Unit which describes a device as exposed in the sysfs/udev device tree.
@@ -142,6 +147,8 @@ Also supports:
  - [unit](#common-unit)
  - [install](#common-install)
  - [drop-in](#common-drop-in)
+
+---
 
 <a name="systemd-mount"></a>**systemd\_mount**
 
@@ -172,6 +179,8 @@ Also supports:
  - [kill](#common-kill)
  - [resource-control](#common-resource-control)
 
+---
+
 <a name="systemd-path"></a>**systemd\_path**
 
 Unit which describes information about a path monitored by systemd for
@@ -195,6 +204,8 @@ Also supports:
  - [unit](#common-unit)
  - [install](#common-install)
  - [drop-in](#common-drop-in)
+
+---
 
 <a name="systemd-service"></a>**systemd\_service**
 
@@ -246,6 +257,8 @@ Also supports:
  - [kill](#common-kill)
  - [resource-control](#common-resource-control)
 
+---
+
 <a name="systemd-slice"></a>**systemd\_slice**
 
 Unit which describes a "slice" of the system; useful for managing resources
@@ -261,6 +274,8 @@ Also supports:
  - [install](#common-install)
  - [drop-in](#common-drop-in)
  - [resource-control](#common-resource-control)
+
+---
 
 <a name="systemd-socket"></a>**systemd\_socket**
 
@@ -331,6 +346,8 @@ Also supports:
  - [kill](#common-kill)
  - [resource-control](#common-resource-control)
 
+---
+
 <a name="systemd-swap"></a>**systemd\_swap**
 
 Unit which describes a swap device or file for memory paging.
@@ -353,6 +370,8 @@ Also supports:
  - [kill](#common-kill)
  - [resource-control](#common-resource-control)
 
+---
+
 <a name="systemd-target"></a>**systemd\_target**
 
 Unit which describes a systemd target, used for grouping units and
@@ -367,6 +386,8 @@ Also supports:
  - [unit](#common-unit)
  - [install](#common-install)
  - [drop-in](#common-drop-in)
+
+---
 
 <a name="systemd-timer"></a>**systemd\_timer**
 
@@ -433,6 +454,8 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
+---
+
 <a name="systemd-logind"></a>**systemd\_logind**
 
 Resource for configuring [systemd-logind][logind]
@@ -464,6 +487,8 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
+---
+
 <a name="systemd-resolved"></a>**systemd\_resolved**
 
 Resource for configuring [systemd-resolved][resolved]
@@ -477,6 +502,8 @@ Resource for configuring [systemd-resolved][resolved]
 Also supports:
 
  - [drop-in](#common-drop-in)
+
+---
 
 <a name="systemd-timesyncd"></a>**systemd\_timesyncd**
 
@@ -516,6 +543,8 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
+---
+
 <a name="systemd-coredump"></a>**systemd\_coredump**
 
 Resource for configuring [systemd-coredump][coredump]
@@ -533,6 +562,8 @@ Resource for configuring [systemd-coredump][coredump]
 Also supports:
 
  - [drop-in](#common-drop-in)
+
+---
 
 <a name="systemd-sleep"></a>**systemd\_sleep**
 
@@ -608,9 +639,13 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
+---
+
 <a name="systemd-user"></a>**systemd\_user**
 
 Supports same options as the `systemd_system` resource.
+
+---
 
 <a name="systemd-binfmt-d"></a>**systemd\_binfmt\_d**
 
@@ -627,6 +662,7 @@ Resource for managing [binfmt.d files][binfmt]
 |interpreter|see docs|nil|
 |flags|see docs|nil|
 
+---
 
 <a name="systemd-modules"></a>**systemd\_modules**
 
@@ -636,6 +672,8 @@ Resource for managing [modules][modules]
 |---------|-----------|-------|
 |blacklist|boolean, controls whether to blacklist or load|false|
 |modules|Array, list of modules to act on|[]|
+
+---
 
 <a name="systemd-networkd-link"></a>**systemd\_networkd\_link**
 
@@ -663,6 +701,8 @@ Resource for managing network [devices][link]
 |link_mac_addr|MacAddr setting for link section|nil|
 |link_alias|Alias setting for link section|nil|
 
+---
+
 <a name="systemd-sysctl"></a>**systemd\_sysctl**
 
 Resource for managing sysctls with [systemd-sysctl][sysctl]
@@ -671,6 +711,8 @@ Resource for managing sysctls with [systemd-sysctl][sysctl]
 |---------|-----------|-------|
 |name|resource name is sysctl name|resource name|
 |value|sysctl value|nil|
+
+---
 
 <a name="systemd-sysuser"></a>**systemd\_sysuser**
 
@@ -683,6 +725,8 @@ Resource for managing system users with [systemd-sysusers][sysusers]
 |id|see docs|nil|
 |gecos|see docs|-|
 |home|see docs|-|
+
+---
 
 <a name="systemd-tmpfile"></a>**systemd\_tmpfile**
 
@@ -697,6 +741,8 @@ Resource for managing tmp files with [systemd-tmpfiles][tmpfiles]
 |age|see docs|-|
 |argument|see docs|-|
 |type|see docs|f|
+
+---
 
 <a name="systemd-udev-rules"></a>**systemd\_udev\_rules**
 
@@ -732,6 +778,8 @@ systemd_automount 'vagrant-home' do
   end
 end
 ```
+
+---
 
 <a name="common-exec"></a>**Exec**
 
@@ -810,6 +858,8 @@ Execution environment configuration. [Documentation][exec]
 |utmp_identifier|see docs|nil|
 |working_directory|see docs|nil|
 
+---
+
 <a name="common-kill"></a>**Kill**
 
 Process killing procedure configuration. [Documentation][kill]
@@ -820,6 +870,8 @@ Process killing procedure configuration. [Documentation][kill]
 |kill_signal|see docs|nil|
 |send_sighup|see docs|nil|
 |send_sigkill|see docs|nil|
+
+---
 
 <a name="common-resource-control"></a>**Resource Control**
 
@@ -843,6 +895,8 @@ Resource control unit settings. [Documentation][resource_control]
 |slice|see docs|nil|
 |startup_block_io_weight|see docs|nil|
 |startup_cpu_shares|see docs|nil|
+
+---
 
 <a name="common-unit"></a>**Unit**
 
@@ -917,6 +971,8 @@ Common configuration options of all the unit types.
 |stop_when_unneeded|see docs|nil|
 |wants|see docs|nil|
 
+---
+
 <a name="common-install"></a>**Install**
 
 Carries installation information for units. Used exclusively by
@@ -930,6 +986,8 @@ enable/disable commands of `systemctl`. [Documentation][install]
 |required_by|see docs|nil|
 |wanted_by|see docs|nil|
 
+---
+
 <a name="common-drop-in"></a>**Drop-In**
 
 Cookbook-specific attributes that activate and control drop-in mode for units.
@@ -941,6 +999,7 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 |overrides|drop-in unit options that require a reset (e.g. "ExecStart" -> "ExecStart=" at top of section)|[]|
 
 --
+
 [automount]: http://www.freedesktop.org/software/systemd/man/systemd.automount.html
 [binfmt]: http://www.freedesktop.org/software/systemd/man/binfmt.d.html
 [blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html

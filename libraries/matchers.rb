@@ -5,7 +5,6 @@ if defined?(ChefSpec)
     target
     swap
     socket
-    device
     mount
     path
     service

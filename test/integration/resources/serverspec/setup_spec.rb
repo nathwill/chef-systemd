@@ -46,14 +46,6 @@ describe 'Systemd Resources' do
     its(:content) { should match /Accept=yes/ }
   end
 
-  # Test the device resource
-  describe file('/etc/systemd/system/dev-vdb.device') do
-    its(:content) { should match /\[Unit\]/ }
-    its(:content) { should match /Description=Test Device/ }
-    its(:content) { should match /\[Install\]/ }
-    its(:content) { should match /WantedBy=multi-user.target/ }
-  end
-
   # Test the mount resource
   describe file('/etc/systemd/system/tmp-mount.mount') do
     its(:content) { should match /\[Unit\]/ }

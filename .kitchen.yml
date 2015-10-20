@@ -15,7 +15,6 @@ suites:
   - name: resources
     run_list:
       - recipe[setup::automount]
-      - recipe[setup::device]
       - recipe[setup::mount]
       - recipe[setup::networkd_link]
       - recipe[setup::path]

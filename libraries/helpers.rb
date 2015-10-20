@@ -30,11 +30,11 @@ module Systemd
     UTILS ||= %i( bootchart coredump sleep system user )
 
     # unit types without dedicated configuration options
-    STUB_UNITS ||= %i( device target )
+    STUB_UNITS ||= %i( target )
 
     # list of supported unit types
     UNITS ||= %i(
-      service socket device mount automount
+      service socket mount automount
       swap target path timer slice
     )
 

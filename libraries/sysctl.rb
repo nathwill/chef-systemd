@@ -32,7 +32,7 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    attribute :value, kind_of: [String, Numeric], default: nil, required: true
+    attribute :value, kind_of: [String, Numeric, Array], required: true
   end
 end
 
@@ -54,7 +54,7 @@ class Chef::Provider
 
         path = ::File.join(DIR, "#{r.name}.conf")
 
-        str = "#{r.name}=#{r.value}"
+        str = "#{r.name}=#{Array(r.value).join(' ')}"
 
         execute "sysctl -w #{str}" do
           action :nothing

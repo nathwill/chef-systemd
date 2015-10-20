@@ -17,7 +17,6 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
  - [Resources](#resources)
    - [Units](#unit-resources)
      - [systemd_automount](#systemd-automount)
-     - [systemd_device](#systemd-device)
      - [systemd_mount](#systemd-mount)
      - [systemd_path](#systemd-path)
      - [systemd_service](#systemd-service)
@@ -128,22 +127,6 @@ Unit which describes a file system automount point controlled by systemd.
 Also supports:
 
  - [organization](#organization)
- - [unit](#common-unit)
- - [install](#common-install)
- - [drop-in](#common-drop-in)
-
---
-
-<a name="systemd-device"></a>**systemd\_device**
-
-Unit which describes a device as exposed in the sysfs/udev device tree.
-[Documentation][device]
-
-This resource has no specific options.
-
-Also supports:
-
- - [organization](#common-organization)
  - [unit](#common-unit)
  - [install](#common-install)
  - [drop-in](#common-drop-in)
@@ -1006,7 +989,6 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 [bootchart]: http://www.freedesktop.org/software/systemd/man/bootchart.conf.html
 [chef]: https://chef.io
 [coredump]: http://www.freedesktop.org/software/systemd/man/coredump.conf.html
-[device]: http://www.freedesktop.org/software/systemd/man/systemd.device.html
 [docs]: http://www.freedesktop.org/wiki/Software/systemd/
 [exec]: http://www.freedesktop.org/software/systemd/man/systemd.exec.html
 [install]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#[Install]%20Section%20Options

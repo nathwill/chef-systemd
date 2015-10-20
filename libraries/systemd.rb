@@ -64,10 +64,6 @@ module Systemd
     }
   end
 
-  module Device
-    OPTIONS ||= {}
-  end
-
   # rubocop: disable ModuleLength
   module Exec
     OPTIONS ||= {

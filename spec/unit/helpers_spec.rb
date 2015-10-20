@@ -29,7 +29,7 @@ describe Systemd::Helpers do
   end
 
   it 'lists the correct stub units' do
-    expect(Systemd::Helpers::STUB_UNITS).to match_array [:device, :target]
+    expect(Systemd::Helpers::STUB_UNITS).to match_array [:target]
   end
 
   it 'lists the correct daemons' do
@@ -40,7 +40,7 @@ describe Systemd::Helpers do
 
   it 'lists the correct unit types' do
     expect(Systemd::Helpers::UNITS).to match_array [
-      :service, :socket, :device, :mount, :automount,
+      :service, :socket, :mount, :automount,
       :swap, :target, :path, :timer, :slice
     ]
   end

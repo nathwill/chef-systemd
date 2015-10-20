@@ -1,7 +1,6 @@
 #
 # Cookbook Name:: systemd
 # Library:: Chef::Resource::SystemdAutomount
-# Library:: Chef::Resource::SystemdDevice
 # Library:: Chef::Resource::SystemdMount
 # Library:: Chef::Resource::SystemdPath
 # Library:: Chef::Resource::SystemdService
@@ -45,17 +44,6 @@ class Chef::Resource
 
     def automount
       yield
-    end
-  end
-
-  # resource for configuration of systemd device units
-  # http://www.freedesktop.org/software/systemd/man/systemd.device.html
-  class SystemdDevice < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_device
-    provides :systemd_device
-
-    def conf_type(_ = nil)
-      :device
     end
   end
 

@@ -13,3 +13,17 @@ describe 'udev rules' do
     its(:content) { should match /SUBSYSTEM=="block"/ }
   end
 end
+
+describe 'udevd recipe sets non-usr-merged exec_start path', :if => os[:family].match(/(debian|ubuntu)/) do
+  describe file('/etc/systemd/system/systemd-udevd.service.d/local-udevd-options.conf') do
+    its(:content) { should_not match Regexp.new('ExecStart=/usr/lib/systemd/systemd-udevd') }
+    its(:content) { should match Regexp.new('ExecStart=/lib/systemd/systemd-udevd') }
+  end
+end
+
+describe 'udevd recipe sets usr-merged exec_start path', :if => os[:family].match(/(redhat|fedora)/) do
+  describe file('/etc/systemd/system/systemd-udevd.service.d/local-udevd-options.conf') do
+    its(:content) { should match Regexp.new('ExecStart=/usr/lib/systemd/systemd-udevd') }
+    its(:content) { should_not match Regexp.new('ExecStart=/lib/systemd/systemd-udevd') }
+  end
+end

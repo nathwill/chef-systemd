@@ -33,7 +33,10 @@ systemd_service 'local-udevd-options' do
   override 'systemd-udevd'
   overrides %w( ExecStart )
   service do
-    exec_start "/usr/lib/systemd/systemd-udevd #{opts.join(' ')}"
+    exec_start value_for_platform_family(
+      'debian' => "/lib/systemd/systemd-udevd #{opts.join(' ')}",
+      'default' => "/usr/lib/systemd/systemd-udevd #{opts.join(' ')}"
+    )
   end
   not_if { opts.empty? }
   notifies :restart, 'service[systemd-udevd]', :delayed

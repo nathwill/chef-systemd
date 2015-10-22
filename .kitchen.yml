@@ -65,7 +65,7 @@ suites:
       systemd:
         udev:
           options:
-            event-timeout: 180
+            children-max: 10
   - name: utils-new
     excludes:
       - debian-8.1

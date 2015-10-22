@@ -33,4 +33,38 @@ describe 'systemd::udevd' do
       chef_run # This should not raise an error
     end
   end
+
+  context 'On deb-family platform when systemd-udevd options are given' do
+    let(:chef_run) do
+      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '14.04') do |node|
+        node.set['systemd']['udev']['options']['children-max'] = 10
+      end.converge(described_recipe)
+    end
+
+    it 'uses the appropriate systemd-udevd path' do
+      expect(chef_run).to create_systemd_service('local-udevd-options').with(
+        drop_in: true,
+        override: 'systemd-udevd',
+        overrides: %w( ExecStart ),
+        exec_start: '/lib/systemd/systemd-udevd --children-max=10'
+      )
+    end
+  end
+
+  context 'On non-deb-family platform when systemd-udevd options are given' do
+    let(:chef_run) do
+      ChefSpec::ServerRunner.new(platform: 'centos', version: '7.0') do |node|
+        node.set['systemd']['udev']['options']['children-max'] = 10
+      end.converge(described_recipe)
+    end
+
+    it' uses the appropriate systemd-udevd path' do
+      expect(chef_run).to create_systemd_service('local-udevd-options').with(
+        drop_in: true,
+        override: 'systemd-udevd',
+        overrides: %w( ExecStart ),
+        exec_start: '/usr/lib/systemd/systemd-udevd --children-max=10'
+      )
+    end
+  end
 end

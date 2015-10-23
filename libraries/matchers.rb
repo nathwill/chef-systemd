@@ -30,9 +30,13 @@ if defined?(ChefSpec)
     networkd_link
     sysctl
     tmpfile
+    binfmt_d
+    modules
+    sysuser
+    udev_rules
   )
 
-  actions = %i(create delete )
+  actions = %i( create delete )
   unit_actions = %i( enable disable start stop restart reload )
 
   (units | daemons | utils | misc).each do |type|
@@ -56,5 +60,19 @@ if defined?(ChefSpec)
         )
       end
     end
+  end
+
+  %i( load unload ).each do |mod_action|
+    define_method("#{mod_action}_systemd_modules") do |resource_name|
+      ChefSpec::Matchers::ResourceMatcher.new(
+        :systemd_modules, mod_action, resource_name
+      )
+    end
+  end
+
+  define_method("disable_systemd_udev_rules") do |resource_name|
+    ChefSpec::Matchers::ResourceMatcher.new(
+      :systemd_udev_rules, :disable, resource_name
+    )
   end
 end

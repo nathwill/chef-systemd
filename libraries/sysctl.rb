@@ -73,7 +73,7 @@ class Chef::Provider
                 .tap(&:run_command).stdout.chomp
 
       e = execute "sysctl -e -w #{r.to_kv}" do
-        only_if { current == r.value }
+        not_if { current == Array(r.value).join(' ') }
       end
 
       new_resource.updated_by_last_action(e.updated_by_last_action?)

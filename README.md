@@ -37,7 +37,7 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
    - [Miscellaneous](#misc-resources)
      - [systemd_system](#systemd-system)
      - [systemd_user](#systemd-user)
-     - [systemd_binfmt_d](#systemd-binfmt-d)
+     - [systemd_binfmt](#systemd-binfmt)
      - [systemd_modules](#systemd-modules)
      - [systemd_networkd_link](#systemd-networkd-link)
      - [systemd_sysctl](#systemd-sysctl)
@@ -893,15 +893,15 @@ Supports same options as the `systemd_system` resource.
 
 --
 
-<a name="systemd-binfmt-d"></a>**systemd\_binfmt\_d**
+<a name="systemd-binfmt"></a>**systemd\_binfmt**
 
-Resource for managing [binfmt.d files][binfmt]
+Resource for managing [binfmt_misc files][binfmt]
 (configure binary formats for executables at boot)
 
 Example usage:
 
 ```ruby
-systemd_binfmt_d 'DOSWin' do
+systemd_binfmt 'DOSWin' do
   magic 'MZ'
   interpreter '/usr/bin/wine'
 end

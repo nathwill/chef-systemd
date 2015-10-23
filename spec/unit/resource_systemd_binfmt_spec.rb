@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdBinfmtD do
-  let(:binfmt_d) do
-    b = Chef::Resource::SystemdBinfmtD.new('DOSWin')
+describe Chef::Resource::SystemdBinfmt do
+  let(:binfmt) do
+    b = Chef::Resource::SystemdBinfmt.new('DOSWin')
     b.magic 'MZ'
     b.interpreter '/usr/bin/wine'
     b
@@ -11,6 +11,6 @@ describe Chef::Resource::SystemdBinfmtD do
   let(:string) { ':DOSWin:M::MZ::/usr/bin/wine:' }
 
   it 'generates a proper string' do
-    expect(binfmt_d.as_string).to eq string
+    expect(binfmt.as_string).to eq string
   end
 end

@@ -1,5 +1,5 @@
 
-systemd_binfmt_d 'DOSWin' do
+systemd_binfmt 'DOSWin' do
   magic 'MZ'
   interpreter '/usr/bin/wine'
 end

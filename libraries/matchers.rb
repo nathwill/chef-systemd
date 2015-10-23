@@ -30,7 +30,7 @@ if defined?(ChefSpec)
     networkd_link
     sysctl
     tmpfile
-    binfmt_d
+    binfmt
     modules
     sysuser
     udev_rules

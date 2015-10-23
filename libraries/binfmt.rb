@@ -1,7 +1,7 @@
 #
 # Cookbook Name:: systemd
-# Library:: Chef::Resource::SystemdBinfmtD
-# Library:: Chef::Provider::SystemdBinfmtD
+# Library:: Chef::Resource::SystemdBinfmt
+# Library:: Chef::Provider::SystemdBinfmt
 #
 # Copyright 2015 The Authors
 #
@@ -24,9 +24,9 @@ require 'chef/provider/lwrp_base'
 # Configure additional binary formats for executables at boot
 # http://www.freedesktop.org/software/systemd/man/binfmt.d.html
 class Chef::Resource
-  class SystemdBinfmtD < Chef::Resource::LWRPBase
-    self.resource_name = :systemd_binfmt_d
-    provides :systemd_binfmt_d
+  class SystemdBinfmt < Chef::Resource::LWRPBase
+    self.resource_name = :systemd_binfmt
+    provides :systemd_binfmt
 
     actions :create, :delete
     default_action :create
@@ -69,7 +69,7 @@ class Chef::Resource
 end
 
 class Chef::Provider
-  class SystemdBinfmtD < Chef::Provider::LWRPBase
+  class SystemdBinfmt < Chef::Provider::LWRPBase
     DIR ||= '/etc/binfmt.d'
 
     use_inline_resources
@@ -78,7 +78,7 @@ class Chef::Provider
       true
     end
 
-    provides :systemd_binfmt_d
+    provides :systemd_binfmt
 
     %i( create delete ).each do |a|
       action a do

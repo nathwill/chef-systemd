@@ -53,11 +53,9 @@ class Chef::Provider
         r = new_resource
 
         dir = r.blacklist ? '/etc/modprobe.d' : '/etc/modules-load.d'
-
-        path = ::File.join(dir, "#{r.name}.conf")
         mods = r.blacklist ? r.modules.map { |m| "blacklist #{m}" } : r.modules
 
-        f = file path do
+        f = file ::File.join(dir, "#{r.name}.conf") do
           content mods.join("\n")
           action a
         end

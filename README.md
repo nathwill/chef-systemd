@@ -276,6 +276,7 @@ systemd_service 'httpd' do
     wanted_by 'multi-user.target'
   end
   service do
+    environment 'LANG' => 'C'
     exec_start '/usr/sbin/httpd $OPTIONS -DFOREGROUND'
     exec_reload '/usr/sbin/httpd $OPTIONS -k graceful'
     kill_signal 'SIGWINCH'

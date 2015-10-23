@@ -70,7 +70,7 @@ if defined?(ChefSpec)
     end
   end
 
-  define_method("disable_systemd_udev_rules") do |resource_name|
+  define_method('disable_systemd_udev_rules') do |resource_name|
     ChefSpec::Matchers::ResourceMatcher.new(
       :systemd_udev_rules, :disable, resource_name
     )

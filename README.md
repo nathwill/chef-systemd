@@ -118,6 +118,31 @@ in general, the attributes correspond to the related resource attributes.
 Unit which describes a file system automount point controlled by systemd.
 [Documentation][automount]
 
+Example usage (always paired with a mount unit):
+
+```ruby
+systemd_mount 'proc-sys-fs-binfmt_misc' do
+  description 'Arbitrary Executable File Formats File System'
+  default_dependencies false
+  mount do
+    what 'binfmt_misc'
+    where '/proc/sys/fs/binfmt_misc'
+    type 'binfmt_misc'
+  end
+end
+
+systemd_automount 'proc-sys-fs-binfmt_misc' do
+  description 'Arbitrary Executable File Formats File System Automount Point'
+  default_dependencies false
+  before 'sysinit.target'
+  condition_path_exists '/proc/sys/fs/binfmt_misc/'
+  condition_path_is_read_write '/proc/sys/'
+  automount do
+    where '/proc/sys/fs/binfmt_misc'
+  end
+end
+```
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |where|see docs|nil|
@@ -137,6 +162,24 @@ Also supports:
 
 Unit which describes a file system mount point controlled by systemd.
 [Documentation][mount]
+
+Example usage:
+
+```ruby
+systemd_mount 'tmp' do
+  description 'Temporary Directory'
+  condition_path_is_symbolic_link '!/tmp'
+  default_dependencies false
+  conflicts 'umount.target'
+  before %w( local-fs.target umount.target )
+  mount do
+    what 'tmpfs'
+    where '/tmp'
+    type 'tmpfs'
+    options 'mode=1777,strictatime,noexec,nosuid'
+  end
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -170,6 +213,33 @@ Unit which describes information about a path monitored by systemd for
 path-based activities.
 [Documentation][path]
 
+Example usage (showing cups service activation when work is available):
+
+```ruby
+systemd_path 'cups' do
+  description 'CUPS Scheduler'
+  install do
+    wanted_by 'multi-user.target'
+  end
+  path do
+    path_exists_glob '/var/spool/cups/d*'
+  end
+end
+
+systemd_service 'cups' do
+  description 'CUPS Scheduler'
+  after 'network.target'
+  install do
+    wanted_by 'printer.target'
+    also %w( cups.socket cups.path )
+  end
+  service do
+    type 'notify'
+    exec_start '/usr/sbin/cupsd -l'
+  end
+end
+```
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |directory_mode|see docs|nil|
@@ -194,6 +264,25 @@ Also supports:
 
 Unit which describes information about a process controlled and supervised by systemd.
 [Documentation][service]
+
+Example usage:
+
+```ruby
+systemd_service 'httpd' do
+  description 'Apache HTTP Server'
+  after %w( network.target remote-fs.target nss-lookup.target )
+  install do
+    wanted_by 'multi-user.target'
+  end
+  service do
+    exec_start '/usr/sbin/httpd $OPTIONS -DFOREGROUND'
+    exec_reload '/usr/sbin/httpd $OPTIONS -k graceful'
+    kill_signal 'SIGWINCH'
+    kill_mode 'mixed'
+    private_tmp true
+  end
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -250,6 +339,16 @@ for of a group of processes.
 
 This resource has no specific options.
 
+Example usage:
+
+```ruby
+systemd_slice 'user' do
+  description 'User and Session Slice'
+  documentation 'man:systemd.special(7)'
+  before 'slices.target'
+end
+```
+
 Also supports:
 
  - [organization](#common-organization)
@@ -265,6 +364,23 @@ Also supports:
 Unit which describes an IPC, network socket, or file-system FIFO controlled
 and supervised by systemd for socket-based service activation.
 [Documentation][socket]
+
+Example usage:
+
+```ruby
+systemd_socket 'sshd' do
+  description 'OpenSSH Server Socket'
+  documentation 'man:sshd(8) man:sshd_config(5)'
+  conflicts 'sshd.service'
+  install do
+    wanted_by 'sockets.target'
+  end
+  socket do
+    listen_stream 22
+    accept true
+  end
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -336,6 +452,19 @@ Also supports:
 Unit which describes a swap device or file for memory paging.
 [Documentation][swap]
 
+Example usage:
+
+```ruby
+systemd_swap 'dev-vdb' do
+  install do
+    wanted_by 'swap.target'
+  end
+  swap do
+    what '/dev/vdb'
+  end
+end
+```
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |options|see docs|nil|
@@ -363,6 +492,15 @@ synchronization points during system start-up.
 
 This unit has no specific options.
 
+Example usage:
+
+```ruby
+systemd_target 'plague' do
+  description 'Never fear, I is here.'
+  documentation 'man:systemd.special(7)'
+end
+```
+
 Also supports:
 
  - [organization](#common-organization)
@@ -377,6 +515,22 @@ Also supports:
 Unit which describes a timer managed by systemd, for timer-based unit
 activation (typically a service of the same name).
 [Documentation][timer]
+
+Example usage:
+
+```ruby
+systemd_timer 'mlocate-updatedb' do
+  description 'Updates mlocate database every day'
+  install do
+    wanted_by 'timers.target'
+  end
+  timer do
+    on_calendar 'daily'
+    accuracy_sec '24h'
+    persistent true
+  end
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|

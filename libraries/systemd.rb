@@ -600,6 +600,7 @@ module Systemd
       'LogLocation' => {},
       'DumpCore' => {},
       'CrashShell' => {},
+      'CrashReboot' => { kind_of: [TrueClass, FalseClass] },
       'ShowStatus' => {},
       'CrashChVT' => {},
       'DefaultStandardOutput' => {},

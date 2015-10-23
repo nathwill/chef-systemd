@@ -224,6 +224,7 @@ systemd_path 'cups' do
   path do
     path_exists_glob '/var/spool/cups/d*'
   end
+  action [:create, :enable, :start]
 end
 
 systemd_service 'cups' do
@@ -281,6 +282,7 @@ systemd_service 'httpd' do
     kill_mode 'mixed'
     private_tmp true
   end
+  action [:create, :enable, :start]
 end
 ```
 
@@ -368,6 +370,7 @@ and supervised by systemd for socket-based service activation.
 Example usage:
 
 ```ruby
+# Set up OpenSSH Server socket-activation
 systemd_socket 'sshd' do
   description 'OpenSSH Server Socket'
   documentation 'man:sshd(8) man:sshd_config(5)'
@@ -378,6 +381,26 @@ systemd_socket 'sshd' do
   socket do
     listen_stream 22
     accept true
+  end
+  action [:create, :enable, :start]
+end
+
+# No need to enable/start the service, the socket-activation will
+systemd_service 'sshd' do
+  description 'OpenSSH Server Daemon'
+  documentation 'man:sshd(8) man:sshd_config(5)'
+  after %w( network.target sshd-keygen.service )
+  wants %w( sshd-keygen.service )
+  service do
+    environment_file '/etc/sysconfig/sshd'
+    exec_start '/usr/sbin/sshd -D $OPTIONS'
+    exec_reload '/bin/kill -HUP $MAINPID'
+    kill_mode 'process'
+    restart 'on-failure'
+    restart_sec '42s'
+  end
+  install do
+    wanted_by 'multi-user.target'
   end
 end
 ```
@@ -519,6 +542,7 @@ activation (typically a service of the same name).
 Example usage:
 
 ```ruby
+# Set up timer unit
 systemd_timer 'mlocate-updatedb' do
   description 'Updates mlocate database every day'
   install do
@@ -528,6 +552,23 @@ systemd_timer 'mlocate-updatedb' do
     on_calendar 'daily'
     accuracy_sec '24h'
     persistent true
+  end
+  action [:create, :enable, :start]
+end
+
+# And the corresponding service
+systemd_service 'mlocate-updatedb' do
+  description 'Update a database for mlocate'
+  service do
+    type 'oneshot'
+    exec_start '/usr/libexec/mlocate-run-updatedb'
+    nice 19
+    io_scheduling_class 2
+    io_scheduling_priority 7
+    private_tmp true
+    private_devices true
+    private_network true
+    protect_system true
   end
 end
 ```
@@ -558,6 +599,14 @@ Also supports:
 <a name="systemd-journald"></a>**systemd\_journald**
 
 Resource for configuring [systemd-journald][journald]
+
+Example use:
+
+```ruby
+systemd_journald 'forward-to-syslog' do
+  forward_to_syslog true
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -596,6 +645,15 @@ Also supports:
 <a name="systemd-logind"></a>**systemd\_logind**
 
 Resource for configuring [systemd-logind][logind]
+
+Example use:
+
+```ruby
+systemd_logind 'power-down-when-idle' do
+  idle_action 'hibernate'
+  idle_action_sec 3_600
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -636,6 +694,14 @@ Resource for configuring [systemd-resolved][resolved]
 |fallback_dns|see docs|nil|
 |llmnr|see docs|nil|
 
+Example usage:
+
+```ruby
+systemd_resolved 'enable-llmnr' do
+  llmnr true
+end
+```
+
 Also supports:
 
  - [drop-in](#common-drop-in)
@@ -645,6 +711,15 @@ Also supports:
 <a name="systemd-timesyncd"></a>**systemd\_timesyncd**
 
 Resource for configuring [systemd-timesyncd][timesync]
+
+Example usage:
+
+```ruby
+systemd_timesyncd 'my-resolver' do
+  ntp %w( 1.2.3.4 2.3.4.5 )
+  fallback_ntp %w( 8.8.8.8 8.8.4.4 )
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -661,6 +736,14 @@ Also supports:
 <a name="systemd-bootchart"></a>**systemd\_bootchart**
 
 Resource for configuring [systemd-bootchart][bootchart]
+
+Example usage:
+
+```ruby
+systemd_bootchart 'include-cgroup-info' do
+  control_group true
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -686,6 +769,14 @@ Also supports:
 
 Resource for configuring [systemd-coredump][coredump]
 
+Example usage:
+
+```ruby
+systemd_coredump 'compress-coredumps' do
+  compress true
+end
+```
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |storage|see docs|nil|
@@ -705,6 +796,14 @@ Also supports:
 <a name="systemd-sleep"></a>**systemd\_sleep**
 
 Resource for configuring [systemd-sleep][sleep]
+
+Example usage:
+
+```ruby
+systemd_sleep 'freeze-suspend' do
+  suspend_state 'freeze'
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -726,6 +825,14 @@ Also supports:
 
 Resource for configuring systemd system service [manager][system]:
 
+Example usage:
+
+```ruby
+systemd_system 'reboot-on-crash' do
+  crash_reboot true
+end
+```
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |log_level|see docs|nil|
@@ -734,6 +841,7 @@ Resource for configuring systemd system service [manager][system]:
 |log_location|see docs|nil|
 |dump_core|see docs|nil|
 |crash_shell|see docs|nil|
+|crash_reboot|see docs|nil|
 |show_status|see docs|nil|
 |crash_ch_vt|see docs|nil|
 |default_standard_output|see docs|nil|
@@ -789,6 +897,15 @@ Supports same options as the `systemd_system` resource.
 Resource for managing [binfmt.d files][binfmt]
 (configure binary formats for executables at boot)
 
+Example usage:
+
+```ruby
+systemd_binfmt_d 'DOSWin' do
+  magic 'MZ'
+  interpreter '/usr/bin/wine'
+end
+```
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |name|see docs|nil|
@@ -805,6 +922,21 @@ Resource for managing [binfmt.d files][binfmt]
 
 Resource for managing [modules][modules]
 
+Example usage:
+
+```ruby
+systemd_modules 'die-beep-die' do
+  blacklist true
+  modules %w( pcspkr )
+  action [:create, :unload]
+end
+
+systemd_modules 'zlib' do
+  modules %w( zlib )
+  action [:create, :load]
+end
+```
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |blacklist|boolean, controls whether to blacklist or load|false|
@@ -815,6 +947,29 @@ Resource for managing [modules][modules]
 <a name="systemd-networkd-link"></a>**systemd\_networkd\_link**
 
 Resource for managing network [devices][link]
+
+Example usage:
+
+```ruby
+systemd_networkd_link 'wireless' do
+  match do
+    match_mac_addr '12:34:56:78:9a:bc'
+    driver 'brcmsmac'
+    path 'pci-0000:02:00.0-*'
+    type 'wlan'
+    virtualization false
+    host 'my-laptop'
+    architecture 'x86-64'
+  end
+  link do
+    name 'wireless0'
+    mtu_bytes 1_450
+    bits_per_second '10M'
+    wake_on_lan 'magic'
+    link_mac_addr 'cb:a9:87:65:43:21'
+  end
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -844,6 +999,15 @@ Resource for managing network [devices][link]
 
 Resource for managing sysctls with [systemd-sysctl][sysctl]
 
+Example usage:
+
+```ruby
+systemd_sysctl 'vm.swappiness' do
+  value 10
+  notifies :restart, 'service[systemd-sysctl]', :immediately
+end
+```
+
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |name|resource name is sysctl name|resource name|
@@ -854,6 +1018,16 @@ Resource for managing sysctls with [systemd-sysctl][sysctl]
 <a name="systemd-sysuser"></a>**systemd\_sysuser**
 
 Resource for managing system users with [systemd-sysusers][sysusers]
+
+Example usage:
+
+```ruby
+systemd_sysuser '_testuser' do
+  id 65_530
+  gecos 'my test user'
+  home '/var/lib/test'
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -868,6 +1042,16 @@ Resource for managing system users with [systemd-sysusers][sysusers]
 <a name="systemd-tmpfile"></a>**systemd\_tmpfile**
 
 Resource for managing tmp files with [systemd-tmpfiles][tmpfiles]
+
+Example usage:
+
+```ruby
+systemd_tmpfile 'my-app' do
+  path '/tmp/my-app'
+  age '10d'
+  type 'f'
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -884,6 +1068,66 @@ Resource for managing tmp files with [systemd-tmpfiles][tmpfiles]
 <a name="systemd-udev-rules"></a>**systemd\_udev\_rules**
 
 Resource for managing udev [rules][rules] files
+
+Example usage:
+
+```ruby
+# hide docker's loopback devices from udisks, and thus from user desktops
+systemd_udev_rules 'udev-test' do
+  rules [
+    [
+      {
+        'key' => 'SUBSYSTEM',
+        'operator' => '==',
+        'value' => 'block'
+      },
+      {
+        'key' => 'ENV{DM_NAME}',
+        'operator' => '==',
+        'value' => 'docker-*'
+      },
+      {
+        'key' => 'ENV{UDISKS_PRESENTATION_HIDE}',
+        'operator' => '=',
+        'value' => 1
+      },
+      {
+        'key' => 'ENV{UDISKS_IGNORE}',
+        'operator' => '=',
+        'value' => 1
+      }
+    ],
+    [
+      {
+        'key' => 'SUBSYSTEM',
+        'operator' => '==',
+        'value' => 'block'
+      },
+      {
+        'key' => 'DEVPATH',
+        'operator' => '==',
+        'value' => '/devices/virtual/block/loop*'
+      },
+      {
+        'key' => 'ATTR{loop/backing_file}',
+        'operator' => '==',
+        'value' => '/var/lib/docker/*'
+      },
+      {
+        'key' => 'ENV{UDISKS_PRESENTATION_HIDE}',
+        'operator' => '=',
+        'value' => 1
+      },
+      {
+        'key' => 'ENV{UDISKS_IGNORE}',
+        'operator' => '=',
+        'value' => 1
+      }
+    ]
+  ]
+  action [:create]
+end
+```
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -916,6 +1160,15 @@ systemd_automount 'vagrant-home' do
 end
 ```
 
+is the same as...
+
+```ruby
+systemd_automount 'vagrant-home' do
+  description 'Test Automount'
+  wanted_by 'local-fs.target'
+  where '/home/vagrant'
+end
+```
 --
 
 <a name="common-exec"></a>**Exec**
@@ -1131,7 +1384,7 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
-|drop_in|boolean which sets if resource is a drop-in unit|false|
+|drop_in|boolean which sets if resource is a drop-in unit|true for daemons & utils; false for units|
 |override|which unit to override, prefix only. suffix determined by resource unit type (e.g. "ssh" on a systemd_service -> "ssh.service.d")|nil|
 |overrides|drop-in unit options that require a reset (e.g. "ExecStart" -> "ExecStart=" at top of section)|[]|
 

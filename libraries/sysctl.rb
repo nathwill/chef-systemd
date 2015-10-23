@@ -20,6 +20,7 @@
 
 require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
+require 'mixlib/shellout'
 
 class Chef::Resource
   # resource for configuring kernel parameters at boot
@@ -29,10 +30,14 @@ class Chef::Resource
 
     provides :systemd_sysctl
 
-    actions :create, :delete
+    actions :create, :delete, :apply
     default_action :create
 
     attribute :value, kind_of: [String, Numeric, Array], required: true
+
+    def to_kv
+      "#{name}=#{Array(value).join(' ')}"
+    end
   end
 end
 
@@ -52,23 +57,26 @@ class Chef::Provider
       action a do
         r = new_resource
 
-        path = ::File.join(DIR, "#{r.name}.conf")
-
-        str = "#{r.name}=#{Array(r.value).join(' ')}"
-
-        execute "sysctl -w #{str}" do
-          action :nothing
-          only_if { a == :create }
-          subscribes :run, "file[#{path}]", :immediately
-        end
-
-        f = file path do
-          content str
+        f = file ::File.join(DIR, "#{r.name}.conf") do
+          content r.to_kv
           action a
         end
 
         new_resource.updated_by_last_action(f.updated_by_last_action?)
       end
+    end
+
+    action :apply do
+      r = new_resource
+
+      current = Mixlib::ShellOut.new("sysctl -n #{r.name}")
+                .tap(&:run_command).stdout.chomp
+
+      e = execute "sysctl -e -w #{r.to_kv}" do
+        only_if { current == r.value }
+      end
+
+      new_resource.updated_by_last_action(e.updated_by_last_action?)
     end
   end
 end

@@ -116,6 +116,7 @@ in general, the attributes correspond to the related resource attributes.
 All unit resources support the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render unit configuration file from attributes|
 |:delete|delete unit configuration file|
 |:enable|enable the unit at boot, unless static (lacks [Install] section)|
@@ -617,6 +618,7 @@ Resources for managing configuration of common systemd daemons.
 All daemon resources support the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render the configuration file|
 |:delete|delete the configuration file|
 
@@ -762,6 +764,7 @@ Resources for configuring common systemd utilities.
 All utility resources support the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render the configuration file|
 |:delete|delete the configuration file|
 
@@ -860,6 +863,7 @@ Resource for configuring systemd system service [manager][system]:
 `systemd_system` supports the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render the configuration file to disk|
 |:delete|delete the configuration file|
 
@@ -939,6 +943,7 @@ Resource for managing [binfmt_misc files][binfmt]
 `systemd_binfmt` supports the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render the configuration file to disk|
 |:delete|delete the configuration file|
 
@@ -970,6 +975,7 @@ Resource for managing [modules][modules]
 `systemd_modules` supports the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render the configuration file to disk|
 |:delete|delete the configuration file|
 |:load|load the module via `modprobe`|
@@ -1004,6 +1010,7 @@ Resource for managing network [devices][link]
 `systemd_networkd_link` supports the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render the configuration file to disk|
 |:delete|delete the configuration file|
 
@@ -1061,6 +1068,7 @@ Resource for managing sysctls with [systemd-sysctl][sysctl]
 `systemd_sysctl` supports the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render the configuration file to disk|
 |:delete|delete the configuration file|
 |:apply|apply the sysctl setting|
@@ -1088,6 +1096,7 @@ Resource for managing system users with [systemd-sysusers][sysusers]
 `systemd_sysuser` supports the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render the configuration file to disk|
 |:delete|delete the configuration file|
 
@@ -1118,6 +1127,7 @@ Resource for managing tmp files with [systemd-tmpfiles][tmpfiles]
 `systemd_tmpfile` supports the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render the configuration file to disk|
 |:delete|delete the configuration file|
 
@@ -1150,6 +1160,7 @@ Resource for managing udev [rules][rules] files
 `systemd_udev_rules` supports the following actions:
 
 |Action|Description|
+|------|-----------|
 |:create|render the configuration file to disk|
 |:delete|delete the configuration file|
 |:disable|disables a udev rule|

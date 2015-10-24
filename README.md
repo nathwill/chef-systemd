@@ -279,12 +279,28 @@ Also supports:
 
 <a name="systemd-service"></a>**systemd\_service**
 
-Unit which describes information about a process controlled and supervised by systemd.
-[Documentation][service]
+Unit which describes information about a process controlled and supervised by
+systemd. [Documentation][service].
+
+While there is some overlap with the `service` resource in Chef-core,
+this resource is more narrowly focused on service unit config/management on
+systemd-based platforms, whereas the Chef-core service resource works 
+across multiple service-management frameworks.
+
+As such, while it is *possible* to perform lifecycle management of services
+on systemd platforms using the `systemd_service` resource, the systemd cookbook
+authors do not recommend doing so. Instead, it is recommended to pair 
+`systemd_service` instances with platform-agnostic service resources,
+as demonstrated below.
 
 Example usage:
 
 ```ruby
+cookbook_file '/etc/init/httpd.conf' do
+  source 'httpd.conf'
+  only_if { ::File.executable?('/sbin/initctl') # Upstart
+end
+
 systemd_service 'httpd' do
   description 'Apache HTTP Server'
   after %w( network.target remote-fs.target nss-lookup.target )
@@ -299,7 +315,11 @@ systemd_service 'httpd' do
     kill_mode 'mixed'
     private_tmp true
   end
-  action [:create, :enable, :start]
+  only_if { ::File.open('/proc/1/comm').gets.chomp == 'systemd' } # systemd
+end
+
+service 'httpd' do
+  action [:enable, :start]
 end
 ```
 

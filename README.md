@@ -298,7 +298,7 @@ Example usage:
 ```ruby
 cookbook_file '/etc/init/httpd.conf' do
   source 'httpd.conf'
-  only_if { ::File.executable?('/sbin/initctl') # Upstart
+  only_if { ::File.executable?('/sbin/initctl') } # Upstart
 end
 
 systemd_service 'httpd' do

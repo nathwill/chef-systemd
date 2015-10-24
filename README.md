@@ -113,6 +113,21 @@ in general, the attributes correspond to the related resource attributes.
 <a name="unit-resources"></a>Unit Resources
 -------------------------------------------
 
+All unit resources support the following actions:
+
+|Action|Description|
+|:create|render unit configuration file from attributes|
+|:delete|delete unit configuration file|
+|:enable|enable the unit at boot, unless static (lacks [Install] section)|
+|:disable|disables the unit at boot, unless static|
+|:start|starts the unit|
+|:stop|stops the unit|
+|:restart|restarts the unit|
+|:reload|reloads the unit|
+
+**Important**: The notable exception is when the unit is a drop-in unit,
+in which case it supports only the `:create`, and `:delete` actions.
+
 <a name="systemd-automount"></a>**systemd\_automount**
 
 Unit which describes a file system automount point controlled by systemd.
@@ -597,6 +612,14 @@ Also supports:
 <a name="daemon-resources"></a>Daemon Resources
 -----------------------------------------------
 
+Resources for managing configuration of common systemd daemons.
+
+All daemon resources support the following actions:
+
+|Action|Description|
+|:create|render the configuration file|
+|:delete|delete the configuration file|
+
 <a name="systemd-journald"></a>**systemd\_journald**
 
 Resource for configuring [systemd-journald][journald]
@@ -734,6 +757,14 @@ Also supports:
 <a name="utility-resources"></a>Utility Resources
 -------------------------------------------------
 
+Resources for configuring common systemd utilities.
+
+All utility resources support the following actions:
+
+|Action|Description|
+|:create|render the configuration file|
+|:delete|delete the configuration file|
+
 <a name="systemd-bootchart"></a>**systemd\_bootchart**
 
 Resource for configuring [systemd-bootchart][bootchart]
@@ -826,6 +857,13 @@ Also supports:
 
 Resource for configuring systemd system service [manager][system]:
 
+`systemd_system` supports the following actions:
+
+|Action|Description|
+|:create|render the configuration file to disk|
+|:delete|delete the configuration file|
+
+
 Example usage:
 
 ```ruby
@@ -898,6 +936,12 @@ Supports same options as the `systemd_system` resource.
 Resource for managing [binfmt_misc files][binfmt]
 (configure binary formats for executables at boot)
 
+`systemd_binfmt` supports the following actions:
+
+|Action|Description|
+|:create|render the configuration file to disk|
+|:delete|delete the configuration file|
+
 Example usage:
 
 ```ruby
@@ -922,6 +966,14 @@ end
 <a name="systemd-modules"></a>**systemd\_modules**
 
 Resource for managing [modules][modules]
+
+`systemd_modules` supports the following actions:
+
+|Action|Description|
+|:create|render the configuration file to disk|
+|:delete|delete the configuration file|
+|:load|load the module via `modprobe`|
+|:unload|remove the module via `modprobe -r`|
 
 Example usage:
 
@@ -948,6 +1000,12 @@ end
 <a name="systemd-networkd-link"></a>**systemd\_networkd\_link**
 
 Resource for managing network [devices][link]
+
+`systemd_networkd_link` supports the following actions:
+
+|Action|Description|
+|:create|render the configuration file to disk|
+|:delete|delete the configuration file|
 
 Example usage:
 
@@ -1000,6 +1058,13 @@ end
 
 Resource for managing sysctls with [systemd-sysctl][sysctl]
 
+`systemd_sysctl` supports the following actions:
+
+|Action|Description|
+|:create|render the configuration file to disk|
+|:delete|delete the configuration file|
+|:apply|apply the sysctl setting|
+
 Example usage:
 
 ```ruby
@@ -1019,6 +1084,12 @@ end
 <a name="systemd-sysuser"></a>**systemd\_sysuser**
 
 Resource for managing system users with [systemd-sysusers][sysusers]
+
+`systemd_sysuser` supports the following actions:
+
+|Action|Description|
+|:create|render the configuration file to disk|
+|:delete|delete the configuration file|
 
 Example usage:
 
@@ -1043,6 +1114,12 @@ end
 <a name="systemd-tmpfile"></a>**systemd\_tmpfile**
 
 Resource for managing tmp files with [systemd-tmpfiles][tmpfiles]
+
+`systemd_tmpfile` supports the following actions:
+
+|Action|Description|
+|:create|render the configuration file to disk|
+|:delete|delete the configuration file|
 
 Example usage:
 
@@ -1069,6 +1146,13 @@ end
 <a name="systemd-udev-rules"></a>**systemd\_udev\_rules**
 
 Resource for managing udev [rules][rules] files
+
+`systemd_udev_rules` supports the following actions:
+
+|Action|Description|
+|:create|render the configuration file to disk|
+|:delete|delete the configuration file|
+|:disable|disables a udev rule|
 
 Example usage:
 

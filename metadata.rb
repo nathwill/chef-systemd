@@ -2,9 +2,9 @@ name             'systemd'
 maintainer       'The Authors'
 maintainer_email 'nath.e.will@gmail.com'
 license          'apache2'
-description      'Installs/Configures systemd'
-long_description 'Installs/Configures systemd'
-version          '0.4.0'
+description      'resource-driven chef cookbook for managing linux systems via systemd'
+long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+version          '1.0.0'
 
 supports 'fedora'
 supports 'debian', '>= 8.0'

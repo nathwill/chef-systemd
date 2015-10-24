@@ -1,3 +1,12 @@
+# 1.0.0 / 2015-10-22
+
+* improved docs
+* improved matchers
+* remove device resource
+* support array args to sysctl resource value attribute
+* fix udev recipe to support split-usr
+* 1.0, whoo!
+
 # 0.4.0 / 2015-10-16
 
 * add binfmt resource

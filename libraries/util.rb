@@ -24,7 +24,7 @@ require_relative 'conf'
 class Chef::Resource
   # base class for management of systemd utilities
   class SystemdUtil < Chef::Resource::SystemdConf
-    self.resource_name = :systemd_util
+    resource_name :systemd_util
     provides :systemd_util
 
     attribute :drop_in, kind_of: [TrueClass, FalseClass], default: true

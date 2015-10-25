@@ -38,6 +38,7 @@ suites:
       - debian-8.2
       - centos-7.1
     run_list:
+      - recipe[setup::dnf]
       - recipe[systemd::journal_gatewayd]
       - recipe[systemd::networkd]
       - recipe[systemd::resolved]

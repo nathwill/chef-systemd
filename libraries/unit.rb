@@ -30,7 +30,7 @@ class Chef::Resource
   class SystemdUnit < Chef::Resource::SystemdConf
     include Chef::Mixin::ParamsValidate
 
-    self.resource_name = :systemd_unit
+    resource_name :systemd_unit
     provides :systemd_unit
 
     actions :create, :delete, :enable, :disable,

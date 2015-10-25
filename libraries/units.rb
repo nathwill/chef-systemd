@@ -33,7 +33,7 @@ class Chef::Resource
   # resource for configuration of systemd automount units
   # http://www.freedesktop.org/software/systemd/man/systemd.automount.html
   class SystemdAutomount < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_automount
+    resource_name :systemd_automount
     provides :systemd_automount
 
     def conf_type(_ = nil)
@@ -50,7 +50,7 @@ class Chef::Resource
   # resource for configuration of systemd mount units
   # http://www.freedesktop.org/software/systemd/man/systemd.mount.html
   class SystemdMount < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_mount
+    resource_name :systemd_mount
     provides :systemd_mount
 
     def conf_type(_ = nil)
@@ -67,7 +67,7 @@ class Chef::Resource
   # resource for configuration of systemd path units
   # http://www.freedesktop.org/software/systemd/man/systemd.path.html
   class SystemdPath < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_path
+    resource_name :systemd_path
     provides :systemd_path
 
     def conf_type(_ = nil)
@@ -84,7 +84,7 @@ class Chef::Resource
   # resource for configuration of systemd service units
   # http://www.freedesktop.org/software/systemd/man/systemd.service.html
   class SystemdService < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_service
+    resource_name :systemd_service
     provides :systemd_service
 
     def conf_type(_ = nil)
@@ -101,7 +101,7 @@ class Chef::Resource
   # resource for configuration of systemd slice units
   # http://www.freedesktop.org/software/systemd/man/systemd.slice.html
   class SystemdSlice < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_slice
+    resource_name :systemd_slice
     provides :systemd_slice
 
     def conf_type(_ = nil)
@@ -114,7 +114,7 @@ class Chef::Resource
   # resource for configuration of systemd socket units
   # http://www.freedesktop.org/software/systemd/man/systemd.socket.html
   class SystemdSocket < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_socket
+    resource_name :systemd_socket
     provides :systemd_socket
 
     def conf_type(_ = nil)
@@ -131,7 +131,7 @@ class Chef::Resource
   # resource for configuration of systemd swap units
   # http://www.freedesktop.org/software/systemd/man/systemd.swap.html
   class SystemdSwap < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_swap
+    resource_name :systemd_swap
     provides :systemd_swap
 
     def conf_type(_ = nil)
@@ -148,7 +148,7 @@ class Chef::Resource
   # resource for configuration of systemd target units
   # http://www.freedesktop.org/software/systemd/man/systemd.target.html
   class SystemdTarget < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_target
+    resource_name :systemd_target
     provides :systemd_target
 
     def conf_type(_ = nil)
@@ -159,7 +159,7 @@ class Chef::Resource
   # resource for configuration of systemd timer units
   # http://www.freedesktop.org/software/systemd/man/systemd.timer.html
   class SystemdTimer < Chef::Resource::SystemdUnit
-    self.resource_name = :systemd_timer
+    resource_name :systemd_timer
     provides :systemd_timer
 
     def conf_type(_ = nil)

@@ -26,8 +26,7 @@ class Chef::Resource
   # deletion and cleaning of volatile and temporary files
   # http://www.freedesktop.org/software/systemd/man/tmpfiles.d.html
   class SystemdTmpfile < Chef::Resource::LWRPBase
-    self.resource_name = :systemd_tmpfile
-
+    resource_name :systemd_tmpfile
     provides :systemd_tmpfile
 
     actions :create, :delete

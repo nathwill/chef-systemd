@@ -18,13 +18,7 @@
 
 jg = node['systemd']['journal_gatewayd']
 
-package jg['package'] do
-  not_if { ::File.executable?('/usr/bin/dnf') && Chef::VERSION.to_f < 12.5 }
-end
-
-execute "dnf install -y #{jg['package']}" do
-  only_if { ::File.executable?('/usr/bin/dnf') && Chef::VERSION.to_f < 12.5 }
-end
+package jg['package']
 
 systemd_socket 'local-journal-gatewayd-listen-stream' do
   drop_in true

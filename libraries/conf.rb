@@ -25,7 +25,7 @@ require_relative 'helpers'
 # Base class for resources configured with ini-formatted files
 class Chef::Resource
   class SystemdConf < Chef::Resource::LWRPBase
-    self.resource_name = :systemd_conf
+    resource_name :systemd_conf
     provides :systemd_conf
 
     actions :create, :delete

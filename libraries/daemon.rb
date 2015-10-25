@@ -24,7 +24,7 @@ require_relative 'conf'
 # base class for daemon resources
 class Chef::Resource
   class SystemdDaemon < Chef::Resource::SystemdConf
-    self.resource_name = :systemd_daemon
+    resource_name :systemd_daemon
     provides :systemd_daemon
 
     attribute :drop_in, kind_of: [TrueClass, FalseClass], default: true

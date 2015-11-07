@@ -336,6 +336,19 @@ module Systemd
       'CPUQuota' => {},
       'MemoryAccounting' => { kind_of: [TrueClass, FalseClass] },
       'MemoryLimit' => {},
+      'TasksAccounting' => { kind_of: [TrueClass, FalseClass] },
+      'TasksMax' => { kind_of: [Integer, String],
+                      callbacks: {
+                        'is a valid symbol' =>
+                        lambda do |val|
+                          if val.is_a?(String)
+                            val == 'infinity'
+                          else
+                            true
+                          end
+                        end
+                      }
+                    },
       'BlockIOAccounting' => { kind_of: [TrueClass, FalseClass] },
       'BlockIOWeight' => { kind_of: Integer, equal_to: 10.upto(1_000) },
       'StartupBlockIOWeight' => { kind_of: Integer, equal_to: 10.upto(1_000) },
@@ -626,6 +639,7 @@ module Systemd
       'DefaultCPUAccounting' => { kind_of: [TrueClass, FalseClass] },
       'DefaultBlockIOAccounting' => { kind_of: [TrueClass, FalseClass] },
       'DefaultMemoryAccounting' => { kind_of: [TrueClass, FalseClass] },
+      'DefaultTasksAccounting' => { kind_of: [TrueClass, FalseClass] },
       'DefaultLimitCPU' => {},
       'DefaultLimitFSIZE' => {},
       'DefaultLimitDATA' => {},

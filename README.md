@@ -284,12 +284,12 @@ systemd. [Documentation][service].
 
 While there is some overlap with the `service` resource in Chef-core,
 this resource is more narrowly focused on service unit config/management on
-systemd-based platforms, whereas the Chef-core service resource works 
+systemd-based platforms, whereas the Chef-core service resource works
 across multiple service-management frameworks.
 
 As such, while it is *possible* to perform lifecycle management of services
 on systemd platforms using the `systemd_service` resource, the systemd cookbook
-authors do not recommend doing so. Instead, it is recommended to pair 
+authors do not recommend doing so. Instead, it is recommended to pair
 `systemd_service` instances with platform-agnostic service resources,
 as demonstrated below.
 
@@ -1399,6 +1399,7 @@ Resource control unit settings. [Documentation][resource_control]
 |memory_accounting|see docs|nil|
 |memory_limit|see docs|nil|
 |slice|see docs|nil|
+|net_class|see docs|nil|
 |startup_block_io_weight|see docs|nil|
 |startup_cpu_shares|see docs|nil|
 

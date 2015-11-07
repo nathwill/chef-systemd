@@ -345,6 +345,7 @@ module Systemd
       'DeviceAllow' => {},
       'DevicePolicy' => { kind_of: String, equal_to: %w( strict closed auto ) },
       'Slice' => {},
+      'NetClass' => {},
       'Delegate' => { kind_of: [TrueClass, FalseClass] }
     }
   end

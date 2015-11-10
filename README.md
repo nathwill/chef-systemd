@@ -925,6 +925,7 @@ end
 |default_environment|see docs|nil|
 |default_cpu_accounting|see docs|nil|
 |default_block_io_accounting|see docs|nil|
+|default_tasks_accounting|see docs|nil|
 |default_memory_accounting|see docs|nil|
 |default_limit_cpu|see docs|nil|
 |default_limit_fsize|see docs|nil|
@@ -1398,6 +1399,8 @@ Resource control unit settings. [Documentation][resource_control]
 |device_policy|see docs|nil|
 |memory_accounting|see docs|nil|
 |memory_limit|see docs|nil|
+|tasks_accounting|see docs|nil|
+|tasks_limit|see docs|nil|
 |slice|see docs|nil|
 |net_class|see docs|nil|
 |startup_block_io_weight|see docs|nil|

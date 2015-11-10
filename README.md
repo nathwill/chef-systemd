@@ -907,6 +907,7 @@ end
 |crash_reboot|see docs|nil|
 |show_status|see docs|nil|
 |crash_ch_vt|see docs|nil|
+|crash_change_vt|see docs|nil|
 |default_standard_output|see docs|nil|
 |default_standard_error|see docs|nil|
 |cpu_affinity|see docs|nil|

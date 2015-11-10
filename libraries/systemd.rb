@@ -555,6 +555,7 @@ module Systemd
                        'SocketMode' => { kind_of: [String, Integer] },
                        'DirectoryMode' => { kind_of: [String, Integer] },
                        'Accept' => { kind_of: [TrueClass, FalseClass] },
+                       'Writable' => { kind_of: [TrueClass, FalseClass] },
                        'MaxConnections' => { kind_of: Integer },
                        'KeepAlive' => { kind_of: [TrueClass, FalseClass] },
                        'KeepAliveTimeSec' => { kind_of: Integer },

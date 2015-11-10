@@ -617,6 +617,7 @@ module Systemd
       'CrashReboot' => { kind_of: [TrueClass, FalseClass] },
       'ShowStatus' => {},
       'CrashChVT' => {},
+      'CrashChangeVT' => {},
       'DefaultStandardOutput' => {},
       'DefaultStandardError' => {},
       'CPUAffinity' => { kind_of: [String, Array] },

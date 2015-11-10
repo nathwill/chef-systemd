@@ -663,9 +663,11 @@ end
 |rate_limit_interval|see docs|nil|
 |rate_limit_burst|see docs|nil|
 |system_max_use|see docs|nil|
+|system_max_files|see docs|nil|
 |system_keep_free|see docs|nil|
 |system_max_file_size|see docs|nil|
 |runtime_max_use|see docs|nil|
+|runtime_max_files|see docs|nil|
 |runtime_keep_free|see docs|nil|
 |runtime_max_file_size|see docs|nil|
 |max_file_sec|see docs|nil|

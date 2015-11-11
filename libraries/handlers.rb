@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: default
+# Library:: HandlerSystemdDaemonReload
 #
 # Copyright 2015 The Authors
 #
@@ -15,9 +15,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-Chef.event_handler do
-  on :converge_complete do
-    SystemdHandlers::DaemonReload.new.conditionally_reload(Chef.run_context)
+require 'chef/resource/execute'
+
+module SystemdHandlers
+  class DaemonReload
+    def conditionally_reload(run_context)
+      updated_unapplied = run_context.resource_collection.select do |r|
+        r.is_a?(Chef::Resource::SystemdUnit) && r.auto_reload == false
+      end
+
+      Chef::Resource::Execute.new('systemctl daemon-reload', run_context)
+        .run_action(:run) unless updated_unapplied.empty?
+    end
   end
 end

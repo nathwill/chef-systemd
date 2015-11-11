@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: daemon_reload_handler
+# Recipe:: daemon_reload_notify
 #
 # Copyright 2015 The Authors
 #
@@ -16,11 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Registers a converge_complete handler to determine if a
-# daemon-reload is required for `auto_reload false` units.
-# Requires Chef >= 12.5.
-Chef.event_handler do
-  on :converge_complete do
-    SystemdHandlers::DaemonReload.new.conditionally_reload(Chef.run_context)
-  end
+# You can send your notifications here for `auto_reload false`
+# units, but if you're using Chef >= 12.5, you should use the 
+# event handler in daemon_reload_handler recipe instead.
+execute 'systemctl daemon-reload' do
+  action :nothing
 end

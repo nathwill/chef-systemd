@@ -30,17 +30,13 @@ describe 'Systemd Resources' do
     it { should_not be_file }
   end
 
-  describe command('systemctl show sshd.service -p CPUShares') do
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match /CPUShares=1200/ }
-  end
-
   describe file('/etc/systemd/system/sshd.service.d/90-CPUAccounting.conf') do
     it { should_not be_file }
   end
 
-  describe command('systemctl show sshd.service -p CPUAccounting') do
+  describe command('systemctl show sshd.service -p CPUShares -p CPUAccounting') do
     its(:exit_status) { should eq 0 }
+    its(:stdout) { should match /CPUShares=1200/ }
     its(:stdout) { should match /CPUAccounting=yes/ }
   end
 

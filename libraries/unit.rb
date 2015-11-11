@@ -173,10 +173,10 @@ class Chef::Provider
     action :set_properties do
       r = new_resource
 
-      r.to_hash.reject { |_, v| v.empty? }.each_pair do |_, props|
-        args = props.unshift("#{r.drop_in ? r.override : r.name}.#{r.conf_type}") # rubocop: disable LineLength
-        execute "systemctl --runtime set-property #{args.join(' ')}"
-      end
+      props = r.to_hash.values.flatten
+      args = props.unshift("#{r.drop_in ? r.override : r.name}.#{r.conf_type}")
+
+      execute "systemctl --runtime set-property #{args.join(' ')}"
     end
   end
 end

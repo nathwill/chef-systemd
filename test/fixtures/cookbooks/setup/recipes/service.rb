@@ -23,6 +23,9 @@ systemd_service 'test-unit' do
   end
 end
 
+# Test disabling auto_reload 
+include_recipe 'systemd::daemon_reload_handler'
+
 systemd_service 'sshd-cpu-tuning' do
   drop_in true
   override 'sshd'

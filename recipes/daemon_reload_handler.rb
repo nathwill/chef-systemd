@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: default
+# Recipe:: daemon_reload_handler
 #
 # Copyright 2015 The Authors
 #
@@ -15,3 +15,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+Chef.event_handler do
+  on :converge_complete do
+    SystemdHandlers::DaemonReload.new.conditionally_reload(Chef.run_context)
+  end
+end

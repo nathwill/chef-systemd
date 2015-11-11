@@ -23,6 +23,15 @@ systemd_service 'test-unit' do
   end
 end
 
+systemd_service 'sshd-cpu-tuning' do
+  drop_in true
+  override 'sshd'
+  auto_reload false
+  cpu_shares 1_200
+  cpu_accounting true
+  action [:create, :set_properties]
+end
+
 # Test drop-in unit
 systemd_service 'my-override' do
   description 'Test Override'

@@ -34,8 +34,9 @@ class Chef::Resource
     provides :systemd_unit
 
     actions :create, :delete, :enable, :disable,
-            :start, :stop, :restart, :reload
+            :start, :stop, :restart, :reload, :set_properties
 
+    attribute :auto_reload, kind_of: [TrueClass, FalseClass], default: true
     attribute :aliases, kind_of: Array, default: []
     attribute :overrides, kind_of: Array, default: []
     attribute :conf_type, kind_of: Symbol, required: true,
@@ -46,7 +47,7 @@ class Chef::Resource
     # it doesn't make sense to perform lifecycle actions
     # against drop-in units, so limit their allowed actions
     def action(arg = nil)
-      @allowed_actions = %i( create delete ) if drop_in
+      @allowed_actions = %i( create delete set_properties ) if drop_in
       super
     end
 
@@ -166,6 +167,15 @@ class Chef::Provider
         end
 
         new_resource.updated_by_last_action(e.updated_by_last_action?)
+      end
+    end
+
+    action :set_properties do
+      r = new_resource
+
+      r.to_hash.reject { |_, v| v.empty? }.each_pair do |_, props|
+        args = props.unshift("#{r.drop_in ? r.override : r.name}.#{r.conf_type}") # rubocop: disable LineLength
+        execute "systemctl --runtime set-property #{args.join(' ')}"
       end
     end
   end

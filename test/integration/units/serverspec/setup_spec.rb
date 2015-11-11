@@ -19,6 +19,31 @@ describe 'Systemd Resources' do
     its(:content) { should match /ExecStart=\/usr\/bin\/true/ }
   end
 
+  # set_properties action test
+  describe file('/etc/systemd/system/sshd.service.d/sshd-cpu-tuning.conf') do
+    it { should be_file }
+    its(:content) { should match /CPUShares=1200/ }
+    its(:content) { should match /CPUAccounting=yes/ }
+  end
+
+  describe file('/etc/systemd/system/sshd.service.d/90-CPUShares.conf') do
+    it { should_not be_file }
+  end
+
+  describe command('systemctl show sshd.service -p CPUShares') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match /CPUShares=1200/ }
+  end
+
+  describe file('/etc/systemd/system/sshd.service.d/90-CPUAccounting.conf') do
+    it { should_not be_file }
+  end
+
+  describe command('systemctl show sshd.service -p CPUAccounting') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match /CPUAccounting=yes/ }
+  end
+
   # Test drop-in mode
   describe file('/etc/systemd/system/sshd.service.d/my-override.conf') do
     its(:content) { should match /\[Unit\]/ }

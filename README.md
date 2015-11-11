@@ -125,6 +125,7 @@ All unit resources support the following actions:
 |:stop|stops the unit|
 |:restart|restarts the unit|
 |:reload|reloads the unit|
+|:set_properties|runs `systemctl --runtime set-property` for unit configuration|
 
 **Important**: The notable exception is when the unit is a drop-in unit,
 in which case it supports only the `:create`, and `:delete` actions.
@@ -1438,6 +1439,7 @@ Common configuration options of all the unit types.
 |assert_path_is_symbolic_link|see docs|nil|
 |assert_security|see docs|nil|
 |assert_virtualization|see docs|nil|
+|auto_reload|whether to execute daemon-reload on unit change|true|
 |before|see docs|nil|
 |binds_to|see docs|nil|
 |condition_ac_power|see docs|nil|
@@ -1468,6 +1470,7 @@ Common configuration options of all the unit types.
 |job_timeout_reboot_argument|see docs|nil|
 |job_timeout_sec|see docs|nil|
 |joins_namespace_of|see docs|nil|
+|mode|systemd mode, either `:user` or `:system`|`:system`|
 |on_failure|see docs|nil|
 |on_failure_job_mode|see docs|nil|
 |part_of|see docs|nil|
@@ -1508,7 +1511,7 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |drop_in|boolean which sets if resource is a drop-in unit|true for daemons & utils; false for units|
-|override|which unit to override, prefix only. suffix determined by resource unit type (e.g. "ssh" on a systemd_service -> "ssh.service.d")|nil|
+|override|which unit to target, prefix only. suffix determined by parent resource unit type (e.g. "ssh" on a systemd_service -> "ssh.service" as target unit)|nil|
 |overrides|drop-in unit options that require a reset (e.g. "ExecStart" -> "ExecStart=" at top of section)|[]|
 
 --

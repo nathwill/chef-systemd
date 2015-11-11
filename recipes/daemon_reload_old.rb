@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: daemon_reload_notify
+# Recipe:: daemon_reload_old
 #
 # Copyright 2015 The Authors
 #
@@ -16,9 +16,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# You can send your notifications here for `auto_reload false`
-# units, but if you're using Chef >= 12.5, you should use the 
-# event handler in daemon_reload_handler recipe instead.
-execute 'systemctl daemon-reload' do
+ruby_block 'conditional-systemd-daemon-reload' do
+  block do
+    SystemdHandlers::DaemonReload.new.conditionally_reload(run_context)
+  end
   action :nothing
+end
+
+ruby_block 'notify-delayed-conditional-daemon-reload' do
+  block do
+    Chef::Log.info('Triggering delayed daemon-reload evaluation.')
+  end
+  notifies :run, 'ruby_block[conditional-systemd-daemon-reload]', :delayed
+  action :run
 end

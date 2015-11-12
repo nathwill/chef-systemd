@@ -23,6 +23,20 @@ systemd_service 'test-unit' do
   end
 end
 
+# Test disabling auto_reload 
+include_recipe 'systemd::daemon_reload'
+
+package 'postfix' # same package & service name everywhere
+
+systemd_service 'postfix-cpu-tuning' do
+  drop_in true
+  override 'postfix'
+  auto_reload false
+  cpu_shares 1_200
+  cpu_accounting true
+  action [:create, :set_properties]
+end
+
 # Test drop-in unit
 systemd_service 'my-override' do
   description 'Test Override'

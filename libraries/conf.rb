@@ -98,7 +98,7 @@ class Chef::Provider
         execute "#{r.name}.#{r.conf_type}-systemd-reload" do
           command 'systemctl daemon-reload'
           action :nothing
-          only_if { r.is_a?(Chef::Resource::SystemdUnit) }
+          only_if { r.is_a?(Chef::Resource::SystemdUnit) && r.auto_reload }
           subscribes :run, "file[#{conf_path}]", :immediately
         end
 

@@ -10,10 +10,12 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
 ===================================
 
  - [Recommended Reading](#recommended-reading)
+ - [Usage Tips](#usage-tips)
  - [Attributes](#attributes)
  - [Recipes](#recipes)
    - [Daemons](#daemon-recipes)
    - [Utilities](#utility-recipes)
+   - [Helpers](#helper-recipes)
  - [Resources](#resources)
    - [Units](#unit-resources)
      - [systemd_automount](#systemd-automount)
@@ -63,6 +65,37 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
  - libraries in `libraries/*.rb`
  - test cookbook in `test/fixtures/cookbooks/setup`
 
+<a name="usage-tips">Usage Tips</a>
+===================================
+
+Drop Ins
+--------
+
+Systemd provides support for "drop-in" units that work really well for config-
+mgmt systems; rather than taking over an entire unit definition, you can apply
+custom configuration (e.g. resource limits) that will be merged into the vendor-
+provided unit. It's recommended to use these when modifying units installed via
+the package manager. See [drop-in](#common-drop-in) docs for more info.
+
+Daemon Reloads
+--------------
+
+By default, changes to unit resources will be applied to the system immediately
+via calls to `systemctl daemon-reload`. However, on systems with large numbers
+of units, daemon-reload can be [problematic][sd-reload]. For users encountering
+problems (hangs, slowness) with `systemctl daemon-reload` calls, this cookbook
+allows users to disable daemon-reloads by setting the `auto_reload` attribute
+to `false`.
+
+In some cases, it may be possible to avoid daemon-reload entirely by using the
+`set_properties` action. However, only a subset of unit properties are supported
+by `systemctl set-property`, so, unfortunately, in some cases a daemon-reload
+may be unavoidable. For these cases, it's possible run a daemon-reload *once*
+at the end of a converge.
+
+This cookbook provides the `daemon_reload` recipe to help with this. It removes
+the need to have every resource send a notification, and triggers a reload at
+the end of a converge if any `auto_reload false` units have been updated.
 
 <a name="attributes">Attributes</a>
 ===================================
@@ -106,6 +139,9 @@ in general, the attributes correspond to the related resource attributes.
  - **user**: configure systemd manager user-mode defaults
  - **vconsole**: configure, manage virtual console font and keymap with systemd-vconsole
 
+<a name="helper-recipes">Helper Recipes</a>
+-------------------------------------------
+ - **daemon_reload**: run delayed daemon-reload (for use with auto_reload false)
 
 <a name="resources"></a>Resources
 =================================
@@ -125,6 +161,7 @@ All unit resources support the following actions:
 |:stop|stops the unit|
 |:restart|restarts the unit|
 |:reload|reloads the unit|
+|:set_properties|runs `systemctl --runtime set-property` for unit configuration|
 
 **Important**: The notable exception is when the unit is a drop-in unit,
 in which case it supports only the `:create`, and `:delete` actions.
@@ -1438,6 +1475,7 @@ Common configuration options of all the unit types.
 |assert_path_is_symbolic_link|see docs|nil|
 |assert_security|see docs|nil|
 |assert_virtualization|see docs|nil|
+|auto_reload|whether to execute daemon-reload on unit change|true|
 |before|see docs|nil|
 |binds_to|see docs|nil|
 |condition_ac_power|see docs|nil|
@@ -1468,6 +1506,7 @@ Common configuration options of all the unit types.
 |job_timeout_reboot_argument|see docs|nil|
 |job_timeout_sec|see docs|nil|
 |joins_namespace_of|see docs|nil|
+|mode|systemd mode, either `:user` or `:system`|`:system`|
 |on_failure|see docs|nil|
 |on_failure_job_mode|see docs|nil|
 |part_of|see docs|nil|
@@ -1508,7 +1547,7 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 |Attribute|Description|Default|
 |---------|-----------|-------|
 |drop_in|boolean which sets if resource is a drop-in unit|true for daemons & utils; false for units|
-|override|which unit to override, prefix only. suffix determined by resource unit type (e.g. "ssh" on a systemd_service -> "ssh.service.d")|nil|
+|override|which unit to target, prefix only. suffix determined by parent resource unit type (e.g. "ssh" on a systemd_service -> "ssh.service" as target unit)|nil|
 |overrides|drop-in unit options that require a reset (e.g. "ExecStart" -> "ExecStart=" at top of section)|[]|
 
 --
@@ -1533,6 +1572,7 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 [resource_control]: http://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
 [rhel]: https://access.redhat.com/articles/754933
 [rules]: http://www.freedesktop.org/software/systemd/man/udev.html#Rules%20Files
+[sd-reload]: https://www.youtube.com/watch?feature=player_detailpage&v=wVk-NWtiIZY#t=385
 [service]: http://www.freedesktop.org/software/systemd/man/systemd.service.html
 [sleep]: http://www.freedesktop.org/software/systemd/man/systemd-sleep.conf.html
 [slice]: http://www.freedesktop.org/software/systemd/man/systemd.slice.html

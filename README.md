@@ -10,10 +10,12 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
 ===================================
 
  - [Recommended Reading](#recommended-reading)
+ - [Usage Tips](#usage-tips)
  - [Attributes](#attributes)
  - [Recipes](#recipes)
    - [Daemons](#daemon-recipes)
    - [Utilities](#utility-recipes)
+   - [Helpers](#helper-recipes)
  - [Resources](#resources)
    - [Units](#unit-resources)
      - [systemd_automount](#systemd-automount)
@@ -63,6 +65,38 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
  - libraries in `libraries/*.rb`
  - test cookbook in `test/fixtures/cookbooks/setup`
 
+<a name="usage-tips">Usage Tips</a>
+===================================
+
+Drop Ins
+--------
+
+Systemd provides support for "drop-in" units that work really well for config-
+mgmt systems; rather than taking over an entire unit definition, you can apply
+custom configuration (e.g. resource limits) that will be merged into the vendor-
+provided unit. It's recommended to use these when modifying units installed via
+the package manager. See [drop-in](#common-drop-in) docs for more info.
+
+Daemon Reloads
+--------------
+
+By default, changes to unit resources will be applied to the system immediately
+via calls to `systemctl daemon-reload`. However, on systems with large numbers
+of units, daemon-reload can be [problematic][sd-reload]. For users encountering
+problems (hangs, slowness) with `systemctl daemon-reload` calls, this cookbook
+allows users to disable daemon-reloads by setting the `auto_reload` attribute
+to `false`.
+
+In some cases, it may be possible to avoid daemon-reload entirely by using the
+`set_properties` action. However, only a subset of unit properties are supported
+by `systemctl set-property`, so, unfortunately, in some cases a daemon-reload
+may be unavoidable. For these cases, it's possible run a daemon-reload *once*
+at the end of a converge.
+
+This cookbook provides two recipes that can help with this, `daemon_reload_old`,
+and `daemon_reload_handler`. The handler method is preferred, but requires users
+to run Chef >= 12.5; users of earlier versions of Chef can use the `ruby_block`s
+in the `daemon_reload_old` recipe to accomplish the same thing.
 
 <a name="attributes">Attributes</a>
 ===================================
@@ -106,6 +140,10 @@ in general, the attributes correspond to the related resource attributes.
  - **user**: configure systemd manager user-mode defaults
  - **vconsole**: configure, manage virtual console font and keymap with systemd-vconsole
 
+<a name="helper-recipes">Helper Recipes</a>
+-------------------------------------------
+ - **daemon_reload_old**: run delayed daemon-reload (for use with auto_reload false)
+ - **daemon_reload_handler**: run delayed daemon-reload (for use with auto_reload false)
 
 <a name="resources"></a>Resources
 =================================
@@ -1536,6 +1574,7 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 [resource_control]: http://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
 [rhel]: https://access.redhat.com/articles/754933
 [rules]: http://www.freedesktop.org/software/systemd/man/udev.html#Rules%20Files
+[sd-reload]: https://www.youtube.com/watch?feature=player_detailpage&v=wVk-NWtiIZY#t=385
 [service]: http://www.freedesktop.org/software/systemd/man/systemd.service.html
 [sleep]: http://www.freedesktop.org/software/systemd/man/systemd-sleep.conf.html
 [slice]: http://www.freedesktop.org/software/systemd/man/systemd.slice.html

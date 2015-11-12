@@ -164,7 +164,7 @@ All unit resources support the following actions:
 |:set_properties|runs `systemctl --runtime set-property` for unit configuration|
 
 **Important**: The notable exception is when the unit is a drop-in unit,
-in which case it supports only the `:create`, and `:delete` actions.
+in which case it supports only the `:create`, `:delete`, and `:set_properties` actions.
 
 <a name="systemd-automount"></a>**systemd\_automount**
 

@@ -20,21 +20,21 @@ describe 'Systemd Resources' do
   end
 
   # set_properties action test
-  describe file('/etc/systemd/system/sshd.service.d/sshd-cpu-tuning.conf') do
+  describe file('/etc/systemd/system/postfix.service.d/postfix-cpu-tuning.conf') do
     it { should be_file }
     its(:content) { should match /CPUShares=1200/ }
     its(:content) { should match /CPUAccounting=yes/ }
   end
 
-  describe file('/etc/systemd/system/sshd.service.d/90-CPUShares.conf') do
+  describe file('/etc/systemd/system/postfix.service.d/90-CPUShares.conf') do
     it { should_not be_file }
   end
 
-  describe file('/etc/systemd/system/sshd.service.d/90-CPUAccounting.conf') do
+  describe file('/etc/systemd/system/postfix.service.d/90-CPUAccounting.conf') do
     it { should_not be_file }
   end
 
-  describe command('systemctl show sshd.service -p CPUShares -p CPUAccounting') do
+  describe command('systemctl show postfix.service -p CPUShares -p CPUAccounting') do
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match /CPUShares=1200/ }
     its(:stdout) { should match /CPUAccounting=yes/ }

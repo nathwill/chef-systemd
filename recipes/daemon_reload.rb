@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: daemon_reload_handler
+# Recipe:: daemon_reload
 #
 # Copyright 2015 The Authors
 #
@@ -19,8 +19,26 @@
 # Registers a converge_complete handler to determine if a
 # daemon-reload is required for `auto_reload false` units.
 # Requires Chef >= 12.5.
-Chef.event_handler do
-  on :converge_complete do
-    SystemdHandlers::DaemonReload.new.conditionally_reload(Chef.run_context)
+
+if Chef::VERSION.to_f >= 12.5
+  Chef.event_handler do
+    on :converge_complete do
+      SystemdHandlers::DaemonReload.new.conditionally_reload(Chef.run_context)
+    end
+  end
+else
+  ruby_block 'conditional-systemd-daemon-reload' do
+    block do
+      SystemdHandlers::DaemonReload.new.conditionally_reload(run_context)
+    end
+    action :nothing
+  end
+
+  ruby_block 'notify-delayed-conditional-daemon-reload' do
+    block do
+      Chef::Log.info('Triggering delayed daemon-reload evaluation.')
+    end
+    notifies :run, 'ruby_block[conditional-systemd-daemon-reload]', :delayed
+    action :run
   end
 end

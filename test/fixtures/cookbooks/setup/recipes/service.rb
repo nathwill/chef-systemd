@@ -24,11 +24,13 @@ systemd_service 'test-unit' do
 end
 
 # Test disabling auto_reload 
-include_recipe 'systemd::daemon_reload_handler'
+include_recipe 'systemd::daemon_reload'
 
-systemd_service 'sshd-cpu-tuning' do
+package 'postfix' # same package & service name everywhere
+
+systemd_service 'postfix-cpu-tuning' do
   drop_in true
-  override 'sshd'
+  override 'postfix'
   auto_reload false
   cpu_shares 1_200
   cpu_accounting true

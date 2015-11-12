@@ -93,10 +93,9 @@ by `systemctl set-property`, so, unfortunately, in some cases a daemon-reload
 may be unavoidable. For these cases, it's possible run a daemon-reload *once*
 at the end of a converge.
 
-This cookbook provides two recipes that can help with this, `daemon_reload_old`,
-and `daemon_reload_handler`. The handler method is preferred, but requires users
-to run Chef >= 12.5; users of earlier versions of Chef can use the `ruby_block`s
-in the `daemon_reload_old` recipe to accomplish the same thing.
+This cookbook provides the `daemon_reload` recipe to help with this. It removes
+the need to have every resource send a notification, and triggers a reload at
+the end of a converge if any `auto_reload false` units have been updated.
 
 <a name="attributes">Attributes</a>
 ===================================
@@ -142,8 +141,7 @@ in general, the attributes correspond to the related resource attributes.
 
 <a name="helper-recipes">Helper Recipes</a>
 -------------------------------------------
- - **daemon_reload_old**: run delayed daemon-reload (for use with auto_reload false)
- - **daemon_reload_handler**: run delayed daemon-reload (for use with auto_reload false)
+ - **daemon_reload**: run delayed daemon-reload (for use with auto_reload false)
 
 <a name="resources"></a>Resources
 =================================

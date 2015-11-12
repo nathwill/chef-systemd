@@ -22,12 +22,12 @@ require 'chef/resource/execute'
 module SystemdHandlers
   class DaemonReload
     def conditionally_reload(run_context)
-      updated_unapplied = run_context.resource_collection.select do |r|
+      reload_disabled = run_context.resource_collection.select do |r|
         r.is_a?(Chef::Resource::SystemdUnit) && r.auto_reload == false
       end
 
       Chef::Resource::Execute.new('systemctl daemon-reload', run_context)
-        .run_action(:run) unless updated_unapplied.empty?
+        .run_action(:run) if reload_disabled.any?(&:updated_by_last_action?)
     end
   end
 end

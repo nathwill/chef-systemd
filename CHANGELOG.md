@@ -1,3 +1,16 @@
+# 1.1.0 / 2015-11-11
+
+* fix testing with dnf-based platforms (fedora)
+* add NetClass directive
+* add TasksAccounting directives
+* add CrashChangeVT directive
+* add Writable directive for sockets
+* add support for journald vacuum directives ({System,Runtime}MaxFiles)
+* add auto_reload unit attribute
+* add set_properties unit action
+* add daemon_reload recipe
+* documentation improvements (new "usage tips" section)
+
 # 1.0.0 / 2015-10-22
 
 * improved docs

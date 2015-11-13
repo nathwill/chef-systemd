@@ -29,7 +29,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd-journald.service.html
   class SystemdJournald < Chef::Resource::SystemdDaemon
     resource_name :systemd_journald
-    provides :systemd_journald
 
     def conf_type(_ = nil)
       :journald
@@ -46,7 +45,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd-logind.service.html
   class SystemdLogind < Chef::Resource::SystemdDaemon
     resource_name :systemd_logind
-    provides :systemd_logind
 
     def conf_type(_ = nil)
       :logind
@@ -63,7 +61,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html
   class SystemdResolved < Chef::Resource::SystemdDaemon
     resource_name :systemd_resolved
-    provides :systemd_resolved
 
     def conf_type(_ = nil)
       :resolved
@@ -80,7 +77,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd-timesyncd.service.html
   class SystemdTimesyncd < Chef::Resource::SystemdDaemon
     resource_name :systemd_timesyncd
-    provides :systemd_timesyncd
 
     def conf_type(_ = nil)
       :timesyncd

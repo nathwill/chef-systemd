@@ -26,7 +26,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/sysusers.d.html
   class SystemdSysuser < Chef::Resource::LWRPBase
     resource_name :systemd_sysuser
-    provides :systemd_sysuser
 
     actions :create, :delete
     default_action :create

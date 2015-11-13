@@ -25,8 +25,7 @@ require 'chef/provider/lwrp_base'
 # http://www.freedesktop.org/software/systemd/man/binfmt.d.html
 class Chef::Resource
   class SystemdBinfmt < Chef::Resource::LWRPBase
-    self.resource_name = :systemd_binfmt
-    provides :systemd_binfmt
+    resource_name :systemd_binfmt
 
     actions :create, :delete
     default_action :create

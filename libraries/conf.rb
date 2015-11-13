@@ -26,7 +26,6 @@ require_relative 'helpers'
 class Chef::Resource
   class SystemdConf < Chef::Resource::LWRPBase
     resource_name :systemd_conf
-    provides :systemd_conf
 
     actions :create, :delete
     default_action :create

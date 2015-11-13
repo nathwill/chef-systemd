@@ -34,7 +34,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd.automount.html
   class SystemdAutomount < Chef::Resource::SystemdUnit
     resource_name :systemd_automount
-    provides :systemd_automount
 
     def conf_type(_ = nil)
       :automount
@@ -51,7 +50,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd.mount.html
   class SystemdMount < Chef::Resource::SystemdUnit
     resource_name :systemd_mount
-    provides :systemd_mount
 
     def conf_type(_ = nil)
       :mount
@@ -68,7 +66,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd.path.html
   class SystemdPath < Chef::Resource::SystemdUnit
     resource_name :systemd_path
-    provides :systemd_path
 
     def conf_type(_ = nil)
       :path
@@ -85,7 +82,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd.service.html
   class SystemdService < Chef::Resource::SystemdUnit
     resource_name :systemd_service
-    provides :systemd_service
 
     def conf_type(_ = nil)
       :service
@@ -102,7 +98,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd.slice.html
   class SystemdSlice < Chef::Resource::SystemdUnit
     resource_name :systemd_slice
-    provides :systemd_slice
 
     def conf_type(_ = nil)
       :slice
@@ -115,7 +110,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd.socket.html
   class SystemdSocket < Chef::Resource::SystemdUnit
     resource_name :systemd_socket
-    provides :systemd_socket
 
     def conf_type(_ = nil)
       :socket
@@ -132,7 +126,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd.swap.html
   class SystemdSwap < Chef::Resource::SystemdUnit
     resource_name :systemd_swap
-    provides :systemd_swap
 
     def conf_type(_ = nil)
       :swap
@@ -160,7 +153,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd.timer.html
   class SystemdTimer < Chef::Resource::SystemdUnit
     resource_name :systemd_timer
-    provides :systemd_timer
 
     def conf_type(_ = nil)
       :timer

@@ -34,7 +34,6 @@ class Chef::Resource
     )
 
     resource_name :systemd_udev_rules
-    provides :systemd_udev_rules
 
     actions :create, :delete, :disable
     default_action :create

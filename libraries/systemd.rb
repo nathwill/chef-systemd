@@ -91,7 +91,7 @@ module Systemd
         equal_to: 1.upto(99).to_a
       },
       'CPUSchedulingResetOnFork' => { kind_of: [TrueClass, FalseClass] },
-      'CPUAffinity' => { kind_of: Integer },
+      'CPUAffinity' => { kind_of: [String, Integer, Array] },
       'UMask' => {},
       'Environment' => { kind_of: Hash },
       'EnvironmentFile' => {},
@@ -611,19 +611,43 @@ module Systemd
 
   module System
     OPTIONS ||= {
-      'LogLevel' => {},
-      'LogTarget' => {},
-      'LogColor' => {},
-      'LogLocation' => {},
-      'DumpCore' => {},
-      'CrashShell' => {},
+      'LogLevel' => {
+        kind_of: String,
+        equal_to: %w( emerg alert crit err warning notice info debug )
+      },
+      'LogTarget' => {
+        kind_of: String,
+        equal_to: %w( console journal kmsg journal-or-kmsg null )
+      },
+      'LogColor' => { kind_of: [TrueClass, FalseClass] },
+      'LogLocation' => { kind_of: [TrueClass, FalseClass] },
+      'DumpCore' => { kind_of: [TrueClass, FalseClass] },
+      'CrashShell' => { kind_of: [TrueClass, FalseClass] },
       'CrashReboot' => { kind_of: [TrueClass, FalseClass] },
-      'ShowStatus' => {},
-      'CrashChVT' => {},
-      'CrashChangeVT' => {},
-      'DefaultStandardOutput' => {},
-      'DefaultStandardError' => {},
-      'CPUAffinity' => { kind_of: [String, Array] },
+      'ShowStatus' => { kind_of: [TrueClass, FalseClass] },
+      'CrashChVT' => {
+        kind_of: [Integer, TrueClass, FalseClass],
+        equal_to: 1.upto(63).to_a.push(-1).push(true).push(false)
+      },
+      'CrashChangeVT' => {
+        kind_of: [Integer, TrueClass, FalseClass],
+        equal_to: 1.upto(63).to_a.push(-1).push(true).push(false)
+      },
+      'DefaultStandardOutput' => {
+        kind_of: String,
+        equal_to: %w(
+          inherit null tty journal journal+console
+          syslog syslog+console kmsg kmsg+console
+        )
+      },
+      'DefaultStandardError' => {
+        kind_of: String,
+        equal_to: %w(
+          inherit null tty journal journal+console
+          syslog syslog+console kmsg kmsg+console
+        )
+      },
+      'CPUAffinity' => { kind_of: [String, Integer, Array] },
       'JoinControllers' => { kind_of: [String, Array] },
       'RuntimeWatchdogSec' => { kind_of: [String, Integer] },
       'ShutdownWatchdogSec' => { kind_of: [String, Integer] },

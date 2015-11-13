@@ -33,8 +33,8 @@ class Chef::Resource
     resource_name :systemd_unit
     provides :systemd_unit
 
-    actions :create, :delete, :enable, :disable, :reload,
-            :start, :stop, :restart, :set_properties
+    actions :create, :delete, :enable, :disable, :reload, :restart,
+            :start, :stop, :mask, :unmask, :set_properties
 
     attribute :auto_reload, kind_of: [TrueClass, FalseClass], default: true
     attribute :aliases, kind_of: Array, default: []
@@ -130,13 +130,13 @@ class Chef::Provider
       provides "systemd_#{unit_type}".to_sym
     end
 
-    %i( enable disable start stop restart reload ).each do |a|
+    %i( enable disable start stop restart reload mask unmask ).each do |a|
       action a do
         r = new_resource
 
         unless defined?(ChefSpec)
           state = case a
-                  when :enable, :disable
+                  when :enable, :disable, :mask, :unmask
                     Mixlib::ShellOut.new(
                       "systemctl is-enabled #{r.name}.#{r.conf_type}"
                     ).tap(&:run_command).stdout.chomp
@@ -159,6 +159,10 @@ class Chef::Provider
                     %w( inactive unknown ).include? state
                   when :restart, :reload
                     false
+                  when :mask
+                    %w( masked masked-runtime ).include? state
+                  when :unmask
+                    !%w( masked masked-runtime ).include? state
                   end
         end
 

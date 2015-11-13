@@ -40,6 +40,11 @@ describe 'Systemd Resources' do
     its(:stdout) { should match /CPUAccounting=yes/ }
   end
 
+  # Test masking
+  describe command("systemctl is-enabled vsftpd.service") do
+    its(:stdout) { should match /masked/ }
+  end
+
   # Test drop-in mode
   describe file('/etc/systemd/system/sshd.service.d/my-override.conf') do
     its(:content) { should match /\[Unit\]/ }

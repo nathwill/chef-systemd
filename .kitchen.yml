@@ -12,6 +12,10 @@ platforms:
   - name: centos-7.1
 
 suites:
+  - name: reload
+    includes: centos-7.1
+    run_list:
+      - recipe[setup::daemon_reload]
   - name: units
     run_list:
       - recipe[setup::dnf]
@@ -34,10 +38,8 @@ suites:
       - recipe[systemd::machined]
       - recipe[systemd::timedated]
   - name: daemons-new
-    excludes:
-      - ubuntu-15.04
-      - debian-8.2
-      - centos-7.1
+    includes:
+      - fedora-22
     run_list:
       - recipe[setup::dnf]
       - recipe[systemd::journal_gatewayd]
@@ -69,10 +71,8 @@ suites:
           options:
             children-max: 10
   - name: utils-new
-    excludes:
-      - debian-8.2
-      - centos-7.1
-      - ubuntu-15.04
+    includes:
+      - fedora-22
     run_list:
       - recipe[systemd::vconsole]
       - recipe[systemd::binfmt]

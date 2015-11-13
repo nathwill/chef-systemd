@@ -91,7 +91,7 @@ module Systemd
         equal_to: 1.upto(99).to_a
       },
       'CPUSchedulingResetOnFork' => { kind_of: [TrueClass, FalseClass] },
-      'CPUAffinity' => { kind_of: Integer },
+      'CPUAffinity' => { kind_of: [String, Integer, Array] },
       'UMask' => {},
       'Environment' => { kind_of: Hash },
       'EnvironmentFile' => {},
@@ -647,7 +647,7 @@ module Systemd
           syslog syslog+console kmsg kmsg+console
         )
       },
-      'CPUAffinity' => { kind_of: [String, Array] },
+      'CPUAffinity' => { kind_of: [String, Integer, Array] },
       'JoinControllers' => { kind_of: [String, Array] },
       'RuntimeWatchdogSec' => { kind_of: [String, Integer] },
       'ShutdownWatchdogSec' => { kind_of: [String, Integer] },

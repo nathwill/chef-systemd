@@ -127,6 +127,11 @@ describe 'Systemd Resources' do
     its(:content) { should match /Alias=tested.target/ }
   end
 
+  describe command('systemctl get-default') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match /test.target/ }
+  end
+
   # Test the path resource
   describe file('/etc/systemd/system/dummy.path') do
     its(:content) { should match /\[Unit\]/ }

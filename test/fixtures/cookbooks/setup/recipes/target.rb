@@ -9,4 +9,5 @@ systemd_target 'test' do
   install do
     aliases %w( tested )
   end
+  action [:create, :set_default]
 end

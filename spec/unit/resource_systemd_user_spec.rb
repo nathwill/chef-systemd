@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Chef::Resource::SystemdUser do
   let(:user) do
     u = Chef::Resource::SystemdUser.new('user')
-    u.dump_core 'yes'
-    u.crash_shell 'no' # crash override
+    u.dump_core true
+    u.crash_shell false # crash override
     u
   end
 

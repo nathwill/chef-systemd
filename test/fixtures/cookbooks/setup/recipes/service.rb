@@ -23,10 +23,12 @@ systemd_service 'test-unit' do
   end
 end
 
-# Test disabling auto_reload 
-include_recipe 'systemd::daemon_reload'
+# Test disabling auto_reload, and set_properties
+package 'postfix' # uniformly named package/service
 
-package 'postfix' # same package & service name everywhere
+service 'postfix' do
+  action :enable
+end
 
 systemd_service 'postfix-cpu-tuning' do
   drop_in true
@@ -35,6 +37,13 @@ systemd_service 'postfix-cpu-tuning' do
   cpu_shares 1_200
   cpu_accounting true
   action [:create, :set_properties]
+end
+
+# Test masking
+package 'vsftpd' # uniformly named package/service
+
+systemd_service 'vsftpd' do
+  action [:disable, :stop, :mask]
 end
 
 # Test drop-in unit

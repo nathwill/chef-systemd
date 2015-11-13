@@ -27,7 +27,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/tmpfiles.d.html
   class SystemdTmpfile < Chef::Resource::LWRPBase
     resource_name :systemd_tmpfile
-    provides :systemd_tmpfile
 
     actions :create, :delete
     default_action :create

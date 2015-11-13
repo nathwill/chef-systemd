@@ -31,7 +31,6 @@ class Chef::Resource
     include Chef::Mixin::ParamsValidate
 
     resource_name :systemd_unit
-    provides :systemd_unit
 
     actions :create, :delete, :enable, :disable, :reload, :restart,
             :start, :stop, :mask, :unmask, :set_properties

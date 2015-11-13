@@ -28,7 +28,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd.link.html
   class SystemdNetworkdLink < Chef::Resource::LWRPBase
     resource_name :systemd_networkd_link
-    provides :systemd_networkd_link
 
     actions :create, :delete
     default_action :create

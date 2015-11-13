@@ -26,6 +26,10 @@ end
 # Test disabling auto_reload, and set_properties
 package 'postfix' # uniformly named package/service
 
+service 'postfix' do
+  action :enable
+end
+
 systemd_service 'postfix-cpu-tuning' do
   drop_in true
   override 'postfix'

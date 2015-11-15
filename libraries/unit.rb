@@ -46,7 +46,12 @@ class Chef::Resource
     # it doesn't make sense to perform lifecycle actions
     # against drop-in units, so limit their allowed actions
     def action(arg = nil)
-      @allowed_actions = %i( create delete set_properties ) if drop_in
+      if drop_in
+        @allowed_actions = %i( create delete set_properties )
+      else
+        @allowed_actions << :set_default if conf_type == :target
+      end
+
       super
     end
 
@@ -125,7 +130,7 @@ end
 class Chef::Provider
   class SystemdUnit < Chef::Provider::SystemdConf
     provides :systemd_unit
-    Systemd::Helpers::UNITS.each do |unit_type|
+    Systemd::Helpers::UNITS.reject { |u| u == :target }.each do |unit_type|
       provides "systemd_#{unit_type}".to_sym
     end
 

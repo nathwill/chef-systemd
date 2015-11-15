@@ -142,7 +142,6 @@ class Chef::Resource
   # http://www.freedesktop.org/software/systemd/man/systemd.target.html
   class SystemdTarget < Chef::Resource::SystemdUnit
     resource_name :systemd_target
-    provides :systemd_target
 
     def conf_type(_ = nil)
       :target
@@ -162,6 +161,29 @@ class Chef::Resource
 
     def timer
       yield
+    end
+  end
+end
+
+require 'mixlib/shellout'
+
+class Chef::Provider
+  class SystemdTarget < Chef::Provider::SystemdUnit
+    provides :systemd_target
+
+    action :set_default do
+      r = new_resource
+
+      current_default = Mixlib::ShellOut.new('systemctl get-default')
+                        .tap(&:run_command).stdout.chomp
+
+      target_default = "#{r.name}.#{r.conf_type}"
+
+      e = execute "systemctl set-default #{target_default}" do
+        not_if { current_default == target_default }
+      end
+
+      new_resource.updated_by_last_action(e.updated_by_last_action?)
     end
   end
 end

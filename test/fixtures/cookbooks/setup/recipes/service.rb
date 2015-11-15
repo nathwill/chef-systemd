@@ -28,6 +28,7 @@ package 'postfix' # uniformly named package/service
 
 service 'postfix' do
   action :enable
+  ignore_failure true # ubuntu is broken
 end
 
 systemd_service 'postfix-cpu-tuning' do

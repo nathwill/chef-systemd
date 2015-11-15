@@ -53,6 +53,12 @@ if defined?(ChefSpec)
     end
   end
 
+  define_method(:set_default_systemd_target) do |resource_name|
+    ChefSpec::Matchers::ResourceMatcher.new(
+      :systemd_target, :set_default, resource_name
+    )
+  end
+
   units.each do |type|
     unit_actions.each do |action|
       define_method("#{action}_systemd_#{type}".to_sym) do |resource_name|

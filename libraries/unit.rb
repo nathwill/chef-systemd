@@ -41,13 +41,13 @@ class Chef::Resource
     attribute :conf_type, kind_of: Symbol, required: true,
                           equal_to: Systemd::Helpers::UNITS
     attribute :mode, kind_of: Symbol, default: :system,
-                     equal_to: %i( system user )
+                     equal_to: %w( system user ).map(&:to_sym)
 
     # it doesn't make sense to perform lifecycle actions
     # against drop-in units, so limit their allowed actions
     def action(arg = nil)
       if drop_in
-        @allowed_actions = %i( create delete set_properties )
+        @allowed_actions = %w( create delete set_properties ).map(&:to_sym)
       else
         @allowed_actions << :set_default if conf_type == :target
       end
@@ -129,12 +129,14 @@ end
 
 class Chef::Provider
   class SystemdUnit < Chef::Provider::SystemdConf
-    provides :systemd_unit
+    provides :systemd_unit if defined?(provides)
     Systemd::Helpers::UNITS.reject { |u| u == :target }.each do |unit_type|
-      provides "systemd_#{unit_type}".to_sym
+      provides "systemd_#{unit_type}".to_sym if defined?(provides)
     end
 
-    %i( enable disable start stop restart reload mask unmask ).each do |a|
+    %w(
+      enable disable start stop restart reload mask unmask
+    ).map(&:to_sym).each do |a|
       action a do
         r = new_resource
 

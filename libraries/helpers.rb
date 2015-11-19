@@ -24,19 +24,19 @@ require 'chef/recipe'
 module Systemd
   module Helpers
     # list of supported systemd daemons
-    DAEMONS ||= %i( journald logind resolved timesyncd )
+    DAEMONS ||= %w( journald logind resolved timesyncd ).map(&:to_sym)
 
     # list of supported systemd utilities
-    UTILS ||= %i( bootchart coredump sleep system user )
+    UTILS ||= %w( bootchart coredump sleep system user ).map(&:to_sym)
 
     # unit types without dedicated configuration options
-    STUB_UNITS ||= %i( target )
+    STUB_UNITS ||= %w( target ).map(&:to_sym)
 
     # list of supported unit types
-    UNITS ||= %i(
+    UNITS ||= %w(
       service socket mount automount
       swap target path timer slice
-    )
+    ).map(&:to_sym)
 
     # converts hash to ini-formatted string
     def ini_config(conf = {})

@@ -34,9 +34,9 @@ end
 
 class Chef::Provider
   class SystemdDaemon < Chef::Provider::SystemdConf
-    provides :systemd_daemon
+    provides :systemd_daemon if defined?(provides)
     Systemd::Helpers::DAEMONS.each do |daemon|
-      provides "systemd_#{daemon}".to_sym
+      provides "systemd_#{daemon}".to_sym if defined?(provides)
     end
   end
 end

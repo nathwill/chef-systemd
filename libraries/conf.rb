@@ -82,9 +82,9 @@ class Chef::Provider
       true
     end
 
-    provides :systemd_conf
+    provides :systemd_conf if defined?(provides)
 
-    %i( create delete ).each do |a|
+    %w( create delete ).map(&:to_sym).each do |a|
       action a do
         r = new_resource
         conf_path = Systemd::Helpers.conf_path(r)

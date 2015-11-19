@@ -51,7 +51,7 @@ class Chef::Resource
     def to_hash
       conf = {}
 
-      %i( match link ).each do |s|
+      %w( match link ).map(&:to_sym).each do |s|
         conf[s] = options_config(
           Systemd::Networkd.const_get(s.capitalize)::OPTIONS
         )
@@ -95,9 +95,9 @@ class Chef::Provider
       true
     end
 
-    provides :systemd_networkd_link
+    provides :systemd_networkd_link if defined?(provides)
 
-    %i( create delete ).each do |a|
+    %w( create delete ).map(&:to_sym).each do |a|
       action a do
         r = new_resource
 

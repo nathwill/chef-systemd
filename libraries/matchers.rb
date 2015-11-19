@@ -36,10 +36,10 @@ if defined?(ChefSpec)
     udev_rules
   )
 
-  actions = %i( create delete )
-  unit_actions = %i(
+  actions = %w( create delete ).map(&:to_sym)
+  unit_actions = %w(
     enable disable start stop restart reload mask unmask set_properties
-  )
+  ).map(&:to_sym)
 
   (units | daemons | utils | misc).each do |type|
     ChefSpec.define_matcher("systemd_#{type}".to_sym)
@@ -70,7 +70,7 @@ if defined?(ChefSpec)
     end
   end
 
-  %i( load unload ).each do |mod_action|
+  %w( load unload ).map(&:to_sym).each do |mod_action|
     define_method("#{mod_action}_systemd_modules") do |resource_name|
       ChefSpec::Matchers::ResourceMatcher.new(
         :systemd_modules, mod_action, resource_name

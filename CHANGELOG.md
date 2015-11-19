@@ -1,3 +1,7 @@
+# 1.1.1 / 2015-11-19
+
+* fix Chef 11 compatibility issues
+
 # 1.1.0 / 2015-11-11
 
 * fix testing with dnf-based platforms (fedora)

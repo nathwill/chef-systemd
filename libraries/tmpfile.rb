@@ -55,7 +55,7 @@ class Chef::Provider
       true
     end
 
-    provides :systemd_tmpfile
+    provides :systemd_tmpfile if defined?(provides)
 
     action :create do
       r = new_resource

@@ -169,7 +169,7 @@ require 'mixlib/shellout'
 
 class Chef::Provider
   class SystemdTarget < Chef::Provider::SystemdUnit
-    provides :systemd_target
+    provides :systemd_target if defined?(provides)
 
     action :set_default do
       r = new_resource

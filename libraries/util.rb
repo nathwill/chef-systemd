@@ -39,9 +39,9 @@ end
 
 class Chef::Provider
   class SystemdUtil < Chef::Provider::SystemdConf
-    provides :systemd_util
+    provides :systemd_util if defined?(provides)
     Systemd::Helpers::UTILS.each do |util|
-      provides "systemd_#{util}".to_sym
+      provides "systemd_#{util}".to_sym if defined?(provides)
     end
   end
 end

@@ -60,9 +60,9 @@ class Chef::Provider
       true
     end
 
-    provides :systemd_sysuser
+    provides :systemd_sysuser if defined?(provides)
 
-    %i( create delete ).each do |a|
+    %w( create delete ).map(&:to_sym).each do |a|
       action a do
         r = new_resource
 

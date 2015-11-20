@@ -723,6 +723,7 @@ module Systemd
       'OnUnitInactiveSec' => { kind_of: [String, Integer] },
       'OnCalendar' => {},
       'AccuracySec' => { kind_of: [String, Integer] },
+      'RandomSec' => { kind_of: [String, Integer] },
       'Unit' => {
         kind_of: String,
         callbacks: {
@@ -735,7 +736,8 @@ module Systemd
         }
       },
       'Persistent' => { kind_of: [TrueClass, FalseClass] },
-      'WakeSystem' => { kind_of: [TrueClass, FalseClass] }
+      'WakeSystem' => { kind_of: [TrueClass, FalseClass] },
+      'RemainAfterElapse' => { kind_of: [TrueClass, FalseClass] }
     }
   end
 

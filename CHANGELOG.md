@@ -1,3 +1,8 @@
+# 1.1.2 / 2015-11-20
+
+* add missing timer attributes
+* more Chef 11 compat fixes
+
 # 1.1.1 / 2015-11-19
 
 * fix Chef 11 compatibility issues

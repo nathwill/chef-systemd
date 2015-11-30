@@ -616,21 +616,7 @@ activation (typically a service of the same name).
 Example usage:
 
 ```ruby
-# Set up timer unit
-systemd_timer 'mlocate-updatedb' do
-  description 'Updates mlocate database every day'
-  install do
-    wanted_by 'timers.target'
-  end
-  timer do
-    on_calendar 'daily'
-    accuracy_sec '24h'
-    persistent true
-  end
-  action [:create, :enable, :start]
-end
-
-# And the corresponding service
+# Given this example service
 systemd_service 'mlocate-updatedb' do
   description 'Update a database for mlocate'
   service do
@@ -644,6 +630,20 @@ systemd_service 'mlocate-updatedb' do
     private_network true
     protect_system true
   end
+end
+
+# Set up a corresponding timer unit
+systemd_timer 'mlocate-updatedb' do
+  description 'Updates mlocate database every day'
+  install do
+    wanted_by 'timers.target'
+  end
+  timer do
+    on_calendar 'daily'
+    accuracy_sec '24h'
+    persistent true
+  end
+  action [:create, :enable, :start]
 end
 ```
 

@@ -26,7 +26,7 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
      - [systemd_socket](#systemd-socket)
      - [systemd_swap](#systemd-swap)
      - [systemd_target](#systemd-target)
-     - [systemd_timer](#systmed-timer)
+     - [systemd_timer](#systemd-timer)
    - [Daemons](#daemon-resources)
      - [systemd_journald](#systemd-journald)
      - [systemd_logind](#systemd-logind)

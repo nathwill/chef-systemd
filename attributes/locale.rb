@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/locale.conf.html
 default['systemd']['locale'].tap do |l|
   l['lang'] = 'en_US.UTF-8'
   l['language'] = nil

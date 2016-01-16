@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/timedatectl.html#set-local-rtc%20[BOOL]
 default['systemd']['real_time_clock'].tap do |rtc|
   rtc['mode'] = 'utc'
   rtc['adjust_system_clock'] = false

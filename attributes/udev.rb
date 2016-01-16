@@ -16,6 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/udev.conf.html
+# Ref: http://www.freedesktop.org/software/systemd/man/systemd-udevd.service.html
 default['systemd']['udev'].tap do |u|
   u['udev_log'] = nil
   u['options'].tap do |o|

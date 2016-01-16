@@ -22,6 +22,7 @@ opts = l.reject { |_, v| v.nil? }
 
 file '/etc/locale.conf' do
   content opts.map { |k, v| "#{k.upcase}=\"#{v}\"" }.join("\n")
+  not_if { opts.empty? }
   notifies :restart, 'service[systemd-localed]', :immediately
 end
 

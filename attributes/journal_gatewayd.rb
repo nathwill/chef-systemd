@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/systemd-journal-gatewayd.service.html
 default['systemd']['journal_gatewayd'].tap do |jg|
   jg['package'] = 'systemd-journal-gateway'
 

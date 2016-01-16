@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/vconsole.conf.html
 default['systemd']['vconsole'].tap do |v|
   v['keymap'] = 'us'
   v['keymap_toggle'] = nil

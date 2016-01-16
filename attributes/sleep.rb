@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/systemd-sleep.conf.html
 default['systemd']['sleep'].tap do |s|
   s['suspend_mode'] = nil
   s['hibernate_mode'] = nil

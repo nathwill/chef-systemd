@@ -25,5 +25,5 @@ systemd_logind 'logind' do
 end
 
 service 'systemd-logind' do
-  action [:enable, :start]
+  action :enable
 end

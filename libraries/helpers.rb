@@ -45,7 +45,8 @@ module Systemd
       end.join("\n")
     end
 
-    # systemd's administrator-managed load path
+    # systemd's administrator-managed load path. leave /usr/lib
+    # for the vendors to use, the way god^wlennart intended ;)
     def local_conf_root
       '/etc/systemd'
     end

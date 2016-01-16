@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/journald.conf.html
 default['systemd']['journald'].tap do |j|
   j['storage'] = 'auto'
   j['compress'] = nil

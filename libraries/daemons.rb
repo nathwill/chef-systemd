@@ -20,10 +20,12 @@
 # limitations under the License.
 #
 
+# resources for systemd daemons
+
 require_relative 'systemd'
 require_relative 'daemon'
 
-# resources for systemd daemons
+# TODO: deduplicate the boilerplate
 class Chef::Resource
   # resource for configuring systemd-journald
   # http://www.freedesktop.org/software/systemd/man/systemd-journald.service.html
@@ -50,7 +52,7 @@ class Chef::Resource
       :logind
     end
 
-    def label(_ = nil)
+    def label
       'Login'
     end
 
@@ -66,7 +68,7 @@ class Chef::Resource
       :resolved
     end
 
-    def label(_ = nil)
+    def label
       'Resolve'
     end
 
@@ -82,7 +84,7 @@ class Chef::Resource
       :timesyncd
     end
 
-    def label(_ = nil)
+    def label
       'Time'
     end
 

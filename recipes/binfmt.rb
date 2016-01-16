@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# oneshot service that runs at boot
 service 'systemd-binfmt' do
   action :enable
 end

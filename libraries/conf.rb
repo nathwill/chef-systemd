@@ -30,8 +30,14 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    # Converts resource to a hash with configuration sections
-    # as hash keys and configuration directives as values (arrays of strings)
+    # Child classes must implement. Used to
+    # to locate appropriate helper modules.
+    def conf_type
+      fail NotImplementedError
+    end
+
+    # Converts resource to a hash with configuration sections as hash
+    # keys and configuration directives as values (arrays of strings)
     def to_hash
       opts = Systemd.const_get(conf_type.capitalize)::OPTIONS
 
@@ -44,6 +50,8 @@ class Chef::Resource
 
     private
 
+    # Converts a hash into resource attributes
+    # See the Systemd module for more details.
     def self.option_attributes(options = {})
       options.each_pair do |name, config|
         attribute name.underscore.to_sym, config
@@ -58,7 +66,9 @@ class Chef::Resource
       end
     end
 
-    # converts configuration options into the appropriate string format
+    # converts configuration options into the appropriate string format; it's
+    # critical to keep this in mind when choosing the `kind_of` key in the
+    # OPTIONS hash in the Systemd module for use with option_attributes.
     def conf_string(obj)
       case obj
       when Hash
@@ -94,6 +104,7 @@ class Chef::Provider
           not_if { r.action == :delete }
         end
 
+        # TODO: this should be reworked; it's child-class specific ugliness :(
         execute "#{r.name}.#{r.conf_type}-systemd-reload" do
           command 'systemctl daemon-reload'
           action :nothing

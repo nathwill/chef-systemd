@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/logind.conf.html
 default['systemd']['logind'].tap do |l|
   l['n_auto_v_ts'] = 0
   l['reserve_vt'] = nil

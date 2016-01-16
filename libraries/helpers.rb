@@ -81,8 +81,12 @@ module Systemd
       end
     end
 
+    def module_loaded?(mod)
+      IO.read('/proc/modules').match(Regexp.new("^#{mod}\s"))
+    end
+
     module_function :ini_config, :local_conf_root, :unit_conf_root,
-                    :conf_drop_in_root, :conf_path
+                    :conf_drop_in_root, :conf_path, :module_loaded?
 
     module Init
       # systemd makes this way too easy

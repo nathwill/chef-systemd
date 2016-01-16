@@ -20,6 +20,7 @@
 
 require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
+require_relative 'helpers'
 
 class Chef::Resource
   # manage system modules
@@ -69,7 +70,7 @@ class Chef::Provider
 
       r.modules.each do |m|
         e = execute "modprobe #{m}" do
-          not_if { loaded?(m) }
+          not_if { Systemd::Helpers.module_loaded?(m) }
         end
 
         updated << m if e.updated_by_last_action?
@@ -85,19 +86,13 @@ class Chef::Provider
 
       r.modules.each do |m|
         e = execute "modprobe -r #{m}" do
-          only_if { loaded?(m) }
+          only_if { Systemd::Helpers.module_loaded?(m) }
         end
 
         updated << m if e.updated_by_last_action?
       end
 
       new_resource.updated_by_last_action(!updated.empty?)
-    end
-
-    private
-
-    def loaded?(mod)
-      IO.read('/proc/modules').match(Regexp.new("^#{mod}\s"))
     end
   end
 end

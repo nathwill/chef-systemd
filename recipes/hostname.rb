@@ -22,7 +22,14 @@ hostname = node['systemd']['hostname']
 file path do
   content hostname
   not_if { hostname.nil? }
-  notifies :restart, 'service[systemd-hostnamed]', :immediately
+  notifies :run, 'execute[set-hostname]', :immediately
+end
+
+# apply immediately; works on all platforms
+execute "set-hostname" do
+  command "hostnamectl set-hostname #{hostname}"
+  action :nothing
+  not_if { hostname.nil? }
 end
 
 service 'systemd-hostnamed' do

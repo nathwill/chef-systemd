@@ -26,7 +26,7 @@ file path do
 end
 
 # apply immediately; works on all platforms
-execute "set-hostname" do
+execute 'set-hostname' do
   command "hostnamectl set-hostname #{hostname}"
   action :nothing
   not_if { hostname.nil? }

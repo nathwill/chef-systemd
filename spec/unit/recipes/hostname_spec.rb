@@ -53,7 +53,7 @@ describe 'systemd::hostname' do
 
     it 'restarts the service' do
       file = chef_run.file('/etc/hostname')
-      expect(file).to notify('service[systemd-hostnamed]').to(:restart).immediately
+      expect(file).to notify('execute[set-hostname]').to(:run).immediately
     end
   end
 end

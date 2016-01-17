@@ -16,10 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Registers a converge_complete handler to determine if a
-# daemon-reload is required for `auto_reload false` units.
-# Requires Chef >= 12.5.
-
+# In combination with `auto_reload false`, this is useful for
+# managing large numbers of units, where it is otherwise too
+# expensive to run a daemon-reload on every resource change.
 if Chef::VERSION.to_f >= 12.5
   Chef.event_handler do
     on :converge_complete do
@@ -34,7 +33,7 @@ else
     action :nothing
   end
 
-  ruby_block 'notify-delayed-conditional-daemon-reload' do
+  ruby_block 'notify-delayed-conditional-systemd-daemon-reload' do
     block do
       Chef::Log.info('Triggering delayed daemon-reload evaluation.')
     end

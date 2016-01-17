@@ -7,9 +7,8 @@ describe 'systemd::machined' do
       runner.converge(described_recipe)
     end
 
-    it 'does not enable/start the service' do
+    it 'enables the service' do
       expect(chef_run).to enable_service('systemd-machined')
-      expect(chef_run).to start_service('systemd-machined')
     end
   end
 end

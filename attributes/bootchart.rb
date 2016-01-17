@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://man7.org/linux/man-pages/man5/bootchart.conf.5.html
 default['systemd']['bootchart'].tap do |b|
   b['samples'] = nil
   b['frequency'] = nil

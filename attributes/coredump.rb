@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/coredump.conf.html
 default['systemd']['coredump'].tap do |c|
   c['storage'] = nil
   c['compress'] = true

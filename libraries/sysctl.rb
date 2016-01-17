@@ -23,7 +23,7 @@ require 'chef/provider/lwrp_base'
 require 'mixlib/shellout'
 
 class Chef::Resource
-  # resource for configuring kernel parameters at boot
+  # resource for configuring kernel parameters
   # http://man7.org/linux/man-pages/man5/sysctl.d.5.html
   class SystemdSysctl < Chef::Resource::LWRPBase
     resource_name :systemd_sysctl
@@ -35,6 +35,10 @@ class Chef::Resource
 
     def to_kv
       "#{name}=#{Array(value).join(' ')}"
+    end
+
+    def to_cli
+      "#{name}='#{Array(value).join(' ')}'"
     end
   end
 end
@@ -70,7 +74,7 @@ class Chef::Provider
       current = Mixlib::ShellOut.new("sysctl -n #{r.name}")
                 .tap(&:run_command).stdout.chomp
 
-      e = execute "sysctl -e -w #{r.to_kv}" do
+      e = execute "sysctl -e -w #{r.to_cli}" do
         not_if { current == Array(r.value).join(' ') }
       end
 

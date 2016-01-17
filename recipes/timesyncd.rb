@@ -21,10 +21,10 @@ systemd_timesyncd 'timesyncd' do
   node['systemd']['timesyncd'].each_pair do |config, value|
     send(config.to_sym, value) unless value.nil?
   end
+  notifies :restart, 'service[systemd-timesyncd]', :delayed
 end
 
 service 'systemd-timesyncd' do
-  action [:enable, :start]
-  subscribes :restart, 'systemd_timesyncd[timesyncd]', :delayed
+  action :enable
   only_if { node['systemd']['enable_ntp'] }
 end

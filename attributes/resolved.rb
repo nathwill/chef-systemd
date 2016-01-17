@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/resolved.conf.html
 default['systemd']['resolved'].tap do |r|
   r['dns'] = %w( 8.8.8.8 8.8.4.4 )
   r['fallback_dns'] = %w( 208.67.222.222 208.67.220.220 )

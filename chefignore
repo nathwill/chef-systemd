@@ -51,8 +51,10 @@ spec/*
 spec/fixtures/*
 test/*
 features/*
+Gemfile
 Guardfile
 Procfile
+Rakefile
 
 # SCM #
 #######

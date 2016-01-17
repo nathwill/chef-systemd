@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/systemd-system.conf.html
 default['systemd']['user'].tap do |u|
   u['log_level'] = nil
   u['log_target'] = nil

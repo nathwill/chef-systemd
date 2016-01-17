@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+# Event-handler actions
+# Ref: https://docs.chef.io/handlers.html#event-handlers
 require 'chef/resource/execute'
 
 module SystemdHandlers

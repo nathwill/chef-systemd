@@ -56,11 +56,8 @@ class Chef::Resource
     }
 
     def as_string
-      str = []
-
-      %w( name type offset magic mask interpreter flags ).each do |a|
-        str << send(a.to_sym)
-      end
+      str = %w( name type offset magic mask interpreter flags )
+            .map { |a| send(a.to_sym) }
 
       ":#{str.join(':')}"
     end

@@ -23,6 +23,7 @@
 require_relative 'systemd'
 require_relative 'util'
 
+# TODO: deduplicate the boilerplate
 class Chef::Resource
   # resource for managing systemd-bootchart
   # http://www.freedesktop.org/software/systemd/man/systemd-bootchart.html

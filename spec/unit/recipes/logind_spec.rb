@@ -13,9 +13,8 @@ describe 'systemd::logind' do
       )
     end
 
-    it 'enables/starts the service' do
+    it 'enables the service' do
       expect(chef_run).to enable_service('systemd-logind')
-      expect(chef_run).to start_service('systemd-logind')
     end
 
     it 'notifies service to restart' do

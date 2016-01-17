@@ -25,10 +25,12 @@
 # limitations under the License.
 #
 
+# resources for management of systemd units
+
 require_relative 'systemd'
 require_relative 'unit'
 
-# resources for management of systemd units
+# TODO: deduplicate the boilerplate
 class Chef::Resource
   # resource for configuration of systemd automount units
   # http://www.freedesktop.org/software/systemd/man/systemd.automount.html

@@ -16,6 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ref: http://www.freedesktop.org/software/systemd/man/timedatectl.html
+# Ref: http://www.freedesktop.org/software/systemd/man/timesyncd.conf.html
 default['systemd'].tap do |s|
   # See timedatectl list-timezones
   s['timezone'] = 'UTC'

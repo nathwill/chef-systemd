@@ -59,7 +59,7 @@ class Chef::Resource
 end
 
 class Chef::Provider
-  class SystemdRun < Chef::Provider::Execute
+  class SystemdRun < Chef::Provider::LWRPBase
     use_inline_resources
 
     def whyrun_supported?

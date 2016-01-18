@@ -40,6 +40,9 @@ class Chef::Resource
       )
     end
 
+    attribute :unit, kind_of: String
+    attribute :slice, kind_of: String
+
     %w( scope no_block send_sighup pty ).map(&:to_sym).each do |a|
       attribute a, kind_of: [TrueClass, FalseClass], default: false
     end

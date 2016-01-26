@@ -1139,7 +1139,7 @@ Example usage:
 ```ruby
 systemd_sysctl 'vm.swappiness' do
   value 10
-  notifies :restart, 'service[systemd-sysctl]', :immediately
+  action :apply
 end
 ```
 

@@ -22,6 +22,9 @@ require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 require 'mixlib/shellout'
 
+require_relative 'systemd'
+require_relative 'helpers'
+
 class Chef::Resource
   class SystemdRun < Chef::Resource::LWRPBase
     include Chef::Mixin::ParamsValidate
@@ -40,17 +43,23 @@ class Chef::Resource
       )
     end
 
-    attribute :unit, kind_of: String
-    attribute :slice, kind_of: String
+    Systemd::Run::STRINGS.each do |a|
+      attribute a.to_sym
+    end
 
-    %w( scope no_block send_sighup pty ).map(&:to_sym).each do |a|
+    Systemd::Run::BOOLEANS.map(&:to_sym).each do |a|
       attribute a, kind_of: [TrueClass, FalseClass], default: false
     end
 
-    option_attributes Systemd::Exec::OPTIONS
-    option_attributes Systemd::Kill::OPTIONS
-    option_attributes Systemd::ResourceControl::OPTIONS
-    option_attributes Systemd::Timer::OPTIONS
+    Systemd::Run::ON_SECS.each do |k, v|
+      attribute k.underscore.to_sym, v
+    end
+
+    attribute :service_type, Systemd::Service::OPTIONS['Type']
+    attribute :nice, Systemd::Exec::OPTIONS['Nice']
+    attribute :setenv, Systemd::Exec::OPTIONS['Environment']
+    attribute :on_calendar, Systemd::Timer::OPTIONS['OnCalendar']
+    attribute :timer_property, kind_of: Hash, default: {}
 
     def cli_opts
 

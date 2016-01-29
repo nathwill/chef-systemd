@@ -903,6 +903,6 @@ module Systemd
   module Run
     STRINGS ||= %w( unit description slice uid gid host machine )
     BOOLEANS ||= %w( scope remain_after_exit send_sighup no_block user system )
-    TIMER ||= Timer::OPTIONS.select { |o| o.match(/On\w+Sec/) }
+    ON_SECS ||= Timer::OPTIONS.select { |k, _| k.match(/^On\w+Sec$/) }
   end
 end

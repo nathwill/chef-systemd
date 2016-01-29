@@ -62,7 +62,6 @@ class Chef::Resource
     attribute :timer_property, kind_of: Hash, default: {}
 
     def cli_opts
-
     end
   end
 end

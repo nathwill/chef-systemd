@@ -33,7 +33,7 @@ class Chef::Resource
     # Child classes must implement. Used to
     # to locate appropriate helper modules.
     def conf_type
-      fail NotImplementedError
+      raise NotImplementedError
     end
 
     # Converts resource to a hash with configuration sections as hash
@@ -46,13 +46,13 @@ class Chef::Resource
       conf
     end
 
-    alias_method :to_h, :to_hash
+    alias to_h to_hash
 
     private
 
     # Converts a hash into resource attributes
     # See the Systemd module for more details.
-    def self.option_attributes(options = {})
+    private_class_method def self.option_attributes(options = {})
       options.each_pair do |name, config|
         attribute name.underscore.to_sym, config
       end

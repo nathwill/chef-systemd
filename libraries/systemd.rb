@@ -31,7 +31,7 @@ module Systemd
       'Where' => {},
       'DirectoryMode' => { kind_of: [Integer, String] },
       'TimeoutIdleSec' => { kind_of: [Integer, String] }
-    }
+    }.freeze
   end
 
   module Bootchart
@@ -47,7 +47,7 @@ module Systemd
       'ScaleX' => { kind_of: Integer },
       'ScaleY' => { kind_of: Integer },
       'ControlGroup' => { kind_of: [TrueClass, FalseClass] }
-    }
+    }.freeze
   end
 
   module Coredump
@@ -62,7 +62,7 @@ module Systemd
       'JournalSizeMax' => { kind_of: Integer },
       'MaxUse' => {},
       'KeepFree' => {}
-    }
+    }.freeze
   end
 
   # rubocop: disable ModuleLength
@@ -153,7 +153,7 @@ module Systemd
       'LimitRTPRIO' => {},
       'LimitRTTIME' => {}
 
-    }
+    }.freeze
 
     OPTIONS ||= TRANSIENT_OPTIONS.merge(
       'SupplementaryGroups' => { kind_of: [String, Array] },
@@ -211,7 +211,7 @@ module Systemd
       'RequiredBy' => { kind_of: [String, Array] },
       'Also' => { kind_of: [String, Array] },
       'DefaultInstance' => {}
-    }
+    }.freeze
   end
 
   module Journald
@@ -246,7 +246,7 @@ module Systemd
       'MaxLevelConsole' => {},
       'MaxLevelWall' => {},
       'TTYPath' => {}
-    }
+    }.freeze
   end
 
   module JournalRemote
@@ -255,7 +255,7 @@ module Systemd
       'ServerKeyFile' => {},
       'ServerCertificateFile' => {},
       'TrustedCertificateFile' => {}
-    }
+    }.freeze
   end
 
   module Kill
@@ -267,7 +267,7 @@ module Systemd
       'KillSignal' => {},
       'SendSIGHUP' => { kind_of: [TrueClass, FalseClass] },
       'SendSIGKILL' => { kind_of: [TrueClass, FalseClass] }
-    }
+    }.freeze
 
     OPTIONS ||= TRANSIENT_OPTIONS
   end
@@ -288,7 +288,7 @@ module Systemd
       'LC_TELEPHONE' => {},
       'LC_MEASUREMENT' => {},
       'LC_IDENTIFICATION' => {}
-    }
+    }.freeze
   end
 
   module Logind
@@ -298,7 +298,7 @@ module Systemd
         ignore poweroff reboot halt kexec
         suspend hibernate hybrid-sleep lock
       )
-    }
+    }.freeze
 
     OPTIONS ||= {
       'NAutoVTs' => {
@@ -335,7 +335,7 @@ module Systemd
       'HoldoffTimeoutSec' => { kind_of: [String, Integer] },
       'RuntimeDirectorySize' => {},
       'RemoveIPC' => { kind_of: [TrueClass, FalseClass] }
-    }
+    }.freeze
   end
 
   module ResourceControl
@@ -367,7 +367,7 @@ module Systemd
                         end
                       }
                     }
-    }
+    }.freeze
 
     OPTIONS ||= TRANSIENT_OPTIONS.merge(
       'StartupCPUShares' => { kind_of: Integer },
@@ -381,7 +381,7 @@ module Systemd
       'What' => {},
       'Type' => {},
       'Options' => {}
-    }
+    }.freeze
 
     OPTIONS ||= TRANSIENT_OPTIONS
                 .merge(Systemd::ResourceControl::OPTIONS)
@@ -416,7 +416,7 @@ module Systemd
         'BitsPerSecond' => { kind_of: [String, Integer] },
         'Duplex' => { kind_of: String, equal_to: %w( half full ) },
         'WakeOnLan' => { kind_of: String, equal_to: %w( phy magic off ) }
-      }
+      }.freeze
     end
 
     module Match
@@ -443,7 +443,7 @@ module Systemd
             alpha arm arm-be arm64 arm64-be sh sh64 m86k tilegx cris
           )
         }
-      }
+      }.freeze
     end
 
     OPTIONS ||= Systemd::Networkd::Match::OPTIONS
@@ -458,7 +458,7 @@ module Systemd
         kind_of: [TrueClass, FalseClass, String],
         equal_to: [true, false, 'resolve']
       }
-    }
+    }.freeze
   end
 
   module Service
@@ -469,7 +469,7 @@ module Systemd
         equal_to: %w( simple forking oneshot dbus notify idle )
       },
       'RemainAfterExit' => { kind_of: [TrueClass, FalseClass] }
-    }
+    }.freeze
 
     OPTIONS ||= TRANSIENT_OPTIONS
                 .merge(Systemd::ResourceControl::OPTIONS)
@@ -546,7 +546,7 @@ module Systemd
       'SuspendState' => { kind_of: [String, Array] },
       'HibernateState' => { kind_of: [String, Array] },
       'HybridSleepState' => { kind_of: [String, Array] }
-    }
+    }.freeze
   end
 
   module Slice
@@ -701,7 +701,7 @@ module Systemd
       'DefaultLimitNICE' => {},
       'DefaultLimitRTPRIO' => {},
       'DefaultLimitRTTIME' => {}
-    }
+    }.freeze
   end
 
   module Path
@@ -716,19 +716,19 @@ module Systemd
         callbacks: {
           'is a valid unit ' => lambda do |spec|
             !spec.match(/\.path$/) &&
-            (Systemd::Helpers::UNITS | Systemd::Helpers::STUB_UNITS).any? do |u|
-              spec.match(/\.#{u}$/)
-            end
+              (Systemd::Helpers::UNITS | Systemd::Helpers::STUB_UNITS).any? do |u| # rubocop: disable LineLength
+                spec.match(/\.#{u}$/)
+              end
           end
         }
       },
       'MakeDirectory' => { kind_of: [TrueClass, FalseClass] },
       'DirectoryMode' => { kind_of: [String, Integer] }
-    }
+    }.freeze
   end
 
   module Target
-    OPTIONS ||= {}
+    OPTIONS ||= {}.freeze
   end
 
   module Timer
@@ -743,7 +743,7 @@ module Systemd
       'WakeSystem' => { kind_of: [TrueClass, FalseClass] },
       'RemainAfterElapse' => { kind_of: [TrueClass, FalseClass] },
       'RandomSec' => { kind_of: [String, Integer] }
-    }
+    }.freeze
 
     OPTIONS ||= TRANSIENT_OPTIONS.merge(
       'Unit' => {
@@ -765,7 +765,7 @@ module Systemd
     OPTIONS ||= {
       'NTP' => { kind_of: [String, Array] },
       'FallbackNTP' => { kind_of: [String, Array] }
-    }
+    }.freeze
   end
 
   # rubocop: disable ModuleLength
@@ -781,7 +781,7 @@ module Systemd
           end
         end
       }
-    }
+    }.freeze
 
     TRANSIENT_OPTIONS ||= {
       'Description' => {},
@@ -799,7 +799,7 @@ module Systemd
       'OnFailure' => UNIT_LIST,
       'PropagatesReloadTo' => UNIT_LIST,
       'ReloadPropagatedFrom' => UNIT_LIST
-    }
+    }.freeze
 
     OPTIONS ||= TRANSIENT_OPTIONS.merge(
       'Documentation' => { kind_of: [String, Array] },
@@ -919,20 +919,20 @@ module Systemd
       'FONT' => {},
       'FONT_MAP' => {},
       'FONT_UNIMAP' => {}
-    }
+    }.freeze
   end
 
   module Run
-    STRINGS ||= %w( unit description slice uid gid host machine )
+    STRINGS ||= %w( unit description slice uid gid host machine ).freeze
 
-    BOOLEANS ||= %w( scope remain_after_exit send_sighup no_block )
+    BOOLEANS ||= %w( scope remain_after_exit send_sighup no_block ).freeze
 
     ON_SECS ||= Systemd::Timer::TRANSIENT_OPTIONS
                 .keys
                 .select { |o| o.match(/On\w+Sec/) }
                 .map(&:underscore)
 
-    CLI_OPTS ||= (STRINGS << BOOLEANS << ON_SECS).flatten
+    CLI_OPTS ||= (STRINGS | BOOLEANS | ON_SECS).flatten
 
     OPTIONS ||= Systemd::ResourceControl::TRANSIENT_OPTIONS
                 .merge(Systemd::Exec::TRANSIENT_OPTIONS)

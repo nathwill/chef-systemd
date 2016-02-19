@@ -66,7 +66,7 @@ end
 
 class Chef::Provider
   class SystemdBinfmt < Chef::Provider::LWRPBase
-    DIR ||= '/etc/binfmt.d'
+    DIR ||= '/etc/binfmt.d'.freeze
 
     use_inline_resources
 

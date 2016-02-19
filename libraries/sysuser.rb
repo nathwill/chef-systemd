@@ -52,7 +52,7 @@ end
 
 class Chef::Provider
   class SystemdSysuser < Chef::Provider::LWRPBase
-    DIR ||= '/etc/sysusers.d'
+    DIR ||= '/etc/sysusers.d'.freeze
 
     use_inline_resources
 

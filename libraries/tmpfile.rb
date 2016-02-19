@@ -47,7 +47,7 @@ end
 
 class Chef::Provider
   class SystemdTmpfile < Chef::Provider::LWRPBase
-    DIR ||= '/etc/tmpfiles.d'
+    DIR ||= '/etc/tmpfiles.d'.freeze
 
     use_inline_resources
 

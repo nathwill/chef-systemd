@@ -45,7 +45,7 @@ end
 
 class Chef::Provider
   class SystemdSysctl < Chef::Provider::LWRPBase
-    DIR ||= '/etc/sysctl.d'
+    DIR ||= '/etc/sysctl.d'.freeze
 
     use_inline_resources
 
@@ -72,7 +72,7 @@ class Chef::Provider
       r = new_resource
 
       current = Mixlib::ShellOut.new("sysctl -n #{r.name}")
-                .tap(&:run_command).stdout.chomp
+                                .tap(&:run_command).stdout.chomp
 
       e = execute "sysctl -e -w #{r.to_cli}" do
         not_if { current == Array(r.value).join(' ') }

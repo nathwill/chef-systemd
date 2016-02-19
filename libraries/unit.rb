@@ -48,8 +48,8 @@ class Chef::Resource
     def action(arg = nil)
       if drop_in
         @allowed_actions = %w( create delete set_properties ).map(&:to_sym)
-      else
-        @allowed_actions << :set_default if conf_type == :target
+      elsif conf_type == :target
+        @allowed_actions << :set_default
       end
 
       super
@@ -96,7 +96,7 @@ class Chef::Resource
       conf
     end
 
-    alias_method :to_h, :to_hash
+    alias to_h to_hash
 
     private
 

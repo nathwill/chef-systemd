@@ -70,6 +70,7 @@ if defined?(ChefSpec)
     end
   end
 
+  ChefSpec.define_matcher(:systemd_modules)
   %w( load unload ).map(&:to_sym).each do |mod_action|
     define_method("#{mod_action}_systemd_modules") do |resource_name|
       ChefSpec::Matchers::ResourceMatcher.new(
@@ -78,6 +79,16 @@ if defined?(ChefSpec)
     end
   end
 
+  ChefSpec.define_matcher(:systemd_run)
+  %w( run stop ).map(&:to_sym).each do |run_action|
+    define_method("#{run_action}_systemd_run") do |resource_name|
+      ChefSpec::Matchers::ResourceMatcher.new(
+        :systemd_run, mod_action, resource_name
+      )
+    end
+  end
+
+  ChefSpec.define_matcher(:systemd_udev_rules)
   define_method('disable_systemd_udev_rules') do |resource_name|
     ChefSpec::Matchers::ResourceMatcher.new(
       :systemd_udev_rules, :disable, resource_name

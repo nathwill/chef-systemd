@@ -67,7 +67,7 @@ class Chef::Resource
     # rubocop: disable AbcSize
     # rubocop: disable MethodLength
     def cli_opts
-      cmd = ["--unit #{send(:unit)}"]
+      cmd = ["--unit=#{send(:unit)}"]
 
       cmd << "--service-type=#{send(:service_type)}" if send(:service_type)
 

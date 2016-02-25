@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe Chef::Resource::SystemdRun do
   let(:svc_run) do
-    Chef::Resource::SystemdRun.new("env").tap do |r|
+    Chef::Resource::SystemdRun.new("transient-env.service").tap do |r|
+      r.command 'env'
       r.service_type 'simple'
       r.setenv({ 'FOO' => 0, 'BAR' => 1 })
       r.description 'transient'
@@ -15,9 +16,10 @@ describe Chef::Resource::SystemdRun do
 
   let(:svc_opts) do
     [
-      "--service-type=simple", "--description='transient'",
-      "--on-active='15'", "--setenv=FOO=0", "--setenv=BAR=1",
-      "-p 'CPUShares=1024'", "-p 'Nice=19'", "-p 'KillMode=mixed'"
+      "--unit=transient-env.service", "--service-type=simple",
+      "--description='transient'","--on-active='15'", "--setenv=FOO=0",
+      "--setenv=BAR=1", "-p 'CPUShares=1024'", "-p 'Nice=19'",
+      "-p 'KillMode=mixed'"
     ].join(' ')
   end
 

@@ -24,10 +24,12 @@ require 'mixlib/shellout'
 
 require_relative 'systemd'
 require_relative 'helpers'
+require_relative 'mixins'
 
 class Chef::Resource
   class SystemdRun < Chef::Resource::LWRPBase
     include Chef::Mixin::ParamsValidate
+    include Systemd::Mixin::DirectiveConversion
 
     resource_name :systemd_run
     identity_attr :command
@@ -43,12 +45,12 @@ class Chef::Resource
       )
     end
 
-    Systemd::Run::STRINGS.each do |a|
-      attribute a.to_sym
-    end
-
     Systemd::Run::BOOLEANS.map(&:to_sym).each do |a|
       attribute a, kind_of: [TrueClass, FalseClass], default: false
+    end
+
+    Systemd::Run::STRINGS.each do |a|
+      attribute a.to_sym
     end
 
     Systemd::Run::ON_SECS.each do |k, v|
@@ -56,13 +58,35 @@ class Chef::Resource
     end
 
     attribute :service_type, Systemd::Service::OPTIONS['Type']
-    attribute :nice, Systemd::Exec::OPTIONS['Nice']
     attribute :setenv, Systemd::Exec::OPTIONS['Environment']
-    attribute :on_calendar, Systemd::Timer::OPTIONS['OnCalendar']
     attribute :timer_property, kind_of: Hash, default: {}
 
+    option_attributes Systemd::Run::OPTIONS
+
+    # rubocop: disable AbcSize
+    # rubocop: disable MethodLength
     def cli_opts
+      cmd = %w( systemd-run )
+      cmd << "--service-type=#{send(:service_type)}" if send(:service_type)
+
+      Systemd::Run::BOOLEANS.each do |a|
+        cmd << "--#{a.tr('_', '-')}" if send(a.to_sym)
+      end
+
+      %w( STRINGS ON_SECS ).each do |c|
+        Systemd::Run.const_get(c).map(&:to_sym).each do |a|
+          cmd << "--#{a.to_s.tr('_', '-')}='#{send(a)}'" unless send(a).nil?
+        end
+      end
+
+      %w( setenv timer_property ).map(&:to_sym).each do |a|
+        send(a).each_pair { |k, v| cmd << "--#{a.tr('_', '-')}=#{k}=#{v}" }
+      end
+
+      cmd << options_config(Systemd::Run::OPTIONS).map { |o| "-p '#{o}'" }
     end
+    # rubocop: enable AbcSize
+    # rubocop: enable MethodLength
   end
 end
 
@@ -80,7 +104,7 @@ class Chef::Provider
       r = new_resource
 
       execute "systemd_run-#{r.name}" do
-        command "systemd-run #{r.cli_opts} #{r.command}"
+        command "systemd-run #{r.cli_opts} '#{r.command}'"
       end
     end
   end

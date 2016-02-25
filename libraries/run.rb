@@ -139,9 +139,7 @@ class Chef::Provider
     action :stop do
       r = new_resource
 
-      stop = "systemctl stop #{r.unit}"
-
-      e = execute stop do
+      e = execute "systemctl stop #{r.unit}" do
         only_if { active?(r.unit) }
       end
 

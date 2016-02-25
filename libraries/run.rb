@@ -32,14 +32,14 @@ class Chef::Resource
     include Systemd::Mixin::DirectiveConversion
 
     resource_name :systemd_run
-    identity_attr :command
+    identity_attr :unit
 
     actions :run
     default_action :run
 
-    def command(arg = nil)
+    def unit(arg = nil)
       set_or_return(
-        :command, arg,
+        :unit, arg,
         kind_of: String,
         default: name
       )
@@ -57,6 +57,7 @@ class Chef::Resource
       attribute a.underscore.to_sym, kind_of: [String, Integer]
     end
 
+    attribute :command, kind_of: String, required: true
     attribute :service_type, Systemd::Service::OPTIONS['Type']
     attribute :setenv, kind_of: Hash, default: {}
     attribute :timer_property, kind_of: Hash, default: {}
@@ -66,7 +67,7 @@ class Chef::Resource
     # rubocop: disable AbcSize
     # rubocop: disable MethodLength
     def cli_opts
-      cmd = []
+      cmd = ["--unit #{send(:unit)}"]
 
       cmd << "--service-type=#{send(:service_type)}" if send(:service_type)
 
@@ -103,14 +104,36 @@ class Chef::Provider
       true
     end
 
+    def active?(unit)
+      Mixlib::ShellOut.new("systemctl is-active #{unit}")
+                      .tap(&:run_command)
+                      .stdout
+                      .chomp == 'active'
+    end
+
     provides :systemd_run if defined?(provides)
 
     action :run do
       r = new_resource
 
-      execute "systemd_run-#{r.name}" do
-        command "systemd-run #{r.cli_opts} #{r.command}"
+      cmd = "systemd-run #{r.cli_opts} #{r.command}"
+      stop = "systemctl stop #{r.unit}"
+
+      execute stop do
+        action :nothing
+        only_if { active?(r.unit) }
       end
+
+      file "/var/cache/#{r.unit}" do
+        content cmd
+        notifies :run, "execute[#{stop}]", :immediately
+      end
+
+      e = execute cmd do
+        not_if { active?(r.unit) }
+      end
+
+      r.updated_by_last_action(e.updated_by_last_action?)
     end
   end
 end

@@ -923,7 +923,7 @@ module Systemd
   end
 
   module Run
-    STRINGS ||= %w( unit description slice uid gid host machine ).freeze
+    STRINGS ||= %w( description slice uid gid host machine ).freeze
 
     BOOLEANS ||= %w( scope remain_after_exit send_sighup no_block ).freeze
 

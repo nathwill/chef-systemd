@@ -18,7 +18,7 @@ describe Chef::Resource::SystemdRun do
       "--service-type=simple", "--description='transient'",
       "--on-active='15'", "--setenv=FOO=0", "--setenv=BAR=1",
       "-p 'CPUShares=1024'", "-p 'Nice=19'", "-p 'KillMode=mixed'"
-    ]
+    ].join(' ')
   end
 
   it 'generates proper service cli options' do

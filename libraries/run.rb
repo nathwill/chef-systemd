@@ -34,7 +34,7 @@ class Chef::Resource
     resource_name :systemd_run
     identity_attr :unit
 
-    actions :run
+    actions :run, :stop
     default_action :run
 
     def unit(arg = nil)
@@ -131,6 +131,18 @@ class Chef::Provider
 
       e = execute cmd do
         not_if { active?(r.unit) }
+      end
+
+      r.updated_by_last_action(e.updated_by_last_action?)
+    end
+
+    action :stop do
+      r = new_resource
+
+      stop = "systemctl stop #{r.unit}"
+
+      e = execute stop do
+        only_if { active?(r.unit) }
       end
 
       r.updated_by_last_action(e.updated_by_last_action?)

@@ -58,7 +58,7 @@ class Chef::Resource
     end
 
     attribute :service_type, Systemd::Service::OPTIONS['Type']
-    attribute :setenv, Systemd::Exec::OPTIONS['Environment']
+    attribute :setenv, kind_of: Hash, default: {}
     attribute :timer_property, kind_of: Hash, default: {}
 
     option_attributes Systemd::Run::OPTIONS
@@ -88,7 +88,7 @@ class Chef::Resource
 
       cmd << options_config(Systemd::Run::OPTIONS).map { |o| "-p '#{o}'" }
 
-      cmd.flatten
+      cmd.flatten.join(' ')
     end
     # rubocop: enable AbcSize
     # rubocop: enable MethodLength
@@ -109,7 +109,7 @@ class Chef::Provider
       r = new_resource
 
       execute "systemd_run-#{r.name}" do
-        command "systemd-run #{r.cli_opts} '#{r.command}'"
+        command "systemd-run #{r.cli_opts} #{r.command}"
       end
     end
   end

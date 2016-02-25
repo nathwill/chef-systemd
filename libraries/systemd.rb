@@ -930,6 +930,7 @@ module Systemd
     ON_SECS ||= Systemd::Timer::TRANSIENT_OPTIONS
                 .keys
                 .select { |o| o.match(/On\w+Sec/) }
+                .map { |o| o.gsub(/Sec$/, '') }
                 .map(&:underscore)
 
     CLI_OPTS ||= (STRINGS | BOOLEANS | ON_SECS).flatten

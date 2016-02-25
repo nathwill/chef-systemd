@@ -53,8 +53,8 @@ class Chef::Resource
       attribute a.to_sym
     end
 
-    Systemd::Run::ON_SECS.each do |k, v|
-      attribute k.underscore.to_sym, v
+    Systemd::Run::ON_SECS.each do |a|
+      attribute a.underscore.to_sym, kind_of: [String, Integer]
     end
 
     attribute :service_type, Systemd::Service::OPTIONS['Type']
@@ -66,7 +66,8 @@ class Chef::Resource
     # rubocop: disable AbcSize
     # rubocop: disable MethodLength
     def cli_opts
-      cmd = %w( systemd-run )
+      cmd = []
+
       cmd << "--service-type=#{send(:service_type)}" if send(:service_type)
 
       Systemd::Run::BOOLEANS.each do |a|
@@ -79,11 +80,15 @@ class Chef::Resource
         end
       end
 
-      %w( setenv timer_property ).map(&:to_sym).each do |a|
-        send(a).each_pair { |k, v| cmd << "--#{a.tr('_', '-')}=#{k}=#{v}" }
+      %w( setenv timer_property ).each do |a|
+        send(a.to_sym).each_pair do |k, v|
+          cmd << "--#{a.tr('_', '-')}=#{k}=#{v}"
+        end
       end
 
       cmd << options_config(Systemd::Run::OPTIONS).map { |o| "-p '#{o}'" }
+
+      cmd.flatten
     end
     # rubocop: enable AbcSize
     # rubocop: enable MethodLength

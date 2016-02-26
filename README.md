@@ -36,6 +36,7 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
      - [systemd_bootchart](#systemd-bootchart)
      - [systemd_coredump](#systemd-coredump)
      - [systmd_sleep](#systemd-sleep)
+     - [systemd_run](#systemd-run)
    - [Miscellaneous](#misc-resources)
      - [systemd_system](#systemd-system)
      - [systemd_user](#systemd-user)
@@ -911,6 +912,25 @@ end
 Also supports:
 
  - [drop-in](#common-drop-in)
+
+<a name="systemd-run"></a>**systemd\_sleep**
+
+Resource for running (optionally) resource-constrained transient units.
+Think of it like an "execute" resource with cgroups.
+
+Example usage:
+
+```ruby
+systemd_run 'sshd-2222.service' do
+  command ''/usr/sbin/sshd -D -o Port=2222'
+  cpu_shares 1_024
+  nice 19
+  service_type 'simple'
+  kill_mode 'mixed'
+end
+```
+
+Supported attributes: see `Systemd::Run` in `libraries/systemd.rb`.
 
 <a name="misc-resources"></a>Miscellaneous Resources
 ----------------------------------------------------

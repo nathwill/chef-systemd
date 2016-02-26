@@ -913,7 +913,7 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
-<a name="systemd-run"></a>**systemd\_sleep**
+<a name="systemd-run"></a>**systemd\_run**
 
 Resource for running (optionally) resource-constrained transient units.
 Think of it like an "execute" resource with cgroups.

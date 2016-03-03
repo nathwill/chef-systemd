@@ -15,7 +15,7 @@ describe Chef::Resource::SystemdUnit do
     {
       :unit=>["Description=test unit", "Documentation=http://example.com"],
       :install=>["WantedBy=multi-user.target"],
-      :service=>["MemoryLimit=1G", "ExecStart=/usr/bin/true"]
+      :service=>["ExecStart=/usr/bin/true", "MemoryLimit=1G"]
     }
   end
 

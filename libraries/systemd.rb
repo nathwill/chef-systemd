@@ -31,7 +31,7 @@ module Systemd
       'Where' => {},
       'DirectoryMode' => { kind_of: [Integer, String] },
       'TimeoutIdleSec' => { kind_of: [Integer, String] }
-    }
+    }.freeze
   end
 
   module Bootchart
@@ -47,7 +47,7 @@ module Systemd
       'ScaleX' => { kind_of: Integer },
       'ScaleY' => { kind_of: Integer },
       'ControlGroup' => { kind_of: [TrueClass, FalseClass] }
-    }
+    }.freeze
   end
 
   module Coredump
@@ -62,40 +62,31 @@ module Systemd
       'JournalSizeMax' => { kind_of: Integer },
       'MaxUse' => {},
       'KeepFree' => {}
-    }
+    }.freeze
   end
 
   # rubocop: disable ModuleLength
   module Exec
-    OPTIONS ||= {
-      'WorkingDirectory' => {},
-      'RootDirectory' => {},
+    TRANSIENT_OPTIONS ||= {
       'User' => {},
       'Group' => {},
-      'SupplementaryGroups' => { kind_of: [String, Array] },
-      'Nice' => { kind_of: Integer, equal_to: -20.upto(19).to_a },
-      'OOMScoreAdjust' => {
-        kind_of: Integer,
-        equal_to: -1_000.upto(1_000).to_a
-      },
-      'IOSchedulingClass' => {
-        kind_of: [Integer, String],
-        equal_to: %w(none realtime best-effort idle).concat(0.upto(3).to_a)
-      },
-      'IOSchedulingPriority' => { kind_of: Integer, equal_to: 0.upto(7).to_a },
-      'CPUSchedulingPolicy' => {
+      'SyslogIdentifier' => {},
+      'SyslogFacility' => {
         kind_of: String,
-        equal_to: %w( other batch idle fifo rr )
+        equal_to: %w(
+          kern user mail daemon auth syslog lpr news
+          uucp cron authpriv ftp local0 local1 local2
+          local3 local4 local5 local6 local7
+        )
       },
-      'CPUSchedulingPriority' => {
-        kind_of: Integer,
-        equal_to: 1.upto(99).to_a
+      'SyslogLevel' => {
+        kind_of: String,
+        equal_to: %w( emerg alert crit debug warning notice info err )
       },
-      'CPUSchedulingResetOnFork' => { kind_of: [TrueClass, FalseClass] },
-      'CPUAffinity' => { kind_of: [String, Integer, Array] },
-      'UMask' => {},
-      'Environment' => { kind_of: Hash },
-      'EnvironmentFile' => {},
+      'Nice' => { kind_of: Integer, equal_to: -20.upto(19).to_a },
+      'TTYPath' => {},
+      'WorkingDirectory' => {},
+      'RootDirectory' => {},
       'StandardInput' => {
         kind_of: String,
         equal_to: %w( null tty tty-force tty-fail socket )
@@ -114,25 +105,37 @@ module Systemd
           syslog+console kmsg+console socket null tty
         )
       },
-      'TTYPath' => {},
-      'TTYReset' => { kind_of: [TrueClass, FalseClass] },
+      'IgnoreSIGPIPE' => { kind_of: [TrueClass, FalseClass] },
       'TTYVHangup' => { kind_of: [TrueClass, FalseClass] },
-      'TTYVTDisallocate' => { kind_of: [TrueClass, FalseClass] },
-      'SyslogIdentifier' => {},
-      'SyslogFacility' => {
-        kind_of: String,
-        equal_to: %w(
-          kern user mail daemon auth syslog lpr news
-          uucp cron authpriv ftp local0 local1 local2
-          local3 local4 local5 local6 local7
-        )
-      },
-      'SyslogLevel' => {
-        kind_of: String,
-        equal_to: %w( emerg alert crit debug warning notice info err )
-      },
+      'TTYReset' => { kind_of: [TrueClass, FalseClass] },
+      'PrivateTmp' => { kind_of: [TrueClass, FalseClass] },
+      'PrivateDevices' => { kind_of: [TrueClass, FalseClass] },
+      'PrivateNetwork' => { kind_of: [TrueClass, FalseClass] },
+      'NoNewPrivileges' => { kind_of: [TrueClass, FalseClass] },
       'SyslogLevelPrefix' => { kind_of: [TrueClass, FalseClass] },
+      'UtmpIdentifier' => {},
+      'UtmpMode' => { kind_of: String, equal_to: %w( init login user ) },
+      'PAMName' => {},
+      'Environment' => { kind_of: Hash },
+      'EnvironmentFile' => {},
       'TimerSlackNSec' => { kind_of: [Integer, String] },
+      'OOMScoreAdjust' => {
+        kind_of: Integer,
+        equal_to: -1_000.upto(1_000).to_a
+      },
+      'PassEnvironment' => { kind_of: Array },
+      'ReadWriteDirectories' => { kind_of: [String, Array] },
+      'ReadOnlyDirectories' => { kind_of: [String, Array] },
+      'InaccessibleDirectories' => { kind_of: [String, Array] },
+      'ProtectSystem' => {
+        kind_of: [TrueClass, FalseClass, String],
+        equal_to: [true, false, 'full']
+      },
+      'ProtectHome' => {
+        kind_of: [TrueClass, FalseClass, String],
+        equal_to: [true, false, 'read-only']
+      },
+      'RuntimeDirectory' => { kind_of: [String, Array] },
       'LimitCPU' => {},
       'LimitFSIZE' => {},
       'LimitDATA' => {},
@@ -148,8 +151,29 @@ module Systemd
       'LimitMSGQUEUE' => {},
       'LimitNICE' => {},
       'LimitRTPRIO' => {},
-      'LimitRTTIME' => {},
-      'PAMName' => {},
+      'LimitRTTIME' => {}
+
+    }.freeze
+
+    OPTIONS ||= TRANSIENT_OPTIONS.merge(
+      'SupplementaryGroups' => { kind_of: [String, Array] },
+      'IOSchedulingClass' => {
+        kind_of: [Integer, String],
+        equal_to: %w(none realtime best-effort idle).concat(0.upto(3).to_a)
+      },
+      'IOSchedulingPriority' => { kind_of: Integer, equal_to: 0.upto(7).to_a },
+      'CPUSchedulingPolicy' => {
+        kind_of: String,
+        equal_to: %w( other batch idle fifo rr )
+      },
+      'CPUSchedulingPriority' => {
+        kind_of: Integer,
+        equal_to: 1.upto(99).to_a
+      },
+      'CPUSchedulingResetOnFork' => { kind_of: [TrueClass, FalseClass] },
+      'CPUAffinity' => { kind_of: [String, Integer, Array] },
+      'UMask' => {},
+      'TTYVTDisallocate' => { kind_of: [TrueClass, FalseClass] },
       'CapabilityBoundingSet' => {},
       'SecureBits' => {
         kind_of: [String, Array],
@@ -163,39 +187,20 @@ module Systemd
         }
       },
       'Capabilities' => {},
-      'ReadWriteDirectories' => { kind_of: [String, Array] },
-      'ReadOnlyDirectories' => { kind_of: [String, Array] },
-      'InaccessibleDirectories' => { kind_of: [String, Array] },
-      'PrivateTmp' => { kind_of: [TrueClass, FalseClass] },
-      'PrivateDevices' => { kind_of: [TrueClass, FalseClass] },
-      'PrivateNetwork' => { kind_of: [TrueClass, FalseClass] },
-      'ProtectSystem' => {
-        kind_of: [TrueClass, FalseClass, String],
-        equal_to: [true, false, 'full']
-      },
-      'ProtectHome' => {
-        kind_of: [TrueClass, FalseClass, String],
-        equal_to: [true, false, 'read-only']
-      },
       'MountFlags' => {
         kind_of: String,
         equal_to: %w( shared slave private )
       },
-      'UtmpIdentifier' => {},
-      'UtmpMode' => { kind_of: String, equal_to: %w( init login user ) },
       'SELinuxContext' => {},
       'AppArmorProfile' => {},
       'SmackProcessLabel' => {},
-      'IgnoreSIGPIPE' => { kind_of: [TrueClass, FalseClass] },
-      'NoNewPrivileges' => { kind_of: [TrueClass, FalseClass] },
       'SystemCallFilter' => { kind_of: [String, Array] },
       'SystemCallErrorNumber' => {},
       'SystemCallArchitectures' => {},
       'RestrictAddressFamilies' => {},
       'Personality' => { kind_of: String, equal_to: %w( x86 x86-64 ) },
-      'RuntimeDirectory' => { kind_of: [String, Array] },
       'RuntimeDirectoryMode' => { kind_of: [String, Array] }
-    }
+    )
   end
   # rubocop: enable ModuleLength
 
@@ -206,7 +211,7 @@ module Systemd
       'RequiredBy' => { kind_of: [String, Array] },
       'Also' => { kind_of: [String, Array] },
       'DefaultInstance' => {}
-    }
+    }.freeze
   end
 
   module Journald
@@ -241,7 +246,7 @@ module Systemd
       'MaxLevelConsole' => {},
       'MaxLevelWall' => {},
       'TTYPath' => {}
-    }
+    }.freeze
   end
 
   module JournalRemote
@@ -250,11 +255,11 @@ module Systemd
       'ServerKeyFile' => {},
       'ServerCertificateFile' => {},
       'TrustedCertificateFile' => {}
-    }
+    }.freeze
   end
 
   module Kill
-    OPTIONS ||= {
+    TRANSIENT_OPTIONS ||= {
       'KillMode' => {
         kind_of: String,
         equal_to: %w( control-group process mixed none )
@@ -262,7 +267,9 @@ module Systemd
       'KillSignal' => {},
       'SendSIGHUP' => { kind_of: [TrueClass, FalseClass] },
       'SendSIGKILL' => { kind_of: [TrueClass, FalseClass] }
-    }
+    }.freeze
+
+    OPTIONS ||= TRANSIENT_OPTIONS
   end
 
   module Locale
@@ -281,7 +288,7 @@ module Systemd
       'LC_TELEPHONE' => {},
       'LC_MEASUREMENT' => {},
       'LC_IDENTIFICATION' => {}
-    }
+    }.freeze
   end
 
   module Logind
@@ -291,7 +298,7 @@ module Systemd
         ignore poweroff reboot halt kexec
         suspend hibernate hybrid-sleep lock
       )
-    }
+    }.freeze
 
     OPTIONS ||= {
       'NAutoVTs' => {
@@ -328,18 +335,26 @@ module Systemd
       'HoldoffTimeoutSec' => { kind_of: [String, Integer] },
       'RuntimeDirectorySize' => {},
       'RemoveIPC' => { kind_of: [TrueClass, FalseClass] }
-    }
+    }.freeze
   end
 
   module ResourceControl
-    OPTIONS ||= {
+    TRANSIENT_OPTIONS ||= {
+      'Delegate' => { kind_of: [TrueClass, FalseClass] },
       'CPUAccounting' => { kind_of: [TrueClass, FalseClass] },
-      'CPUShares' => { kind_of: Integer },
-      'StartupCPUShares' => { kind_of: Integer },
       'CPUQuota' => {},
+      'CPUShares' => { kind_of: Integer },
+      'BlockIOAccounting' => { kind_of: [TrueClass, FalseClass] },
+      'BlockIOWeight' => { kind_of: Integer, equal_to: 10.upto(1_000) },
+      'BlockIOReadBandwidth' => {},
+      'BlockIOWriteBandwidth' => {},
+      'BlockIODeviceWeight' => {},
       'MemoryAccounting' => { kind_of: [TrueClass, FalseClass] },
       'MemoryLimit' => {},
+      'DevicePolicy' => { kind_of: String, equal_to: %w( strict closed auto ) },
+      'DeviceAllow' => {},
       'TasksAccounting' => { kind_of: [TrueClass, FalseClass] },
+      'Slice' => {},
       'TasksMax' => { kind_of: [Integer, String],
                       callbacks: {
                         'is a valid symbol' =>
@@ -351,29 +366,28 @@ module Systemd
                           end
                         end
                       }
-                    },
-      'BlockIOAccounting' => { kind_of: [TrueClass, FalseClass] },
-      'BlockIOWeight' => { kind_of: Integer, equal_to: 10.upto(1_000) },
+                    }
+    }.freeze
+
+    OPTIONS ||= TRANSIENT_OPTIONS.merge(
+      'StartupCPUShares' => { kind_of: Integer },
       'StartupBlockIOWeight' => { kind_of: Integer, equal_to: 10.upto(1_000) },
-      'BlockIODeviceWeight' => {},
-      'BlockIOReadBandwidth' => {},
-      'BlockIOWriteBandwidth' => {},
-      'DeviceAllow' => {},
-      'DevicePolicy' => { kind_of: String, equal_to: %w( strict closed auto ) },
-      'Slice' => {},
-      'NetClass' => {},
-      'Delegate' => { kind_of: [TrueClass, FalseClass] }
-    }
+      'NetClass' => {}
+    )
   end
 
   module Mount
-    OPTIONS ||= Systemd::ResourceControl::OPTIONS
+    TRANSIENT_OPTIONS ||= {
+      'What' => {},
+      'Type' => {},
+      'Options' => {}
+    }.freeze
+
+    OPTIONS ||= TRANSIENT_OPTIONS
+                .merge(Systemd::ResourceControl::OPTIONS)
                 .merge(Systemd::Exec::OPTIONS)
                 .merge(Systemd::Kill::OPTIONS)
-                .merge('What' => {},
-                       'Where' => {},
-                       'Type' => {},
-                       'Options' => {},
+                .merge('Where' => {},
                        'SloppyOptions' => { kind_of: [TrueClass, FalseClass] },
                        'DirectoryMode' => { kind_of: [String, Integer] },
                        'TimeoutSec' => { kind_of: [String, Integer] })
@@ -402,7 +416,7 @@ module Systemd
         'BitsPerSecond' => { kind_of: [String, Integer] },
         'Duplex' => { kind_of: String, equal_to: %w( half full ) },
         'WakeOnLan' => { kind_of: String, equal_to: %w( phy magic off ) }
-      }
+      }.freeze
     end
 
     module Match
@@ -429,7 +443,7 @@ module Systemd
             alpha arm arm-be arm64 arm64-be sh sh64 m86k tilegx cris
           )
         }
-      }
+      }.freeze
     end
 
     OPTIONS ||= Systemd::Networkd::Match::OPTIONS
@@ -444,27 +458,29 @@ module Systemd
         kind_of: [TrueClass, FalseClass, String],
         equal_to: [true, false, 'resolve']
       }
-    }
+    }.freeze
   end
 
   module Service
-    OPTIONS ||= Systemd::ResourceControl::OPTIONS
+    TRANSIENT_OPTIONS ||= {
+      'ExecStart' => {},
+      'Type' => {
+        kind_of: String,
+        equal_to: %w( simple forking oneshot dbus notify idle )
+      },
+      'RemainAfterExit' => { kind_of: [TrueClass, FalseClass] }
+    }.freeze
+
+    OPTIONS ||= TRANSIENT_OPTIONS
+                .merge(Systemd::ResourceControl::OPTIONS)
                 .merge(Systemd::Exec::OPTIONS)
                 .merge(Systemd::Kill::OPTIONS)
-                .merge('Type' => {
-                         kind_of: String,
-                         equal_to: %w( simple forking oneshot dbus notify idle )
-                       },
-                       'RemainAfterExit' => {
-                         kind_of: [TrueClass, FalseClass]
-                       },
-                       'GuessMainPID' => {
+                .merge('GuessMainPID' => {
                          kind_of: [TrueClass, FalseClass]
                        },
                        'PIDFile' => {},
                        'BusName' => {},
                        'BusPolicy' => {},
-                       'ExecStart' => {},
                        'ExecStartPre' => {},
                        'ExecStartPost' => {},
                        'ExecReload' => {},
@@ -530,7 +546,7 @@ module Systemd
       'SuspendState' => { kind_of: [String, Array] },
       'HibernateState' => { kind_of: [String, Array] },
       'HybridSleepState' => { kind_of: [String, Array] }
-    }
+    }.freeze
   end
 
   module Slice
@@ -685,7 +701,7 @@ module Systemd
       'DefaultLimitNICE' => {},
       'DefaultLimitRTPRIO' => {},
       'DefaultLimitRTTIME' => {}
-    }
+    }.freeze
   end
 
   module Path
@@ -700,23 +716,23 @@ module Systemd
         callbacks: {
           'is a valid unit ' => lambda do |spec|
             !spec.match(/\.path$/) &&
-            (Systemd::Helpers::UNITS | Systemd::Helpers::STUB_UNITS).any? do |u|
-              spec.match(/\.#{u}$/)
-            end
+              (Systemd::Helpers::UNITS | Systemd::Helpers::STUB_UNITS).any? do |u| # rubocop: disable LineLength
+                spec.match(/\.#{u}$/)
+              end
           end
         }
       },
       'MakeDirectory' => { kind_of: [TrueClass, FalseClass] },
       'DirectoryMode' => { kind_of: [String, Integer] }
-    }
+    }.freeze
   end
 
   module Target
-    OPTIONS ||= {}
+    OPTIONS ||= {}.freeze
   end
 
   module Timer
-    OPTIONS ||= {
+    TRANSIENT_OPTIONS ||= {
       'OnActiveSec' => { kind_of: [String, Integer] },
       'OnBootSec' => { kind_of: [String, Integer] },
       'OnStartupSec' => { kind_of: [String, Integer] },
@@ -724,7 +740,12 @@ module Systemd
       'OnUnitInactiveSec' => { kind_of: [String, Integer] },
       'OnCalendar' => {},
       'AccuracySec' => { kind_of: [String, Integer] },
-      'RandomSec' => { kind_of: [String, Integer] },
+      'WakeSystem' => { kind_of: [TrueClass, FalseClass] },
+      'RemainAfterElapse' => { kind_of: [TrueClass, FalseClass] },
+      'RandomSec' => { kind_of: [String, Integer] }
+    }.freeze
+
+    OPTIONS ||= TRANSIENT_OPTIONS.merge(
       'Unit' => {
         kind_of: String,
         callbacks: {
@@ -736,17 +757,15 @@ module Systemd
           end
         }
       },
-      'Persistent' => { kind_of: [TrueClass, FalseClass] },
-      'WakeSystem' => { kind_of: [TrueClass, FalseClass] },
-      'RemainAfterElapse' => { kind_of: [TrueClass, FalseClass] }
-    }
+      'Persistent' => { kind_of: [TrueClass, FalseClass] }
+    )
   end
 
   module Timesyncd
     OPTIONS ||= {
       'NTP' => { kind_of: [String, Array] },
       'FallbackNTP' => { kind_of: [String, Array] }
-    }
+    }.freeze
   end
 
   # rubocop: disable ModuleLength
@@ -762,11 +781,11 @@ module Systemd
           end
         end
       }
-    }
+    }.freeze
 
-    OPTIONS ||= {
+    TRANSIENT_OPTIONS ||= {
       'Description' => {},
-      'Documentation' => { kind_of: [String, Array] },
+      'DefaultDependencies' => { kind_of: [TrueClass, FalseClass] },
       'Requires' => UNIT_LIST,
       'RequiresOverridable' => UNIT_LIST,
       'Requisite' => UNIT_LIST,
@@ -779,7 +798,11 @@ module Systemd
       'After' => UNIT_LIST,
       'OnFailure' => UNIT_LIST,
       'PropagatesReloadTo' => UNIT_LIST,
-      'ReloadPropagatedFrom' => UNIT_LIST,
+      'ReloadPropagatedFrom' => UNIT_LIST
+    }.freeze
+
+    OPTIONS ||= TRANSIENT_OPTIONS.merge(
+      'Documentation' => { kind_of: [String, Array] },
       'JoinsNamespaceOf' => UNIT_LIST,
       'RequiresMountsFor' => { kind_of: [String, Array] },
       'OnFailureJobMode' => {
@@ -795,7 +818,6 @@ module Systemd
       'RefuseManualStart' => { kind_of: [TrueClass, FalseClass] },
       'RefuseManualStop' => { kind_of: [TrueClass, FalseClass] },
       'AllowIsolate' => { kind_of: [TrueClass, FalseClass] },
-      'DefaultDependencies' => { kind_of: [TrueClass, FalseClass] },
       'JobTimeoutSec' => { kind_of: [String, Integer] },
       'JobTimeoutAction' => {
         kind_of: String,
@@ -882,7 +904,7 @@ module Systemd
       'AssertFileNotEmpty' => {},
       'AssertFileIsExecutable' => {},
       'SourcePath' => {}
-    }
+    )
   end
   # rubocop: enable ModuleLength
 
@@ -897,6 +919,29 @@ module Systemd
       'FONT' => {},
       'FONT_MAP' => {},
       'FONT_UNIMAP' => {}
-    }
+    }.freeze
+  end
+
+  module Run
+    STRINGS ||= %w( description slice uid gid host machine ).freeze
+
+    BOOLEANS ||= %w( scope remain_after_exit send_sighup no_block ).freeze
+
+    ON_SECS ||= Systemd::Timer::TRANSIENT_OPTIONS
+                .keys
+                .select { |o| o.match(/On\w+Sec/) }
+                .map { |o| o.gsub(/Sec$/, '') }
+                .map(&:underscore)
+
+    CLI_OPTS ||= (STRINGS | BOOLEANS | ON_SECS).flatten
+
+    OPTIONS ||= Systemd::ResourceControl::TRANSIENT_OPTIONS
+                .merge(Systemd::Exec::TRANSIENT_OPTIONS)
+                .merge(Systemd::Kill::TRANSIENT_OPTIONS)
+                .merge(Systemd::Mount::TRANSIENT_OPTIONS)
+                .merge(Systemd::Service::TRANSIENT_OPTIONS)
+                .merge(Systemd::Timer::TRANSIENT_OPTIONS)
+                .merge(Systemd::Unit::TRANSIENT_OPTIONS)
+                .delete_if { |k, _| CLI_OPTS.include?(k.underscore) }
   end
 end

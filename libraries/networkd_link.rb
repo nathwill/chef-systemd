@@ -60,7 +60,7 @@ class Chef::Resource
       odd_opts(conf)
     end
 
-    alias_method :to_h, :to_hash
+    alias to_h to_hash
 
     private
 
@@ -87,7 +87,7 @@ end
 
 class Chef::Provider
   class SystemdNetworkdLink < Chef::Provider::LWRPBase
-    DIR ||= '/etc/systemd/network'
+    DIR ||= '/etc/systemd/network'.freeze
 
     use_inline_resources
 

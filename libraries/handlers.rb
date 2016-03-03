@@ -28,8 +28,10 @@ module SystemdHandlers
         r.is_a?(Chef::Resource::SystemdUnit) && r.auto_reload == false
       end
 
-      Chef::Resource::Execute.new('systemctl daemon-reload', run_context)
-        .run_action(:run) if reload_disabled.any?(&:updated_by_last_action?)
+      if reload_disabled.any?(&:updated_by_last_action?)
+        Chef::Resource::Execute.new('systemctl daemon-reload', run_context)
+                               .run_action(:run)
+      end
     end
   end
 end

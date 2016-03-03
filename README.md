@@ -36,6 +36,7 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
      - [systemd_bootchart](#systemd-bootchart)
      - [systemd_coredump](#systemd-coredump)
      - [systmd_sleep](#systemd-sleep)
+     - [systemd_run](#systemd-run)
    - [Miscellaneous](#misc-resources)
      - [systemd_system](#systemd-system)
      - [systemd_user](#systemd-user)
@@ -912,6 +913,142 @@ Also supports:
 
  - [drop-in](#common-drop-in)
 
+<a name="systemd-run"></a>**systemd\_run**
+
+Resource for running (optionally) resource-constrained transient units
+with [systemd-run][run]. Think of it like an "execute" resource with cgroups.
+
+Example usage:
+
+```ruby
+systemd_run 'sshd-2222.service' do
+  command ''/usr/sbin/sshd -D -o Port=2222'
+  cpu_shares 1_024
+  nice 19
+  service_type 'simple'
+  kill_mode 'mixed'
+end
+```
+
+|Attribute|Description|
+|---------|-----------|
+|unit|name of transient unit|
+|command|the command to run|
+|service_type|same as service unit Type directive|
+|setenv|`Hash` of env vars|
+|timer_property|`Hash` of timer properties|
+|delegate|see docs|
+|cpu_accounting|see docs|
+|cpu_quota|see docs|
+|cpu_shares|see docs|
+|block_io_accounting|see docs|
+|block_io_weight|see docs|
+|block_io_read_bandwidth|see docs|
+|block_io_write_bandwidth|see docs|
+|block_io_device_weight|see docs|
+|memory_accounting|see docs|
+|memory_limit|see docs|
+|device_policy|see docs|
+|device_allow|see docs|
+|tasks_accounting|see docs|
+|tasks_max|see docs|
+|user|see docs|
+|group|see docs|
+|syslog_identifier|see docs|
+|syslog_facility|see docs|
+|syslog_level|see docs|
+|nice|see docs|
+|tty_path|see docs|
+|working_directory|see docs|
+|root_directory|see docs|
+|standard_input|see docs|
+|standard_output|see docs|
+|standard_error|see docs|
+|ignore_sigpipe|see docs|
+|ttyv_hangup|see docs|
+|tty_reset|see docs|
+|private_tmp|see docs|
+|private_devices|see docs|
+|private_network|see docs|
+|no_new_privileges|see docs|
+|syslog_level_prefix|see docs|
+|utmp_identifier|see docs|
+|utmp_mode|see docs|
+|pam_name|see docs|
+|environment|see docs|
+|environment_file|see docs|
+|timer_slack_n_sec|see docs|
+|oom_score_adjust|see docs|
+|pass_environment|see docs|
+|read_write_directories|see docs|
+|read_only_directories|see docs|
+|inaccessible_directories|see docs|
+|protect_system|see docs|
+|protect_home|see docs|
+|runtime_directory|see docs|
+|limit_cpu|see docs|
+|limit_fsize|see docs|
+|limit_data|see docs|
+|limit_stack|see docs|
+|limit_core|see docs|
+|limit_rss|see docs|
+|limit_nofile|see docs|
+|limit_as|see docs|
+|limit_nproc|see docs|
+|limit_memlock|see docs|
+|limit_locks|see docs|
+|limit_sigpending|see docs|
+|limit_msgqueue|see docs|
+|limit_nice|see docs|
+|limit_rtprio|see docs|
+|limit_rttime|see docs|
+|kill_mode|see docs|
+|kill_signal|see docs|
+|send_sigkill|see docs|
+|what|see docs|
+|type|see docs|
+|options|see docs|
+|exec_start|see docs|
+|on_active_sec|see docs|
+|on_boot_sec|see docs|
+|on_startup_sec|see docs|
+|on_unit_active_sec|see docs|
+|on_unit_inactive_sec|see docs|
+|on_calendar|see docs|
+|accuracy_sec|see docs|
+|wake_system|see docs|
+|remain_after_elapse|see docs|
+|random_sec|see docs|
+|default_dependencies|see docs|
+|requires|see docs|
+|requires_overridable|see docs|
+|requisite|see docs|
+|requisite_overridable|see docs|
+|wants|see docs|
+|binds_to|see docs|
+|part_of|see docs|
+|conflicts|see docs|
+|before|see docs|
+|after|see docs|
+|on_failure|see docs|
+|propagates_reload_to|see docs|
+|reload_propagated_from|see docs|
+|description|see docs|
+|slice|see docs|
+|uid|see docs|
+|gid|see docs|
+|host|see docs|
+|machine|see docs|
+|scope|see docs|
+|remain_after_exit|see docs|
+|send_sighup|see docs|
+|no_block|see docs|
+|on_active|see docs|
+|on_boot|see docs|
+|on_startup|see docs|
+|on_unit_active|see docs|
+|on_unit_inactive|see docs|
+
 <a name="misc-resources"></a>Miscellaneous Resources
 ----------------------------------------------------
 
@@ -1572,6 +1709,7 @@ Cookbook-specific attributes that activate and control drop-in mode for units.
 [resource_control]: http://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
 [rhel]: https://access.redhat.com/articles/754933
 [rules]: http://www.freedesktop.org/software/systemd/man/udev.html#Rules%20Files
+[run]: https://www.freedesktop.org/software/systemd/man/systemd-run.html
 [sd-reload]: https://www.youtube.com/watch?feature=player_detailpage&v=wVk-NWtiIZY#t=385
 [service]: http://www.freedesktop.org/software/systemd/man/systemd.service.html
 [sleep]: http://www.freedesktop.org/software/systemd/man/systemd-sleep.conf.html

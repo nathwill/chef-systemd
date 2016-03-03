@@ -177,7 +177,7 @@ class Chef::Provider
       r = new_resource
 
       current_default = Mixlib::ShellOut.new('systemctl get-default')
-                        .tap(&:run_command).stdout.chomp
+                                        .tap(&:run_command).stdout.chomp
 
       target_default = "#{r.name}.#{r.conf_type}"
 

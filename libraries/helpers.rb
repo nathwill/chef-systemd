@@ -72,12 +72,10 @@ module Systemd
     def conf_path(conf)
       if conf.drop_in
         ::File.join(conf_drop_in_root(conf), "#{conf.name}.conf")
+      elsif conf.is_a?(Chef::Resource::SystemdUnit)
+        ::File.join(unit_conf_root(conf), "#{conf.name}.#{conf.conf_type}")
       else
-        if conf.is_a?(Chef::Resource::SystemdUnit)
-          ::File.join(unit_conf_root(conf), "#{conf.name}.#{conf.conf_type}")
-        else
-          ::File.join(local_conf_root, "#{conf.conf_type}.conf")
-        end
+        ::File.join(local_conf_root, "#{conf.conf_type}.conf")
       end
     end
 
@@ -99,10 +97,12 @@ module Systemd
       # ascertain if current real-time-clock mode (utc/local) matches argument
       def rtc_mode?(lu)
         yn = lu == 'local' ? 'yes' : 'no'
-        Mixlib::ShellOut.new('timedatectl')
-          .tap(&:run_command)
-          .stdout
-          .match(Regexp.new("RTC in local TZ: #{yn}")) unless defined?(ChefSpec)
+        unless defined?(ChefSpec)
+          Mixlib::ShellOut.new('timedatectl')
+                          .tap(&:run_command)
+                          .stdout
+                          .match(Regexp.new("RTC in local TZ: #{yn}"))
+        end
       end
 
       module_function :rtc_mode?

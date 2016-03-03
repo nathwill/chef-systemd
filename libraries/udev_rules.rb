@@ -25,13 +25,13 @@ class Chef::Resource
   # resource for managing udev rules
   # http://www.freedesktop.org/software/systemd/man/udev.html
   class SystemdUdevRules < Chef::Resource::LWRPBase
-    VALID_UDEV_OPERATORS ||= %w( == != = += -= := )
-    VALID_RULE_KEYS ||= %w( key operator value )
+    VALID_UDEV_OPERATORS ||= %w( == != = += -= := ).freeze
+    VALID_RULE_KEYS ||= %w( key operator value ).freeze
     VALID_UDEV_KEYS ||= %w(
       ACTION DEVPATH KERNEL NAME SUBSYSTEM DRIVER OPTIONS
       SYMLINK ATTR SYSCTL ENV TEST PROGRAM RESULT IMPORT
       NAME OWNER GROUP MODE SECLABEL RUN LABEL GOTO TAG
-    )
+    ).freeze
 
     resource_name :systemd_udev_rules
 
@@ -43,9 +43,9 @@ class Chef::Resource
         specs.is_a?(Array) && specs.all? do |spec|
           spec.is_a?(Array) && spec.all? do |rule|
             rule.length == 3 &&
-              rule.keys.all? { |k| VALID_RULE_KEYS.include? k } &&
-              VALID_UDEV_KEYS.any? { |k| rule['key'].start_with? k } &&
-              VALID_UDEV_OPERATORS.include?(rule['operator'])
+            rule.keys.all? { |k| VALID_RULE_KEYS.include? k } &&
+            VALID_UDEV_KEYS.any? { |k| rule['key'].start_with? k } &&
+            VALID_UDEV_OPERATORS.include?(rule['operator'])
           end
         end
       end
@@ -63,7 +63,7 @@ end
 
 class Chef::Provider
   class SystemdUdevRules < Chef::Provider::LWRPBase
-    DIR ||= '/etc/udev/rules.d'
+    DIR ||= '/etc/udev/rules.d'.freeze
 
     use_inline_resources
 

@@ -21,11 +21,11 @@
 require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 
-class Chef::Resource
+class ChefSystemdCookbook
   # resource for configuration of files for creation,
   # deletion and cleaning of volatile and temporary files
   # http://www.freedesktop.org/software/systemd/man/tmpfiles.d.html
-  class SystemdTmpfile < Chef::Resource::LWRPBase
+  class TmpfileResource < Chef::Resource::LWRPBase
     resource_name :systemd_tmpfile
 
     actions :create, :delete
@@ -43,10 +43,8 @@ class Chef::Resource
                        C x X r R z Z t T h H a,a+ A,A+
                      )
   end
-end
 
-class Chef::Provider
-  class SystemdTmpfile < Chef::Provider::LWRPBase
+  class TmpfileProvider < Chef::Provider::LWRPBase
     DIR ||= '/etc/tmpfiles.d'.freeze
 
     use_inline_resources

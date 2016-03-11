@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdCoredump do
+describe ChefSystemdCookbook::CoredumpResource do
   let(:coredump) do
-    c = Chef::Resource::SystemdCoredump.new('coredump')
+    c = ChefSystemdCookbook::CoredumpResource.new('coredump')
     c.compress true
     c.storage 'external'
     c

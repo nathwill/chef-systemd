@@ -2,28 +2,28 @@ require 'spec_helper'
 
 describe Systemd::Helpers do
   let(:unit) do
-    Chef::Resource::SystemdService.new('unit')
+    ChefSystemdCookbook::ServiceResource.new('unit')
   end
 
   let(:drop_in_unit) do
-    d = Chef::Resource::SystemdService.new('drop_in')
+    d = ChefSystemdCookbook::ServiceResource.new('drop_in')
     d.drop_in(true)
     d.override 'httpd'
     d
   end
 
   let(:user_unit) do
-    d = Chef::Resource::SystemdService.new('user')
+    d = ChefSystemdCookbook::ServiceResource.new('user')
     d.mode :user
     d
   end
 
   let(:daemon) do
-    Chef::Resource::SystemdTimesyncd.new('daemon')
+    ChefSystemdCookbook::TimesyncdResource.new('daemon')
   end
 
   let(:drop_in_daemon) do
-    d = Chef::Resource::SystemdTimesyncd.new('drop_in')
+    d = ChefSystemdCookbook::TimesyncdResource.new('drop_in')
     d.drop_in(true)
     d
   end

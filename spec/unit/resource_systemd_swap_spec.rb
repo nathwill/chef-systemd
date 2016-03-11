@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdSwap do
+describe ChefSystemdCookbook::SwapResource do
   let(:swap) do
-    s = Chef::Resource::SystemdSwap.new('swap')
+    s = ChefSystemdCookbook::SwapResource.new('swap')
     s.wanted_by 'multi-user.target'
     s.after 'network.target'
     s.what '/dev/swap'

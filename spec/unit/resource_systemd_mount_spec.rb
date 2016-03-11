@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdMount do
+describe ChefSystemdCookbook::MountResource do
   let(:mount) do
-    m = Chef::Resource::SystemdMount.new('mount')
+    m = ChefSystemdCookbook::MountResource.new('mount')
     m.wanted_by 'multi-user.target'
     m.after 'network.target'
     m.what '/dev/vda'

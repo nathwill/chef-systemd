@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdUdevRules do
+describe ChefSystemdResource::UdevRulesResource do
   let(:udev_rules) do
-    u = Chef::Resource::SystemdUdevRules.new('udev_rules')
+    u = ChefSystemdResource::UdevRulesResource.new('udev_rules')
     u.rules [
       [
         {'key' => 'SUBSYSTEM', 'operator' => '==', 'value' => 'block'},

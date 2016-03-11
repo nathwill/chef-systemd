@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdSystem do
+describe ChefSystemdCookbook::SystemResource do
   let(:system) do
-    s = Chef::Resource::SystemdSystem.new('system')
+    s = ChefSystemdCookbook::SystemResource.new('system')
     s.dump_core true
     s.crash_shell false # crash override
     s

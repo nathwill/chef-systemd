@@ -23,10 +23,10 @@ require 'chef/provider/lwrp_base'
 require_relative 'systemd'
 require_relative 'helpers'
 
-class Chef::Resource
+class ChefSystemdCookbook
   # resource for systemd network device configuration
   # http://www.freedesktop.org/software/systemd/man/systemd.link.html
-  class SystemdNetworkdLink < Chef::Resource::LWRPBase
+  class NetworkdLinkResource < Chef::Resource::LWRPBase
     resource_name :systemd_networkd_link
 
     actions :create, :delete
@@ -83,10 +83,8 @@ class Chef::Resource
     end
     # rubocop: enable AbcSize
   end
-end
 
-class Chef::Provider
-  class SystemdNetworkdLink < Chef::Provider::LWRPBase
+  class NetworkdLinkProvider < Chef::Provider::LWRPBase
     DIR ||= '/etc/systemd/network'.freeze
 
     use_inline_resources

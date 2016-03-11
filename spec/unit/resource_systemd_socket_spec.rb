@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdSocket do
+describe ChefSystemdCookbook::SocketResource do
   let(:socket) do
-    s = Chef::Resource::SystemdSocket.new('socket')
+    s = ChefSystemdCookbook::SocketResource.new('socket')
     s.wanted_by 'multi-user.target'
     s.after 'network.target'
     s.listen_stream '8080'

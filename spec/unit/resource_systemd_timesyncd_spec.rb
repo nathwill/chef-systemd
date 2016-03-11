@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdTimesyncd do
+describe ChefSystemdCookbook::TimesyncdResource do
   let(:timesyncd) do
-    t = Chef::Resource::SystemdTimesyncd.new('timesyncd')
+    t = ChefSystemdCookbook::TimesyncdResource.new('timesyncd')
     t.ntp '0.pool.ntp.org'
     t.fallback_ntp '0.centos.pool.ntp.org'
     t

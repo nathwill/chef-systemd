@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdAutomount do
+describe ChefSystemdCookbook::AutomountResource do
   let(:automount) do
-    a = Chef::Resource::SystemdAutomount.new('automount')
+    a = ChefSystemdCookbook::AutomountResource.new('automount')
     a.wanted_by 'multi-user.target'
     a.after 'network.target'
     a.where '/srv/automount'

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdTarget do
+describe ChefSystemdCookbook::TargetResource do
   let(:target) do
-    t = Chef::Resource::SystemdTarget.new('target')
+    t = ChefSystemdCookbook::TargetResource.new('target')
     t.wanted_by 'multi-user.target'
     t.after 'network.target'
     t

@@ -24,10 +24,10 @@ require_relative 'systemd'
 require_relative 'util'
 
 # TODO: deduplicate the boilerplate
-class Chef::Resource
+class ChefSystemdCookbook
   # resource for managing systemd-bootchart
   # http://www.freedesktop.org/software/systemd/man/systemd-bootchart.html
-  class SystemdBootchart < Chef::Resource::SystemdUtil
+  class BootchartResource < ChefSystemdCookbook::UtilResource
     resource_name :systemd_bootchart
 
     def conf_type(_ = nil)
@@ -39,7 +39,7 @@ class Chef::Resource
 
   # resource for managing systemd-coredump
   # http://www.freedesktop.org/software/systemd/man/systemd-coredump.html
-  class SystemdCoredump < Chef::Resource::SystemdUtil
+  class CoredumpResource < ChefSystemdCookbook::UtilResource
     resource_name :systemd_coredump
 
     def conf_type(_ = nil)
@@ -51,7 +51,7 @@ class Chef::Resource
 
   # resource for managing systemd-sleep
   # http://www.freedesktop.org/software/systemd/man/systemd-sleep.html
-  class SystemdSleep < Chef::Resource::SystemdUtil
+  class SleepResource < ChefSystemdCookbook::UtilResource
     resource_name :systemd_sleep
 
     def conf_type(_ = nil)
@@ -63,7 +63,7 @@ class Chef::Resource
 
   # resource for managing systemd system mode defaults
   # http://www.freedesktop.org/software/systemd/man/systemd-system.conf.html
-  class SystemdSystem < Chef::Resource::SystemdUtil
+  class SystemResource < ChefSystemdCookbook::UtilResource
     resource_name :systemd_system
 
     def conf_type(_ = nil)
@@ -79,7 +79,7 @@ class Chef::Resource
 
   # resource for managing systemd user mode defaults
   # http://www.freedesktop.org/software/systemd/man/systemd-user.conf.html
-  class SystemdUser < Chef::Resource::SystemdUtil
+  class UserResource < ChefSystemdCookbook::UtilResource
     resource_name :systemd_user
 
     def conf_type(_ = nil)

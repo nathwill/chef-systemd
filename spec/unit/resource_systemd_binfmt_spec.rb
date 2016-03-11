@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdBinfmt do
+describe ChefSystemdCookbook::BinfmtResource do
   let(:binfmt) do
-    b = Chef::Resource::SystemdBinfmt.new('DOSWin')
+    b = ChefSystemdCookbook::BinfmtResource.new('DOSWin')
     b.magic 'MZ'
     b.interpreter '/usr/bin/wine'
     b

@@ -22,18 +22,16 @@ require_relative 'helpers'
 require_relative 'conf'
 
 # base class for daemon resources
-class Chef::Resource
-  class SystemdDaemon < Chef::Resource::SystemdConf
+class ChefSystemdCookbook
+  class DaemonResource < ChefSystemdCookbook::ConfResource
     resource_name :systemd_daemon
 
     attribute :drop_in, kind_of: [TrueClass, FalseClass], default: true
     attribute :conf_type, kind_of: Symbol, required: true,
                           equal_to: Systemd::Helpers::DAEMONS
   end
-end
 
-class Chef::Provider
-  class SystemdDaemon < Chef::Provider::SystemdConf
+  class DaemonProvider < ChefSystemdCookbook::ConfProvider
     provides :systemd_daemon if defined?(provides)
     Systemd::Helpers::DAEMONS.each do |daemon|
       provides "systemd_#{daemon}".to_sym if defined?(provides)

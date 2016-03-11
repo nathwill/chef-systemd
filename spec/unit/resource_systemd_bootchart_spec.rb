@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdBootchart do
+describe ChefSystemdCookbook::BootchartResource do
   let(:bootchart) do
-    b = Chef::Resource::SystemdBootchart.new('bootchart')
+    b = ChefSystemdCookbook::BootchartResource.new('bootchart')
     b.output '/var/tmp'
     b
   end

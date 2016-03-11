@@ -22,10 +22,10 @@ require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 require 'mixlib/shellout'
 
-class Chef::Resource
+class ChefSystemdCookbook
   # resource for configuring kernel parameters
   # http://man7.org/linux/man-pages/man5/sysctl.d.5.html
-  class SystemdSysctl < Chef::Resource::LWRPBase
+  class SysctlResource < Chef::Resource::LWRPBase
     resource_name :systemd_sysctl
 
     actions :create, :delete, :apply
@@ -41,10 +41,8 @@ class Chef::Resource
       "#{name}='#{Array(value).join(' ')}'"
     end
   end
-end
 
-class Chef::Provider
-  class SystemdSysctl < Chef::Provider::LWRPBase
+  class SysctlProvider < Chef::Provider::LWRPBase
     DIR ||= '/etc/sysctl.d'.freeze
 
     use_inline_resources

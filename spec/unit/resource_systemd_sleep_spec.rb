@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdSleep do
+describe ChefSystemdCookbook::SleepResource do
   let(:sleep) do
-    s = Chef::Resource::SystemdSleep.new('sleep')
+    s = ChefSystemdCookbook::SleepResource.new('sleep')
     s.suspend_state 'freeze'
     s
   end

@@ -26,8 +26,8 @@ require_relative 'systemd'
 require_relative 'helpers'
 require_relative 'mixins'
 
-class Chef::Resource
-  class SystemdRun < Chef::Resource::LWRPBase
+class ChefSystemdCookbook
+  class SystemdRunResource < Chef::Resource::LWRPBase
     include Chef::Mixin::ParamsValidate
     include Systemd::Mixin::DirectiveConversion
 
@@ -94,10 +94,8 @@ class Chef::Resource
     # rubocop: enable AbcSize
     # rubocop: enable MethodLength
   end
-end
 
-class Chef::Provider
-  class SystemdRun < Chef::Provider::LWRPBase
+  class SystemdRunProvider < Chef::Provider::LWRPBase
     use_inline_resources
 
     def whyrun_supported?

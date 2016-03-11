@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdConf do
+describe ChefSystemdCookbook::ConfResource do
   let(:daemon) do
-    d = Chef::Resource::SystemdJournald.new('journal')
+    d = ChefSystemdCookbook::JournaldResource.new('journal')
     d.storage 'auto'
     d.forward_to_syslog true
     d.compress true

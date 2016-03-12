@@ -1,3 +1,8 @@
+# 1.2.0 / 2016-03-11
+
+* adds systemd_run resource
+* documentation fixes
+
 # 1.1.2 / 2015-11-20
 
 * add missing timer attributes

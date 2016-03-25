@@ -58,7 +58,7 @@ module Systemd
 
     # path for drop-in configuration of systemd resources
     def conf_drop_in_root(conf)
-      if conf.is_a?(Chef::Resource::SystemdUnit)
+      if conf.is_a?(ChefSystemdCookbook::UnitResource)
         ::File.join(
           unit_conf_root(conf),
           "#{conf.override}.#{conf.conf_type}.d"
@@ -72,7 +72,7 @@ module Systemd
     def conf_path(conf)
       if conf.drop_in
         ::File.join(conf_drop_in_root(conf), "#{conf.name}.conf")
-      elsif conf.is_a?(Chef::Resource::SystemdUnit)
+      elsif conf.is_a?(ChefSystemdCookbook::UnitResource)
         ::File.join(unit_conf_root(conf), "#{conf.name}.#{conf.conf_type}")
       else
         ::File.join(local_conf_root, "#{conf.conf_type}.conf")

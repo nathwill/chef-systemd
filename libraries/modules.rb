@@ -22,11 +22,11 @@ require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 require_relative 'helpers'
 
-class Chef::Resource
+class ChefSystemdCookbook
   # manage system modules
   # http://www.freedesktop.org/software/systemd/man/modules-load.d.html
   # http://linux.die.net/man/5/modprobe.d
-  class SystemdModules < Chef::Resource::LWRPBase
+  class ModulesResource < Chef::Resource::LWRPBase
     resource_name :systemd_modules
 
     actions :create, :delete, :load, :unload
@@ -35,10 +35,8 @@ class Chef::Resource
     attribute :blacklist, kind_of: [TrueClass, FalseClass], default: false
     attribute :modules, kind_of: Array, default: %w(), required: true
   end
-end
 
-class Chef::Provider
-  class SystemdModules < Chef::Provider::LWRPBase
+  class ModulesProvider < Chef::Provider::LWRPBase
     use_inline_resources
 
     def whyrun_supported?

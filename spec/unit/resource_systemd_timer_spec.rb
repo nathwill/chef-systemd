@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdTimer do
+describe ChefSystemdCookbook::TimerResource do
   let(:timer) do
-    t = Chef::Resource::SystemdTimer.new('target')
+    t = ChefSystemdCookbook::TimerResource.new('target')
     t.wanted_by 'multi-user.target'
     t.after 'network.target'
     t.on_calendar 'hourly'

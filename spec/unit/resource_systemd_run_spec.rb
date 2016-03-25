@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdRun do
+describe ChefSystemdCookbook::SystemdRunResource do
   let(:svc_run) do
-    Chef::Resource::SystemdRun.new("transient-env.service").tap do |r|
+    ChefSystemdCookbook::SystemdRunResource.new("transient-env.service").tap do |r|
       r.command 'env'
       r.service_type 'simple'
       r.setenv({ 'FOO' => 0, 'BAR' => 1 })

@@ -21,10 +21,10 @@
 require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 
-class Chef::Resource
+class ChefSystemdCookbook
   # resource for declarative allocation of system users and groups
   # http://www.freedesktop.org/software/systemd/man/sysusers.d.html
-  class SystemdSysuser < Chef::Resource::LWRPBase
+  class SysuserResource < Chef::Resource::LWRPBase
     resource_name :systemd_sysuser
 
     actions :create, :delete
@@ -48,10 +48,8 @@ class Chef::Resource
       "#{type} #{name} #{id} \"#{gecos}\" #{home}"
     end
   end
-end
 
-class Chef::Provider
-  class SystemdSysuser < Chef::Provider::LWRPBase
+  class SysuserProvider < Chef::Provider::LWRPBase
     DIR ||= '/etc/sysusers.d'.freeze
 
     use_inline_resources

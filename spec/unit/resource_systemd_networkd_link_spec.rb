@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdNetworkdLink do
+describe ChefSystemdCookbook::NetworkdLinkResource do
   let(:link) do
-    l = Chef::Resource::SystemdNetworkdLink.new('link')
+    l = ChefSystemdCookbook::NetworkdLinkResource.new('link')
     l.match_mac_addr '12:34:56:78:9a:bc'
     l.driver 'brcmsmac'
     l.path 'pci-0000:02:00.0-*'

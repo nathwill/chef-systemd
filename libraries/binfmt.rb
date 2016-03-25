@@ -23,8 +23,8 @@ require 'chef/provider/lwrp_base'
 
 # Configure additional binary formats for executables at boot
 # http://www.freedesktop.org/software/systemd/man/binfmt.d.html
-class Chef::Resource
-  class SystemdBinfmt < Chef::Resource::LWRPBase
+class ChefSystemdCookbook
+  class BinfmtResource < Chef::Resource::LWRPBase
     resource_name :systemd_binfmt
 
     actions :create, :delete
@@ -62,10 +62,8 @@ class Chef::Resource
       ":#{str.join(':')}"
     end
   end
-end
 
-class Chef::Provider
-  class SystemdBinfmt < Chef::Provider::LWRPBase
+  class BinfmtProvider < Chef::Provider::LWRPBase
     DIR ||= '/etc/binfmt.d'.freeze
 
     use_inline_resources

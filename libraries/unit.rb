@@ -24,10 +24,10 @@ require_relative 'systemd'
 require_relative 'helpers'
 require_relative 'conf'
 
-class Chef::Resource
+class ChefSystemdCookbook
   # base class for systemd unit resources
   # http://www.freedesktop.org/software/systemd/man/systemd.unit.html
-  class SystemdUnit < Chef::Resource::SystemdConf
+  class UnitResource < ChefSystemdCookbook::ConfResource
     include Chef::Mixin::ParamsValidate
 
     resource_name :systemd_unit
@@ -125,10 +125,8 @@ class Chef::Resource
       ["Alias=#{aliases.map { |a| "#{a}.#{conf_type}" }.join(' ')}"]
     end
   end
-end
 
-class Chef::Provider
-  class SystemdUnit < Chef::Provider::SystemdConf
+  class UnitProvider < ChefSystemdCookbook::ConfProvider
     provides :systemd_unit if defined?(provides)
     Systemd::Helpers::UNITS.reject { |u| u == :target }.each do |unit_type|
       provides "systemd_#{unit_type}".to_sym if defined?(provides)

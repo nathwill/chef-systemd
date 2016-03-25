@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdUser do
+describe ChefSystemdCookbook::UserResource do
   let(:user) do
-    u = Chef::Resource::SystemdUser.new('user')
+    u = ChefSystemdCookbook::UserResource.new('user')
     u.dump_core true
     u.crash_shell false # crash override
     u

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdSysuser do
+describe ChefSystemdCookbook::SysuserResource do
   let(:sysuser) do
-    u = Chef::Resource::SystemdSysuser.new('_testuser')
+    u = ChefSystemdCookbook::SysuserResource.new('_testuser')
     u.id 65_530
     u.gecos 'my test user'
     u.home '/var/lib/testuser'

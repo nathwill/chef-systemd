@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdSlice do
+describe ChefSystemdCookbook::SliceResource do
   let(:slice) do
-    s = Chef::Resource::SystemdSlice.new('slice')
+    s = ChefSystemdCookbook::SliceResource.new('slice')
     s.wanted_by 'multi-user.target'
     s.after 'network.target'
     s.memory_limit '1G'

@@ -27,14 +27,16 @@
 
 # resources for management of systemd units
 
+require 'mixlib/shellout'
+
 require_relative 'systemd'
 require_relative 'unit'
 
 # TODO: deduplicate the boilerplate
-class Chef::Resource
+class ChefSystemdCookbook
   # resource for configuration of systemd automount units
   # http://www.freedesktop.org/software/systemd/man/systemd.automount.html
-  class SystemdAutomount < Chef::Resource::SystemdUnit
+  class AutomountResource < ChefSystemdCookbook::UnitResource
     resource_name :systemd_automount
 
     def conf_type(_ = nil)
@@ -50,7 +52,7 @@ class Chef::Resource
 
   # resource for configuration of systemd mount units
   # http://www.freedesktop.org/software/systemd/man/systemd.mount.html
-  class SystemdMount < Chef::Resource::SystemdUnit
+  class MountResource < ChefSystemdCookbook::UnitResource
     resource_name :systemd_mount
 
     def conf_type(_ = nil)
@@ -66,7 +68,7 @@ class Chef::Resource
 
   # resource for configuration of systemd path units
   # http://www.freedesktop.org/software/systemd/man/systemd.path.html
-  class SystemdPath < Chef::Resource::SystemdUnit
+  class PathResource < ChefSystemdCookbook::UnitResource
     resource_name :systemd_path
 
     def conf_type(_ = nil)
@@ -82,7 +84,7 @@ class Chef::Resource
 
   # resource for configuration of systemd service units
   # http://www.freedesktop.org/software/systemd/man/systemd.service.html
-  class SystemdService < Chef::Resource::SystemdUnit
+  class ServiceResource < ChefSystemdCookbook::UnitResource
     resource_name :systemd_service
 
     def conf_type(_ = nil)
@@ -98,7 +100,7 @@ class Chef::Resource
 
   # resource for configuration of systemd slice units
   # http://www.freedesktop.org/software/systemd/man/systemd.slice.html
-  class SystemdSlice < Chef::Resource::SystemdUnit
+  class SliceResource < ChefSystemdCookbook::UnitResource
     resource_name :systemd_slice
 
     def conf_type(_ = nil)
@@ -110,7 +112,7 @@ class Chef::Resource
 
   # resource for configuration of systemd socket units
   # http://www.freedesktop.org/software/systemd/man/systemd.socket.html
-  class SystemdSocket < Chef::Resource::SystemdUnit
+  class SocketResource < ChefSystemdCookbook::UnitResource
     resource_name :systemd_socket
 
     def conf_type(_ = nil)
@@ -126,7 +128,7 @@ class Chef::Resource
 
   # resource for configuration of systemd swap units
   # http://www.freedesktop.org/software/systemd/man/systemd.swap.html
-  class SystemdSwap < Chef::Resource::SystemdUnit
+  class SwapResource < ChefSystemdCookbook::UnitResource
     resource_name :systemd_swap
 
     def conf_type(_ = nil)
@@ -142,7 +144,7 @@ class Chef::Resource
 
   # resource for configuration of systemd target units
   # http://www.freedesktop.org/software/systemd/man/systemd.target.html
-  class SystemdTarget < Chef::Resource::SystemdUnit
+  class TargetResource < ChefSystemdCookbook::UnitResource
     resource_name :systemd_target
 
     def conf_type(_ = nil)
@@ -152,7 +154,7 @@ class Chef::Resource
 
   # resource for configuration of systemd timer units
   # http://www.freedesktop.org/software/systemd/man/systemd.timer.html
-  class SystemdTimer < Chef::Resource::SystemdUnit
+  class TimerResource < ChefSystemdCookbook::UnitResource
     resource_name :systemd_timer
 
     def conf_type(_ = nil)
@@ -165,12 +167,8 @@ class Chef::Resource
       yield
     end
   end
-end
 
-require 'mixlib/shellout'
-
-class Chef::Provider
-  class SystemdTarget < Chef::Provider::SystemdUnit
+  class TargetProvider < ChefSystemdCookbook::UnitProvider
     provides :systemd_target if defined?(provides)
 
     action :set_default do

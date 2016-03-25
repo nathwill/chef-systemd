@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdPath do
+describe ChefSystemdCookbook::PathResource do
   let(:path) do
-    p = Chef::Resource::SystemdPath.new('path')
+    p = ChefSystemdCookbook::PathResource.new('path')
     p.wanted_by 'multi-user.target'
     p.after 'network.target'
     p.unit 'worker.service'

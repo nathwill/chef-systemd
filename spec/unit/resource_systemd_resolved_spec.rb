@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdResolved do
+describe ChefSystemdCookbook::ResolvedResource do
   let(:resolved) do
-    r = Chef::Resource::SystemdResolved.new('resolved')
+    r = ChefSystemdCookbook::ResolvedResource.new('resolved')
     r.dns '8.8.8.8 8.8.4.4'
     r.fallback_dns '208.67.222.222 208.67.220.220'
     r

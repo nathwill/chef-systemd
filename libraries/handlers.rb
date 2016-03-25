@@ -25,7 +25,7 @@ module SystemdHandlers
   class DaemonReload
     def conditionally_reload(run_context)
       reload_disabled = run_context.resource_collection.select do |r|
-        r.is_a?(Chef::Resource::SystemdUnit) && r.auto_reload == false
+        r.is_a?(ChefSystemdCookbook::UnitResource) && r.auto_reload == false
       end
 
       if reload_disabled.any?(&:updated_by_last_action?)

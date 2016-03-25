@@ -24,8 +24,8 @@ require_relative 'helpers'
 require_relative 'mixins'
 
 # Base class for resources configured with ini-formatted files
-class Chef::Resource
-  class SystemdConf < Chef::Resource::LWRPBase
+class ChefSystemdCookbook
+  class ConfResource < Chef::Resource::LWRPBase
     include Systemd::Mixin::DirectiveConversion
 
     resource_name :systemd_conf
@@ -51,10 +51,8 @@ class Chef::Resource
 
     alias to_h to_hash
   end
-end
 
-class Chef::Provider
-  class SystemdConf < Chef::Provider::LWRPBase
+  class ConfProvider < Chef::Provider::LWRPBase
     use_inline_resources
 
     def whyrun_supported?
@@ -77,7 +75,9 @@ class Chef::Provider
         execute "#{r.name}.#{r.conf_type}-systemd-reload" do
           command 'systemctl daemon-reload'
           action :nothing
-          only_if { r.is_a?(Chef::Resource::SystemdUnit) && r.auto_reload }
+          only_if do
+            r.is_a?(ChefSystemdCookbook::UnitResource) && r.auto_reload
+          end
           subscribes :run, "file[#{conf_path}]", :immediately
         end
 

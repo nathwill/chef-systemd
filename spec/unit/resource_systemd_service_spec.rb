@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdService do
+describe ChefSystemdCookbook::ServiceResource do
   let(:service) do
-    s = Chef::Resource::SystemdService.new('service')
+    s = ChefSystemdCookbook::ServiceResource.new('service')
     s.description 'test unit'
     s.documentation 'http://example.com'
     s.wanted_by 'multi-user.target'

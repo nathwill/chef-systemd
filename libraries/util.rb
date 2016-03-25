@@ -21,9 +21,9 @@
 require_relative 'helpers'
 require_relative 'conf'
 
-class Chef::Resource
+class ChefSystemdCookbook
   # base class for management of systemd utilities
-  class SystemdUtil < Chef::Resource::SystemdConf
+  class UtilResource < ChefSystemdCookbook::ConfResource
     resource_name :systemd_util
 
     attribute :drop_in, kind_of: [TrueClass, FalseClass], default: true
@@ -35,10 +35,8 @@ class Chef::Resource
       conf_type.capitalize
     end
   end
-end
 
-class Chef::Provider
-  class SystemdUtil < Chef::Provider::SystemdConf
+  class UtilProvider < ChefSystemdCookbook::ConfProvider
     provides :systemd_util if defined?(provides)
     Systemd::Helpers::UTILS.each do |util|
       provides "systemd_#{util}".to_sym if defined?(provides)

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdUtil do
+describe ChefSystemdCookbook::UtilResource do
   let(:util) do
-    u = Chef::Resource::SystemdUtil.new('util')
+    u = ChefSystemdCookbook::UtilResource.new('util')
     u.conf_type :bootchart
     u
   end

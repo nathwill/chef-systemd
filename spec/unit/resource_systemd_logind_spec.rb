@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Chef::Resource::SystemdLogind do
+describe ChefSystemdCookbook::LogindResource do
   let(:logind) do
-    l = Chef::Resource::SystemdLogind.new('logind')
+    l = ChefSystemdCookbook::LogindResource.new('logind')
     l.remove_ipc true
     l
   end

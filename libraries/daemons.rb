@@ -26,10 +26,10 @@ require_relative 'systemd'
 require_relative 'daemon'
 
 # TODO: deduplicate the boilerplate
-class Chef::Resource
+class ChefSystemdCookbook
   # resource for configuring systemd-journald
   # http://www.freedesktop.org/software/systemd/man/systemd-journald.service.html
-  class SystemdJournald < Chef::Resource::SystemdDaemon
+  class JournaldResource < ChefSystemdCookbook::DaemonResource
     resource_name :systemd_journald
 
     def conf_type(_ = nil)
@@ -45,7 +45,7 @@ class Chef::Resource
 
   # resource for configuring systemd-logind
   # http://www.freedesktop.org/software/systemd/man/systemd-logind.service.html
-  class SystemdLogind < Chef::Resource::SystemdDaemon
+  class LogindResource < ChefSystemdCookbook::DaemonResource
     resource_name :systemd_logind
 
     def conf_type(_ = nil)
@@ -61,7 +61,7 @@ class Chef::Resource
 
   # resource for configuring systemd-resolved
   # http://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html
-  class SystemdResolved < Chef::Resource::SystemdDaemon
+  class ResolvedResource < ChefSystemdCookbook::DaemonResource
     resource_name :systemd_resolved
 
     def conf_type(_ = nil)
@@ -77,7 +77,7 @@ class Chef::Resource
 
   # resource for configuring systemd-timesyncd
   # http://www.freedesktop.org/software/systemd/man/systemd-timesyncd.service.html
-  class SystemdTimesyncd < Chef::Resource::SystemdDaemon
+  class TimesyncdResource < ChefSystemdCookbook::DaemonResource
     resource_name :systemd_timesyncd
 
     def conf_type(_ = nil)

@@ -1,3 +1,7 @@
+# 2.0.0 / 2016-03-24
+
+* move namespaces
+
 # 1.2.0 / 2016-03-11
 
 * adds systemd_run resource

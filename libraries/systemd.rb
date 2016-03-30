@@ -478,6 +478,8 @@ module Systemd
                 .merge('GuessMainPID' => {
                          kind_of: [TrueClass, FalseClass]
                        },
+                       'User' => {},
+                       'Group' => {},
                        'PIDFile' => {},
                        'BusName' => {},
                        'BusPolicy' => {},

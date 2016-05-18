@@ -43,9 +43,9 @@ class ChefSystemdCookbook
         specs.is_a?(Array) && specs.all? do |spec|
           spec.is_a?(Array) && spec.all? do |rule|
             rule.length == 3 &&
-            rule.keys.all? { |k| VALID_RULE_KEYS.include? k } &&
-            VALID_UDEV_KEYS.any? { |k| rule['key'].start_with? k } &&
-            VALID_UDEV_OPERATORS.include?(rule['operator'])
+              rule.keys.all? { |k| VALID_RULE_KEYS.include? k } &&
+              VALID_UDEV_KEYS.any? { |k| rule['key'].start_with? k } &&
+              VALID_UDEV_OPERATORS.include?(rule['operator'])
           end
         end
       end

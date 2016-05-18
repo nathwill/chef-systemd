@@ -1,3 +1,7 @@
+# 2.1.1 / 2016-05-18
+
+* RuboCop whitespace issues fixed
+
 # 2.1.0 / 2016-05-18
 
 * indicate Arch Linux(arch) supported

@@ -1,3 +1,7 @@
+# 2.1.0 / 2016-05-18
+
+* indicate Arch Linux(arch) supported
+
 # 2.0.0 / 2016-03-24
 
 * move namespaces

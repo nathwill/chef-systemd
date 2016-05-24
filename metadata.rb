@@ -4,7 +4,7 @@ maintainer_email 'nath.e.will@gmail.com'
 license          'apache2'
 description      'resource-driven chef cookbook for managing linux systems via systemd'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '2.1.1'
+version          '2.1.0'
 
 supports 'arch'
 supports 'fedora'

@@ -355,19 +355,18 @@ module Systemd
       'DeviceAllow' => {},
       'TasksAccounting' => { kind_of: [TrueClass, FalseClass] },
       'Slice' => {},
-      'TasksMax' => {
-        kind_of: [Integer, String],
-        callbacks: {
-          'is a valid symbol' =>
-          lambda do |val|
-            if val.is_a?(String)
-              val == 'infinity'
-            else
-              true
-            end
-          end
-        }
-      }
+      'TasksMax' => { kind_of: [Integer, String],
+                      callbacks: {
+                        'is a valid symbol' =>
+                        lambda do |val|
+                          if val.is_a?(String)
+                            val == 'infinity'
+                          else
+                            true
+                          end
+                        end
+                      }
+                    }
     }.freeze
 
     OPTIONS ||= TRANSIENT_OPTIONS.merge(
@@ -476,68 +475,67 @@ module Systemd
                 .merge(Systemd::ResourceControl::OPTIONS)
                 .merge(Systemd::Exec::OPTIONS)
                 .merge(Systemd::Kill::OPTIONS)
-                .merge(
-                  'GuessMainPID' => {
-                    kind_of: [TrueClass, FalseClass]
-                  },
-                  'PIDFile' => {},
-                  'BusName' => {},
-                  'BusPolicy' => {},
-                  'ExecStartPre' => {},
-                  'ExecStartPost' => {},
-                  'ExecReload' => {},
-                  'ExecStop' => {},
-                  'ExecStopPost' => {},
-                  'RestartSec' => { kind_of: [String, Integer] },
-                  'TimeoutStartSec' => { kind_of: [String, Integer] },
-                  'TimeoutStopSec' => { kind_of: [String, Integer] },
-                  'TimeoutSec' => { kind_of: [String, Integer] },
-                  'WatchdogSec' => { kind_of: [String, Integer] },
-                  'Restart' => {
-                    kind_of: String,
-                    equal_to: %w(
-                      on-success on-failure on-abnormal
-                      no on-watchdog on-abort always
-                    )
-                  },
-                  'SuccessExitStatus' => { kind_of: [String, Integer] },
-                  'RestartPreventExitStatus' => {
-                    kind_of: [String, Integer]
-                  },
-                  'RestartForceExitStatus' => {
-                    kind_of: [String, Integer]
-                  },
-                  'PermissionsStartOnly' => {
-                    kind_of: [TrueClass, FalseClass]
-                  },
-                  'RootDirectoryStartOnly' => {
-                    kind_of: [TrueClass, FalseClass]
-                  },
-                  'NonBlocking' => { kind_of: [TrueClass, FalseClass] },
-                  'NotifyAccess' => {
-                    kind_of: String,
-                    equal_to: %w( none main all )
-                  },
-                  'Sockets' => {},
-                  'StartLimitInterval' => {},
-                  'StartLimitBurst' => {},
-                  'StartLimitAction' => {
-                    kind_of: String,
-                    equal_to: %w(
-                      none reboot reboot-force reboot-immediate
-                      poweroff poweroff-force poweroff-immediate
-                    )
-                  },
-                  'FailureAction' => {
-                    kind_of: String,
-                    equal_to: %w(
-                      none reboot reboot-force reboot-immediate
-                      poweroff poweroff-force poweroff-immediate
-                    )
-                  },
-                  'RebootArgument' => {},
-                  'FileDescriptorStoreMax' => { kind_of: Integer }
-                )
+                .merge('GuessMainPID' => {
+                         kind_of: [TrueClass, FalseClass]
+                       },
+                       'PIDFile' => {},
+                       'BusName' => {},
+                       'BusPolicy' => {},
+                       'ExecStartPre' => {},
+                       'ExecStartPost' => {},
+                       'ExecReload' => {},
+                       'ExecStop' => {},
+                       'ExecStopPost' => {},
+                       'RestartSec' => { kind_of: [String, Integer] },
+                       'TimeoutStartSec' => { kind_of: [String, Integer] },
+                       'TimeoutStopSec' => { kind_of: [String, Integer] },
+                       'TimeoutSec' => { kind_of: [String, Integer] },
+                       'WatchdogSec' => { kind_of: [String, Integer] },
+                       'Restart' => {
+                         kind_of: String,
+                         equal_to: %w(
+                           on-success on-failure on-abnormal
+                           no on-watchdog on-abort always
+                         )
+                       },
+                       'SuccessExitStatus' => { kind_of: [String, Integer] },
+                       'RestartPreventExitStatus' => {
+                         kind_of: [String, Integer]
+                       },
+                       'RestartForceExitStatus' => {
+                         kind_of: [String, Integer]
+                       },
+                       'PermissionsStartOnly' => {
+                         kind_of: [TrueClass, FalseClass]
+                       },
+                       'RootDirectoryStartOnly' => {
+                         kind_of: [TrueClass, FalseClass]
+                       },
+                       'NonBlocking' => { kind_of: [TrueClass, FalseClass] },
+                       'NotifyAccess' => {
+                         kind_of: String,
+                         equal_to: %w( none main all )
+                       },
+                       'Sockets' => {},
+                       'StartLimitInterval' => {},
+                       'StartLimitBurst' => {},
+                       'StartLimitAction' => {
+                         kind_of: String,
+                         equal_to: %w(
+                           none reboot reboot-force reboot-immediate
+                           poweroff poweroff-force poweroff-immediate
+                         )
+                       },
+                       'FailureAction' => {
+                         kind_of: String,
+                         equal_to: %w(
+                           none reboot reboot-force reboot-immediate
+                           poweroff poweroff-force poweroff-immediate
+                         )
+                       },
+                       'RebootArgument' => {},
+                       'FileDescriptorStoreMax' => { kind_of: Integer }
+                      )
   end
 
   module Sleep

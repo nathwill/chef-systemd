@@ -152,6 +152,14 @@ module Systemd
     STRING ||= { kind_of: String }.freeze
     STRING_OR_ARRAY ||= { kind_of: [String, Array] }.freeze
     STRING_OR_INT ||= { kind_of: [String, Integer] }.freeze
+    UNIT ||= {
+      kind_of: String,
+      callbacks: {
+        'is a unit name' => lambda do |spec|
+          UNIT_TYPES.any? { |t| spec.end_with?(t) }
+        end
+      }
+    }.freeze
     VIRT ||= {
       kind_of: String,
       equal_to: %w(
@@ -462,12 +470,148 @@ module Systemd
     }.freeze
   end
 
-  module ResourceControl
-
+  module Kill
+    OPTIONS ||= {
+      'KillMode' => {
+        kind_of: String,
+        equal_to: %w( control-group process mixed none )
+      },
+      'KillSignal' => Common::STRING_OR_INT,
+      'SendSIGHUP' => Common::BOOLEAN,
+      'SendSIGKILL' => Common::BOOLEAN
+    }.freeze
   end
 
-  module Kill
-
+  module ResourceControl
+    OPTIONS ||= {
+      'CPUAccounting' => Common::BOOLEAN,
+      'CPUShares' => {
+        kind_of: Integer,
+        equal_to: 2.upto(262_144).to_a
+      },
+      'StartupCPUShares' => {
+        kind_of: Integer,
+        equal_to: 2.upto(262_144).to_a
+      },
+      'CPUQuota' => {
+        kind_of: String,
+        callbacks: {
+          'is a percentage' => lambda do |spec|
+            spec.end_with?(%) && spec.gsub(/%$/, '').match(/^\d+$/)
+          end
+        }
+      },
+      'MemoryAccounting' => Common::BOOLEAN,
+      'MemoryLimit' => Common::STRING_OR_INT,
+      'TasksAccounting' => Common::BOOLEAN,
+      'TasksMax' => {
+        kind_of: [String, Integer],
+        callbacks: {
+          'is an integer or "infinity"' => lambda do |spec|
+            spec.is_a?(Integer) || spec == 'infinity'
+          end
+        }
+      },
+      'IOAccounting' => Common::BOOLEAN,
+      'IOWeight' => {
+        kind_of: Integer,
+        equal_to: 1.upto(10_000).to_a
+      },
+      'StartupIOWeight' => {
+        kind_of: Integer,
+        equal_to: 1.upto(10_000).to_a
+      },
+      'IODeviceWeight' => {
+        kind_of: String,
+        callbacks: {
+          'is a valid argument' => lambda do |spec|
+            args = spec.split(' ')
+            args.length == 2 &&
+              Pathname.new(args[0]).absolute? &&
+              1.upto(10_000).include?(args[1].to_i)
+        }
+      },
+      'IOReadBandwidthMax' => Common::STRING_OR_INT,
+      'IOWriteBandwidthMax' => Common::STRING_OR_INT,
+      'IOReadIOPSMax' => {
+        kind_of: String,
+        callbacks: {
+          'is a valid argument' => lambda do |spec|
+            args = spec.split(' ')
+            args.length == 2 &&
+              Pathname.new(args[0]).absolute?
+          end
+        }
+      },
+      'IOWriteIOPSMax' => {
+        kind_of: String,
+        callbacks: {
+          'is a valid argument' => lambda do |spec|
+            args = spec.split(' ')
+            args.length == 2 &&
+              Pathname.new(args[0]).absolute?
+          end
+        }
+      },
+      'BlockIOAccounting' => Common::BOOLEAN,
+      'BlockIOWeight' => {
+        kind_of: Integer,
+        equal_to: 10.upto(1_000).to_a,
+      },
+      'StartupBlockIOWeight' => {
+        kind_of: Integer,
+        equal_to: 10.upto(1_000).to_a,
+      },
+      'BlockIODeviceWeight' => {
+        kind_of: String,
+        callbacks: {
+          'is a valid argument' => lambda do |spec|
+            args = spec.split(' ')
+            args.length == 2 &&
+              Pathname.new(args[0]).absolute? &&
+              10.upto(1_000).include?(args[1].to_i)
+        }
+      },
+      'BlockIOReadBandwidth' => {
+        kind_of: String,
+        callbacks: {
+          'is a valid argument' => lambda do |spec|
+            args = spec.split(' ')
+            args.length == 2 &&
+              Pathname.new(args[0]).absolute?
+          end
+        }
+      },
+      'BlockIOWriteBandwidth' => {
+        kind_of: String,
+        callbacks: {
+          'is a valid argument' => lambda do |spec|
+            args = spec.split(' ')
+            args.length == 2 &&
+              Pathname.new(args[0]).absolute?
+          end
+        }
+      },
+      'DeviceAllow' => {
+        kind_of: String,
+        callbacks: {
+          'is a valid argument' => lambda do |spec|
+            args = spec.split(' ')
+            args.length == 2 &&
+              Pathname.new(args[0]).absolute? &&
+              %w( r w m ).include?(args[1])
+          end
+        }
+      },
+      'DevicePolicy' => { kind_of: String, equal_to: %w( strict auto closed ) },
+      'Slice' => {
+        kind_of: String,
+        callbacks: {
+          'is a slice' => -> (spec) { spec.end_with?('.slice') }
+        }
+      },
+      'Delegate' => Common::BOOLEAN,
+    }.freeze
   end
 
   module Automount
@@ -500,21 +644,47 @@ module Systemd
   module Mount
     OPTIONS ||= {
       'Mount' => {
-        
-      }
+        'What' => Common::ABSOLUTE_PATH,
+        'Where' => Common::ABSOLUTE_PATH,
+        'Type' => Common::STRING,
+        'Options' => Common::STRING,
+        'SloppyOptions' => Common::BOOLEAN,
+        'DirectoryMode' => Common::STRING,
+        'TimeoutSec' => Common::STRING_OR_INT,
+      }.merge(Exec::OPTIONS)
+       .merge(Kill::OPTIONS)
+       .merge(ResourceControl::OPTIONS) 
     }.freeze
   end
 
   module Path
-
+    OPTIONS ||= {
+      'PathExists' => Common::ABSOLUTE_PATH,
+      'PathExistsGlob' => Common::ABSOLUTE_PATH,
+      'PathChanged' => Common::ABSOLUTE_PATH,
+      'PathModified' => Common::ABSOLUTE_PATH,
+      'DirectoryNotEmpty' => Common::ABSOLUTE_PATH,
+      'Unit' => Common::UNIT,
+      'MakeDirectory' => Common::BOOLEAN,
+      'DirectoryMode' => Common::STRING
+    }.freeze
   end
 
   module Scope
-
+    OPTIONS ||= ResourceControl::OPTIONS
   end
 
   module Service
-
+    OPTIONS ||= {
+      'Service' => {
+        'Type' => {
+          kind_of: String,
+          equal_to: %w( simple forking oneshot dbus notify idle )
+        }
+      }.merge(Exec::OPTIONS)
+       .merge(Kill::OPTIONS)
+       .merge(ResourceControl::OPTIONS)
+    }.freeze
   end
 
   module Slice

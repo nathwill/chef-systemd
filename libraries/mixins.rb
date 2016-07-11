@@ -1,4 +1,3 @@
-
 module Systemd
   module Mixin
     module DirectiveConversion
@@ -7,12 +6,9 @@ module Systemd
       end
 
       module ClassMethods
-        # Converts a hash into resource attributes
-        # See the Systemd module for more details.
-        def option_attributes(options = {})
-          options.each_pair do |name, config|
-            attribute name.underscore.to_sym, config
-          end
+        # Converts a hash into resource properties
+        def sd_properties(props = {})
+          props.each_pair { |n, c| property n, c.merge(desired_state: false) }
         end
       end
 

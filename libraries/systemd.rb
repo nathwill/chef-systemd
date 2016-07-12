@@ -644,8 +644,16 @@ module Systemd
   module Mount
     OPTIONS ||= {
       'Mount' => {
-        'What' => Common::ABSOLUTE_PATH,
-        'Where' => Common::ABSOLUTE_PATH,
+        'What' => {
+          kind_of: String,
+          required: true,
+          callbacks: { 'absolute path' => -> (s) { Pathname.new(s).absolute? }
+        },
+        'Where' => {
+          kind_of: String,
+          required: true,
+          callbacks: { 'absolute path' => -> (s) { Pathname.new(s).absolute? }
+        },
         'Type' => Common::STRING,
         'Options' => Common::STRING,
         'SloppyOptions' => Common::BOOLEAN,
@@ -671,7 +679,7 @@ module Systemd
   end
 
   module Scope
-    OPTIONS ||= ResourceControl::OPTIONS
+    OPTIONS ||= { 'Scope' => ResourceControl::OPTIONS }.freeze
   end
 
   module Service
@@ -680,7 +688,39 @@ module Systemd
         'Type' => {
           kind_of: String,
           equal_to: %w( simple forking oneshot dbus notify idle )
-        }
+        },
+        'RemainAfterExit' => Common::BOOLEAN,
+        'GuessMainPID' => Common::BOOLEAN,
+        'PIDFile' => Common::ABSOLUTE_PATH,
+        'BusName' => Common::STRING,
+        'ExecStart' => Common::STRING,
+        'ExecStartPre' => Common::STRING,
+        'ExecStartPost' => Common::STRING,
+        'ExecReload' => Common::STRING,
+        'ExecStop' => Common::STRING,
+        'ExecStopPost' => Common::STRING,
+        'RestartSec' => Common::STRING_OR_INT,
+        'TimeoutStartSec' => Common::STRING_OR_INT,
+        'TimeoutStopSec' => Common::STRING_OR_INT,
+        'TimeoutSec' => Common::STRING_OR_INT,
+        'RuntimeMaxSec' => Common::STRING_OR_INT,
+        'WatchdogSec' => Common::STRING_OR_INT,
+        'Restart' => {
+          kind_of: String,
+          equal_to: %w( no on-success on-failure on-abnormal on-watchdog on-abort always )
+        },
+        'SuccessExitStatus' => { kind_of: [String, Array, Integer] },
+        'RestartPreventExitStatus' => { kind_of: [String, Array, Integer] },
+        'RestartForceExitStatus' => { kind_of: [String, Array, Integer] },
+        'PermissionsStartOnly' => Common::BOOLEAN,
+        'RootDirectoryStartOnly' => Common::BOOLEAN,
+        'NonBlocking' => Common::BOOLEAN,
+        'NotifyAccess' => { kind_of: String, equal_to: %w( none main all ) },
+        'Sockets' => Common::ARRAY_OF_UNITS,
+        'FailureAction' => Common::POWER,
+        'FileDescriptorStoreMax' => Common::INTEGER,
+        'USBFunctionDescriptors' => Common::STRING,
+        'USBFunctionStrings' => Common::STRING
       }.merge(Exec::OPTIONS)
        .merge(Kill::OPTIONS)
        .merge(ResourceControl::OPTIONS)
@@ -688,7 +728,7 @@ module Systemd
   end
 
   module Slice
-
+    OPTIONS ||= { 'Slice' => ResourceControl::OPTIONS }.freeze
   end
 
   module Socket

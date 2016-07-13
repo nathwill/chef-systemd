@@ -690,7 +690,7 @@ module Systemd
 
   module Scope
     OPTIONS ||= {
-      'Scope' => ResourceControl::OPTIONS
+      'Scope' => {}.merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
      .freeze
   end

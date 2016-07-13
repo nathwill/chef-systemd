@@ -627,7 +627,9 @@ module Systemd
         'DirectoryMode' => Common::STRING,
         'TimeoutIdleSec' => Common::STRING_OR_INT,
       }
-    }.freeze
+    }.merge(Unit::OPTIONS)
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Device
@@ -647,7 +649,9 @@ module Systemd
         'What' => {
           kind_of: String,
           required: true,
-          callbacks: { 'absolute path' => -> (s) { Pathname.new(s).absolute? }
+          callbacks: {
+            'absolute path' => -> (s) { Pathname.new(s).absolute? }
+          },
         },
         'Where' => {
           kind_of: String,
@@ -662,24 +666,33 @@ module Systemd
       }.merge(Exec::OPTIONS)
        .merge(Kill::OPTIONS)
        .merge(ResourceControl::OPTIONS) 
-    }.freeze
+    }.merge(Unit::OPTIONS)
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Path
     OPTIONS ||= {
-      'PathExists' => Common::ABSOLUTE_PATH,
-      'PathExistsGlob' => Common::ABSOLUTE_PATH,
-      'PathChanged' => Common::ABSOLUTE_PATH,
-      'PathModified' => Common::ABSOLUTE_PATH,
-      'DirectoryNotEmpty' => Common::ABSOLUTE_PATH,
-      'Unit' => Common::UNIT,
-      'MakeDirectory' => Common::BOOLEAN,
-      'DirectoryMode' => Common::STRING
-    }.freeze
+      'Path' => {
+        'PathExists' => Common::ABSOLUTE_PATH,
+        'PathExistsGlob' => Common::ABSOLUTE_PATH,
+        'PathChanged' => Common::ABSOLUTE_PATH,
+        'PathModified' => Common::ABSOLUTE_PATH,
+        'DirectoryNotEmpty' => Common::ABSOLUTE_PATH,
+        'Unit' => Common::UNIT,
+        'MakeDirectory' => Common::BOOLEAN,
+        'DirectoryMode' => Common::STRING
+      }
+    }.merge(Unit::OPTIONS)
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Scope
-    OPTIONS ||= { 'Scope' => ResourceControl::OPTIONS }.freeze
+    OPTIONS ||= {
+      'Scope' => ResourceControl::OPTIONS
+    }.merge(Unit::OPTIONS)
+     .freeze
   end
 
   module Service
@@ -724,26 +737,147 @@ module Systemd
       }.merge(Exec::OPTIONS)
        .merge(Kill::OPTIONS)
        .merge(ResourceControl::OPTIONS)
-    }.freeze
+    }.merge(Unit::OPTIONS)
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Slice
-    OPTIONS ||= { 'Slice' => ResourceControl::OPTIONS }.freeze
+    OPTIONS ||= {
+      'Slice' => {}.merge(ResourceControl::OPTIONS)
+    }.merge(Unit::OPTIONS)
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Socket
-
+    OPTIONS ||= {
+      'Socket' => {
+        'ListenStream' => Common::STRING_OR_INT,
+        'ListenDataGram' => Common::STRING_OR_INT,
+        'ListenSequentialPacket' => Common::STRING_OR_INT,
+        'ListenFIFO' => Common::ABSOLUTE_PATH,
+        'ListenSpecial' => Common::ABSOLUTE_PATH,
+        'ListenNetlink' => Common::STRING,
+        'ListenMessageQueue' => Common::ABSOLUTE_PATH,
+        'ListenUSBFunction' => Common::STRING,
+        'SocketProtocol' => { kind_of: String, equal_to: %w( udplite sctp ) },
+        'BindIPv6Only' => {
+          kind_of: String,
+          equal_to: %w( default both ipv6-only )
+        },
+        'Backlog' => Common::INTEGER,
+        'BindToDevice' => Common::STRING,
+        'SocketUser' => Common::STRING,
+        'SocketGroup' => Common::STRING,
+        'SocketMode' => Common::STRING,
+        'DirectoryMode' => Common::STRING,
+        'Accept' => Common::BOOLEAN,
+        'Writable' => Common::BOOLEAN,
+        'MaxConnections' => Common::INTEGER,
+        'KeepAlive' => Common::BOOLEAN,
+        'KeepAliveTimeSec' => Common::STRING_OR_INT,
+        'KeepAliveIntervalSec' => Common::STRING_OR_INT,
+        'KeepAliveProbes' => Common::INTEGER,
+        'NoDelay' => Common::BOOLEAN,
+        'Priority' => Common::INTEGER,
+        'DeferAcceptSec' => Common::STRING_OR_INT,
+        'ReceiveBuffer' => Common::STRING_OR_INT,
+        'SendBuffer' => Common::STRING_OR_INT,
+        'IPTOS' => {
+          kind_of: [String, Integer],
+          callbacks: {
+            'is a valid arg' => lambda do |spec|
+              %w( low-delay throughput reliability low-cost ).include?(spec) ||
+                spec.is_a?(Integer)
+            end
+          }
+        },
+        'IPTTL' => Common::INTEGER,
+        'Mark' => Common::INTEGER,
+        'ReusePort' => Common::BOOLEAN,
+        'SmackLabel' => Common::STRING,
+        'SmackLabelIPIn' => Common::STRING,
+        'SmackLabelIPOut' => Common::STRING,
+        'SELinuxContextFromNet' => Common::BOOLEAN,
+        'PipeSize' => Common::STRING_OR_INT,
+        'MessageQueueMaxMessages' => Common::INTEGER,
+        'MessageQueueMessageSize' => Common::STRING_OR_INT,
+        'FreeBind' => Common::BOOLEAN,
+        'Transparent' => Common::BOOLEAN,
+        'Broadcast' => Common::BOOLEAN,
+        'PassCredentials' => Common::BOOLEAN,
+        'PassSecurity' => Common::BOOLEAN,
+        'TCPCongestion' => Common::STRING,
+        'ExecStartPre' => Common::STRING,
+        'ExecStartPost' => Common::STRING,
+        'ExecStopPre' => Common::STRING,
+        'ExecStopPost' => Common::STRING,
+        'TimeoutSec' => Common::STRING_OR_INT,
+        'Service' => {
+          kind_of: String,
+          callbacks: {
+            'is a service' => -> (s) { s.end_with?('.service') }
+          },
+        },
+        'RemoveOnStop' => Common::BOOLEAN,
+        'Symlinks' => Common::ARRAY_OF_ABSOLUTE_PATHS,
+        'FileDescriptorName' => Common::STRING,
+        'TriggerLimitIntervalSec' => Common::STRING_OR_INT,
+        'TriggerLimitBurst' => Common::INTEGER
+      }.merge(Exec::OPTIONS)
+       .merge(Kill::OPTIONS)
+       .merge(ResourceControl::OPTIONS)
+    }.merge(Unit::OPTIONS)
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Swap
-
+    OPTIONS ||= {
+      'Swap' => {
+        'What' => {
+          kind_of: String,
+          required: true,
+          callbacks: {
+            'is an absolute path' => -> (s) { Pathname.new(s).absolute? }
+          }
+        },
+        'Priority' => Common::INTEGER,
+        'Options' => Common::STRING,
+        'TimeoutSec' => Common::STRING_OR_INT
+      }.merge(Exec::OPTIONS)
+       .merge(Kill::OPTIONS)
+       .merge(ResourceControl::OPTIONS)
+    }.merge(Unit::OPTIONS)
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Target
-
+    OPTIONS ||= {}.merge(Unit::OPTIONS)
+                  .merge(Install::OPTIONS)
+                  .freeze
   end
 
   module Timer
-
+    OPTIONS ||= {
+      'Timer' => {
+        'OnActiveSec' => Common::STRING_OR_INT,
+        'OnBootSec' => Common::STRING_OR_INT,
+        'OnStartupSec' => Common::STRING_OR_INT,
+        'OnUnitActiveSec' => Common::STRING_OR_INT,
+        'OnUnitInactiveSec' => Common::STRING_OR_INT,
+        'OnCalendar' => Common::STRING,
+        'AccuracySec' => Common::STRING_OR_INT,
+        'RandomizedDelaySec' => Common::STRING_OR_INT,
+        'Unit' => Common::UNIT,
+        'Persistent' => Common::BOOLEAN,
+        'WakeSystem' => Common::BOOLEAN,
+        'RemainAfterElapse' => Common::BOOLEAN
+      }
+    }.merge(Unit::OPTIONS)
+     .merge(Install::OPTIONS)
+     .freeze
   end
 end

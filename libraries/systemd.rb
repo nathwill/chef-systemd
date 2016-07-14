@@ -33,8 +33,9 @@ module Systemd
     swap
     target
     timer
-  )
+  ).freeze
 
+  # rubocop: disable ModuleLength
   module Common
     ABSOLUTE_PATH ||= {
       kind_of: String,
@@ -82,7 +83,7 @@ module Systemd
         cris
       )
     }.freeze
-    ARRAY ||= { kind_of: [String, Array] }
+    ARRAY ||= { kind_of: [String, Array] }.freeze
     ARRAY_OF_ABSOLUTE_PATHS ||= {
       kind_of: [String, Array],
       callbacks: {
@@ -91,7 +92,7 @@ module Systemd
         end
       }
     }.freeze
-    ARRAY_OF_SOFT_ABSOLUTE_PATHS |= {
+    ARRAY_OF_SOFT_ABSOLUTE_PATHS ||= {
       kind_of: [String, Array],
       callbacks: {
         'has valid arguments' => lambda do |spec|
@@ -103,7 +104,7 @@ module Systemd
       kind_of: [String, Array],
       callbacks: {
         'contains only valid unit names' => lambda do |spec|
-           Array(spec).all? { |u| UNIT_TYPES.any? { |t| u.end_with?(t) } }
+          Array(spec).all? { |u| UNIT_TYPES.any? { |t| u.end_with?(t) } }
         end
       }
     }.freeze
@@ -111,10 +112,10 @@ module Systemd
       kind_of: Array,
       callbacks: {
         'contains only valid URIs' => lambda do |spec|
-          spec.all? { |u| u =~ /\A#{URI::regexp}\z/ }
+          spec.all? { |u| u =~ /\A#{URI.regexp}\z/ }
         end
       }
-    }
+    }.freeze
     BOOLEAN ||= { kind_of: [TrueClass, FalseClass] }.freeze
     CAP ||= {
       kind_of: [String, Array],
@@ -181,13 +182,14 @@ module Systemd
       )
     }.freeze
   end
+  # rubocop: enable ModuleLength
 
   module Unit
     OPTIONS ||= {
       'Unit' => {
         'Description' => Common::STRING,
         'Documentation' => Common::ARRAY_OF_URIS,
-        'Requires' => Common::ARRAY_OF_UNITS, 
+        'Requires' => Common::ARRAY_OF_UNITS,
         'Requisite' => Common::ARRAY_OF_UNITS,
         'Wants' => Common::ARRAY_OF_UNITS,
         'BindsTo' => Common::ARRAY_OF_UNITS,
@@ -267,7 +269,7 @@ module Systemd
         'AssertDirectoryNotEmpty' => Common::CONDITIONAL_PATH,
         'AssertFileNotEmpty' => Common::CONDITIONAL_PATH,
         'AssertFileIsExecutable' => Common::CONDITIONAL_PATH,
-        'SourcePath' => Systmd::Common::ABSOLUTE_PATH
+        'SourcePath' => Common::ABSOLUTE_PATH
       }
     }.freeze
   end
@@ -284,6 +286,7 @@ module Systemd
     }.freeze
   end
 
+  # rubocop: disable ModuleLength
   module Exec
     OPTIONS ||= {
       'WorkingDirectory' => {
@@ -466,9 +469,10 @@ module Systemd
           end
         }
       },
-      'RuntimeDirectoryMode' => Common::STRING,
+      'RuntimeDirectoryMode' => Common::STRING
     }.freeze
   end
+  # rubocop: enable ModuleLength
 
   module Kill
     OPTIONS ||= {
@@ -482,6 +486,7 @@ module Systemd
     }.freeze
   end
 
+  # rubocop: disable ModuleLength
   module ResourceControl
     OPTIONS ||= {
       'CPUAccounting' => Common::BOOLEAN,
@@ -497,7 +502,7 @@ module Systemd
         kind_of: String,
         callbacks: {
           'is a percentage' => lambda do |spec|
-            spec.end_with?(%) && spec.gsub(/%$/, '').match(/^\d+$/)
+            spec.end_with?('%') && spec.gsub(/%$/, '').match(/^\d+$/)
           end
         }
       },
@@ -529,6 +534,7 @@ module Systemd
             args.length == 2 &&
               Pathname.new(args[0]).absolute? &&
               1.upto(10_000).include?(args[1].to_i)
+          end
         }
       },
       'IOReadBandwidthMax' => Common::STRING_OR_INT,
@@ -556,11 +562,11 @@ module Systemd
       'BlockIOAccounting' => Common::BOOLEAN,
       'BlockIOWeight' => {
         kind_of: Integer,
-        equal_to: 10.upto(1_000).to_a,
+        equal_to: 10.upto(1_000).to_a
       },
       'StartupBlockIOWeight' => {
         kind_of: Integer,
-        equal_to: 10.upto(1_000).to_a,
+        equal_to: 10.upto(1_000).to_a
       },
       'BlockIODeviceWeight' => {
         kind_of: String,
@@ -570,6 +576,7 @@ module Systemd
             args.length == 2 &&
               Pathname.new(args[0]).absolute? &&
               10.upto(1_000).include?(args[1].to_i)
+          end
         }
       },
       'BlockIOReadBandwidth' => {
@@ -610,9 +617,10 @@ module Systemd
           'is a slice' => -> (spec) { spec.end_with?('.slice') }
         }
       },
-      'Delegate' => Common::BOOLEAN,
+      'Delegate' => Common::BOOLEAN
     }.freeze
   end
+  # rubocop: enable ModuleLength
 
   module Automount
     OPTIONS ||= {
@@ -625,11 +633,11 @@ module Systemd
           }
         },
         'DirectoryMode' => Common::STRING,
-        'TimeoutIdleSec' => Common::STRING_OR_INT,
+        'TimeoutIdleSec' => Common::STRING_OR_INT
       }
     }.merge(Unit::OPTIONS)
-     .merge(Install::OPTIONS)
-     .freeze
+                .merge(Install::OPTIONS)
+                .freeze
   end
 
   module Device
@@ -640,7 +648,10 @@ module Systemd
       SYSTEMD_READY
       ID_MODEL_FROM_DATABASE
       ID_MODEL
-    )
+    ).freeze
+
+    OPTIONS ||= {}.merge(Unit::OPTIONS)
+                  .merge(Install::OPTIONS)
   end
 
   module Mount
@@ -651,24 +662,26 @@ module Systemd
           required: true,
           callbacks: {
             'absolute path' => -> (s) { Pathname.new(s).absolute? }
-          },
+          }
         },
         'Where' => {
           kind_of: String,
           required: true,
-          callbacks: { 'absolute path' => -> (s) { Pathname.new(s).absolute? }
+          callbacks: {
+            'absolute path' => -> (s) { Pathname.new(s).absolute? }
+          }
         },
         'Type' => Common::STRING,
         'Options' => Common::STRING,
         'SloppyOptions' => Common::BOOLEAN,
         'DirectoryMode' => Common::STRING,
-        'TimeoutSec' => Common::STRING_OR_INT,
+        'TimeoutSec' => Common::STRING_OR_INT
       }.merge(Exec::OPTIONS)
-       .merge(Kill::OPTIONS)
-       .merge(ResourceControl::OPTIONS) 
+                .merge(Kill::OPTIONS)
+                .merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-     .merge(Install::OPTIONS)
-     .freeze
+                .merge(Install::OPTIONS)
+                .freeze
   end
 
   module Path
@@ -684,15 +697,15 @@ module Systemd
         'DirectoryMode' => Common::STRING
       }
     }.merge(Unit::OPTIONS)
-     .merge(Install::OPTIONS)
-     .freeze
+                .merge(Install::OPTIONS)
+                .freeze
   end
 
   module Scope
     OPTIONS ||= {
       'Scope' => {}.merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-     .freeze
+                .freeze
   end
 
   module Service
@@ -720,7 +733,15 @@ module Systemd
         'WatchdogSec' => Common::STRING_OR_INT,
         'Restart' => {
           kind_of: String,
-          equal_to: %w( no on-success on-failure on-abnormal on-watchdog on-abort always )
+          equal_to: %w(
+            no
+            on-success
+            on-failure
+            on-abnormal
+            on-watchdog
+            on-abort
+            always
+          )
         },
         'SuccessExitStatus' => { kind_of: [String, Array, Integer] },
         'RestartPreventExitStatus' => { kind_of: [String, Array, Integer] },
@@ -735,19 +756,19 @@ module Systemd
         'USBFunctionDescriptors' => Common::STRING,
         'USBFunctionStrings' => Common::STRING
       }.merge(Exec::OPTIONS)
-       .merge(Kill::OPTIONS)
-       .merge(ResourceControl::OPTIONS)
+                .merge(Kill::OPTIONS)
+                .merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-     .merge(Install::OPTIONS)
-     .freeze
+                .merge(Install::OPTIONS)
+                .freeze
   end
 
   module Slice
     OPTIONS ||= {
       'Slice' => {}.merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-     .merge(Install::OPTIONS)
-     .freeze
+                .merge(Install::OPTIONS)
+                .freeze
   end
 
   module Socket
@@ -818,7 +839,7 @@ module Systemd
           kind_of: String,
           callbacks: {
             'is a service' => -> (s) { s.end_with?('.service') }
-          },
+          }
         },
         'RemoveOnStop' => Common::BOOLEAN,
         'Symlinks' => Common::ARRAY_OF_ABSOLUTE_PATHS,
@@ -826,11 +847,11 @@ module Systemd
         'TriggerLimitIntervalSec' => Common::STRING_OR_INT,
         'TriggerLimitBurst' => Common::INTEGER
       }.merge(Exec::OPTIONS)
-       .merge(Kill::OPTIONS)
-       .merge(ResourceControl::OPTIONS)
+                .merge(Kill::OPTIONS)
+                .merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-     .merge(Install::OPTIONS)
-     .freeze
+                .merge(Install::OPTIONS)
+                .freeze
   end
 
   module Swap
@@ -847,11 +868,11 @@ module Systemd
         'Options' => Common::STRING,
         'TimeoutSec' => Common::STRING_OR_INT
       }.merge(Exec::OPTIONS)
-       .merge(Kill::OPTIONS)
-       .merge(ResourceControl::OPTIONS)
+                .merge(Kill::OPTIONS)
+                .merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-     .merge(Install::OPTIONS)
-     .freeze
+                .merge(Install::OPTIONS)
+                .freeze
   end
 
   module Target
@@ -877,7 +898,7 @@ module Systemd
         'RemainAfterElapse' => Common::BOOLEAN
       }
     }.merge(Unit::OPTIONS)
-     .merge(Install::OPTIONS)
-     .freeze
+                .merge(Install::OPTIONS)
+                .freeze
   end
 end

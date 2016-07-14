@@ -18,8 +18,8 @@
 # limitations under the License.
 #
 
-require 'chef/resource/lwrp_base'
-require 'chef/provider/lwrp_base'
+require 'chef/resource'
+require 'chef/provider'
 
 class ChefSystemdCookbook
   # resource for declarative allocation of system users and groups

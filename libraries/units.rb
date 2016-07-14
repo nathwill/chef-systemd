@@ -16,13 +16,18 @@
 # limitations under the License.
 #
 
+require 'chef/resource/systemd_unit'
+require_relative 'systemd'
+require_relative 'mixins'
+require_relative 'helpers'
+
 class SystemdUnits
   class Automount < Chef::Resource::SystemdUnit
-    include Systemd::Mixin::DirectiveConversion
+    include Systemd::Mixins::DirectiveConversion
 
     resource_name :systemd_automount
 
-    sd_properties Systemd::Automount::OPTIONS
+    option_properties Systemd::Automount::OPTIONS
 
     def to_ini
       content(property_hash(Systemd::Automount::OPTIONS))
@@ -31,42 +36,132 @@ class SystemdUnits
   end
 
   class Device < Chef::Resource::SystemdUnit
+    include Systemd::Mixins::DirectiveConversion
+
     resource_name :systemd_device
+
+    option_properties Systemd::Device::OPTIONS
+
+    def to_ini
+      content(property_hash(Systemd::Device::OPTIONS))
+      super
+    end
   end
 
   class Mount < Chef::Resource::SystemdUnit
+    include Systemd::Mixins::DirectiveConversion
+
     resource_name :systemd_mount
+
+    option_properties Systemd::Mount::OPTIONS
+
+    def to_ini
+      content(property_hash(Systemd::Mount::OPTIONS))
+      super
+    end
   end
 
   class Path < Chef::Resource::SystemdUnit
+    include Systemd::Mixins::DirectiveConversion
+
     resource_name :systemd_path
+
+    option_properties Systemd::Path::OPTIONS
+
+    def to_ini
+      content(property_hash(Systemd::Path::OPTIONS))
+      super
+    end
   end
 
   class Scope < Chef::Resource::SystemdUnit
+    include Systemd::Mixins::DirectiveConversion
+
     resource_name :systemd_scope
+
+    option_properties Systemd::Scope::OPTIONS
+
+    def to_ini
+      content(property_hash(Systemd::Scope::OPTIONS))
+      super
+    end
   end
 
   class Service < Chef::Resource::SystemdUnit
+    include Systemd::Mixins::DirectiveConversion
+
     resource_name :systemd_service
+
+    option_properties Systemd::Service::OPTIONS
+
+    def to_ini
+      content(property_hash(Systemd::Service::OPTIONS))
+      super
+    end
   end
 
   class Slice < Chef::Resource::SystemdUnit
+    include Systemd::Mixins::DirectiveConversion
+
     resource_name :systemd_slice
+
+    option_properties Systemd::Slice::OPTIONS
+
+    def to_ini
+      content(property_hash(Systemd::Slice::OPTIONS))
+      super
+    end
   end
 
   class Socket < Chef::Resource::SystemdUnit
+    include Systemd::Mixins::DirectiveConversion
+
     resource_name :systemd_socket
+
+    option_properties Systemd::Socket::OPTIONS
+
+    def to_ini
+      content(property_hash(Systemd::Socket::OPTIONS))
+      super
+    end
   end
 
   class Swap < Chef::Resource::SystemdUnit
+    include Systemd::Mixins::DirectiveConversion
+
     resource_name :systemd_swap
+
+    option_properties Systemd::Swap::OPTIONS
+
+    def to_ini
+      content(property_hash(Systemd::Swap::OPTIONS))
+      super
+    end
   end
 
   class Target < Chef::Resource::SystemdUnit
+    include Systemd::Mixins::DirectiveConversion
+
     resource_name :systemd_target
+
+    option_properties Systemd::Target::OPTIONS
+
+    def to_ini
+      content(property_hash(Systemd::Target::OPTIONS))
+      super
+    end
   end
 
   class Timer < Chef::Resource::SystemdUnit
+    include Systemd::Mixins::DirectiveConversion
+
     resource_name :systemd_timer
+
+    option_properties Systemd::Timer::OPTIONS
+
+    def to_ini
+      content(property_hash(Systemd::Timer::OPTIONS))
+      super
+    end
   end
 end

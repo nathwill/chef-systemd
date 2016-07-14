@@ -18,9 +18,8 @@
 # limitations under the License.
 #
 
-require 'chef/resource/lwrp_base'
-require 'chef/provider/lwrp_base'
-require_relative 'helpers'
+require 'chef/resource'
+require 'chef/provider'
 
 class ChefSystemdCookbook
   # manage system modules

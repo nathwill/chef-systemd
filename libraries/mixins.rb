@@ -1,38 +1,48 @@
+
+
 module Systemd
-  module Mixin
+  module Mixins
     module DirectiveConversion
       def self.included(base)
         base.extend ClassMethods
       end
 
       module ClassMethods
-        # Converts a hash into resource properties
-        def sd_properties(props = {})
-          props.each_pair { |n, c| property n, c.merge(desired_state: false) }
+        def option_properties(options = {})
+          options.each_pair do |_, opts|
+            opts.each_pair do |o, c|
+              property o.underscore.to_sym, c.merge(desired_state: false)
+            end
+          end
         end
-      end
 
-      # converts configuration hash (keys as directives, config as values)
-      # to an array of strings with camelized directive and stringified values
-      def options_config(opts = {})
-        opts.reject { |o, _| send(o.underscore.to_sym).nil? }.map do |name, _|
-          "#{name.camelize}=#{conf_string(send(name.underscore.to_sym))}"
+        def property_hash(options = {})
+          result = {}
+
+          options.each_pair do |heading, opts|
+            conf = opts.reject do |opt, _|
+              send(opt.underscore.to_sym).nil?
+            end
+
+            result[heading] = conf.map do |opt, _|
+              "#{opt.camelize}=#{option_value(send(opt.underscore.to_sym))}"
+            end
+          end
+
+          result
         end
-      end
 
-      # converts configuration options into the appropriate string format; it's
-      # critical to keep this in mind when choosing the `kind_of` key in the
-      # OPTIONS hash in the Systemd module for use with option_attributes.
-      def conf_string(obj)
-        case obj
-        when Hash
-          obj.map { |k, v| "\"#{k}=#{v}\"" }.join(' ')
-        when Array
-          obj.join(' ')
-        when TrueClass, FalseClass
-          obj ? 'yes' : 'no'
-        else
-          obj.to_s
+        def option_value(obj)
+          case obj
+          when Hash
+            obj.map { |k, v| "\"#{k}=#{v}\"" }.join(' ')
+          when Array
+            obj.join(' ')
+          when TrueClass, FalseClass
+            obj ? 'yes' : 'no'
+          else
+            obj.to_s
+          end
         end
       end
     end

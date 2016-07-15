@@ -21,13 +21,18 @@ require_relative 'systemd'
 require_relative 'mixins'
 require_relative 'helpers'
 
-class SystemdUnits
+class SystemdUnit
   class Automount < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_automount
 
     option_properties Systemd::Automount::OPTIONS
+
+    def automount
+      yield
+    end
 
     def to_ini
       content(property_hash(Systemd::Automount::OPTIONS))
@@ -36,11 +41,16 @@ class SystemdUnits
   end
 
   class Device < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_device
 
     option_properties Systemd::Device::OPTIONS
+
+    def device
+      yield
+    end
 
     def to_ini
       content(property_hash(Systemd::Device::OPTIONS))
@@ -49,11 +59,16 @@ class SystemdUnits
   end
 
   class Mount < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_mount
 
     option_properties Systemd::Mount::OPTIONS
+
+    def mount
+      yield
+    end
 
     def to_ini
       content(property_hash(Systemd::Mount::OPTIONS))
@@ -62,11 +77,16 @@ class SystemdUnits
   end
 
   class Path < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_path
 
     option_properties Systemd::Path::OPTIONS
+
+    def path
+      yield
+    end
 
     def to_ini
       content(property_hash(Systemd::Path::OPTIONS))
@@ -75,11 +95,16 @@ class SystemdUnits
   end
 
   class Scope < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_scope
 
     option_properties Systemd::Scope::OPTIONS
+
+    def scope
+      yield
+    end
 
     def to_ini
       content(property_hash(Systemd::Scope::OPTIONS))
@@ -88,11 +113,16 @@ class SystemdUnits
   end
 
   class Service < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_service
 
     option_properties Systemd::Service::OPTIONS
+
+    def service
+      yield
+    end
 
     def to_ini
       content(property_hash(Systemd::Service::OPTIONS))
@@ -101,9 +131,14 @@ class SystemdUnits
   end
 
   class Slice < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_slice
+
+    def slice
+      yield
+    end
 
     option_properties Systemd::Slice::OPTIONS
 
@@ -114,11 +149,16 @@ class SystemdUnits
   end
 
   class Socket < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_socket
 
     option_properties Systemd::Socket::OPTIONS
+
+    def socket
+      yield
+    end
 
     def to_ini
       content(property_hash(Systemd::Socket::OPTIONS))
@@ -127,11 +167,16 @@ class SystemdUnits
   end
 
   class Swap < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_swap
 
     option_properties Systemd::Swap::OPTIONS
+
+    def swap
+      yield
+    end
 
     def to_ini
       content(property_hash(Systemd::Swap::OPTIONS))
@@ -140,11 +185,16 @@ class SystemdUnits
   end
 
   class Target < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_target
 
     option_properties Systemd::Target::OPTIONS
+
+    def target
+      yield
+    end
 
     def to_ini
       content(property_hash(Systemd::Target::OPTIONS))
@@ -153,11 +203,16 @@ class SystemdUnits
   end
 
   class Timer < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::DirectiveConversion
+    include Systemd::Mixins::Unit
+    include Systemd::Mixins::Conversion
 
     resource_name :systemd_timer
 
     option_properties Systemd::Timer::OPTIONS
+
+    def time
+      yield
+    end
 
     def to_ini
       content(property_hash(Systemd::Timer::OPTIONS))

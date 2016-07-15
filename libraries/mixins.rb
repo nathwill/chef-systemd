@@ -2,8 +2,15 @@
 
 module Systemd
   module Mixins
-    module DirectiveConversion
+    module Unit
+      def install
+        yield
+      end
+    end
+
+    module Conversion
       def self.included(base)
+        base.send :include, InstanceMethods
         base.extend ClassMethods
       end
 
@@ -15,7 +22,9 @@ module Systemd
             end
           end
         end
+      end
 
+      module InstanceMethods
         def property_hash(options = {})
           result = {}
 
@@ -25,8 +34,8 @@ module Systemd
             end
 
             result[heading] = conf.map do |opt, _|
-              "#{opt.camelize}=#{option_value(send(opt.underscore.to_sym))}"
-            end
+              [opt.camelize, option_value(send(opt.underscore.to_sym))]
+            end.to_h
           end
 
           result

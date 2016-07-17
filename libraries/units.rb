@@ -17,6 +17,8 @@
 #
 
 require 'chef/resource/systemd_unit'
+require 'chef/provider/systemd_unit'
+
 require_relative 'systemd'
 require_relative 'mixins'
 require_relative 'helpers'
@@ -217,6 +219,22 @@ class SystemdUnit
     def to_ini
       content(property_hash(Systemd::Timer::OPTIONS))
       super
+    end
+  end
+
+  class Provider < Chef::Provider::SystemdUnit
+    Systemd::UNIT_TYPES.each do |unit_type|
+      provides "systemd_#{unit_type}".to_sym, os: 'linux'
+    end
+
+    def unit_path
+      fname = "#{new_resource.name}.#{new_resource::TYPE}"
+
+      if new_resource.user
+        "/etc/systemd/user/#{fname}"
+      else
+        "/etc/systemd/system/#{fname}"
+      end
     end
   end
 end

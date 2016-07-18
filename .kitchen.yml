@@ -20,15 +20,6 @@ suites:
     run_list:
       - recipe[setup::dnf]
       - recipe[setup::automount]
-      - recipe[setup::mount]
-      - recipe[setup::networkd_link]
-      - recipe[setup::path]
-      - recipe[setup::service]
-      - recipe[setup::slice]
-      - recipe[setup::socket]
-      - recipe[setup::swap]
-      - recipe[setup::target]
-      - recipe[setup::timer]
   - name: daemons
     run_list:
       - recipe[systemd::journald]

@@ -8,4 +8,5 @@ systemd_automount 'vagrant-home' do
   automount do
     where '/home/vagrant'
   end
+  action :create
 end

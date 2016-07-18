@@ -109,10 +109,10 @@ module Systemd
       }
     }.freeze
     ARRAY_OF_URIS ||= {
-      kind_of: Array,
+      kind_of: [String, Array],
       callbacks: {
         'contains only valid URIs' => lambda do |spec|
-          spec.all? { |u| u =~ /\A#{URI.regexp}\z/ }
+          Array(spec).all? { |u| u =~ /\A#{URI.regexp}\z/ }
         end
       }
     }.freeze
@@ -277,7 +277,6 @@ module Systemd
   module Install
     OPTIONS ||= {
       'Install' => {
-        'Alias' => Common::ARRAY_OF_UNITS,
         'WantedBy' => Common::ARRAY_OF_UNITS,
         'RequiredBy' => Common::ARRAY_OF_UNITS,
         'Also' => Common::ARRAY_OF_UNITS,
@@ -659,10 +658,7 @@ module Systemd
       'Mount' => {
         'What' => {
           kind_of: String,
-          required: true,
-          callbacks: {
-            'absolute path' => -> (s) { Pathname.new(s).absolute? }
-          }
+          required: true
         },
         'Where' => {
           kind_of: String,

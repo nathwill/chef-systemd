@@ -24,211 +24,13 @@ require_relative 'mixins'
 require_relative 'helpers'
 
 class SystemdUnit
-  class Automount < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_automount
-
-    option_properties Systemd::Automount::OPTIONS
-
-    def automount
-      yield
-    end
-
-    def to_ini
-      content(property_hash(Systemd::Automount::OPTIONS))
-      super
-    end
-  end
-
-  class Device < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_device
-
-    option_properties Systemd::Device::OPTIONS
-
-    def device
-      yield
-    end
-
-    def to_ini
-      content(property_hash(Systemd::Device::OPTIONS))
-      super
-    end
-  end
-
-  class Mount < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_mount
-
-    option_properties Systemd::Mount::OPTIONS
-
-    def mount
-      yield
-    end
-
-    def to_ini
-      content(property_hash(Systemd::Mount::OPTIONS))
-      super
-    end
-  end
-
-  class Path < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_path
-
-    option_properties Systemd::Path::OPTIONS
-
-    def path
-      yield
-    end
-
-    def to_ini
-      content(property_hash(Systemd::Path::OPTIONS))
-      super
-    end
-  end
-
-  class Scope < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_scope
-
-    option_properties Systemd::Scope::OPTIONS
-
-    def scope
-      yield
-    end
-
-    def to_ini
-      content(property_hash(Systemd::Scope::OPTIONS))
-      super
-    end
-  end
-
-  class Service < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_service
-
-    option_properties Systemd::Service::OPTIONS
-
-    def service
-      yield
-    end
-
-    def to_ini
-      content(property_hash(Systemd::Service::OPTIONS))
-      super
-    end
-  end
-
-  class Slice < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_slice
-
-    def slice
-      yield
-    end
-
-    option_properties Systemd::Slice::OPTIONS
-
-    def to_ini
-      content(property_hash(Systemd::Slice::OPTIONS))
-      super
-    end
-  end
-
-  class Socket < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_socket
-
-    option_properties Systemd::Socket::OPTIONS
-
-    def socket
-      yield
-    end
-
-    def to_ini
-      content(property_hash(Systemd::Socket::OPTIONS))
-      super
-    end
-  end
-
-  class Swap < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_swap
-
-    option_properties Systemd::Swap::OPTIONS
-
-    def swap
-      yield
-    end
-
-    def to_ini
-      content(property_hash(Systemd::Swap::OPTIONS))
-      super
-    end
-  end
-
-  class Target < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_target
-
-    option_properties Systemd::Target::OPTIONS
-
-    def target
-      yield
-    end
-
-    def to_ini
-      content(property_hash(Systemd::Target::OPTIONS))
-      super
-    end
-  end
-
-  class Timer < Chef::Resource::SystemdUnit
-    include Systemd::Mixins::Unit
-    include Systemd::Mixins::Conversion
-
-    resource_name :systemd_timer
-
-    option_properties Systemd::Timer::OPTIONS
-
-    def time
-      yield
-    end
-
-    def to_ini
-      content(property_hash(Systemd::Timer::OPTIONS))
-      super
-    end
-  end
-
   class Provider < Chef::Provider::SystemdUnit
     Systemd::UNIT_TYPES.each do |unit_type|
       provides "systemd_#{unit_type}".to_sym, os: 'linux'
     end
 
     def unit_path
-      fname = "#{new_resource.name}.#{new_resource::TYPE}"
+      fname = "#{new_resource.name}.#{new_resource.unit_type}"
 
       if new_resource.user
         "/etc/systemd/user/#{fname}"
@@ -237,4 +39,30 @@ class SystemdUnit
       end
     end
   end
+end
+
+Systemd::UNIT_TYPES.each do |t|
+  SystemdUnit.const_set(
+    t.capitalize,
+    Class.new(Chef::Resource::SystemdUnit) do
+      UNIT_TYPE ||= t
+
+      include Systemd::Mixins::Unit
+      include Systemd::Mixins::Conversion
+
+      resource_name "systemd_#{t}".to_sym
+      option_properties Systemd.const_get(t.capitalize.to_sym)::OPTIONS
+
+      define_method(t.to_sym) { |&b| b.call }
+
+      def unit_type; UNIT_TYPE; end
+
+      def to_ini
+        content property_hash(
+          Systemd.const_get(UNIT_TYPE.capitalize.to_sym)::OPTIONS
+        )
+        super
+      end
+    end
+  )
 end

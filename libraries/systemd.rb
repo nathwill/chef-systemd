@@ -1,9 +1,7 @@
-# http://www.freedesktop.org/software/systemd/man/systemd.automount.html
 #
 # Cookbook Name:: systemd
-# Module:: Automount
 #
-# Copyright 2015 The Authors
+# Copyright 2016 The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -635,8 +633,8 @@ module Systemd
         'TimeoutIdleSec' => Common::STRING_OR_INT
       }
     }.merge(Unit::OPTIONS)
-                .merge(Install::OPTIONS)
-                .freeze
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Device
@@ -673,11 +671,11 @@ module Systemd
         'DirectoryMode' => Common::STRING,
         'TimeoutSec' => Common::STRING_OR_INT
       }.merge(Exec::OPTIONS)
-                .merge(Kill::OPTIONS)
-                .merge(ResourceControl::OPTIONS)
+       .merge(Kill::OPTIONS)
+       .merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-                .merge(Install::OPTIONS)
-                .freeze
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Path
@@ -693,15 +691,15 @@ module Systemd
         'DirectoryMode' => Common::STRING
       }
     }.merge(Unit::OPTIONS)
-                .merge(Install::OPTIONS)
-                .freeze
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Scope
     OPTIONS ||= {
       'Scope' => {}.merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-                .freeze
+     .freeze
   end
 
   module Service
@@ -752,19 +750,19 @@ module Systemd
         'USBFunctionDescriptors' => Common::STRING,
         'USBFunctionStrings' => Common::STRING
       }.merge(Exec::OPTIONS)
-                .merge(Kill::OPTIONS)
-                .merge(ResourceControl::OPTIONS)
+       .merge(Kill::OPTIONS)
+       .merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-                .merge(Install::OPTIONS)
-                .freeze
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Slice
     OPTIONS ||= {
       'Slice' => {}.merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-                .merge(Install::OPTIONS)
-                .freeze
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Socket
@@ -843,11 +841,11 @@ module Systemd
         'TriggerLimitIntervalSec' => Common::STRING_OR_INT,
         'TriggerLimitBurst' => Common::INTEGER
       }.merge(Exec::OPTIONS)
-                .merge(Kill::OPTIONS)
-                .merge(ResourceControl::OPTIONS)
+       .merge(Kill::OPTIONS)
+       .merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-                .merge(Install::OPTIONS)
-                .freeze
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Swap
@@ -864,11 +862,11 @@ module Systemd
         'Options' => Common::STRING,
         'TimeoutSec' => Common::STRING_OR_INT
       }.merge(Exec::OPTIONS)
-                .merge(Kill::OPTIONS)
-                .merge(ResourceControl::OPTIONS)
+       .merge(Kill::OPTIONS)
+       .merge(ResourceControl::OPTIONS)
     }.merge(Unit::OPTIONS)
-                .merge(Install::OPTIONS)
-                .freeze
+     .merge(Install::OPTIONS)
+     .freeze
   end
 
   module Target
@@ -894,7 +892,7 @@ module Systemd
         'RemainAfterElapse' => Common::BOOLEAN
       }
     }.merge(Unit::OPTIONS)
-                .merge(Install::OPTIONS)
-                .freeze
+     .merge(Install::OPTIONS)
+     .freeze
   end
 end

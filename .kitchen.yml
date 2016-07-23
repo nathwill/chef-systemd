@@ -41,33 +41,14 @@ suites:
       - recipe[setup::timesyncd]
   - name: utils
     run_list:
-      - recipe[systemd::bootchart]
-      - recipe[systemd::coredump]
-      - recipe[systemd::locale]
-      - recipe[systemd::hostname]
-      - recipe[setup::modules]
-      - recipe[systemd::real_time_clock]
-      - recipe[systemd::sleep]
       - recipe[systemd::sysctl]
       - recipe[setup::sysctl]
-      - recipe[systemd::system]
-      - recipe[systemd::timezone]
       - recipe[setup::tmpfiles]
-      - recipe[systemd::udevd]
-      - recipe[setup::udev]
-      - recipe[systemd::user]
-    attributes:
-      systemd:
-        udev:
-          options:
-            children-max: 10
   - name: utils-new
     includes:
       - fedora-23
     run_list:
-      - recipe[systemd::vconsole]
       - recipe[systemd::binfmt]
       - recipe[setup::binfmt]
       - recipe[systemd::sysusers]
       - recipe[setup::sysuser]
-      - recipe[setup::run]

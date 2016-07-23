@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Library:: HandlerSystemdDaemonReload
+# Library:: Systemd::Handlers
 #
 # Copyright 2015 The Authors
 #
@@ -21,17 +21,7 @@
 # Ref: https://docs.chef.io/handlers.html#event-handlers
 require 'chef/resource/execute'
 
-module SystemdHandlers
-  class DaemonReload
-    def conditionally_reload(run_context)
-      reload_disabled = run_context.resource_collection.select do |r|
-        r.is_a?(ChefSystemdCookbook::UnitResource) && r.auto_reload == false
-      end
-
-      if reload_disabled.any?(&:updated_by_last_action?)
-        Chef::Resource::Execute.new('systemctl daemon-reload', run_context)
-                               .run_action(:run)
-      end
-    end
+module Systemd
+  module Handlers
   end
 end

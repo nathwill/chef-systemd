@@ -6,6 +6,8 @@ description      'resource-driven chef cookbook for managing linux systems via s
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '2.1.0'
 
+depends 'compat_resource'
+
 supports 'arch'
 supports 'fedora'
 supports 'debian', '>= 8.0'

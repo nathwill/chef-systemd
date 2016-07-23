@@ -132,6 +132,19 @@ module Systemd
       }
     }.freeze
     INTEGER ||= { kind_of: Integer }.freeze
+    LOG_LEVEL ||= {
+      kind_of: [String, Integer],
+      equal_to: %w(
+        emerg
+        alert
+        crit
+        err
+        warning
+        notice
+        info
+        debug
+      ).concat(0.upto(7).to_a)
+    }
     POWER ||= {
       kind_of: String,
       equal_to: %w(
@@ -147,6 +160,20 @@ module Systemd
     SECURITY ||= {
       kind_of: String,
       equal_to: %w( selinux apparmor ima smack audit )
+    }.freeze
+    SESSION_ACTIONS ||= {
+      kind_of: String,
+      equal_to: %w(
+        ignore
+        poweroff
+        reboot
+        halt
+        kexec
+        suspend
+        hibernate
+        hybrid-sleep
+        lock
+      )
     }.freeze
     STRING ||= { kind_of: String }.freeze
     STRING_OR_ARRAY ||= { kind_of: [String, Array] }.freeze
@@ -894,5 +921,160 @@ module Systemd
     }.merge(Unit::OPTIONS)
      .merge(Install::OPTIONS)
      .freeze
+  end
+
+  module Bootchart
+    OPTIONS ||= {
+      'Bootchart' => {
+        'Samples' => Common::INTEGER,
+        'Frequency' => kind_of: Numeric,
+        'Relative' => Common::BOOLEAN,
+        'Filter' => Common::BOOLEAN,
+        'Output' => Common::ABSOLUTE_PATH,
+        'Init' => Common::ABSOLUTE_PATH,
+        'PlotMemoryUsage' => Common::BOOLEAN,
+        'PlotEntropyGraph' => Common::BOOLEAN,
+        'ScaleX' => Common::INTEGER,
+        'ScaleY' => Common::INTEGER,
+        'ControlGroup' => Common::BOOLEAN
+      }
+    }.freeze
+  end
+
+  module Coredump
+    OPTIONS ||= {
+      'Coredump' => {
+        'Storage' => {
+          kind_of: String,
+          equal_to: %w( none external journal both )
+        },
+        'Compress' => Common::BOOLEAN,
+        'ProcessSizeMax' => Common::INTEGER,
+        'ExternalSizeMax' => Common::INTEGER,
+        'JournalSizeMax' => Common::INTEGER,
+        'MaxUse' => Common::STRING
+      }
+    }.freeze
+  end
+
+  module Journald
+    OPTIONS ||= {
+      'Journal' => {
+        'Storage' => {
+          kind_of: String,
+          equal_to: %w( volatile persistent auto none )
+        },
+        'Compress' => Common::BOOLEAN,
+        'Seal' => Common::BOOLEAN,
+        'SplitMode' => { kind_of: String, equal_to: %w( uid login none ) },
+        'RateLimitIntervalSec' => Common::STRING_OR_INT,
+        'RateLimitBurst' => Common::INTEGER,
+        'SystemMaxUse' => Common::STRING,
+        'SystemKeepFree' => Common::STRING,
+        'SystemMaxFileSize' => Common::STRING,
+        'SystemMaxFiles' => Common::INTEGER,
+        'RuntimeMaxUse' => Common::STRING,
+        'RuntimeKeepFree' => Common::STRING,
+        'RuntimeMaxFileSize' => Common::STRING,
+        'RuntimeMaxFiles' => Common::INTEGER,
+        'MaxFileSec' => Common::STRING_OR_INT,
+        'MaxRetentionSec' => Common::STRING_OR_INT,
+        'SyncIntervalSec' => Common::STRING_OR_INT,
+        'ForwardToSyslog' => Common::BOOLEAN,
+        'ForwardToKMsg' => Common::BOOLEAN,
+        'ForwardToConsole' => Common::BOOLEAN,
+        'MaxLevelStore' => Common::LOG_LEVEL,
+        'MaxLevelSyslog' => Common::LOG_LEVEL,
+        'MaxLevelKMsg' => Common::LOG_LEVEL,
+        'MaxLevelConsole' => Common::LOG_LEVEL,
+        'MaxLevelWall' => Common::LOG_LEVEL,
+        'TTYPath' => Common::ABSOLUTE_PATH
+      }
+    }.freeze
+  end
+
+  module Logind
+    OPTIONS ||= {
+      'Login' => {
+        'NAutoVTs' => {
+          kind_of: Integer,
+          callbacks: { 'is positive' => ->(s) { s > 0 } }
+        },
+        'ReserveVT' => {
+          kind_of: Integer,
+          callbacks: { 'is positive' => ->(s) { s > 0 } }
+        },
+        'KillUserProcesses' => Common::BOOLEAN,
+        'KillOnlyUsers' => Common::STRING_OR_ARRAY,
+        'KillExcludeUsers' => Common::STRING_OR_ARRAY,
+        'IdleAction' => Common::SESSION_ACTIONS,
+        'IdleActionSec' => Common::STRING_OR_INT,
+        'InhibitDelayMaxSec' => Common::STRING_OR_INT,
+        'HandlePowerKey' => Common::SESSION_ACTIONS,
+        'HandleSuspendKey' => Common::SESSION_ACTIONS,
+        'HandleHibernateKey' => Common::SESSION_ACTIONS,
+        'HandleLidSwitch' => Common::SESSION_ACTIONS,
+        'HandleLidSwitchDocked' => Common::SESSION_ACTIONS,
+        'PowerKeyIgnoreInhibited' => Common::BOOLEAN,
+        'SuspendKeyIgnoreInhibited' => Common::BOOLEAN,
+        'HibernateKeyIgnoreInhibited' => Common::BOOLEAN,
+        'LidSwitchIgnoreInhibited' => Common::BOOLEAN,
+        'HoldoffTimeoutSec' => Common::STRING_OR_INT,
+        'RuntimeDirectorySize' => Common::STRING_OR_INT,
+        'InhibitorsMax' => Common::INTEGER,
+        'SessionsMax' => Common::INTEGER,
+        'UserTasksMax' => Common::INTEGER,
+        'RemoveIPC' => Common::BOOLEAN
+      }
+    }.freeze
+  end
+
+  module Resolved
+    OPTIONS ||= {
+      'Resolve' => {
+        'DNS' => Common::STRING_OR_ARRAY,
+        'FallbackDNS' => Common::STRING_OR_ARRAY,
+        'Domains' => Common::STRING_OR_ARRAY,
+        'LLMNR' => {
+          kind_of: [String, TrueClass, FalseClass],
+          equal_to: [true, false, 'resolve']
+        },
+        'DNSSEC' => {
+          kind_of: [String, TrueClass, FalseClass],
+          equal_to: [true, false, 'allow-downgrade']
+      }
+    }.freeze
+  end
+
+  module Sleep
+    OPTIONS ||= {
+      'Sleep' => {
+        'SuspendMode' => Common::STRING_OR_ARRAY,
+        'HibernateMode' => Common::STRING_OR_ARRAY,
+        'HybridSleepMode' => Common::STRING_OR_ARRAY,
+        'SuspendState' => Common::STRING_OR_ARRAY,
+        'HibernateState' => Common::STRING_OR_ARRAY,
+        'HybridSleepState' => Common::STRING_OR_ARRAY
+      }
+    }.freeze
+  end
+
+  module System
+    OPTIONS ||= {
+      'Manager' => {}
+    }.freeze
+  end
+
+  module Timesyncd
+    OPTIONS ||= {
+      'Time' => {
+        'NTP' => Common::STRING_OR_ARRAY,
+        'FallbackNTP' => Common::STRING_OR_ARRAY
+      }
+    }.freeze
+  end
+
+  module User
+    OPTIONS ||= System::OPTIONS
   end
 end

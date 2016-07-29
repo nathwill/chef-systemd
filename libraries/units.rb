@@ -23,46 +23,48 @@ require_relative 'systemd'
 require_relative 'mixins'
 require_relative 'helpers'
 
-class SystemdUnit
-  class Provider < Chef::Provider::SystemdUnit
-    Systemd::UNIT_TYPES.each do |unit_type|
-      provides "systemd_#{unit_type}".to_sym, os: 'linux'
+class SystemdCookbook
+  class Units
+    class Provider < Chef::Provider::SystemdUnit
+      Systemd::UNITS.each do |unit|
+        provides "systemd_#{unit}".to_sym
+      end
+
+      def unit_path
+        fname = "#{new_resource.name}.#{new_resource.unit_type}"
+
+        if new_resource.user
+          "/etc/systemd/user/#{fname}"
+        else
+          "/etc/systemd/system/#{fname}"
+        end
+      end
     end
 
-    def unit_path
-      fname = "#{new_resource.name}.#{new_resource.unit_type}"
+    Systemd::UNITS.each do |unit|
+      next if Systemd::BUS_ONLY_UNITS.include?(unit)
 
-      if new_resource.user
-        "/etc/systemd/user/#{fname}"
-      else
-        "/etc/systemd/system/#{fname}"
-      end
+      SystemdCookbook::Units.const_set(
+        unit.capitalize,
+        Class.new(Chef::Resource::SystemdUnit) do
+          UNIT ||= unit
+
+          include Systemd::Mixins::Unit
+          include Systemd::Mixins::Conversion
+
+          resource_name "systemd_#{unit}".to_sym
+          option_properties Systemd.const_get(unit.capitalize.to_sym)::OPTIONS
+
+          define_method(unit.to_sym) { |&b| b.call }
+
+          def unit_type; UNIT; end
+
+          def to_ini
+            content property_hash(Systemd.const_get(UNIT.capitalize.to_sym)::OPTIONS)
+            super
+          end
+        end
+      )
     end
   end
-end
-
-Systemd::UNIT_TYPES.each do |t|
-  SystemdUnit.const_set(
-    t.capitalize,
-    Class.new(Chef::Resource::SystemdUnit) do
-      UNIT_TYPE ||= t
-
-      include Systemd::Mixins::Unit
-      include Systemd::Mixins::Conversion
-
-      resource_name "systemd_#{t}".to_sym
-      option_properties Systemd.const_get(t.capitalize.to_sym)::OPTIONS
-
-      define_method(t.to_sym) { |&b| b.call }
-
-      def unit_type; UNIT_TYPE; end
-
-      def to_ini
-        content property_hash(
-          Systemd.const_get(UNIT_TYPE.capitalize.to_sym)::OPTIONS
-        )
-        super
-      end
-    end
-  )
 end

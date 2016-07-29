@@ -33,6 +33,20 @@ module Systemd
     timer
   ).freeze
 
+  BUS_ONLY_UNITS ||= %w( scope ).freeze
+
+  UTILS ||= %w(
+    bootchart
+    coredump
+    journald
+    logind
+    resolved
+    sleep
+    system
+    timesyncd
+    user
+  ).freeze
+
   # rubocop: disable ModuleLength
   module Common
     ABSOLUTE_PATH ||= {
@@ -144,7 +158,7 @@ module Systemd
         info
         debug
       ).concat(0.upto(7).to_a)
-    }
+    }.freeze
     POWER ||= {
       kind_of: String,
       equal_to: %w(
@@ -927,7 +941,7 @@ module Systemd
     OPTIONS ||= {
       'Bootchart' => {
         'Samples' => Common::INTEGER,
-        'Frequency' => kind_of: Numeric,
+        'Frequency' => { kind_of: Numeric },
         'Relative' => Common::BOOLEAN,
         'Filter' => Common::BOOLEAN,
         'Output' => Common::ABSOLUTE_PATH,
@@ -1042,6 +1056,7 @@ module Systemd
         'DNSSEC' => {
           kind_of: [String, TrueClass, FalseClass],
           equal_to: [true, false, 'allow-downgrade']
+        }
       }
     }.freeze
   end

@@ -16,14 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-systemd_logind 'logind' do
-  drop_in false
-  node['systemd']['logind'].each_pair do |config, value|
-    send(config.to_sym, value) unless value.nil?
-  end
-  notifies :restart, 'service[systemd-logind]', :delayed
-end
-
 service 'systemd-logind' do
-  action :enable
+  action :nothing
 end

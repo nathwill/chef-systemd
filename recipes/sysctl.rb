@@ -17,5 +17,5 @@
 # limitations under the License.
 
 service 'systemd-sysctl' do
-  action :enable
+  action :nothing
 end

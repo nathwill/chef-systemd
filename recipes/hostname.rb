@@ -31,7 +31,3 @@ execute 'set-hostname' do
   action :nothing
   not_if { hostname.nil? }
 end
-
-service 'systemd-hostnamed' do
-  action :enable
-end

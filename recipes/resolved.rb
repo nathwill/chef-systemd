@@ -16,14 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-systemd_resolved 'resolved' do
-  drop_in false
-  node['systemd']['resolved'].each_pair do |config, value|
-    send(config.to_sym, value) unless value.nil?
-  end
-  notifies :restart, 'service[systemd-resolved]', :delayed
-end
-
 service 'systemd-resolved' do
   action [:enable, :start]
 end

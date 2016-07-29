@@ -18,5 +18,5 @@
 
 # oneshot service that runs at boot
 service 'systemd-binfmt' do
-  action :enable
+  action :nothing
 end

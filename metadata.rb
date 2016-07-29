@@ -2,9 +2,9 @@ name             'systemd'
 maintainer       'The Authors'
 maintainer_email 'nath.e.will@gmail.com'
 license          'apache2'
-description      'resource-driven chef cookbook for managing linux systems via systemd'
+description      'chef cookbook for managing linux systems via systemd'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '2.1.0'
+version          '3.0.0'
 
 depends 'compat_resource'
 
@@ -16,7 +16,5 @@ supports 'ubuntu', '>= 15.04'
   supports p, '>= 7.0'
 end
 
-unless defined?(Ridley::Chef::Cookbook::Metadata)
-  source_url       'https://github.com/nathwill/chef-systemd' if respond_to?(:source_url)
-  issues_url       'https://github.com/nathwill/chef-systemd/issues' if respond_to?(:issues_url)
-end
+source_url 'https://github.com/nathwill/chef-systemd' if respond_to?(:source_url)
+issues_url 'https://github.com/nathwill/chef-systemd/issues' if respond_to?(:issues_url)

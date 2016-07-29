@@ -26,5 +26,5 @@ file '/etc/vconsole.conf' do
 end
 
 service 'systemd-vconsole-setup' do
-  action :enable
+  action :nothing
 end

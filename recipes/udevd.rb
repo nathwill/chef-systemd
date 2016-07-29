@@ -43,5 +43,5 @@ systemd_service 'local-udevd-options' do
 end
 
 service 'systemd-udevd' do
-  action :enable
+  action :nothing
 end

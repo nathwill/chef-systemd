@@ -61,7 +61,8 @@ class SystemdCookbook
       private
 
       def util_path
-        "/etc/systemd/#{new_resource.util_type}.conf.d/#{new_resource.name}.conf"
+        r = new_resource
+        "/etc/systemd/#{r.util_type}.conf.d/#{r.name}.conf"
       end
 
       def manage_util_config(action = :nothing)

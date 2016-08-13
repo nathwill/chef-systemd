@@ -34,8 +34,8 @@ module Systemd
       module ClassMethods
         def option_properties(options = {})
           options.each_pair do |_, opts|
-            opts.each_pair do |o, c|
-              property o.underscore.to_sym, c.merge(desired_state: false)
+            opts.each_pair do |opt, conf|
+              property opt.underscore.to_sym, conf.merge(desired_state: false)
             end
           end
         end

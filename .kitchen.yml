@@ -5,50 +5,16 @@ driver:
 provisioner:
   name: chef_zero
 
+verifier:
+  name: inspec
+
 platforms:
-  - name: fedora-23
-  - name: ubuntu-15.04
-  - name: debian-8.2
+  - name: fedora-24
+  - name: ubuntu-16.04
+  - name: debian-8.5
   - name: centos-7.2
 
 suites:
-  - name: reload
-    includes: centos-7.2
-    run_list:
-      - recipe[setup::daemon_reload]
-  - name: units
-    run_list:
-      - recipe[setup::dnf]
-      - recipe[setup::automount]
-  - name: daemons
-    run_list:
-      - recipe[systemd::journald]
-      - recipe[setup::journald]
-      - recipe[systemd::logind]
-      - recipe[setup::logind]
-      - recipe[systemd::machined]
-      - recipe[systemd::timedated]
-  - name: daemons-new
-    includes:
-      - fedora-23
-    run_list:
-      - recipe[setup::dnf]
-      - recipe[systemd::journal_gatewayd]
-      - recipe[systemd::networkd]
-      - recipe[systemd::resolved]
-      - recipe[setup::resolved]
-      - recipe[systemd::timesyncd]
-      - recipe[setup::timesyncd]
-  - name: utils
-    run_list:
-      - recipe[systemd::sysctl]
-      - recipe[setup::sysctl]
-      - recipe[setup::tmpfiles]
-  - name: utils-new
-    includes:
-      - fedora-23
-    run_list:
-      - recipe[systemd::binfmt]
-      - recipe[setup::binfmt]
-      - recipe[systemd::sysusers]
-      - recipe[setup::sysuser]
+  name: default
+  run_list:
+  attributes:

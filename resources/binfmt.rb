@@ -21,9 +21,9 @@ property :flags, String, callbacks: {
 
 def as_string
   %w( name type offset magic mask interpreter flags )
-  .map { |a| send(a.to_sym) }
-  .join(':')
-  .prepend(':')
+    .map { |a| send(a.to_sym) }
+    .join(':')
+    .prepend(':')
 end
 
 default_action :create

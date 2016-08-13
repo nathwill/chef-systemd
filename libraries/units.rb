@@ -57,10 +57,12 @@ class SystemdCookbook
 
           define_method(unit.to_sym) { |&b| b.call }
 
-          def unit_type; UNIT; end
+          def unit_type
+            UNIT
+          end
 
           def to_ini
-            content property_hash(Systemd.const_get(UNIT.capitalize.to_sym)::OPTIONS)
+            content property_hash(Systemd.const_get(UNIT.capitalize.to_sym)::OPTIONS) # rubocop: disable LineLength
             super
           end
         end

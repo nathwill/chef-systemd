@@ -22,48 +22,36 @@ require 'mixlib/shellout'
 module Systemd
   module Helpers
     def module_loaded?(mod)
-      IO.read('/proc/modules').match(Regexp.new("^#{mod}\s"))
+      File.exist?('/proc/modules') &&
+        File.read('/proc/modules')
+            .match(Regexp.new("^#{mod}\s"))
     end
 
-    module_function :module_loaded?
+    def systemd?
+      File.exist?('/proc/1/comm') &&
+        IO.read('/proc/1/comm').chomp == 'systemd'
+    end
 
-    module Init
-      # systemd makes this way too easy
-      def systemd?
-        File.exist?('/proc/1/comm') &&
-          IO.read('/proc/1/comm').chomp == 'systemd'
+    def rtc_mode?(lu)
+      yn = lu == 'local' ? 'yes' : 'no'
+      unless defined?(ChefSpec)
+        Mixlib::ShellOut.new('timedatectl')
+                        .tap(&:run_command)
+                        .stdout
+                        .match(Regexp.new("RTC in local TZ: #{yn}"))
       end
     end
 
-    module RTC
-      # ascertain if current real-time-clock mode (utc/local) matches argument
-      def rtc_mode?(lu)
-        yn = lu == 'local' ? 'yes' : 'no'
-        unless defined?(ChefSpec)
-          Mixlib::ShellOut.new('timedatectl')
-                          .tap(&:run_command)
-                          .stdout
-                          .match(Regexp.new("RTC in local TZ: #{yn}"))
-        end
-      end
-
-      module_function :rtc_mode?
+    def timezone?(tz)
+      File.symlink?('/etc/localtime') &&
+        File.readlink('/etc/localtime').match(Regexp.new("#{tz}$"))
     end
 
-    module Timezone
-      # ascertain if current timezone matches argument
-      def timezone?(tz)
-        File.symlink?('/etc/localtime') &&
-          File.readlink('/etc/localtime').match(Regexp.new("#{tz}$"))
-      end
-
-      module_function :timezone?
-    end
+    module_function :module_loaded?, :systemd?, :rtc_mode?, :timezone?
   end
 end
 
 class String
-  # converts camel-cased config directives to snake_cased attribute names
   def underscore
     gsub(/::/, '/')
       .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
@@ -72,8 +60,7 @@ class String
       .downcase
   end
 
-  # converts snake_cased attribute names to camel-cased config directives
-  def camelize
+  def camelcase
     gsub(/(^|_)(.)/) { Regexp.last_match(2).upcase }
   end
 end

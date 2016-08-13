@@ -25,7 +25,7 @@ module Systemd
       end
     end
 
-    module Conversion
+    module Iniable
       def self.included(base)
         base.send :include, InstanceMethods
         base.extend ClassMethods

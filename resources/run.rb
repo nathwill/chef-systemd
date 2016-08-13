@@ -46,8 +46,8 @@ def cli_opts
   cmd << options_config(Systemd::Run::OPTIONS).map { |o| "-p '#{o}'" }
   cmd.flatten.join(' ')
 end
-# rubocop: enable AbcSize
 # rubocop: enable MethodLength
+# rubocop: enable AbcSize
 
 def active?
   Mixlib::ShellOut.new("systemctl is-active #{unit}")
@@ -69,7 +69,7 @@ action :run do
 
   file "/var/cache/#{new_resource.unit}" do
     content cmd
-    notifies :run "execute[#{stop}]", :immediately
+    notifies :run, "execute[#{stop}]", :immediately
   end
 
   execute cmd do

@@ -33,15 +33,17 @@ class SystemdCookbook
       end
 
       def load_current_resource
-        @current_resource = SystemdCookbook::Utils.const_get(new_resource.util_type)
-                                                  .new(new_resource.name)
-        current_resource.content = ::File.read(util_path) if ::File.exist?(util_path)
+        @current_resource =
+          SystemdCookbook::Utils.const_get(new_resource.util_type)
+                                .new(new_resource.name)
+        current_resource.content =
+          File.read(util_path) if File.exist?(util_path)
       end
 
       def action_create
         if @content != new_resource.to_ini
           converge_by("creating systemd util config: #{new_resource.name}") do
-            Chef::Resource::Directory.new(::File.dirname(util_path), run_context)
+            Chef::Resource::Directory.new(File.dirname(util_path), run_context)
                                      .run_action(:create)
             manage_util_config(:create)
           end
@@ -82,7 +84,9 @@ class SystemdCookbook
           default_action :create
           allowed_actions :create, :delete
 
-          def util_type; UTIL; end
+          def util_type
+            UTIL
+          end
 
           property :content, String, desired_state: true
 

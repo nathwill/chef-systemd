@@ -47,3 +47,47 @@ systemd_path 'systemd-ask-password-console' do
     make_directory true
   end
 end
+
+systemd_slice 'user' do
+  before %w( slices.target )
+  memory_limit '512M'
+end
+
+systemd_socket 'systemd-journald' do
+  description 'journal socket'
+  default_dependencies false
+  before %w( sockets.target )
+  ignore_on_isolate true
+  socket do
+    listen_stream '/run/systemd/journal/stdout'
+    listen_datagram '/run/systemd/journal/socket'
+    socket_mode '0666'
+    pass_credentials true
+    pass_security true
+    receive_buffer '8M'
+    service 'systemd-journald.service'
+  end
+end
+
+systemd_swap 'dev-mapper-swap' do
+  swap do
+    what '/dev/mapper/swap'
+    timeout_sec 60
+  end
+end
+
+systemd_target 'my-app' do
+  description 'my cool app'
+  after 'network-online.target'
+  install do
+    wanted_by 'multi-user.target'
+  end
+end
+
+systemd_timer 'systemd-tmpfiles-clean' do
+  description 'clean tmpfiles'
+  timer do
+    on_boot_sec '15m'
+    on_unit_active_sec '1d'
+  end
+end

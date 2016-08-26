@@ -810,7 +810,7 @@ module Systemd
     OPTIONS ||= {
       'Socket' => {
         'ListenStream' => Common::STRING_OR_INT,
-        'ListenDataGram' => Common::STRING_OR_INT,
+        'ListenDatagram' => Common::STRING_OR_INT,
         'ListenSequentialPacket' => Common::STRING_OR_INT,
         'ListenFIFO' => Common::ABSOLUTE_PATH,
         'ListenSpecial' => Common::ABSOLUTE_PATH,

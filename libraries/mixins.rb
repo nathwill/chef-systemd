@@ -60,6 +60,8 @@ module Systemd
             result[heading] = conf.map do |opt, _|
               [opt.camelcase, option_value(send(opt.underscore.to_sym))]
             end.to_h
+
+            result.reject! { |_, v| v.empty? }
           end
 
           result

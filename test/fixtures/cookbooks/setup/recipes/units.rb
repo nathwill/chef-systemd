@@ -24,3 +24,26 @@ systemd_mount 'tmp' do
     options 'mode=1777,strictatime'
   end
 end
+
+systemd_service 'systemd-ask-password-console' do
+  triggers_reload false
+  description 'forward password reqs to wall'
+  documentation 'man:systemd-ask-password-console.service(8)'
+  after %w( systemd-user-session.service )
+  service do
+    exec_start_pre '-/usr/bin/systemctl stop systemd-ask-password-console.path systemd-ask-password-console.service systemd-ask-password-plymouth.path systemd-ask-password-plymouth.service'
+    exec_start '/usr/bin/systemd-tty-ask-password-agent --wall'
+  end
+end
+
+systemd_path 'systemd-ask-password-console' do
+  description 'forward password reqs to wall'
+  documentation 'man:systemd-ask-password-console.service(8)'
+  default_dependencies false
+  conflicts 'shutdown.target'
+  before %w( paths.target shutdown.target )
+  path do
+    directory_not_empty '/run/systemd/ask-password'
+    make_directory true
+  end
+end

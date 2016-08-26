@@ -18,18 +18,18 @@
 
 # Ref: http://www.freedesktop.org/software/systemd/man/locale.conf.html
 default['systemd']['locale'].tap do |l|
-  l['lang'] = 'en_US.UTF-8'
-  l['language'] = nil
-  l['lc_ctype'] = nil
-  l['lc_numeric'] = nil
-  l['lc_time'] = nil
-  l['lc_collate'] = nil
-  l['lc_monetary'] = nil
-  l['lc_messages'] = nil
-  l['lc_paper'] = nil
-  l['lc_name'] = nil
-  l['lc_address'] = nil
-  l['lc_telephone'] = nil
-  l['lc_measurement'] = nil
-  l['lc_identification'] = nil
+  l['LANG'] = 'en_US.UTF-8'
+  l['LANGUAGE'] = nil
+  l['LC_CTYPE'] = nil
+  l['LC_NUMERIC'] = nil
+  l['LC_TIME'] = nil
+  l['LC_COLLATE'] = nil
+  l['LC_MONETARY'] = nil
+  l['LC_MESSAGES'] = nil
+  l['LC_PAPER'] = nil
+  l['LC_NAME'] = nil
+  l['LC_ADDRESS'] = nil
+  l['LC_TELEPHONE'] = nil
+  l['LC_MEASUREMENT'] = nil
+  l['LC_IDENTIFICATION'] = nil
 end

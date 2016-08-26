@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Attributes:: vconsole
+# Attributes:: udev
 #
 # Copyright 2015 The Authors
 #
@@ -16,11 +16,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Ref: http://www.freedesktop.org/software/systemd/man/vconsole.conf.html
-default['systemd']['vconsole'].tap do |v|
-  v['KEYMAP'] = 'us'
-  v['KEYMAP_TOGGLE'] = nil
-  v['FONT'] = 'latarcyrheb-sun16'
-  v['FONT_MAP'] = nil
-  v['FONT_UNIMAP'] = nil
+# Ref: http://www.freedesktop.org/software/systemd/man/udev.conf.html
+# Ref: http://www.freedesktop.org/software/systemd/man/systemd-udevd.service.html
+default['systemd']['udev'].tap do |u|
+  u['udev_log'] = nil
+  u['options'].tap do |o|
+    o['children-max'] = nil
+    o['exec-delay'] = nil
+    o['event-timeout'] = nil
+    o['resolve-names'] = nil
+  end
 end

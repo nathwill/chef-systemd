@@ -32,5 +32,5 @@ cmd << '--adjust-system-clock' if rtc['adjust_system_clock']
 cmd << "set-local-rtc #{mode}"
 
 execute cmd.join(' ') do
-  not_if { Systemd::Helpers::RTC.rtc_mode?(rtc['mode']) }
+  not_if { Systemd::Helpers.rtc_mode?(rtc['mode']) }
 end

@@ -16,12 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-v = node['systemd']['vconsole']
-
-opts = v.reject { |_, o| o.nil? }
+vconsole = node['systemd']['vconsole']
 
 file '/etc/vconsole.conf' do
-  content opts.map { |k, o| "#{k.upcase}=\"#{o}\"" }.join("\n")
+  content vconsole.to_h.to_kv_pairs.join("\n")
   notifies :restart, 'service[systemd-vconsole-setup]', :immediately
 end
 

@@ -19,5 +19,5 @@
 tz = node['systemd']['timezone']
 
 execute "timedatectl set-timezone #{tz}" do
-  not_if { Systemd::Helpers::Timezone.timezone?(tz) }
+  not_if { Systemd::Helpers.timezone?(tz) }
 end

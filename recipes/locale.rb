@@ -16,13 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-l = node['systemd']['locale']
-
-opts = l.reject { |_, v| v.nil? }
+locale = node['systemd']['locale']
 
 file '/etc/locale.conf' do
-  content opts.map { |k, v| "#{k.upcase}=\"#{v}\"" }.join("\n")
-  not_if { opts.empty? }
+  content locale.to_h.to_kv_pairs.join("\n")
+  not_if { locale.empty? }
   notifies :restart, 'service[systemd-localed]', :immediately
 end
 

@@ -15,8 +15,25 @@ platforms:
   - name: centos-7.2
 
 suites:
-  - name: default
+  # test core resources
+  - name: resources
     run_list:
       - recipe[setup::units]
       - recipe[setup::daemons]
       - recipe[setup::misc]
+
+  # skips no-op recipes
+  - name: recipes
+    run_list:
+      - recipe[systemd::hostname]
+      - recipe[systemd::journald]
+      - recipe[systemd::locale]
+      - recipe[systemd::networkd]
+      - recipe[systemd::rtc]
+      - recipe[systemd::timesyncd]
+      - recipe[systemd::timezone]
+#      - recipe[systemd::udevd]
+      - recipe[systemd::vconsole]
+    attributes:
+      systemd:
+        hostname: my-hostname

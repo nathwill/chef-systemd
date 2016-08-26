@@ -64,3 +64,10 @@ class String
     gsub(/(^|_)(.)/) { Regexp.last_match(2).upcase }
   end
 end
+
+class Hash
+  def to_kv_pairs
+    reject! { |_, v| v.nil? }
+    map { |k, v| "#{k}=\"#{v}\"" }
+  end
+end

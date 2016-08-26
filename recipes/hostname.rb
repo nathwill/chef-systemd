@@ -16,10 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-path = '/etc/hostname'
 hostname = node['systemd']['hostname']
 
-file path do
+# hostnamectl will populate this file
+# but we write it explicitly for idempotency
+file '/etc/hostname' do
   content hostname
   not_if { hostname.nil? }
   notifies :run, 'execute[set-hostname]', :immediately

@@ -25,11 +25,12 @@ module Systemd
       def self.included(base)
         base.send :property, :triggers_reload,
                              [TrueClass, FalseClass],
+                             default: true,
                              desired_state: false
       end
     end
 
-    module Iniable
+    module PropertyHashConversion
       def self.included(base)
         base.send :include, InstanceMethods
         base.extend ClassMethods

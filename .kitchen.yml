@@ -17,4 +17,4 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[setup::automount]
+      - recipe[setup::units]

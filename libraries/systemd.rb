@@ -189,6 +189,21 @@ module Systemd
         lock
       )
     }.freeze
+    STDALL ||= {
+      kind_of: String,
+      equal_to: %w(
+        inherit
+        null 
+        tty  
+        journal
+        syslog
+        kmsg 
+        journal+console
+        syslog+console
+        kmsg+console
+        socket
+      )    
+    }.freeze
     STRING ||= { kind_of: String }.freeze
     STRING_OR_ARRAY ||= { kind_of: [String, Array] }.freeze
     STRING_OR_INT ||= { kind_of: [String, Integer] }.freeze
@@ -364,36 +379,8 @@ module Systemd
         kind_of: String,
         equal_to: %w( null tty tty-force tty-fail socket )
       },
-      'StandardOutput' => {
-        kind_of: String,
-        equal_to: %w(
-          inherit
-          null
-          tty
-          journal
-          syslog
-          kmsg
-          journal+console
-          syslog+console
-          kmsg+console
-          socket
-        )
-      },
-      'StandardError' => {
-        kind_of: String,
-        equal_to: %w(
-          inherit
-          null
-          tty
-          journal
-          syslog
-          kmsg
-          journal+console
-          syslog+console
-          kmsg+console
-          socket
-        )
-      },
+      'StandardOutput' => Common::STDALL,
+      'StandardError' => Common::STDALL,
       'TTYPath' => Common::ABSOLUTE_PATH,
       'TTYReset' => Common::BOOLEAN,
       'TTYVHangup' => Common::BOOLEAN,
@@ -1076,7 +1063,66 @@ module Systemd
 
   module System
     OPTIONS ||= {
-      'Manager' => {}
+      'Manager' => {
+        'LogLevel' => Common::LOGLEVEL,
+        'LogTarget' => {
+          kind_of: String,
+          equal_to: %w( console journal kmsg journal-or-kmsg null )
+        },
+        'LogColor' => Common::BOOLEAN,
+        'LogLocation' => Common::BOOLEAN,
+        'DumpCore' => Common::BOOLEAN,
+        'CrashChangeVT' => Common::BOOLEAN,
+        'CrashShell' => Common::BOOLEAN,
+        'CrashReboot' => Common::BOOLEAN,
+        'ShowStatus' => Common::BOOLEAN,
+        'DefaultStandardOutput' => Exec::OPTIONS['StandardOutput'],
+        'DefaultStandardError' => Exec::OPTIONS['StandardError'],
+        'CPUAffinity' => Common::ARRAY,
+        'JoinControllers' => Common::ARRAY,
+        'RuntimeWatchdogSec' => Common::STRING_OR_INT,
+        'ShutdownWatchdogSec' => Common::STRING_OR_INT,
+        'CapabilityBoundingSet' => Common::CAP,
+        'SystemCallArchitectures' => {
+          kind_of: [String, Array],
+          callbacks: {
+            'is valid arch' => lambda do |spec|
+              Array(spec).all? do |a|
+                %w( x86 x86-64 x32 arm native ).include?(a)
+              end
+            end
+          }
+        },
+        'TimerSlackNSec' => Common::STRING_OR_INT,
+        'DefaultTimerAccuracySec' => Timer::OPTIONS['Timer']['AccuracySec'],
+        'DefaultTimeoutStartSec' => Service::OPTIONS['Service']['TimeoutStartSec'],
+        'DefaultTimeoutStopSec' => Service::OPTIONS['Service']['TimeoutStopSec'],
+        'DefaultRestartSec' => Service::OPTIONS['Service']['RestartSec'],
+        'DefaultStartLimitIntervalSec' => Unit::OPTIONS['Unit']['StartLimitIntervalSec'],
+        'DefaultStartLimitBurst' => Unit::OPTIONS['Unit']['StartLimitBurst'],
+        'DefaultEnvironment' => Exec::OPTIONS['Environment'],
+        'DefaultCPUAccounting' => ResourceControl::OPTIONS['CPUAccounting'],
+        'DefaultBlockIOAccounting' => ResourceControl::OPTIONS['BlockIOAccounting'],
+        'DefaultMemoryAccounting' => ResourceControl::OPTIONS['MemoryAccounting'],
+        'DefaultTasksAccounting' => ResourceControl::OPTIONS['TasksAccounting'],
+        'DefaultTasksMax' => ResourceControl::OPTIONS['TasksMax'],
+        'DefaultLimitCPU' => Exec::OPTIONS['LimitCPU'],
+        'DefaultLimitFSIZE' => Exec::OPTIONS['LimitFSIZE'],
+        'DefaultLimitDATA' => Exec::OPTIONS['LimitDATA'],
+        'DefaultLimitSTACK' => Exec::OPTIONS['LimitSTACK'],
+        'DefaultLimitCORE' => Exec::OPTIONS['LimitCORE'],
+        'DefaultLimitRSS' => Exec::OPTIONS['LimitRSS'],
+        'DefaultLimitNOFILE' => Exec::OPTIONS['LimitNOFILE'],
+        'DefaultLimitAS' => Exec::OPTIONS['LimitAS'],
+        'DefaultLimitNPROC' => Exec::OPTIONS['LimitNPROC'],
+        'DefaultLimitMEMLOCK' => Exec::OPTIONS['LimitMEMLOCK'],
+        'DefaultLimitLOCKS' => Exec::OPTIONS['LimitLOCKS'],
+        'DefaultLimitSIGPENDING' => Exec::OPTIONS['LimitSIGPENDING'],
+        'DefaultLimitMSGQUEUE' => Exec::OPTIONS['LimitMSGQUEUE'],
+        'DefaultLimitNICE' => Exec::OPTIONS['LimitNICE'],
+        'DefaultLimitRTPRIO' => Exec::OPTIONS['LimitRTPRIO'],
+        'DefaultLimitRTTIME' => Exec::OPTIONS['LimitRTTIME']
+      }
     }.freeze
   end
 

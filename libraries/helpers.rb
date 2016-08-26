@@ -27,7 +27,7 @@ module Systemd
             .match(Regexp.new("^#{mod}\s"))
     end
 
-    def systemd?
+    def systemd_is_pid_1?
       File.exist?('/proc/1/comm') &&
         IO.read('/proc/1/comm').chomp == 'systemd'
     end
@@ -47,7 +47,7 @@ module Systemd
         File.readlink('/etc/localtime').match(Regexp.new("#{tz}$"))
     end
 
-    module_function :module_loaded?, :systemd?, :rtc_mode?, :timezone?
+    module_function :module_loaded?, :systemd_is_pid_1?, :rtc_mode?, :timezone?
   end
 end
 

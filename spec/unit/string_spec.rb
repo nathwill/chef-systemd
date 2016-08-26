@@ -6,6 +6,6 @@ describe String do
   end
 
   it 'correctly camelizes a string' do
-    expect('root_directory_start_only'.camelize).to eq 'RootDirectoryStartOnly'
+    expect('root_directory_start_only'.camelcase).to eq 'RootDirectoryStartOnly'
   end
 end

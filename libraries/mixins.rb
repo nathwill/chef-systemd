@@ -20,8 +20,12 @@
 module Systemd
   module Mixins
     module Unit
-      def install
-        yield
+      def install; yield; end
+
+      def self.included(base)
+        base.send :property, :triggers_reload,
+                             [TrueClass, FalseClass],
+                             desired_state: false
       end
     end
 
@@ -51,7 +55,7 @@ module Systemd
             end
 
             result[heading] = conf.map do |opt, _|
-              [opt.camelize, option_value(send(opt.underscore.to_sym))]
+              [opt.camelcase, option_value(send(opt.underscore.to_sym))]
             end.to_h
           end
 

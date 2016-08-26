@@ -146,7 +146,7 @@ module Systemd
       }
     }.freeze
     INTEGER ||= { kind_of: Integer }.freeze
-    LOG_LEVEL ||= {
+    LOGLEVEL ||= {
       kind_of: [String, Integer],
       equal_to: %w(
         emerg
@@ -997,11 +997,11 @@ module Systemd
         'ForwardToSyslog' => Common::BOOLEAN,
         'ForwardToKMsg' => Common::BOOLEAN,
         'ForwardToConsole' => Common::BOOLEAN,
-        'MaxLevelStore' => Common::LOG_LEVEL,
-        'MaxLevelSyslog' => Common::LOG_LEVEL,
-        'MaxLevelKMsg' => Common::LOG_LEVEL,
-        'MaxLevelConsole' => Common::LOG_LEVEL,
-        'MaxLevelWall' => Common::LOG_LEVEL,
+        'MaxLevelStore' => Common::LOGLEVEL,
+        'MaxLevelSyslog' => Common::LOGLEVEL,
+        'MaxLevelKMsg' => Common::LOGLEVEL,
+        'MaxLevelConsole' => Common::LOGLEVEL,
+        'MaxLevelWall' => Common::LOGLEVEL,
         'TTYPath' => Common::ABSOLUTE_PATH
       }
     }.freeze

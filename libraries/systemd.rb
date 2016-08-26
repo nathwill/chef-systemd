@@ -193,16 +193,16 @@ module Systemd
       kind_of: String,
       equal_to: %w(
         inherit
-        null 
-        tty  
+        null
+        tty
         journal
         syslog
-        kmsg 
+        kmsg
         journal+console
         syslog+console
         kmsg+console
         socket
-      )    
+      )
     }.freeze
     STRING ||= { kind_of: String }.freeze
     STRING_OR_ARRAY ||= { kind_of: [String, Array] }.freeze

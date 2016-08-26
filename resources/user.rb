@@ -12,7 +12,7 @@ default_action :create
     conf_d = '/etc/systemd/user.conf.d'
 
     directory conf_d do
-      not_if { actn == :delete }
+      not_if { new_resource.action == :delete }
     end
 
     r = systemd_unit "user-#{new_resource.name}" do

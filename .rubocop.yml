@@ -10,3 +10,5 @@ Documentation:
   Enabled: false
 ClassAndModuleChildren:
   Enabled: false
+Metrics/LineLength:
+  Max: 90

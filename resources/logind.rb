@@ -12,7 +12,7 @@ default_action :create
     conf_d = '/etc/systemd/logind.conf.d'
 
     directory conf_d do
-      not_if { actn == :delete }
+      not_if { new_resource.action == :delete }
     end
 
     r = systemd_unit "logind-#{new_resource.name}" do

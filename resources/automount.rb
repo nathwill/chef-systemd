@@ -6,7 +6,9 @@ provides :systemd_automount
 
 option_properties Systemd::Automount::OPTIONS
 
-def automount; yield; end
+def automount
+  yield
+end
 
 default_action :create
 

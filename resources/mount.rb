@@ -6,7 +6,9 @@ provides :systemd_mount
 
 option_properties Systemd::Mount::OPTIONS
 
-def mount; yield; end
+def mount
+  yield
+end
 
 default_action :create
 

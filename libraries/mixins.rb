@@ -20,13 +20,15 @@
 module Systemd
   module Mixins
     module Unit
-      def install; yield; end
+      def install
+        yield
+      end
 
       def self.included(base)
         base.send :property, :triggers_reload,
-                             [TrueClass, FalseClass],
-                             default: true,
-                             desired_state: false
+                  [TrueClass, FalseClass],
+                  default: true,
+                  desired_state: false
       end
     end
 

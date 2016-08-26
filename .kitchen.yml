@@ -18,3 +18,4 @@ suites:
   - name: default
     run_list:
       - recipe[setup::units]
+      - recipe[setup::daemons]

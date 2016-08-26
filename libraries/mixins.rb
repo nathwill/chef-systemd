@@ -63,7 +63,7 @@ module Systemd
             end.to_h
           end
 
-          result.reject! { |_, v| v.empty? }
+          result.delete_if { |_, v| v.empty? }
         end
         # rubocop: enable AbcSize
 

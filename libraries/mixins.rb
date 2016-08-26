@@ -49,6 +49,7 @@ module Systemd
       end
 
       module InstanceMethods
+        # rubocop: disable AbcSize
         def property_hash(options = {})
           result = {}
 
@@ -60,12 +61,11 @@ module Systemd
             result[heading] = conf.map do |opt, _|
               [opt.camelcase, option_value(send(opt.underscore.to_sym))]
             end.to_h
-
-            result.reject! { |_, v| v.empty? }
           end
 
-          result
+          result.reject! { |_, v| v.empty? }
         end
+        # rubocop: enable AbcSize
 
         def option_value(obj)
           case obj

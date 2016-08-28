@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require_relative 'systemd'
+
 module Systemd
   module Mixins
     module Unit
@@ -29,6 +31,14 @@ module Systemd
                   [TrueClass, FalseClass],
                   default: true,
                   desired_state: false
+      end
+    end
+
+    module DropIn
+      def self.included(base)
+        base.send :property, :override, String, required: true, callbacks: {
+          'valid type' => ->(s) { Systemd::UNIT_TYPES.any? { |u| s.end_with?(u) } }
+        }
       end
     end
 

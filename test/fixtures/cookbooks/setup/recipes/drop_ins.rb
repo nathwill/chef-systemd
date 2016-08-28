@@ -13,3 +13,28 @@ systemd_path_drop_in 'systemd-ask-password-console-override' do
   override 'systemd-ask-password-console.path'
   directory_mode '0755'
 end
+
+systemd_service_drop_in 'systemd-ask-password-console' do
+  override 'systemd-ask-password-console.service'
+  description 'blah blah blah'
+end
+
+systemd_slice_drop_in '' do
+
+end
+
+systemd_socket_drop_in '' do
+
+end
+
+systemd_swap_drop_in '' do
+
+end
+
+systemd_target_drop_in '' do
+
+end
+
+systemd_timer_drop_in '' do
+
+end

@@ -8,7 +8,7 @@ provides :systemd_automount_drop_in
 option_properties Systemd::Automount::OPTIONS
 
 property :where, Systemd::Automount::OPTIONS['Automount']['Where']
-                 .merge(required: false)
+  .merge(required: false)
 
 def automount
   yield

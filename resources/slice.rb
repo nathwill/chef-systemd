@@ -6,6 +6,10 @@ provides :systemd_slice
 
 option_properties Systemd::Slice::OPTIONS
 
+def slice
+  yield
+end
+
 default_action :create
 
 Chef::Resource::SystemdUnit.allowed_actions.each do |actn|

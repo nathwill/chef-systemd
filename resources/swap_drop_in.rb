@@ -2,18 +2,12 @@ include Systemd::Mixins::Unit
 include Systemd::Mixins::DropIn
 include Systemd::Mixins::PropertyHashConversion
 
-resource_name :systemd_mount_drop_in
-provides :systemd_mount_drop_in
+resource_name :systemd_swap_drop_in
+provides :systemd_swap_drop_in
 
-option_properties Systemd::Mount::OPTIONS
+option_properties Systemd::Swap::OPTIONS
 
-property :what, Systemd::Mount::OPTIONS['Mount']['What']
-  .merge(required: false)
-
-property :where, Systemd::Mount::OPTIONS['Mount']['Where']
-  .merge(required: false)
-
-def mount
+def swap
   yield
 end
 
@@ -30,13 +24,13 @@ default_action :create
     end
 
     u = systemd_unit "#{r.override}_drop-in_#{r.name}" do
-      content property_hash(Systemd::Mount::OPTIONS)
+      content property_hash(Systemd::Swap::OPTIONS)
       action :nothing
     end
 
     execute 'systemctl daemon-reload' do
-      only_if { r.triggers_reload }
       action :nothing
+      only_if { r.triggers_reload }
     end
 
     file "#{conf_d}/#{r.name}.conf" do

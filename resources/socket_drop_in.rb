@@ -1,4 +1,5 @@
+include Systemd::Mixins::ResourceFactory
 include Systemd::Mixins::Unit
 include Systemd::Mixins::PropertyHashConversion
 
-Systemd::Helpers.build_drop_in_resource('socket')
+build_drop_in_resource('socket')

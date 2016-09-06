@@ -34,14 +34,6 @@ module Systemd
       end
     end
 
-    module DropIn
-      def self.included(base)
-        base.send :property, :override, String, required: true, callbacks: {
-          'valid type' => ->(s) { Systemd::UNIT_TYPES.any? { |u| s.end_with?(u) } }
-        }
-      end
-    end
-
     module PropertyHashConversion
       def self.included(base)
         base.send :include, InstanceMethods

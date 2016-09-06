@@ -29,7 +29,7 @@ describe Systemd::Helpers do
   end
 
   it 'lists the correct stub units' do
-    expect(Systemd::Helpers::STUB_UNITS).to match_array [:target]
+    expect(Systemd::Helpers::STUB_UNITS).to match_array [:target, :netdev, :network, :device]
   end
 
   it 'lists the correct daemons' do

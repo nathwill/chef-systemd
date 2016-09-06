@@ -30,7 +30,7 @@ module Systemd
     UTILS ||= %w( bootchart coredump sleep system user ).map(&:to_sym)
 
     # unit types without dedicated configuration options
-    STUB_UNITS ||= %w( target ).map(&:to_sym)
+    STUB_UNITS ||= %w( target netdev network device ).map(&:to_sym)
 
     # list of supported unit types
     UNITS ||= %w(

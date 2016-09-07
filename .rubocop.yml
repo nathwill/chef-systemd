@@ -11,6 +11,6 @@ Documentation:
 ClassAndModuleChildren:
   Enabled: false
 Metrics/LineLength:
-  Max: 90
+  Max: 100
 Metrics/MethodLength:
   Max: 15

@@ -29,6 +29,7 @@ module Systemd
         end
 
         module ClassMethods
+          # rubocop: disable AbcSize
           def build_resource
             resource_name "systemd_#{unit_type}".to_sym
             provides "systemd_#{unit_type}".to_sym
@@ -49,6 +50,7 @@ module Systemd
               end
             end
           end
+          # rubocop: enable AbcSize
         end
       end
 
@@ -59,6 +61,8 @@ module Systemd
         end
 
         module ClassMethods
+          # rubocop: disable MethodLength
+          # rubocop: disable AbcSize
           def build_resource
             resource_name "systemd_#{unit_type}_drop_in".to_sym
             provides "systemd_#{unit_type}_drop_in".to_sym
@@ -100,6 +104,8 @@ module Systemd
               end
             end
           end
+          # rubocop: enable MethodLength
+          # rubocop: enable AbcSize
         end
       end
     end

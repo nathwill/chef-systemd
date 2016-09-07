@@ -35,6 +35,8 @@ module Systemd
             include Systemd::Mixins::Unit
             include Systemd::Mixins::PropertyHashConversion
 
+            define_method(:unit_type) { self.class.unit_type }
+
             resource_name "systemd_#{unit_type}".to_sym
             provides "systemd_#{unit_type}".to_sym
 
@@ -75,6 +77,8 @@ module Systemd
           def build_resource
             include Systemd::Mixins::Unit
             include Systemd::Mixins::PropertyHashConversion
+
+            define_method(:unit_type) { self.class.unit_type }
 
             resource_name "systemd_#{unit_type}_drop_in".to_sym
             provides "systemd_#{unit_type}_drop_in".to_sym
@@ -136,6 +140,8 @@ module Systemd
           # rubocop: disable AbcSize
           def build_resource
             include Systemd::Mixins::PropertyHashConversion
+
+            define_method(:daemon_type) { self.class.daemon_type }
 
             resource_name "systemd_#{daemon_type}".to_sym
             provides "systemd_#{daemon_type}".to_sym

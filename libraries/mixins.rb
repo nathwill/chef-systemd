@@ -22,73 +22,81 @@ require_relative 'systemd'
 module Systemd
   module Mixins
     module ResourceFactory
-      def self.included(base)
-        base.extend ClassMethods
-      end
+      module Unit
+        def self.included(base)
+          base.extend ClassMethods
+          base.send :build_resource
+        end
 
-      module ClassMethods
-        def build_unit_resource(type)
-          @unit_type = type.to_sym
+        module ClassMethods
+          def build_resource
+            resource_name "systemd_#{unit_type}".to_sym
+            provides "systemd_#{unit_type}".to_sym
 
-          resource_name "systemd_#{type}".to_sym
-          provides "systemd_#{type}".to_sym
+            option_properties Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
 
-          option_properties Systemd.const_get(type.camelcase.to_sym)::OPTIONS
+            define_method(unit_type) { |&b| b.call if b }
 
-          define_method(type.to_sym) { |&b| b.call if b }
+            default_action :create
 
-          default_action :create
-
-          Chef::Resource::SystemdUnit.allowed_actions.each do |actn|
-            action actn do
-              systemd_unit "#{new_resource.name}.#{@unit_type}" do
-                triggers_reload new_resource.triggers_reload
-                content property_hash(Systemd.const_get(type.camelcase.to_sym)::OPTIONS)
-                action actn
+            Chef::Resource::SystemdUnit.allowed_actions.each do |actn|
+              action actn do
+                systemd_unit "#{new_resource.name}.#{unit_type}" do
+                  triggers_reload new_resource.triggers_reload
+                  content property_hash(Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS)
+                  action actn
+                end
               end
             end
           end
         end
+      end
 
-        def build_drop_in_resource(type)
-          @unit_type = type.to_sym
+      module DropIn
+        def self.included(base)
+          base.extend ClassMethods
+          base.send :build_resource
+        end
 
-          resource_name "systemd_#{type}_drop_in".to_sym
-          provides "systemd_#{type}_drop_in".to_sym
+        module ClassMethods
+          def build_resource
+            resource_name "systemd_#{unit_type}_drop_in".to_sym
+            provides "systemd_#{unit_type}_drop_in".to_sym
 
-          option_properties Systemd.const_get(type.camelcase.to_sym)::OPTIONS
-          property :override, String, required: true, callbacks: {
-            'matches drop-in type' => ->(s) { s.end_with?(@unit_type.to_s) }
-          }
+            option_properties Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+            property :override, String, required: true, callbacks: {
+              'matches drop-in type' => ->(s) { s.end_with?(unit_type.to_s) }
+            }
 
-          define_method(type.to_sym) { |&b| b.call if b }
+            define_method(unit_type) { |&b| b.call if b }
 
-          default_action :create
+            default_action :create
 
-          %w( create delete ).map(&:to_sym).each do |actn|
-            action actn do
-              r = new_resource
+            %w( create delete ).map(&:to_sym).each do |actn|
+              action actn do
+                r = new_resource
 
-              conf_d = "/etc/systemd/system/#{r.override}.d"
+                conf_d = "/etc/systemd/system/#{r.override}.d"
 
-              directory conf_d do
-                not_if { r.action == :delete }
-              end
+                directory conf_d do
+                  not_if { r.action == :delete }
+                end
 
-              u = systemd_unit "#{r.override}_drop-in_#{r.name}" do
-                content property_hash(Systemd.const_get(@unit_type.camelcase.to_sym)::OPTIONS)
-                action :nothing
-              end
+                u = systemd_unit "#{r.override}_drop-in_#{r.name}" do
+                  content property_hash(Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS)
+                  action :nothing
+                end
 
-              execute 'systemctl daemon-reload' do
-                action :nothing
-                only_if { r.triggers_reload }
-              end
+                execute 'systemctl daemon-reload' do
+                  action :nothing
+                  only_if { r.triggers_reload }
+                end
 
-              file "#{conf_d}/#{r.name}.conf" do
-                content u.to_ini
-                action actn
-                notifies :run, 'execute[systemctl daemon-reload]', :immediately
+                file "#{conf_d}/#{r.name}.conf" do
+                  content u.to_ini
+                  action actn
+                  notifies :run, 'execute[systemctl daemon-reload]', :immediately
+                end
               end
             end
           end

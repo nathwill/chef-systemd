@@ -1,5 +1,11 @@
-include Systemd::Mixins::ResourceFactory
+def self.unit_type
+  :timer
+end
+
+def unit_type
+  :timer
+end
+
 include Systemd::Mixins::Unit
 include Systemd::Mixins::PropertyHashConversion
-
-build_unit_resource('timer')
+include Systemd::Mixins::ResourceFactory::Unit

@@ -1,5 +1,11 @@
-include Systemd::Mixins::ResourceFactory
+def self.unit_type
+  :swap
+end
+
+def unit_type
+  :swap
+end
+
 include Systemd::Mixins::Unit
 include Systemd::Mixins::PropertyHashConversion
-
-build_unit_resource('swap')
+include Systemd::Mixins::ResourceFactory::Unit

@@ -1,8 +1,14 @@
-include Systemd::Mixins::ResourceFactory
+def self.unit_type
+  :mount
+end
+
+def unit_type
+  :mount
+end
+
 include Systemd::Mixins::Unit
 include Systemd::Mixins::PropertyHashConversion
-
-build_drop_in_resource('mount')
+include Systemd::Mixins::ResourceFactory::DropIn
 
 property :what, Systemd::Mount::OPTIONS['Mount']['What']
   .merge(required: false)

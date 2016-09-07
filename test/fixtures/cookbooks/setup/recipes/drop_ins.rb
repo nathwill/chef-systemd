@@ -20,21 +20,28 @@ systemd_service_drop_in 'systemd-ask-password-console' do
 end
 
 systemd_slice_drop_in '' do
-
+  override 'user.slice'
+  memory_limit '256G'
 end
 
-systemd_socket_drop_in '' do
-
+systemd_socket_drop_in 'systemd-journald' do
+  override 'systemd-journald.socket'
+  receive_buffer '16M'
 end
 
-systemd_swap_drop_in '' do
-
+systemd_swap_drop_in 'dev-mapper-swap' do
+  override 'dev-mapper-swap.swap'
+  timeout_sec 120
 end
 
 systemd_target_drop_in '' do
-
+  override 'my-app.target'
+  description 'my really cool app'
 end
 
-systemd_timer_drop_in '' do
-
+systemd_timer_drop_in 'systemd-tmpfiles-clean' do
+  override 'systemd-tmpfiles-clean.timer'
+  timer do
+    on_unit_active_sec '1h'
+  end
 end

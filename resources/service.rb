@@ -1,5 +1,11 @@
-include Systemd::Mixins::ResourceFactory
+def self.unit_type
+  :service
+end
+
+def unit_type
+  :service
+end
+
 include Systemd::Mixins::Unit
 include Systemd::Mixins::PropertyHashConversion
-
-build_unit_resource('service')
+include Systemd::Mixins::ResourceFactory::Unit

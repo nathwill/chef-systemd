@@ -1,5 +1,11 @@
-include Systemd::Mixins::ResourceFactory
+def self.unit_type
+  :path
+end
+
+def unit_type
+  :path
+end
+
 include Systemd::Mixins::Unit
 include Systemd::Mixins::PropertyHashConversion
-
-build_unit_resource('path')
+include Systemd::Mixins::ResourceFactory::Unit

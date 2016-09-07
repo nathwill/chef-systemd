@@ -1,5 +1,11 @@
-include Systemd::Mixins::ResourceFactory
+def self.unit_type
+  :automount
+end
+
+def unit_type
+  :automount
+end
+
 include Systemd::Mixins::Unit
 include Systemd::Mixins::PropertyHashConversion
-
-build_unit_resource('automount')
+include Systemd::Mixins::ResourceFactory::Unit

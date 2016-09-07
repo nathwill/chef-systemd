@@ -1,5 +1,11 @@
-include Systemd::Mixins::ResourceFactory
+def self.unit_type
+  :socket
+end
+
+def unit_type
+  :socket
+end
+
 include Systemd::Mixins::Unit
 include Systemd::Mixins::PropertyHashConversion
-
-build_unit_resource('socket')
+include Systemd::Mixins::ResourceFactory::Unit

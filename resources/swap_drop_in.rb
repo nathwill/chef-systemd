@@ -1,5 +1,14 @@
-include Systemd::Mixins::ResourceFactory
+def self.unit_type
+  :swap
+end
+
+def unit_type
+  :swap
+end
+
 include Systemd::Mixins::Unit
 include Systemd::Mixins::PropertyHashConversion
+include Systemd::Mixins::ResourceFactory::DropIn
 
-build_drop_in_resource('swap')
+property :what, Systemd::Swap::OPTIONS['Swap']['What']
+  .merge(required: false)

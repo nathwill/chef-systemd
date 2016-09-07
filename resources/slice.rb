@@ -1,5 +1,11 @@
-include Systemd::Mixins::ResourceFactory
+def self.unit_type
+  :slice
+end
+
+def unit_type
+  :slice
+end
+
 include Systemd::Mixins::Unit
 include Systemd::Mixins::PropertyHashConversion
-
-build_unit_resource('slice')
+include Systemd::Mixins::ResourceFactory::Unit

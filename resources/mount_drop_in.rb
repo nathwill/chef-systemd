@@ -6,8 +6,6 @@ def unit_type
   :mount
 end
 
-include Systemd::Mixins::Unit
-include Systemd::Mixins::PropertyHashConversion
 include Systemd::Mixins::ResourceFactory::DropIn
 
 property :what, Systemd::Mount::OPTIONS['Mount']['What']

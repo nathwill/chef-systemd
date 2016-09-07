@@ -31,10 +31,15 @@ module Systemd
         module ClassMethods
           # rubocop: disable AbcSize
           def build_resource
+            include Systemd::Mixins::Unit
+            include Systemd::Mixins::PropertyHashConversion
+
             resource_name "systemd_#{unit_type}".to_sym
             provides "systemd_#{unit_type}".to_sym
 
-            option_properties Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+            option_properties(
+              Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+            )
 
             define_method(unit_type) { |&b| b.call if b }
 
@@ -44,7 +49,9 @@ module Systemd
               action actn do
                 systemd_unit "#{new_resource.name}.#{unit_type}" do
                   triggers_reload new_resource.triggers_reload
-                  content property_hash(Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS)
+                  content property_hash(
+                    Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+                  )
                   action actn
                 end
               end
@@ -64,10 +71,15 @@ module Systemd
           # rubocop: disable MethodLength
           # rubocop: disable AbcSize
           def build_resource
+            include Systemd::Mixins::Unit
+            include Systemd::Mixins::PropertyHashConversion
+
             resource_name "systemd_#{unit_type}_drop_in".to_sym
             provides "systemd_#{unit_type}_drop_in".to_sym
 
-            option_properties Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+            option_properties(
+              Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+            )
             property :override, String, required: true, callbacks: {
               'matches drop-in type' => ->(s) { s.end_with?(unit_type.to_s) }
             }
@@ -87,7 +99,9 @@ module Systemd
                 end
 
                 u = systemd_unit "#{r.override}_drop-in_#{r.name}" do
-                  content property_hash(Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS)
+                  content property_hash(
+                    Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+                  )
                   action :nothing
                 end
 
@@ -106,6 +120,50 @@ module Systemd
           end
           # rubocop: enable MethodLength
           # rubocop: enable AbcSize
+        end
+      end
+
+      module Daemon
+        def self.included(base)
+          base.extend ClassMethods
+          base.send :build_resource
+        end
+
+        module ClassMethods
+          def build_resource
+            include Systemd::Mixins::PropertyHashConversion
+
+            resource_name "systemd_#{daemon_type}".to_sym
+            provides "systemd_#{daemon_type}".to_sym
+
+            option_properties(
+              Systemd.const_get(daemon_type.to_s.camelcase.to_sym)::OPTIONS
+            )
+
+            default_action :create
+
+            %w( create delete ).map(&:to_sym).each do |actn|
+              action actn do
+                conf_d = "/etc/systemd/#{daemon_type}.conf.d"
+
+                directory conf_d do
+                  not_if { new_resource.action == :delete }
+                end
+
+                r = systemd_unit "#{daemon_type}-#{new_resource.name}" do
+                  content property_hash(
+                    Systemd.const_get(daemon_type.to_s.camelcase.to_sym)::OPTIONS
+                  )
+                  action :nothing
+                end
+
+                file "#{conf_d}/#{new_resource.name}.conf" do
+                  content r.to_ini
+                  action actn
+                end
+              end
+            end
+          end
         end
       end
     end

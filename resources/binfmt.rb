@@ -26,22 +26,23 @@ def as_string
     .prepend(':')
 end
 
+def path
+  "/etc/binfmt.d/#{name}.conf"
+end
+
 default_action :create
 
 %w( create delete ).map(&:to_sym).each do |actn|
   action actn do
-    path = "/etc/binfmt.d/#{new_resource.name}.conf"
-
-    execute 'process-binfmt' do
-      command "/usr/lib/systemd/systemd-binfmt #{path}"
-      not_if { new_resource.action == :delete }
-      action :nothing
-      subscribes :run, "file[#{path}]", :immediately
-    end
-
-    file path do
+    file new_resource.path do
       content new_resource.as_string
       action actn
     end
+  end
+end
+
+action :register do
+  execute "register-binfmt-#{new_resource.name}" do
+    command "/usr/lib/systemd/systemd-binfmt #{new_resource.path}"
   end
 end

@@ -2,7 +2,7 @@
 # Cookbook Name:: systemd
 # Recipe:: hostname
 #
-# Copyright 2015 The Authors
+# Copyright 2015 - 2016, The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# https://www.freedesktop.org/software/systemd/man/hostnamectl.html
+#
 
 hostname = node['systemd']['hostname']
 
-# hostnamectl will populate this file
-# but we write it explicitly for idempotency
+# hostnamectl will populate this file,
+# but we manage it directly for idempotency
 file '/etc/hostname' do
   content hostname
   not_if { hostname.nil? }
@@ -31,4 +34,9 @@ execute 'set-hostname' do
   command "hostnamectl set-hostname #{hostname}"
   action :nothing
   not_if { hostname.nil? }
+end
+
+# oneshot service that runs at boot
+service 'systemd-hostnamed' do
+  action :nothing
 end

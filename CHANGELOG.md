@@ -1,3 +1,7 @@
+# 2.1.1 / 2016-09-08
+
+* fix incorrect blocking of netdev, network, device unit dependencies (thanks @mfischer-zd!)
+
 # 2.1.0 / 2016-05-18
 
 * indicate Arch Linux(arch) supported

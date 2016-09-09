@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: systemd
-# Spec:: default
+# Spec:: daemons
 #
-# Copyright 2015 The Authors
+# Copyright 2015 -2016, The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +18,36 @@
 
 require 'spec_helper'
 
-describe 'systemd::default' do
+%w( journald networkd resolved timesyncd ).each do |svc|
+  describe "systemd::#{svc}" do
+    context 'When all attributes are default, on an unspecified platform' do
+      let(:chef_run) do
+        runner = ChefSpec::ServerRunner.new
+        runner.converge(described_recipe)
+      end
+
+      it 'enables/starts the service' do
+        expect(chef_run).to enable_service("systemd-#{svc}")
+        expect(chef_run).to start_service("systemd-#{svc}")
+      end
+
+      it 'converges successfully' do
+        chef_run # This should not raise an error
+      end
+    end
+  end
+end
+
+describe 'systemd::logind' do
   context 'When all attributes are default, on an unspecified platform' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
+    end
+
+    it 'does nothing' do
+      expect(chef_run).to_not enable_service('systemd-logind')
+      expect(chef_run).to_not start_service('systemd-logind')
     end
 
     it 'converges successfully' do

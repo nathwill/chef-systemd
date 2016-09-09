@@ -23,6 +23,8 @@ module Systemd
     automount
     device
     mount
+    netdev
+    network
     path
     scope
     service

@@ -22,14 +22,14 @@ require 'mixlib/shellout'
 module Systemd
   module Helpers
     def module_loaded?(mod)
-      File.exist?('/proc/modules') &&
-        File.read('/proc/modules')
-            .match(Regexp.new("^#{mod}\s"))
+      !!(File.exist?('/proc/modules') &&
+           File.read('/proc/modules')
+               .match(Regexp.new("^#{mod}\s")))
     end
 
     def systemd_is_pid_1?
       File.exist?('/proc/1/comm') &&
-        IO.read('/proc/1/comm').chomp == 'systemd'
+        File.read('/proc/1/comm').chomp == 'systemd'
     end
 
     def rtc_mode?(lu)

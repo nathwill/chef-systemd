@@ -32,7 +32,7 @@ default_action :create
   action actn do
     path = "/etc/binfmt.d/#{new_resource.name}.conf"
 
-    execute 'process-binfmt' do
+    execute "register-binfmt-#{new_resource.name}" do
       command "/usr/lib/systemd/systemd-binfmt #{path}"
       not_if { new_resource.action == :delete }
       action :nothing

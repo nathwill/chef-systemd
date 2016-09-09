@@ -30,7 +30,16 @@ default_action :create
 
 %w( create delete ).map(&:to_sym).each do |actn|
   action actn do
-    file "/etc/binfmt.d/#{new_resource.name}.conf" do
+    path = "/etc/binfmt.d/#{new_resource.name}.conf"
+
+    execute 'process-binfmt' do
+      command "/usr/lib/systemd/systemd-binfmt #{path}"
+      not_if { new_resource.action == :delete }
+      action :nothing
+      subscribes :run, "file[#{path}]", :immediately
+    end
+
+    file path do
       content new_resource.as_string
       action actn
     end

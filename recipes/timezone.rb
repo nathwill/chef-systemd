@@ -18,8 +18,10 @@
 #
 # https://www.freedesktop.org/software/systemd/man/timedatectl.html
 #
+
 tz = node['systemd']['timezone']
 
-execute "timedatectl set-timezone #{tz}" do
+execute 'set-timezone' do
+  command "timedatectl set-timezone #{tz}"
   not_if { Systemd::Helpers.timezone?(tz) }
 end

@@ -35,8 +35,3 @@ execute 'set-hostname' do
   action :nothing
   not_if { hostname.nil? }
 end
-
-# oneshot service that runs at boot
-service 'systemd-hostnamed' do
-  action :nothing
-end

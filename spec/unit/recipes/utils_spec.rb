@@ -18,24 +18,6 @@
 
 require 'spec_helper'
 
-describe 'systemd::binfmt' do
-  context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
-    end
-
-    it 'does nothing' do
-      expect(chef_run).to_not enable_service('systemd-binfmt')
-      expect(chef_run).to_not start_service('systemd-binfmt')
-    end
-
-    it 'converges successfully' do
-      chef_run # This should not raise an error
-    end
-  end
-end
-
 describe 'systemd::hostname' do
   context 'When all attributes are default, on an unspecified platform' do
     let(:chef_run) do
@@ -49,11 +31,6 @@ describe 'systemd::hostname' do
 
     it 'does not execute hostnamectl' do
       expect(chef_run).to_not run_execute('set-hostname')
-    end
-
-    it 'does not manage systemd-hostnamed' do
-      expect(chef_run).to_not enable_service('systemd-hostnamed')
-      expect(chef_run).to_not start_service('systemd-hostnamed')
     end
 
     it 'converges successfully' do
@@ -81,9 +58,98 @@ describe 'systemd::hostname' do
       expect(chef_run).to_not run_execute('set-hostname').with(command: 'hostnamectl set-hostname my-hostname')
     end
 
-    it 'does not manage systemd-hostnamed' do
-      expect(chef_run).to_not enable_service('systemd-hostnamed')
-      expect(chef_run).to_not start_service('systemd-hostnamed')
+    it 'converges successfully' do
+      chef_run # This should not raise an error
+    end
+  end
+end
+
+describe 'systemd::locale' do
+  context 'When all attributes are default, on an unspecified platform' do
+    let(:chef_run) do
+      runner = ChefSpec::ServerRunner.new
+      runner.converge(described_recipe)
+    end
+
+    it 'manages /etc/locale.conf' do
+      expect(chef_run).to create_file('/etc/locale.conf').with(
+        content: 'LANG="en_US.UTF-8"'
+      )
+    end
+
+    it 'triggers the one-shot service unit' do
+      file = chef_run.file('/etc/locale.conf')
+      expect(file).to notify('service[systemd-localed]').to(:restart).immediately
+    end
+
+    it 'does nothing with the service' do
+      expect(chef_run).to_not enable_service('systemd-localed')
+      expect(chef_run).to_not start_service('systemd-localed')
+    end
+
+    it 'converges successfully' do
+      chef_run # This should not raise an error
+    end
+  end
+end
+
+describe 'systemd::rtc' do
+  context 'when all attributes are default, on an unspecified platform' do
+    let(:chef_run) do
+      runner = ChefSpec::ServerRunner.new
+      runner.converge(described_recipe)
+    end
+
+    it 'sets the rtc' do
+      expect(chef_run).to run_execute('set-rtc').with(
+        command: 'timedatectl set-local-rtc 0'
+      )
+    end
+
+    it 'converges successfully' do
+      chef_run # This should not raise an error
+    end
+  end
+end
+
+describe 'systemd::timezone' do
+  context 'when all attributes are default, on an unspecified platform' do
+    let(:chef_run) do
+      runner = ChefSpec::ServerRunner.new
+      runner.converge(described_recipe)
+    end
+
+    it 'sets the timezone' do
+      expect(chef_run).to run_execute('set-timezone').with(
+        command: 'timedatectl set-timezone UTC'
+      )
+    end
+
+    it 'converges successfully' do
+      chef_run # This should not raise an error
+    end
+  end
+end
+
+describe 'systemd::vconsole' do
+  context 'when all attributes are default, on an unspecified platform' do
+    let(:chef_run) do
+      runner = ChefSpec::ServerRunner.new
+      runner.converge(described_recipe)
+    end
+
+    it 'manages /etc/vconsole.conf' do
+      expect(chef_run).to create_file('/etc/vconsole.conf').with(
+        content: "KEYMAP=\"us\"\nFONT=\"latarcyrheb-sun16\""
+      )
+    end
+
+    it 'uses the service to apply configuration' do
+      file = chef_run.file('/etc/vconsole.conf')
+      expect(file).to notify('service[systemd-vconsole-setup]').immediately
+
+      expect(chef_run).to_not enable_service('systemd-vconsole-setup')
+      expect(chef_run).to_not start_service('systemd-vconsole-setup')
     end
 
     it 'converges successfully' do

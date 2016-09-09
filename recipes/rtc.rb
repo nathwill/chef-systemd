@@ -34,6 +34,7 @@ cmd = ['timedatectl']
 cmd << '--adjust-system-clock' if rtc['adjust_system_clock']
 cmd << "set-local-rtc #{mode}"
 
-execute cmd.join(' ') do
+execute 'set-rtc' do
+  command cmd.join(' ')
   not_if { Systemd::Helpers.rtc_mode?(rtc['mode']) }
 end

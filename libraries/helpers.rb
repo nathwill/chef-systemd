@@ -22,9 +22,8 @@ require 'mixlib/shellout'
 module Systemd
   module Helpers
     def module_loaded?(mod)
-      !!(File.exist?('/proc/modules') &&
-           File.read('/proc/modules')
-               .match(Regexp.new("^#{mod}\s")))
+      File.exist?('/proc/modules') &&
+        !(File.read('/proc/modules') !~ Regexp.new("^#{mod}\s"))
     end
 
     def systemd_is_pid_1?

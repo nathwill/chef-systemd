@@ -2,7 +2,7 @@ def self.unit_type
   :mount
 end
 
-include Systemd::Mixins::ResourceFactory::DropIn
+include Systemd::ResourceFactory::DropIn
 
 property :what, Systemd::Mount::OPTIONS['Mount']['What']
   .merge(required: false)

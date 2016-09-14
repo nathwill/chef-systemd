@@ -2,4 +2,4 @@ def self.unit_type
   :socket
 end
 
-include Systemd::Mixins::ResourceFactory::Unit
+include Systemd::ResourceFactory::Unit

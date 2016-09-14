@@ -26,8 +26,6 @@ systemd_modules 'zlib' do
   action [:create, :load]
 end
 
-include_recipe 'systemd::sysctl'
-
 systemd_sysctl 'vm.swappiness' do
   value 10
   action [:create, :apply]

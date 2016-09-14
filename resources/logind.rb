@@ -2,4 +2,4 @@ def self.daemon_type
   :logind
 end
 
-include Systemd::Mixins::ResourceFactory::Daemon
+include Systemd::ResourceFactory::Daemon

@@ -2,4 +2,4 @@ def self.unit_type
   :timer
 end
 
-include Systemd::Mixins::ResourceFactory::DropIn
+include Systemd::ResourceFactory::DropIn

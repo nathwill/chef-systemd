@@ -42,7 +42,7 @@ module Systemd
         File.readlink('/etc/localtime').end_with?(tz)
     end
 
-    def timedatectl!
+    def self.timedatectl!
       Mixlib::ShellOut.new('timedatectl')
                       .tap(&:run_command)
                       .tap(&:error!)

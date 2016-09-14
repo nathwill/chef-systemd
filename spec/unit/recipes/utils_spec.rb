@@ -40,7 +40,7 @@ describe 'systemd::hostname' do
 
   context 'when the hostname is set, on an unspecified platform' do
     let(:chef_run) do
-      ChefSpec::Runner.new do |node|
+      ChefSpec::ServerRunner.new do |node|
         node.normal['systemd']['hostname'] = 'my-hostname'
       end.converge(described_recipe)
     end

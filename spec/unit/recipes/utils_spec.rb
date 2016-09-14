@@ -95,6 +95,12 @@ end
 
 describe 'systemd::rtc' do
   context 'when all attributes are default, on an unspecified platform' do
+    before(:each) do
+      allow(Systemd::Helpers).to receive(:rtc_mode?)
+        .with('UTC')
+        .and_return(true)
+    end
+
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)

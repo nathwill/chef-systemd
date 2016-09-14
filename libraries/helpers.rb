@@ -33,17 +33,19 @@ module Systemd
 
     def rtc_mode?(lu)
       yn = lu == 'local' ? 'yes' : 'no'
-      unless defined?(ChefSpec)
-        Mixlib::ShellOut.new('timedatectl')
-                        .tap(&:run_command)
-                        .stdout
-                        .match(Regexp.new("RTC in local TZ: #{yn}"))
-      end
+      status = timedatectl!
+      !(status.stdout !~ Regexp.new("RTC in local TZ: #{yn}"))
     end
 
     def timezone?(tz)
       File.symlink?('/etc/localtime') &&
-        File.readlink('/etc/localtime').match(Regexp.new("#{tz}$"))
+        File.readlink('/etc/localtime').end_with?(tz)
+    end
+
+    def timedatectl!
+      Mixlib::ShellOut.new('timedatectl')
+                      .tap(&:run_command)
+                      .tap(&:error!)
     end
 
     module_function :module_loaded?, :systemd_is_pid_1?, :rtc_mode?, :timezone?
@@ -66,7 +68,7 @@ end
 
 class Hash
   def to_kv_pairs
-    reject! { |_, v| v.nil? }
-    map { |k, v| "#{k}=\"#{v}\"" }
+    reject { |_, v| v.nil? }
+      .map { |k, v| "#{k}=\"#{v}\"" }
   end
 end

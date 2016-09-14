@@ -48,26 +48,55 @@ describe Systemd::Helpers do
   end
 
   describe '#rtc_mode?' do
-    
+    let(:shell_out_local) { double("shell_out_local", stdout: "RTC in local TZ: yes") }
+    let(:shell_out_utc) { double("shell_out_utc", stdout: "RTC in local TZ: no") }
+
+    it 'handles utc mode correctly' do
+      allow(Systemd::Helpers).to receive(:timedatectl!).and_return(shell_out_utc)
+      expect(Systemd::Helpers.rtc_mode?('UTC')).to eq true
+      expect(Systemd::Helpers.rtc_mode?('local')).to eq false
+    end
+
+    it 'handles local mode correctly' do
+      allow(Systemd::Helpers).to receive(:timedatectl!).and_return(shell_out_local)
+      expect(Systemd::Helpers.rtc_mode?('local')).to eq true
+      expect(Systemd::Helpers.rtc_mode?('UTC')).to eq false
+    end
   end
 
   describe '#timezone?' do
+    before(:each) do
+      allow(File).to receive(:symlink?).with('/etc/localtime')
+                                       .and_return(true)
+    end
 
+    it 'correctly inspects timezone' do
+      allow(File).to receive(:readlink).with('/etc/localtime')
+                                       .and_return('../usr/share/zoneinfo/UTC')
+      expect(Systemd::Helpers.timezone?('UTC')).to eq true
+      expect(Systemd::Helpers.timezone?('America/Los_Angeles')).to eq false
+    end
   end
 end
 
 describe String do
   describe '#underscore' do
-
+    it 'correctly underscores strings' do
+      expect('DefaultLimitDATA'.underscore).to eq 'default_limit_data'
+    end
   end
 
   describe '#camelcase' do
-
+    it 'correctly camelcases strings' do
+      expect('default_standard_output'.camelcase).to eq 'DefaultStandardOutput'
+    end
   end
 end
 
 describe Hash do
   describe '#to_kv_pairs' do
-
+    it 'correctly converts hashes to kv pairs' do
+      expect({'Foo' => 0, 'Bar' => 1, 'Baz' => 2}.to_kv_pairs).to eq ['Foo="0"', 'Bar="1"', 'Baz="2"']
+    end
   end
 end

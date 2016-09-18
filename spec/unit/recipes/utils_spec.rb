@@ -93,50 +93,6 @@ describe 'systemd::locale' do
   end
 end
 
-describe 'systemd::rtc' do
-  context 'when all attributes are default, on an unspecified platform' do
-    before(:each) do
-      allow(Systemd::Helpers).to receive(:rtc_mode?)
-        .with('UTC')
-        .and_return(true)
-    end
-
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
-    end
-
-    it 'sets the rtc' do
-      expect(chef_run).to run_execute('set-rtc').with(
-        command: 'timedatectl set-local-rtc 0'
-      )
-    end
-
-    it 'converges successfully' do
-      chef_run # This should not raise an error
-    end
-  end
-end
-
-describe 'systemd::timezone' do
-  context 'when all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
-    end
-
-    it 'sets the timezone' do
-      expect(chef_run).to run_execute('set-timezone').with(
-        command: 'timedatectl set-timezone UTC'
-      )
-    end
-
-    it 'converges successfully' do
-      chef_run # This should not raise an error
-    end
-  end
-end
-
 describe 'systemd::vconsole' do
   context 'when all attributes are default, on an unspecified platform' do
     let(:chef_run) do

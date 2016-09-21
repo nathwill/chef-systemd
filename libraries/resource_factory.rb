@@ -26,8 +26,6 @@ module Systemd
       end
 
       module ClassMethods
-        # rubocop: disable MethodLength
-        # rubocop: disable AbcSize
         def build_resource
           include Systemd::Mixins::Unit
           include Systemd::Mixins::PropertyHashConversion
@@ -57,8 +55,6 @@ module Systemd
             end
           end
         end
-        # rubocop: enable AbcSize
-        # rubocop: enable MethodLength
       end
     end
 
@@ -69,8 +65,6 @@ module Systemd
       end
 
       module ClassMethods
-        # rubocop: disable MethodLength
-        # rubocop: disable AbcSize
         def build_resource
           include Systemd::Mixins::Unit
           include Systemd::Mixins::PropertyHashConversion
@@ -121,8 +115,6 @@ module Systemd
             end
           end
         end
-        # rubocop: enable MethodLength
-        # rubocop: enable AbcSize
       end
     end
 
@@ -133,8 +125,6 @@ module Systemd
       end
 
       module ClassMethods
-        # rubocop: disable MethodLength
-        # rubocop: disable AbcSize
         def build_resource
           include Systemd::Mixins::PropertyHashConversion
 
@@ -171,8 +161,6 @@ module Systemd
             end
           end
         end
-        # rubocop: enable AbcSize
-        # rubocop: enable MethodLength
       end
     end
   end

@@ -51,7 +51,6 @@ module Systemd
       end
 
       module InstanceMethods
-        # rubocop: disable AbcSize
         def property_hash(options = {})
           result = {}
 
@@ -67,7 +66,6 @@ module Systemd
 
           result.delete_if { |_, v| v.empty? }
         end
-        # rubocop: enable AbcSize
 
         def option_value(obj)
           case obj

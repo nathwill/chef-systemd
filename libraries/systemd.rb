@@ -49,7 +49,6 @@ module Systemd
     user
   ).freeze
 
-  # rubocop: disable ModuleLength
   module Common
     ABSOLUTE_PATH ||= {
       kind_of: String,
@@ -238,7 +237,6 @@ module Systemd
       )
     }.freeze
   end
-  # rubocop: enable ModuleLength
 
   module Unit
     OPTIONS ||= {
@@ -341,7 +339,6 @@ module Systemd
     }.freeze
   end
 
-  # rubocop: disable ModuleLength
   module Exec
     OPTIONS ||= {
       'WorkingDirectory' => {
@@ -499,7 +496,6 @@ module Systemd
       'RuntimeDirectoryMode' => Common::STRING
     }.freeze
   end
-  # rubocop: enable ModuleLength
 
   module Kill
     OPTIONS ||= {
@@ -513,7 +509,6 @@ module Systemd
     }.freeze
   end
 
-  # rubocop: disable ModuleLength
   module ResourceControl
     OPTIONS ||= {
       'CPUAccounting' => Common::BOOLEAN,
@@ -647,7 +642,6 @@ module Systemd
       'Delegate' => Common::BOOLEAN
     }.freeze
   end
-  # rubocop: enable ModuleLength
 
   module Automount
     OPTIONS ||= {

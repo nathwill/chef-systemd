@@ -1,4 +1,7 @@
 ---
+settings:
+  parallel: true
+
 driver:
   name: vagrant
 
@@ -9,10 +12,10 @@ verifier:
   name: inspec
 
 platforms:
-  - name: fedora-24
-  - name: ubuntu-16.04
-  - name: debian-8.5
   - name: centos-7.2
+  - name: fedora-24
+  - name: debian-8.5
+  - name: ubuntu-16.04
 
 suites:
   - name: default
@@ -28,7 +31,6 @@ suites:
       - recipe[systemd::rtc]
       - recipe[systemd::timesyncd]
       - recipe[systemd::timezone]
-#      - recipe[systemd::udevd]
       - recipe[systemd::vconsole]
     attributes:
       systemd:

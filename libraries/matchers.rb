@@ -88,6 +88,13 @@ if defined?(ChefSpec)
     end
   end
 
+  ChefSpec.define_matcher(:systemd_sysctl)
+  define_method('apply_systemd_sysctl') do |resource_name|
+    ChefSpec::Matchers::ResourceMatcher.new(
+      :systemd_sysctl, :apply, resource_name
+    )
+  end
+
   ChefSpec.define_matcher(:systemd_udev_rules)
   define_method('disable_systemd_udev_rules') do |resource_name|
     ChefSpec::Matchers::ResourceMatcher.new(

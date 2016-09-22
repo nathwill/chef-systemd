@@ -7,8 +7,8 @@ driver:
 
 provisioner:
   name: chef_zero
-  # https://github.com/chef/chef/issues/5324
-  require_chef_omnibus: 12.13.37
+  # https://github.com/chef/chef/issues/5362
+  chef_omnibus_install_options: -c current
 
 verifier:
   name: inspec

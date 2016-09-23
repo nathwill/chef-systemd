@@ -35,6 +35,8 @@ systemd_sysuser '_testuser' do
   id 65_530
   gecos 'my test user'
   home '/var/lib/test'
+  # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=823322
+  not_if { platform_family?('debian') }
 end
 
 systemd_tmpfile 'my-app' do

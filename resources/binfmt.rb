@@ -33,7 +33,7 @@ default_action :create
     path = "/etc/binfmt.d/#{new_resource.name}.conf"
 
     execute "register-binfmt-#{new_resource.name}" do
-      command "/usr/lib/systemd/systemd-binfmt #{path}"
+      command "/lib/systemd/systemd-binfmt #{path}"
       not_if { new_resource.action == :delete }
       action :nothing
       subscribes :run, "file[#{path}]", :immediately

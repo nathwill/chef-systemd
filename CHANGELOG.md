@@ -1,5 +1,9 @@
 # 3.0.0 / 2016-??-??
 
+# 2.1.2 / 2016-09-22
+
+* add apply action for systemd_sysctl chefspec matcher
+
 # 2.1.1 / 2016-09-08
 
 * fix incorrect blocking of netdev, network, device unit dependencies (thanks @mfischer-zd!)

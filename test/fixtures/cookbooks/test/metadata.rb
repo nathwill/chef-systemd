@@ -1,4 +1,4 @@
-name 'setup'
+name 'test'
 version '0.0.0'
 
 depends 'systemd'

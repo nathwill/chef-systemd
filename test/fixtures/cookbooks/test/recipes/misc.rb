@@ -36,7 +36,7 @@ systemd_sysuser '_testuser' do
   gecos 'my test user'
   home '/var/lib/test'
   # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=823322
-  not_if { platform_family?('debian') }
+  only_if { platform?('fedora') }
 end
 
 systemd_tmpfile 'my-app' do

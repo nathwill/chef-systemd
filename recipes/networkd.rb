@@ -19,6 +19,10 @@
 # https://www.freedesktop.org/software/systemd/man/systemd-networkd.service.html
 #
 
+package 'systemd-networkd' do
+  only_if { platform_family?('rhel') }
+end
+
 service 'systemd-networkd' do
   action [:enable, :start]
 end

@@ -9,6 +9,8 @@ provisioner:
   name: chef_zero
   # https://github.com/chef/chef/issues/5362
   chef_omnibus_install_options: -c current
+  # our tmp.mount test unit masks default /tmp path on ubuntu
+  root_path: /var/tmp/kitchen
 
 verifier:
   name: inspec
@@ -22,18 +24,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[setup::units]
-      - recipe[setup::drop_ins]
-      - recipe[setup::daemons]
-      - recipe[setup::misc]
-      - recipe[systemd::hostname]
-      - recipe[systemd::journald]
-      - recipe[systemd::locale]
-      - recipe[systemd::networkd]
-      - recipe[systemd::rtc]
-      - recipe[systemd::timesyncd]
-      - recipe[systemd::timezone]
-      - recipe[systemd::vconsole]
+      - recipe[test::default]
     attributes:
       systemd:
         hostname: my-hostname

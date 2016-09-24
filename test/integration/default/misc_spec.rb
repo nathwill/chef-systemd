@@ -67,7 +67,7 @@ end
 
 
 control 'creates sysusers' do
-  if os[:fedora]
+  unless os.redhat? || os.debian?
     describe file('/etc/sysusers.d/_testuser.conf') do
       its(:content) { should eq 'u _testuser 65530 "my test user" /var/lib/test' }
     end
@@ -81,7 +81,7 @@ control 'creates sysusers' do
 end
 
 control 'creates tmpfiles' do
-  unless os[:family] == 'debian'
+  unless os.debian?
     describe file('/etc/tmpfiles.d/my-app.conf') do
       its(:content) { should eq 'f /tmp/my-app - - - 10d -' }
     end

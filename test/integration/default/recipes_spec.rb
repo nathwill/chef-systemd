@@ -26,7 +26,7 @@ control 'manages localed' do
 end
 
 control 'manages networkd' do
-  if os[:fedora]
+  unless os.redhat?
     describe service('systemd-networkd') do
       it { should be_enabled }
       it { should be_running }
@@ -42,7 +42,7 @@ end
 
 control 'manages timesyncd' do
   # Ubuntu explicitly blocks service in VirtualBox...
-  if os[:fedora]
+  unless os.debian? || os.redhat?
     describe service('systemd-timesyncd') do
       it { should be_enabled }
       it { should be_running }
@@ -56,8 +56,8 @@ control 'manages timezone' do
   end
 end
 
-unless os[:family] == 'debian'
-  control 'manages vconsole' do
+control 'manages vconsole' do
+  unless os.debian?
     describe file('/etc/vconsole.conf') do
       its(:content) do
         should eq <<EOT.chomp

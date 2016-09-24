@@ -55,3 +55,16 @@ describe 'systemd::logind' do
     end
   end
 end
+
+describe 'systemd::networkd' do
+  context 'On RHEL platforms' do
+    let(:chef_run) do
+      runner = ChefSpec::ServerRunner.new(platform: 'centos', version: '7.0')
+      runner.converge(described_recipe)
+    end
+
+    it 'installs systemd-networkd' do
+      expect(chef_run).to install_package('systemd-networkd')
+    end
+  end
+end

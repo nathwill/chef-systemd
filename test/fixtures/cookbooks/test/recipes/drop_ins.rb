@@ -19,7 +19,7 @@ systemd_service_drop_in 'systemd-ask-password-console' do
   description 'blah blah blah'
 end
 
-systemd_slice_drop_in '' do
+systemd_slice_drop_in 'user-memory-limit-local' do
   override 'user.slice'
   memory_limit '256G'
 end
@@ -34,7 +34,7 @@ systemd_swap_drop_in 'dev-mapper-swap' do
   timeout_sec 120
 end
 
-systemd_target_drop_in '' do
+systemd_target_drop_in 'my-app-local' do
   override 'my-app.target'
   description 'my really cool app'
 end

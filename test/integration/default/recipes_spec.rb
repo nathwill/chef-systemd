@@ -26,9 +26,11 @@ control 'manages localed' do
 end
 
 control 'manages networkd' do
-  describe service('systemd-networkd') do
-    it { should be_enabled }
-    it { should be_running }
+  if os[:fedora]
+    describe service('systemd-networkd') do
+      it { should be_enabled }
+      it { should be_running }
+    end
   end
 end
 
@@ -40,7 +42,7 @@ end
 
 control 'manages timesyncd' do
   # Ubuntu explicitly blocks service in VirtualBox...
-  unless os[:family] == 'debian'
+  if os[:fedora]
     describe service('systemd-timesyncd') do
       it { should be_enabled }
       it { should be_running }

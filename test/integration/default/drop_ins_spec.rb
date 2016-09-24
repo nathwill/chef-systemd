@@ -43,7 +43,7 @@ EOT
 end
 
 control 'creates slice drop-ins' do
-  describe file('/etc/systemd/system/user.slice.d/user-mem-override.conf') do
+  describe file('/etc/systemd/system/user.slice.d/user-memory-limit-local.conf') do
     its(:content) do
       should eq <<EOT
 [Slice]
@@ -76,7 +76,7 @@ EOT
 end
 
 control 'creates target drop-ins' do
-  describe file('/etc/systemd/system/my-app.target.d/my-app-target-override.conf') do
+  describe file('/etc/systemd/system/my-app.target.d/my-app-local.conf') do
     its(:content) do
       should eq <<EOT
 [Unit]

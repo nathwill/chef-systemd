@@ -39,9 +39,12 @@ control 'manages rtc' do
 end
 
 control 'manages timesyncd' do
-  describe service('systemd-timesyncd') do
-    it { should be_enabled }
-    it { should be_running }
+  # Ubuntu explicitly blocks service in VirtualBox...
+  unless os[:family] == 'debian'
+    describe service('systemd-timesyncd') do
+      it { should be_enabled }
+      it { should be_running }
+    end
   end
 end
 
@@ -51,17 +54,19 @@ control 'manages timezone' do
   end
 end
 
-control 'manages vconsole' do
-  describe file('/etc/vconsole.conf') do
-    its(:content) do
-      should eq <<EOT.chomp
+unless os[:family] == 'debian'
+  control 'manages vconsole' do
+    describe file('/etc/vconsole.conf') do
+      its(:content) do
+        should eq <<EOT.chomp
 KEYMAP="us"
 FONT="latarcyrheb-sun16"
 EOT
+      end
     end
-  end
 
-  describe command('localectl status') do
-    its(:stdout) { should match /VC Keymap: us/ }
+    describe command('localectl status') do
+      its(:stdout) { should match /VC Keymap: us/ }
+    end
   end
 end

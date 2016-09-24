@@ -65,15 +65,17 @@ control 'creates sysctls' do
   end
 end
 
-control 'creates sysusers' do
-  describe file('/etc/sysusers.d/_testuser.conf') do
-    its(:content) { should eq 'u _testuser 65530 "my test user" /var/lib/test' }
-  end
+unless os[:family] == 'debian'
+  control 'creates sysusers' do
+    describe file('/etc/sysusers.d/_testuser.conf') do
+      its(:content) { should eq 'u _testuser 65530 "my test user" /var/lib/test' }
+    end
 
-  describe user('_testuser') do
-    it { should exist }
-    its('uid') { should eq 65530 }
-    its('home') { should eq '/var/lib/test' }
+    describe user('_testuser') do
+      it { should exist }
+      its('uid') { should eq 65530 }
+      its('home') { should eq '/var/lib/test' }
+    end
   end
 end
 

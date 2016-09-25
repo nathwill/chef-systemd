@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Library:: Systemd::Mixins
+# Library:: Systemd::Mixin
 #
 # Copyright 2016 The Authors
 #
@@ -20,7 +20,7 @@
 require_relative 'systemd'
 
 module Systemd
-  module Mixins
+  module Mixin
     module Unit
       def install
         yield

@@ -27,8 +27,8 @@ module Systemd
 
       module ClassMethods
         def build_resource
-          include Systemd::Mixins::Unit
-          include Systemd::Mixins::PropertyHashConversion
+          include Systemd::Mixin::Unit
+          include Systemd::Mixin::PropertyHashConversion
 
           define_method(:unit_type) { self.class.unit_type }
 
@@ -66,8 +66,8 @@ module Systemd
 
       module ClassMethods
         def build_resource
-          include Systemd::Mixins::Unit
-          include Systemd::Mixins::PropertyHashConversion
+          include Systemd::Mixin::Unit
+          include Systemd::Mixin::PropertyHashConversion
 
           define_method(:unit_type) { self.class.unit_type }
 
@@ -129,7 +129,7 @@ module Systemd
 
       module ClassMethods
         def build_resource
-          include Systemd::Mixins::PropertyHashConversion
+          include Systemd::Mixin::PropertyHashConversion
 
           define_method(:daemon_type) { self.class.daemon_type }
 

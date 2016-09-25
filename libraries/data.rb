@@ -20,7 +20,7 @@
 require 'pathname'
 
 module SystemdCookbook
-  UNIT_TYPES ||= %w(
+  UNITS ||= %w(
     automount
     device
     mount
@@ -38,16 +38,25 @@ module SystemdCookbook
 
   BUS_ONLY_UNITS ||= %w( scope ).freeze
 
-  UTILS ||= %w(
-    bootchart
-    coredump
+  DAEMONS ||= %w(
     journald
     logind
+    networkd
     resolved
-    sleep
     system
     timesyncd
     user
+  ).freeze
+
+  UTILS ||= %w(
+    binfmt
+    bootchart
+    coredump
+    modules
+    sleep
+    sysctl
+    sysuser
+    tmpfile
   ).freeze
 
   module Common
@@ -118,7 +127,7 @@ module SystemdCookbook
       kind_of: [String, Array],
       callbacks: {
         'contains only valid unit names' => lambda do |spec|
-          Array(spec).all? { |u| UNIT_TYPES.any? { |t| u.end_with?(t) } }
+          Array(spec).all? { |u| UNITS.any? { |t| u.end_with?(t) } }
         end
       }
     }.freeze
@@ -213,7 +222,7 @@ module SystemdCookbook
       kind_of: String,
       callbacks: {
         'is a unit name' => lambda do |spec|
-          UNIT_TYPES.any? { |t| spec.end_with?(t) }
+          UNITS.any? { |t| spec.end_with?(t) }
         end
       }
     }.freeze

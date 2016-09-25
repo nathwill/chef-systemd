@@ -2,7 +2,7 @@ def self.unit_type
   :automount
 end
 
-include Systemd::ResourceFactory::DropIn
+include SystemdCookbook::ResourceFactory::DropIn
 
-property :where, Systemd::Automount::OPTIONS['Automount']['Where']
+property :where, SystemdCookbook::Automount::OPTIONS['Automount']['Where']
   .merge(required: false)

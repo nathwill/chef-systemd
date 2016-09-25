@@ -2,4 +2,4 @@ def self.unit_type
   :timer
 end
 
-include Systemd::ResourceFactory::Unit
+include SystemdCookbook::ResourceFactory::Unit

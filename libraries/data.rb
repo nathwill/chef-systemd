@@ -1,5 +1,6 @@
 #
 # Cookbook Name:: systemd
+# Library:: SystemdCookbook
 #
 # Copyright 2016 The Authors
 #
@@ -18,7 +19,7 @@
 
 require 'pathname'
 
-module Systemd
+module SystemdCookbook
   UNIT_TYPES ||= %w(
     automount
     device

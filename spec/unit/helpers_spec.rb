@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Systemd::Helpers do
+describe SystemdCookbook::Helpers do
   describe '#module_loaded?' do
     let(:modules) do
       [
@@ -20,11 +20,11 @@ describe Systemd::Helpers do
     end
 
     it 'returns true for a loaded module' do
-      expect(Systemd::Helpers.module_loaded?('e1000')).to eq true
+      expect(SystemdCookbook::Helpers.module_loaded?('e1000')).to eq true
     end
 
     it 'returns false for an unloaded module' do
-      expect(Systemd::Helpers.module_loaded?('xfs')).to eq false
+      expect(SystemdCookbook::Helpers.module_loaded?('xfs')).to eq false
     end
   end
 
@@ -37,13 +37,13 @@ describe Systemd::Helpers do
     it 'returns true when systemd is pid 1' do
       allow(File).to receive(:read).with('/proc/1/comm')
                                    .and_return('systemd')
-      expect(Systemd::Helpers.systemd_is_pid_1?).to eq true
+      expect(SystemdCookbook::Helpers.systemd_is_pid_1?).to eq true
     end
 
     it 'returns false when systemd is not pid 1' do
       allow(File).to receive(:read).with('/proc/1/comm')
                                    .and_return('init')
-      expect(Systemd::Helpers.systemd_is_pid_1?).to eq false
+      expect(SystemdCookbook::Helpers.systemd_is_pid_1?).to eq false
     end
   end
 
@@ -52,15 +52,15 @@ describe Systemd::Helpers do
     let(:shell_out_utc) { double("shell_out_utc", stdout: "RTC in local TZ: no") }
 
     it 'handles utc mode correctly' do
-      allow(Systemd::Helpers).to receive(:timedatectl!).and_return(shell_out_utc)
-      expect(Systemd::Helpers.rtc_mode?('UTC')).to eq true
-      expect(Systemd::Helpers.rtc_mode?('local')).to eq false
+      allow(SystemdCookbook::Helpers).to receive(:timedatectl!).and_return(shell_out_utc)
+      expect(SystemdCookbook::Helpers.rtc_mode?('UTC')).to eq true
+      expect(SystemdCookbook::Helpers.rtc_mode?('local')).to eq false
     end
 
     it 'handles local mode correctly' do
-      allow(Systemd::Helpers).to receive(:timedatectl!).and_return(shell_out_local)
-      expect(Systemd::Helpers.rtc_mode?('local')).to eq true
-      expect(Systemd::Helpers.rtc_mode?('UTC')).to eq false
+      allow(SystemdCookbook::Helpers).to receive(:timedatectl!).and_return(shell_out_local)
+      expect(SystemdCookbook::Helpers.rtc_mode?('local')).to eq true
+      expect(SystemdCookbook::Helpers.rtc_mode?('UTC')).to eq false
     end
   end
 
@@ -73,8 +73,8 @@ describe Systemd::Helpers do
     it 'correctly inspects timezone' do
       allow(File).to receive(:readlink).with('/etc/localtime')
                                        .and_return('../usr/share/zoneinfo/UTC')
-      expect(Systemd::Helpers.timezone?('UTC')).to eq true
-      expect(Systemd::Helpers.timezone?('America/Los_Angeles')).to eq false
+      expect(SystemdCookbook::Helpers.timezone?('UTC')).to eq true
+      expect(SystemdCookbook::Helpers.timezone?('America/Los_Angeles')).to eq false
     end
   end
 end

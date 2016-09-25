@@ -23,7 +23,7 @@ end
 action :load do
   new_resource.modules.each do |mod|
     execute "modprobe #{mod}" do
-      not_if { Systemd::Helpers.module_loaded?(mod) }
+      not_if { SystemdCookbook::Helpers.module_loaded?(mod) }
     end
   end
 end
@@ -31,7 +31,7 @@ end
 action :unload do
   new_resource.modules.each do |mod|
     execute "modprobe -r #{mod}" do
-      only_if { Systemd::Helpers.module_loaded?(mod) }
+      only_if { SystemdCookbook::Helpers.module_loaded?(mod) }
     end
   end
 end

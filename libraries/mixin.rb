@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Library:: Systemd::Mixin
+# Library:: SystemdCookbook::Mixin
 #
 # Copyright 2016 The Authors
 #
@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 
-require_relative 'systemd'
-
-module Systemd
+module SystemdCookbook
   module Mixin
     module Unit
       def install

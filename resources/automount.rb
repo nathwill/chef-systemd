@@ -2,4 +2,4 @@ def self.unit_type
   :automount
 end
 
-include Systemd::ResourceFactory::Unit
+include SystemdCookbook::ResourceFactory::Unit

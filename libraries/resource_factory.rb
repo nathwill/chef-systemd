@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Library:: Systemd::ResourceFactory
+# Library:: SystemdCookbook::ResourceFactory
 #
 # Copyright 2016 The Authors
 #
@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 
-module Systemd
+require_relative 'mixin'
+
+module SystemdCookbook
   module ResourceFactory
     module Unit
       def self.included(base)
@@ -27,8 +29,8 @@ module Systemd
 
       module ClassMethods
         def build_resource
-          include Systemd::Mixin::Unit
-          include Systemd::Mixin::PropertyHashConversion
+          include SystemdCookbook::Mixin::Unit
+          include SystemdCookbook::Mixin::PropertyHashConversion
 
           define_method(:unit_type) { self.class.unit_type }
 
@@ -36,7 +38,7 @@ module Systemd
           provides "systemd_#{unit_type}".to_sym
 
           option_properties(
-            Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+            SystemdCookbook.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
           )
 
           define_method(unit_type) { |&b| b.call if b }
@@ -48,7 +50,7 @@ module Systemd
               systemd_unit "#{new_resource.name}.#{unit_type}" do
                 triggers_reload new_resource.triggers_reload
                 content property_hash(
-                  Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+                  SystemdCookbook.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
                 )
                 action actn
               end
@@ -66,8 +68,8 @@ module Systemd
 
       module ClassMethods
         def build_resource
-          include Systemd::Mixin::Unit
-          include Systemd::Mixin::PropertyHashConversion
+          include SystemdCookbook::Mixin::Unit
+          include SystemdCookbook::Mixin::PropertyHashConversion
 
           define_method(:unit_type) { self.class.unit_type }
 
@@ -75,7 +77,7 @@ module Systemd
           provides "systemd_#{unit_type}_drop_in".to_sym
 
           option_properties(
-            Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+            SystemdCookbook.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
           )
           property :override, String, required: true, callbacks: {
             'matches drop-in type' => ->(s) { s.end_with?(unit_type.to_s) }
@@ -100,7 +102,7 @@ module Systemd
 
               u = systemd_unit r.drop_in_name do
                 content property_hash(
-                  Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
+                  SystemdCookbook.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
                 )
                 action :nothing
               end
@@ -129,7 +131,7 @@ module Systemd
 
       module ClassMethods
         def build_resource
-          include Systemd::Mixin::PropertyHashConversion
+          include SystemdCookbook::Mixin::PropertyHashConversion
 
           define_method(:daemon_type) { self.class.daemon_type }
 
@@ -137,7 +139,7 @@ module Systemd
           provides "systemd_#{daemon_type}".to_sym
 
           option_properties(
-            Systemd.const_get(daemon_type.to_s.camelcase.to_sym)::OPTIONS
+            SystemdCookbook.const_get(daemon_type.to_s.camelcase.to_sym)::OPTIONS
           )
 
           default_action :create
@@ -152,7 +154,7 @@ module Systemd
 
               r = systemd_unit "#{daemon_type}-#{new_resource.name}" do
                 content property_hash(
-                  Systemd.const_get(daemon_type.to_s.camelcase.to_sym)::OPTIONS
+                  SystemdCookbook.const_get(daemon_type.to_s.camelcase.to_sym)::OPTIONS
                 )
                 action :nothing
               end

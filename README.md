@@ -1,4 +1,4 @@
-Systemd Chef Cookbook
+systemd chef cookbook
 =====================
 
 [![Cookbook](http://img.shields.io/cookbook/v/systemd.svg)](https://github.com/nathwill/chef-systemd)

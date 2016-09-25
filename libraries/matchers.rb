@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Library:: Systemd::Matchers
+# Library:: SystemdCookbook::Matchers
 #
 # Copyright 2016 The Authors
 #
@@ -16,3 +16,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+require_relative 'data'
+
+if defined?(ChefSpec)
+  SystemdCookbook::UNIT_TYPES.each do |type|
+    ChefSpec.define_matcher("systemd_#{type}".to_sym)
+
+    ChefSpec.define_matcher("systemd_#{type}_drop_in".to_sym)
+  end
+end

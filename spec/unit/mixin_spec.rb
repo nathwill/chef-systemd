@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Systemd::Mixin::Unit do
+describe SystemdCookbook::Mixin::Unit do
   let(:unit_class) do
-    Class.new(Chef::Resource) { include Systemd::Mixin::Unit }
+    Class.new(Chef::Resource) { include SystemdCookbook::Mixin::Unit }
   end
 
   subject(:unit_obj) { unit_class.new('mock') }
@@ -22,10 +22,10 @@ describe Systemd::Mixin::Unit do
   end
 end
 
-describe Systemd::Mixin::PropertyHashConversion do
+describe SystemdCookbook::Mixin::PropertyHashConversion do
   let(:converting_class) do
     Class.new(Chef::Resource) do
-      include Systemd::Mixin::PropertyHashConversion
+      include SystemdCookbook::Mixin::PropertyHashConversion
       option_properties({
         'Header' => {
           'TestProperty' => { kind_of: String },

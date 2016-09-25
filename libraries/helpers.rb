@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Library:: Systemd::Helpers
+# Library:: SystemdCookbook::Helpers
 #
 # Copyright 2016 The Authors
 #
@@ -19,7 +19,7 @@
 
 require 'mixlib/shellout'
 
-module Systemd
+module SystemdCookbook
   module Helpers
     def module_loaded?(mod)
       File.exist?('/proc/modules') &&

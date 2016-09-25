@@ -21,7 +21,7 @@ require 'spec_helper'
 %w( journald networkd resolved timesyncd ).each do |svc|
   describe "systemd::#{svc}" do
     context 'When all attributes are default, on an unspecified platform' do
-      let(:chef_run) do
+      cached(:chef_run) do
         runner = ChefSpec::ServerRunner.new
         runner.converge(described_recipe)
       end
@@ -40,7 +40,7 @@ end
 
 describe 'systemd::logind' do
   context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
+    cached(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
     end
@@ -58,7 +58,7 @@ end
 
 describe 'systemd::networkd' do
   context 'On RHEL platforms' do
-    let(:chef_run) do
+    cached(:chef_run) do
       runner = ChefSpec::ServerRunner.new(platform: 'centos', version: '7.0')
       runner.converge(described_recipe)
     end

@@ -36,5 +36,5 @@ cmd << "set-local-rtc #{mode}"
 
 execute 'set-rtc' do
   command cmd.join(' ')
-  not_if { Systemd::Helpers.rtc_mode?(rtc['mode']) }
+  not_if { SystemdCookbook::Helpers.rtc_mode?(rtc['mode']) }
 end

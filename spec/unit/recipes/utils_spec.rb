@@ -20,7 +20,7 @@ require 'spec_helper'
 
 describe 'systemd::hostname' do
   context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
+    cached(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
     end
@@ -39,7 +39,7 @@ describe 'systemd::hostname' do
   end
 
   context 'when the hostname is set, on an unspecified platform' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::ServerRunner.new do |node|
         node.normal['systemd']['hostname'] = 'my-hostname'
       end.converge(described_recipe)
@@ -66,7 +66,7 @@ end
 
 describe 'systemd::locale' do
   context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
+    cached(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
     end
@@ -95,7 +95,7 @@ end
 
 describe 'systemd::vconsole' do
   context 'when all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
+    cached(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
     end

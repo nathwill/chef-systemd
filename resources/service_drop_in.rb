@@ -2,4 +2,4 @@ def self.unit_type
   :service
 end
 
-include Systemd::ResourceFactory::DropIn
+include SystemdCookbook::ResourceFactory::DropIn

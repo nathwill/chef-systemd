@@ -2,10 +2,10 @@ def self.unit_type
   :mount
 end
 
-include Systemd::ResourceFactory::DropIn
+include SystemdCookbook::ResourceFactory::DropIn
 
-property :what, Systemd::Mount::OPTIONS['Mount']['What']
+property :what, SystemdCookbook::Mount::OPTIONS['Mount']['What']
   .merge(required: false)
 
-property :where, Systemd::Mount::OPTIONS['Mount']['Where']
+property :where, SystemdCookbook::Mount::OPTIONS['Mount']['Where']
   .merge(required: false)

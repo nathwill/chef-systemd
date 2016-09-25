@@ -81,6 +81,9 @@ module Systemd
             'matches drop-in type' => ->(s) { s.end_with?(unit_type.to_s) }
           }
 
+          property :drop_in_name, identity: true,
+                                  default: lazy { "#{override}-#{name}" }
+
           define_method(unit_type) { |&b| b.call if b }
 
           default_action :create
@@ -95,7 +98,7 @@ module Systemd
                 not_if { r.action == :delete }
               end
 
-              u = systemd_unit "#{r.override}_drop-in_#{r.name}" do
+              u = systemd_unit r.drop_in_name do
                 content property_hash(
                   Systemd.const_get(unit_type.to_s.camelcase.to_sym)::OPTIONS
                 )

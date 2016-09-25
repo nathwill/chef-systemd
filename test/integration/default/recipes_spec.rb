@@ -1,6 +1,6 @@
 control 'sets the hostname' do
   describe file('/etc/hostname') do
-    its(:content) { should eq "my-hostname\n" }
+    its(:content) { should match /my-hostname/ }
   end
 
   describe command('hostname') do

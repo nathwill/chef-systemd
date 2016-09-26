@@ -61,7 +61,8 @@ module SystemdCookbook
     link
     netdev
     network
-  )
+  ).freeze
+
   module Common
     ABSOLUTE_PATH ||= {
       kind_of: String,

@@ -24,8 +24,6 @@ module SystemdCookbook
     automount
     device
     mount
-    netdev
-    network
     path
     scope
     service
@@ -57,6 +55,12 @@ module SystemdCookbook
     sysctl
     sysuser
     tmpfile
+  ).freeze
+
+  NETS ||= %w(
+    link
+    netdev
+    network
   ).freeze
 
   module Common

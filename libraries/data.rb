@@ -248,7 +248,7 @@ module SystemdCookbook
         systemd-nspawn
         docker
         rkt
-      ).concat [true, false]
+      ).concat([true, false])
     }.freeze
   end
 
@@ -1125,7 +1125,7 @@ module SystemdCookbook
           )
         },
         'MTUBytes' => Common::STRING_OR_INT,
-        'MACAddress' => COMMON::STRING,
+        'MACAddress' => Common::STRING
       },
       'Bridge' => {
         'HelloTimeSec' => Common::STRING_OR_INT,
@@ -1133,7 +1133,7 @@ module SystemdCookbook
         'ForwardDelaySec' => Common::STRING_OR_INT,
         'MulticastQuerier' => Common::BOOLEAN,
         'MulticastSnooping' => Common::BOOLEAN,
-        'VLANFiltering' => Common::BOOLEAN,
+        'VLANFiltering' => Common::BOOLEAN
       },
       'VLAN' => {
         'Id' => {
@@ -1181,7 +1181,7 @@ module SystemdCookbook
         'GroupPolicyExtension' => Common::BOOLEAN,
         'DestinationPort' => {
           kind_of: Integer,
-          equal_to: 0.upto(65535).to_a
+          equal_to: 0.upto(65_535).to_a
         },
         'PortRange' => Common::STRING
       },
@@ -1203,11 +1203,11 @@ module SystemdCookbook
         'Mode' => {
           kind_of: String,
           equal_to: %w( ip6ip6 ipip6 any )
-        },
+        }
       },
       'Peer' => {
         'Name' => Common::STRING,
-        'MACAddress' => Common::STRING,
+        'MACAddress' => Common::STRING
       },
       'Tun' => {
         'OneQueue' => Common::BOOLEAN,
@@ -1269,7 +1269,7 @@ module SystemdCookbook
           equal_to: %w( none active backup all )
         },
         'ARPIntervalSec' => Common::STRING_OR_INT,
-        'ARPIPTargets => Common::STRING_OR_INT,
+        'ARPIPTargets' => Common::STRING_OR_INT,
         'ARPAllTargets' => Common::ARRAY,
         'PrimaryReselectPolicy' => {
           kind_of: String,
@@ -1281,7 +1281,7 @@ module SystemdCookbook
         },
         'PacketsPerSlave' => {
           kind_of: Integer,
-          equal_to: 0.upto(65535).to_a
+          equal_to: 0.upto(65_535).to_a
         },
         'GratuitousARP' => {
           kind_of: Integer,
@@ -1304,7 +1304,7 @@ module SystemdCookbook
         'Host' => Common::STRING,
         'Virtualization' => Common::VIRT,
         'KernelCommandLine' => Common::STRING,
-        'Architecture' => Common::ARCH,
+        'Architecture' => Common::ARCH
       },
       'Link' => {
         'MACAddress' => Common::STRING,
@@ -1314,12 +1314,12 @@ module SystemdCookbook
         'Description' => Common::STRING,
         'DHCP' => {
           kind_of: [String, Integer, TrueClass, FalseClass],
-          equal_to: %w( yes no ipv4 ipv6 ).concat [true, false]
+          equal_to: %w( yes no ipv4 ipv6 ).concat([true, false])
         },
         'DHCPServer' => Common::BOOLEAN,
         'LinkLocalAddressing' => {
           kind_of: [String, Integer],
-          equal_to: %w( yes no ipv4 ipv6 ).concat [true, false]
+          equal_to: %w( yes no ipv4 ipv6 ).concat([true, false])
         },
         'IPv4LLRoute' => Common::BOOLEAN,
         'IPv6Token' => Common::STRING,
@@ -1340,96 +1340,127 @@ module SystemdCookbook
           kind_of: [String, Integer, TrueClass, FalseClass],
           equal_to: ['routers-only', true, false]
         },
-        'EmitLLDP' => ,
-        'BindCarrier' => ,
-        'Address' => ,
-        'Gateway' => ,
-        'DNS' => ,
-        'Domains' => ,
-        'NTP' => ,
-        'IPForward' => ,
-        'IPMasquerade' => ,
-        'IPv6PrivacyExtensions' => ,
-        'IPv6AcceptRA' => ,
-        'IPv6DuplicateAddressDetection' => ,
-        'IPv6HopLimit' => ,
-        'ProxyARP' => ,
-        'Bridge' => ,
-        'Bond' => ,
-        'VRF' => ,
-        'VLAN' => ,
-        'MACVLAN' => ,
-        'VXLAN' => ,
-        'Tunnel' =>
+        'EmitLLDP' => {
+          kind_of: [TrueClass, FalseClass, String],
+          equal_to: %w(
+            nearest-bridge
+            non-tpmr-bridge
+            customer-bridge
+          ).concat([true, false])
+        },
+        'BindCarrier' => Common::ARRAY,
+        'Address' => Common::STRING,
+        'Gateway' => Common::STRING,
+        'DNS' => Common::STRING,
+        'Domains' => Common::ARRAY,
+        'NTP' => Common::STRING,
+        'IPForward' => {
+          kind_of: [TrueClass, FalseClass, String],
+          equal_to: [true, false, 'ipv4', 'ipv6']
+        },
+        'IPMasquerade' => Common::BOOLEAN,
+        'IPv6PrivacyExtensions' => {
+          kind_of: [TrueClass, FalseClass, String],
+          equal_to: [true, false, 'prefer-public', 'kernel']
+        },
+        'IPv6AcceptRA' => Common::BOOLEAN,
+        'IPv6DuplicateAddressDetection' => Common::INTEGER,
+        'IPv6HopLimit' => Common::INTEGER,
+        'ProxyARP' => Common::BOOLEAN,
+        'Bridge' => Common::STRING,
+        'Bond' => Common::STRING,
+        'VRF' => Common::STRING,
+        'VLAN' => Common::STRING,
+        'MACVLAN' => Common::STRING,
+        'VXLAN' => Common::STRING,
+        'Tunnel' => Common::STRING
       },
       'Address' => {
-        'Address' => ,
-        'Peer' => ,
-        'Broadcast' => ,
-        'Label' => ,
-        'PreferredLifetime' =>
+        'Address' => Common::STRING,
+        'Peer' => Common::STRING,
+        'Broadcast' => Common::STRING,
+        'Label' => Common::STRING,
+        'PreferredLifetime' => {
+          kind_of: [String, Integer],
+          equal_to: ['forever', 'infinity', 0]
+        }
       },
       'Route' => {
-        'Gateway' => ,
-        'Destination' => ,
-        'Source' => ,
-        'Metric' => ,
-        'Scope' => ,
-        'PreferredSource' => ,
-        'Table' =>
+        'Gateway' => Common::STRING,
+        'Destination' => Common::STRING,
+        'Source' => Common::STRING,
+        'Metric' => Common::INTEGER,
+        'Scope' => {
+          kind_of: String,
+          equal_to: %w( global link host )
+        },
+        'PreferredSource' => Common::STRING,
+        'Table' => Common::INTEGER
       },
       'DHCP' => {
-        'UseDNS' => ,
-        'UseNTP' => ,
-        'UseMTU' => ,
-        'SendHostname' => ,
-        'UseHostame' => ,
-        'Hostname' => ,
-        'UseDomains' => ,
-        'UseRoutes' => ,
-        'UseTimezone' => ,
-        'CriticalConnection' => ,
-        'ClientIdentifier' => ,
-        'VendorClassIdentifier' => ,
-        'DUIDType' => ,
-        'DUIDRawData' => ,
-        'IAID' => ,
-        'RequestBroadcast' => ,
-        'RouteMetric' =>
+        'UseDNS' => Common::BOOLEAN,
+        'UseNTP' => Common::BOOLEAN,
+        'UseMTU' => Common::BOOLEAN,
+        'SendHostname' => Common::BOOLEAN,
+        'UseHostame' => Common::BOOLEAN,
+        'Hostname' => Common::STRING,
+        'UseDomains' => {
+          kind_of: [TrueClass, FalseClass, String],
+          equal_to: [true, false, 'route']
+        },
+        'UseRoutes' => Common::BOOLEAN,
+        'UseTimezone' => Common::BOOLEAN,
+        'CriticalConnection' => Common::BOOLEAN,
+        'ClientIdentifier' => {
+          kind_of: String,
+          equal_to: %w( mac duid )
+        },
+        'VendorClassIdentifier' => Common::STRING,
+        'DUIDType' => {
+          kind_of: String,
+          equal_to: %w( vendor link-layer-time link-layer uuid )
+        },
+        'DUIDRawData' => Common::STRING,
+        'IAID' => Common::INTEGER,
+        'RequestBroadcast' => Common::BOOLEAN,
+        'RouteMetric' => Common::INTEGER
       },
       'IPv6AcceptRA' => {
-        'UseDNS' => ,
-        'UseDomains' =>
+        'UseDNS' => Common::BOOLEAN,
+        'UseDomains' => {
+          kind_of: [TrueClass, FalseClass, String],
+          equal_to: [true, false, 'route']
+        }
       },
       'DHCPServer' => {
-        'PoolOffset' => ,
-        'PoolSize' => ,
-        'DefaultLeaseTimeSec' => ,
-        'MaxLeaseTimeSec' => ,
-        'EmitDNS' => ,
-        'DNS' => ,
-        'EmitNTP' => ,
-        'NTP' => ,
-        'EmitRouter' => ,
-        'EmitTimezone' => ,
-        'Timezone' =>
+        'PoolOffset' => Common::STRING,
+        'PoolSize' => Common::INTEGER,
+        'DefaultLeaseTimeSec' => Common::STRING_OR_INT,
+        'MaxLeaseTimeSec' => Common::STRING_OR_INT,
+        'EmitDNS' => Common::BOOLEAN,
+        'DNS' => Common::ARRAY,
+        'EmitNTP' => Common::BOOLEAN,
+        'NTP' => Common::ARRAY,
+        'EmitRouter' => Common::BOOLEAN,
+        'EmitTimezone' => Common::BOOLEAN,
+        'Timezone' => Common::STRING
       },
       'Bridge' => {
-        'UnicastFlood' => ,
-        'HairPin' => ,
-        'UseBPDU' => ,
-        'FastLeave' => ,
-        'AllowPortToBeRoot' => ,
-        'Cost' =>
+        'UnicastFlood' => Common::BOOLEAN,
+        'HairPin' => Common::BOOLEAN,
+        'UseBPDU' => Common::BOOLEAN,
+        'FastLeave' => Common::BOOLEAN,
+        'AllowPortToBeRoot' => Common::BOOLEAN,
+        'Cost' => Common::INTEGER
       },
       'BridgeFDB' => {
-        'MACAddress' => ,
-        'VLANId' =>
+        'MACAddress' => Common::STRING,
+        'VLANId' => Common::INTEGER
       },
       'BridgeVLAN' => {
-        'VLAN' => ,
-        'EgressUntagged' => ,
-        'PVID' =>
+        'VLAN' => Common::INTEGER,
+        'EgressUntagged' => Common::STRING_OR_INT,
+        'PVID' => Common::INTEGER
       }
     }.freeze
   end

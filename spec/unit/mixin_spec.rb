@@ -50,14 +50,14 @@ describe SystemdCookbook::Mixin::PropertyHashConversion do
   subject(:converting_obj) { converting_class.new('mock') }
 
   it 'sets properties from options hash' do
-    expect(subject).to respond_to(:test_property)
-    expect(subject).to respond_to(:purple_people_eater)
+    expect(subject).to respond_to(:header_test_property)
+    expect(subject).to respond_to(:header_purple_people_eater)
   end
 
   it 'generates hash from properties' do
-    subject.purple_people_eater true
-    subject.days %w( Monday Tuesday )
-    subject.environment({ 'foo' => 'bar', 'baz' => 'qux' })
+    subject.header_purple_people_eater true
+    subject.header_days %w( Monday Tuesday )
+    subject.header_environment({ 'foo' => 'bar', 'baz' => 'qux' })
     expect(
       subject.property_hash({
         'Header' => {

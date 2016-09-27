@@ -1,4 +1,4 @@
-def self.daemon_type
+def self.resource_type
   :user
 end
 

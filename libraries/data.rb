@@ -1051,7 +1051,7 @@ module SystemdCookbook
 #        'Host' => ,
 #        'Virtualization' => ,
 #        'KernelCommandLine' => ,
-#        'Architecture' => 
+#        'Architecture' =>
 #      },
 #      'Link' => {
 #        'Description' => ,
@@ -1062,7 +1062,7 @@ module SystemdCookbook
 #        'MTUBytes' => ,
 #        'BitsPerSecond' => ,
 #        'Duplex' => ,
-#        'WakeOnLan' => 
+#        'WakeOnLan' =>
 #      }
 #    }.freeze
 #  end
@@ -1073,7 +1073,7 @@ module SystemdCookbook
 #        'Host' => ,
 #        'Virtualization' => ,
 #        'KernelCommandLine' => ,
-#        'Architecture' => 
+#        'Architecture' =>
 #      },
 #      'NetDev' => {
 #        'Description' => ,
@@ -1111,7 +1111,7 @@ module SystemdCookbook
 #        'UDP6ZeroChecksumRx' => ,
 #        'GroupPolicyExtension' => ,
 #        'DestinationPort' => ,
-#        'PortRange' => 
+#        'PortRange' =>
 #      },
 #      'Tunnel' => {
 #        'Local' => ,
@@ -1186,7 +1186,7 @@ module SystemdCookbook
 #      },
 #      'Link' => {
 #        'MACAddress' => ,
-#        'MTUBytes' => 
+#        'MTUBytes' =>
 #      },
 #      'Network' => {
 #        'Description' => ,
@@ -1219,14 +1219,14 @@ module SystemdCookbook
 #        'VLAN' => ,
 #        'MACVLAN' => ,
 #        'VXLAN' => ,
-#        'Tunnel' => 
+#        'Tunnel' =>
 #      },
 #      'Address' => {
 #        'Address' => ,
 #        'Peer' => ,
 #        'Broadcast' => ,
 #        'Label' => ,
-#        'PreferredLifetime' => 
+#        'PreferredLifetime' =>
 #      },
 #      'Route' => {
 #        'Gateway' => ,
@@ -1254,11 +1254,11 @@ module SystemdCookbook
 #        'DUIDRawData' => ,
 #        'IAID' => ,
 #        'RequestBroadcast' => ,
-#        'RouteMetric' => 
+#        'RouteMetric' =>
 #      },
 #      'IPv6AcceptRA' => {
 #        'UseDNS' => ,
-#        'UseDomains' => 
+#        'UseDomains' =>
 #      },
 #      'DHCPServer' => {
 #        'PoolOffset' => ,
@@ -1271,7 +1271,7 @@ module SystemdCookbook
 #        'NTP' => ,
 #        'EmitRouter' => ,
 #        'EmitTimezone' => ,
-#        'Timezone' => 
+#        'Timezone' =>
 #      },
 #      'Bridge' => {
 #        'UnicastFlood' => ,
@@ -1279,7 +1279,7 @@ module SystemdCookbook
 #        'UseBPDU' => ,
 #        'FastLeave' => ,
 #        'AllowPortToBeRoot' => ,
-#        'Cost' => 
+#        'Cost' =>
 #      },
 #      'BridgeFDB' => {
 #        'MACAddress' => ,

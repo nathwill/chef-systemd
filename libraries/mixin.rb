@@ -40,9 +40,10 @@ module SystemdCookbook
 
       module ClassMethods
         def option_properties(options = {})
-          options.each_pair do |_, opts|
+          options.each_pair do |section, opts|
             opts.each_pair do |opt, conf|
-              property opt.underscore.to_sym, conf.merge(desired_state: false)
+              property "#{section.underscore}_#{opt.underscore}".to_sym,
+                       conf.merge(desired_state: false)
             end
           end
         end
@@ -52,13 +53,18 @@ module SystemdCookbook
         def property_hash(options = {})
           result = {}
 
-          options.each_pair do |heading, opts|
+          options.each_pair do |section, opts|
             conf = opts.reject do |opt, _|
-              send(opt.underscore.to_sym).nil?
+              send("#{section.underscore}_#{opt.underscore}".to_sym).nil?
             end
 
-            result[heading] = conf.map do |opt, _|
-              [opt.camelcase, option_value(send(opt.underscore.to_sym))]
+            result[section] = conf.map do |opt, _|
+              [
+                opt.camelcase,
+                option_value(
+                  send("#{section.underscore}_#{opt.underscore}".to_sym)
+                )
+              ]
             end.to_h
           end
 

@@ -1,8 +1,8 @@
-def self.unit_type
+def self.resource_type
   :swap
 end
 
 include SystemdCookbook::ResourceFactory::DropIn
 
-property :what, SystemdCookbook::Swap::OPTIONS['Swap']['What']
+property :swap_what, SystemdCookbook::Swap::OPTIONS['Swap']['What']
   .merge(required: false)

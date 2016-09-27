@@ -1,12 +1,16 @@
 
 systemd_system 'my-overrides' do
-  default_environment({ 'ENVIRONMENT' => 'production' })
-  default_timeout_start_sec 30
+  manager do
+    default_environment({ 'ENVIRONMENT' => 'production' })
+    default_timeout_start_sec 30
+  end
 end
 
 systemd_user 'my-overrides' do
-  default_environment({ 'ENVIRONMENT' => 'production' })
-  default_timeout_start_sec 120
+  manager do
+    default_environment({ 'ENVIRONMENT' => 'production' })
+    default_timeout_start_sec 120
+  end
 end
 
 systemd_binfmt 'DOSWin' do

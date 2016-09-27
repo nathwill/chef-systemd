@@ -1,4 +1,4 @@
-def self.unit_type
+def self.resource_type
   :automount
 end
 

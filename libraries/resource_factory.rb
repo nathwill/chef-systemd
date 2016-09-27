@@ -32,29 +32,16 @@ module SystemdCookbook
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
 
-          include SystemdCookbook::Mixin::Unit
-          include SystemdCookbook::Mixin::PropertyHashConversion
-
           resource_name "systemd_#{resource_type}".to_sym
           provides "systemd_#{resource_type}".to_sym
+
+          include SystemdCookbook::Mixin::Unit
+          include SystemdCookbook::Mixin::PropertyHashConversion
+          include SystemdCookbook::Mixin::DSL
 
           option_properties(
             SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
           )
-
-          define_method(:method_missing) do |name, *args, &blk|
-            if @context && respond_to?("#{@context}_#{name}")
-              send("#{@context}_#{name}", *args, &blk)
-            end
-          end
-
-          SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS.keys.each do |sect|
-            define_method(sect.underscore.to_sym) do |&blk|
-              @context = sect.underscore.to_sym
-              instance_eval(&blk)
-              @context = nil
-            end
-          end
 
           default_action :create
 
@@ -83,11 +70,12 @@ module SystemdCookbook
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
 
-          include SystemdCookbook::Mixin::Unit
-          include SystemdCookbook::Mixin::PropertyHashConversion
-
           resource_name "systemd_#{resource_type}_drop_in".to_sym
           provides "systemd_#{resource_type}_drop_in".to_sym
+
+          include SystemdCookbook::Mixin::Unit
+          include SystemdCookbook::Mixin::PropertyHashConversion
+          include SystemdCookbook::Mixin::DSL
 
           option_properties(
             SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
@@ -98,20 +86,6 @@ module SystemdCookbook
 
           property :drop_in_name, identity: true,
                                   default: lazy { "#{override}-#{name}" }
-
-          define_method(:method_missing) do |name, *args, &blk|
-            if @context && respond_to?("#{@context}_#{name}")
-              send("#{@context}_#{name}", *args, &blk)
-            end
-          end
-
-          SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS.keys.each do |sect|
-            define_method(sect.underscore.to_sym) do |&blk|
-              @context = sect.underscore.to_sym
-              instance_eval(&blk)
-              @context = nil
-            end
-          end
 
           default_action :create
 
@@ -158,28 +132,15 @@ module SystemdCookbook
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
 
-          include SystemdCookbook::Mixin::PropertyHashConversion
-
           resource_name "systemd_#{resource_type}".to_sym
           provides "systemd_#{resource_type}".to_sym
+
+          include SystemdCookbook::Mixin::PropertyHashConversion
+          include SystemdCookbook::Mixin::DSL
 
           option_properties(
             SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
           )
-
-          define_method(:method_missing) do |name, *args, &blk|
-            if @context && respond_to?("#{@context}_#{name}")
-              send("#{@context}_#{name}", *args, &blk)
-            end
-          end
-
-          SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS.keys.each do |sect|
-            define_method(sect.underscore.to_sym) do |&blk|
-              @context = sect.underscore.to_sym
-              instance_eval(&blk)
-              @context = nil
-            end
-          end
 
           default_action :create
 

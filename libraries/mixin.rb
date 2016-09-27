@@ -19,6 +19,31 @@
 
 module SystemdCookbook
   module Mixin
+    module DSL
+      def self.included(base)
+        base.extend ClassMethods
+        base.send :build_dsl
+      end
+
+      module ClassMethods
+        def build_dsl
+          define_method(:method_missing) do |name, *args, &blk|
+            if @context && respond_to?("#{@context}_#{name}")
+              send("#{@context}_#{name}", *args, &blk)
+            end
+          end
+
+          SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS.keys.each do |sect|
+            define_method(sect.underscore.to_sym) do |&blk|
+              @context = sect.underscore.to_sym
+              instance_eval(&blk)
+              @context = nil
+            end
+          end
+        end
+      end
+    end
+
     module Unit
       def install
         yield

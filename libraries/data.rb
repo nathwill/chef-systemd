@@ -248,7 +248,7 @@ module SystemdCookbook
         systemd-nspawn
         docker
         rkt
-      )
+      ).concat [true, false]
     }.freeze
   end
 
@@ -1040,258 +1040,399 @@ module SystemdCookbook
     }.freeze
   end
 
-#  module Link
-#    OPTIONS ||= {
-#      'Match' => {
-#        'MACAddress' => ,
-#        'OriginalName' => ,
-#        'Path' => ,
-#        'Driver' => ,
-#        'Type' => ,
-#        'Host' => ,
-#        'Virtualization' => ,
-#        'KernelCommandLine' => ,
-#        'Architecture' =>
-#      },
-#      'Link' => {
-#        'Description' => ,
-#        'MACAddressPolicy' => ,
-#        'MACAddress' => ,
-#        'NamePolicy' => ,
-#        'Name' => ,
-#        'MTUBytes' => ,
-#        'BitsPerSecond' => ,
-#        'Duplex' => ,
-#        'WakeOnLan' =>
-#      }
-#    }.freeze
-#  end
+  module Link
+    OPTIONS ||= {
+      'Match' => {
+        'MACAddress' => Common::STRING,
+        'OriginalName' => Common::ARRAY,
+        'Path' => Common::ARRAY,
+        'Driver' => Common::ARRAY,
+        'Type' => Common::ARRAY,
+        'Host' => Common::STRING,
+        'Virtualization' => Common::VIRT,
+        'KernelCommandLine' => Common::STRING,
+        'Architecture' => Common::ARCH
+      },
+      'Link' => {
+        'Description' => Common::STRING,
+        'MACAddressPolicy' => {
+          kind_of: String,
+          equal_to: %w( persistent random none )
+        },
+        'MACAddress' => Common::STRING,
+        'NamePolicy' => {
+          kind_of: [String, Array],
+          callbacks: {
+            'is a valid policy' => lambda do |spec|
+              %w( kernel database onboard slot path mac ).include?(spec)
+            end
+          }
+        },
+        'Name' => Common::STRING,
+        'MTUBytes' => Common::STRING_OR_INT,
+        'BitsPerSecond' => Common::STRING_OR_INT,
+        'Duplex' => {
+          kind_of: String,
+          equal_to: %w( half full )
+        },
+        'WakeOnLan' => {
+          kind_of: String,
+          equal_to: %w( phy magic off )
+        }
+      }
+    }.freeze
+  end
 
-#  module Netdev
-#    OPTIONS ||= {
-#      'Match' => {
-#        'Host' => ,
-#        'Virtualization' => ,
-#        'KernelCommandLine' => ,
-#        'Architecture' =>
-#      },
-#      'NetDev' => {
-#        'Description' => ,
-#        'Name' => ,
-#        'Kind' => ,
-#        'MTUBytes' => ,
-#        'MACAddress' => ,
-#      },
-#      'Bridge' => {
-#        'HelloTimeSec' => ,
-#        'MaxAgeSec' => ,
-#        'ForwardDelaySec' => ,
-#        'MulticastQuerier' => ,
-#        'MulticastSnooping' => ,
-#        'VLANFiltering' => ,
-#      },
-#      'VLAN' => { 'Id' => },
-#      'MACVLAN' => { 'Mode' => },
-#      'MACVTAP' => { 'Mode' => },
-#      'IPVLAN' => { 'Mode' => },
-#      'VXLAN' => {
-#        'Id' => ,
-#        'Group' => ,
-#        'TOS' => ,
-#        'TTL' => ,
-#        'MacLearning' => ,
-#        'FDBAgeingSec' => ,
-#        'MaximumFDBEntries' => ,
-#        'ARPProxy' => ,
-#        'L2MissNotification' => ,
-#        'L3MissNotification' => ,
-#        'RouteShortCircuit' => ,
-#        'UDPCheckSum' => ,
-#        'UDP6ZeroChecksumTx' => ,
-#        'UDP6ZeroChecksumRx' => ,
-#        'GroupPolicyExtension' => ,
-#        'DestinationPort' => ,
-#        'PortRange' =>
-#      },
-#      'Tunnel' => {
-#        'Local' => ,
-#        'Remote' => ,
-#        'TOS' => ,
-#        'TTL' => ,
-#        'DiscoverPathMTU' => ,
-#        'IPv6FlowLabel' => ,
-#        'CopyDSCP' => ,
-#        'EncapsulationLimit' => ,
-#        'Key' => ,
-#        'InputKey' => ,
-#        'OutputKey' => ,
-#        'Mode' => ,
-#      },
-#      'Peer' => {
-#        'Name' => ,
-#        'MACAddress' => ,
-#      },
-#      'Tun' => {
-#        'OneQueue' => ,
-#        'MultiQueue' => ,
-#        'PacketInfo' => ,
-#        'VNetHeader' => ,
-#        'User' => ,
-#        'Group' => ,
-#      },
-#      'Tap' => {
-#        'OneQueue' => ,
-#        'MultiQueue' => ,
-#        'PacketInfo' => ,
-#        'VNetHeader' => ,
-#        'User' => ,
-#        'Group' => ,
-#      },
-#      'Bond' => {
-#        'Mode' => ,
-#        'TransmitHashPolicy' => ,
-#        'LACPTransmitRate' => ,
-#        'MIIMonitorSec' => ,
-#        'UpDelaySec' => ,
-#        'DownDelaySec' => ,
-#        'LearnPacketIntervalSec' => ,
-#        'AdSelect' => ,
-#        'FailOverMACPolicy' => ,
-#        'ARPValidate' => ,
-#        'ARPIntervalSec' => ,
-#        'ARPIPTargets => ,
-#        'ARPAllTargets' => ,
-#        'PrimaryReselectPolicy' => ,
-#        'ResendIGMP' => ,
-#        'PacketsPerSlave' => ,
-#        'GratuitousARP' => ,
-#        'AllSlavesActive' => ,
-#        'MinLinks' =>
-#      }
-#    }.freeze
-#  end
+  module Netdev
+    OPTIONS ||= {
+      'Match' => {
+        'Host' => Common::STRING,
+        'Virtualization' => Common::VIRT,
+        'KernelCommandLine' => Common::STRING,
+        'Architecture' => Common::ARCH
+      },
+      'NetDev' => {
+        'Description' => Common::STRING,
+        'Name' => {
+          kind_of: String,
+          required: true
+        },
+        'Kind' => {
+          kind_of: String,
+          required: true,
+          equal_to: %w(
+            bond
+            bridge
+            dummy
+            gre
+            gretap
+            ip6gre
+            ip6tnl
+            ip6gretap
+            ipip
+            ipvlan
+            macvlan
+            macvtap
+            sit
+            tap
+            tun
+            veth
+            vlan
+            vti
+            vti6
+            vxlan
+            vrf
+          )
+        },
+        'MTUBytes' => Common::STRING_OR_INT,
+        'MACAddress' => COMMON::STRING,
+      },
+      'Bridge' => {
+        'HelloTimeSec' => Common::STRING_OR_INT,
+        'MaxAgeSec' => Common::STRING_OR_INT,
+        'ForwardDelaySec' => Common::STRING_OR_INT,
+        'MulticastQuerier' => Common::BOOLEAN,
+        'MulticastSnooping' => Common::BOOLEAN,
+        'VLANFiltering' => Common::BOOLEAN,
+      },
+      'VLAN' => {
+        'Id' => {
+          kind_of: Integer,
+          required: true,
+          equal_to: 0.upto(4094).to_a
+        }
+      },
+      'MACVLAN' => {
+        'Mode' => {
+          kind_of: String,
+          equal_to: %w( private vepa bridge passthru )
+        }
+      },
+      'MACVTAP' => {
+        'Mode' => {
+          kind_of: String,
+          equal_to: %w( private vepa bridge passthru )
+        }
+      },
+      'IPVLAN' => {
+        'Mode' => {
+          kind_of: String,
+          equal_to: %w( L2 L3 )
+        }
+      },
+      'VXLAN' => {
+        'Id' => Common::INTEGER,
+        'Group' => Common::STRING,
+        'TOS' => Common::STRING,
+        'TTL' => {
+          kind_of: Integer,
+          equal_to: 0.upto(255).to_a
+        },
+        'MacLearning' => Common::BOOLEAN,
+        'FDBAgeingSec' => Common::STRING_OR_INT,
+        'MaximumFDBEntries' => Common::INTEGER,
+        'ARPProxy' => Common::BOOLEAN,
+        'L2MissNotification' => Common::BOOLEAN,
+        'L3MissNotification' => Common::BOOLEAN,
+        'RouteShortCircuit' => Common::BOOLEAN,
+        'UDPCheckSum' => Common::BOOLEAN,
+        'UDP6ZeroChecksumTx' => Common::BOOLEAN,
+        'UDP6ZeroChecksumRx' => Common::BOOLEAN,
+        'GroupPolicyExtension' => Common::BOOLEAN,
+        'DestinationPort' => {
+          kind_of: Integer,
+          equal_to: 0.upto(65535).to_a
+        },
+        'PortRange' => Common::STRING
+      },
+      'Tunnel' => {
+        'Local' => Common::STRING,
+        'Remote' => Common::STRING,
+        'TOS' => Common::STRING,
+        'TTL' => Common::STRING,
+        'DiscoverPathMTU' => Common::BOOLEAN,
+        'IPv6FlowLabel' => Common::STRING,
+        'CopyDSCP' => Common::BOOLEAN,
+        'EncapsulationLimit' => {
+          kind_of: [String, Integer],
+          equal_to: 0.upto(255).to_a.push('none')
+        },
+        'Key' => Common::STRING_OR_INT,
+        'InputKey' => Common::STRING_OR_INT,
+        'OutputKey' => Common::STRING_OR_INT,
+        'Mode' => {
+          kind_of: String,
+          equal_to: %w( ip6ip6 ipip6 any )
+        },
+      },
+      'Peer' => {
+        'Name' => Common::STRING,
+        'MACAddress' => Common::STRING,
+      },
+      'Tun' => {
+        'OneQueue' => Common::BOOLEAN,
+        'MultiQueue' => Common::BOOLEAN,
+        'PacketInfo' => Common::BOOLEAN,
+        'VNetHeader' => Common::BOOLEAN,
+        'User' => Common::STRING,
+        'Group' => Common::STRING
+      },
+      'Tap' => {
+        'OneQueue' => Common::BOOLEAN,
+        'MultiQueue' => Common::BOOLEAN,
+        'PacketInfo' => Common::BOOLEAN,
+        'VNetHeader' => Common::BOOLEAN,
+        'User' => Common::STRING,
+        'Group' => Common::STRING
+      },
+      'Bond' => {
+        'Mode' => {
+          kind_of: String,
+          equal_to: %w(
+            balance-rr
+            active-backup
+            balance-xor
+            broadcast
+            802.3ad
+            balance-tlb
+            balance-alb
+          )
+        },
+        'TransmitHashPolicy' => {
+          kind_of: String,
+          equal_to: %w(
+            layer2
+            layer3+4
+            layer2+3
+            encap2+3
+            encap3+4
+          )
+        },
+        'LACPTransmitRate' => {
+          kind_of: String,
+          equal_to: %w( fast slow )
+        },
+        'MIIMonitorSec' => Common::STRING_OR_INT,
+        'UpDelaySec' => Common::STRING_OR_INT,
+        'DownDelaySec' => Common::STRING_OR_INT,
+        'LearnPacketIntervalSec' => Common::STRING_OR_INT,
+        'AdSelect' => {
+          kind_of: String,
+          equal_to: %w( stable bandwidth count )
+        },
+        'FailOverMACPolicy' => {
+          kind_of: String,
+          equal_to: %w( none active follow )
+        },
+        'ARPValidate' => {
+          kind_of: String,
+          equal_to: %w( none active backup all )
+        },
+        'ARPIntervalSec' => Common::STRING_OR_INT,
+        'ARPIPTargets => Common::STRING_OR_INT,
+        'ARPAllTargets' => Common::ARRAY,
+        'PrimaryReselectPolicy' => {
+          kind_of: String,
+          equal_to: %w( any all )
+        },
+        'ResendIGMP' => {
+          kind_of: Integer,
+          equal_to: 0.upto(255).to_a
+        },
+        'PacketsPerSlave' => {
+          kind_of: Integer,
+          equal_to: 0.upto(65535).to_a
+        },
+        'GratuitousARP' => {
+          kind_of: Integer,
+          equal_to: 0.upto(255).to_a
+        },
+        'AllSlavesActive' => Common::BOOLEAN,
+        'MinLinks' => Common::INTEGER
+      }
+    }.freeze
+  end
 
-#  module Network
-#    OPTIONS ||= {
-#      'Match' => {
-#        'MACAddress' => ,
-#        'Path' => ,
-#        'Driver' => ,
-#        'Type' => ,
-#        'Name' => ,
-#        'Host' => ,
-#        'Virtualization' => ,
-#        'KernelCommandLine' => ,
-#        'Architecture' => ,
-#      },
-#      'Link' => {
-#        'MACAddress' => ,
-#        'MTUBytes' =>
-#      },
-#      'Network' => {
-#        'Description' => ,
-#        'DHCPServer' => ,
-#        'LinkLocalAddressing' => ,
-#        'IPv4LLRoute' => ,
-#        'IPv6Token' => ,
-#        'LLMNR' => ,
-#        'MulticastDNS' => ,
-#        'DNSSEC' => ,
-#        'DNSSECNegativeTrustAnchors' => ,
-#        'LLDP' => ,
-#        'EmitLLDP' => ,
-#        'BindCarrier' => ,
-#        'Address' => ,
-#        'Gateway' => ,
-#        'DNS' => ,
-#        'Domains' => ,
-#        'NTP' => ,
-#        'IPForward' => ,
-#        'IPMasquerade' => ,
-#        'IPv6PrivacyExtensions' => ,
-#        'IPv6AcceptRA' => ,
-#        'IPv6DuplicateAddressDetection' => ,
-#        'IPv6HopLimit' => ,
-#        'ProxyARP' => ,
-#        'Bridge' => ,
-#        'Bond' => ,
-#        'VRF' => ,
-#        'VLAN' => ,
-#        'MACVLAN' => ,
-#        'VXLAN' => ,
-#        'Tunnel' =>
-#      },
-#      'Address' => {
-#        'Address' => ,
-#        'Peer' => ,
-#        'Broadcast' => ,
-#        'Label' => ,
-#        'PreferredLifetime' =>
-#      },
-#      'Route' => {
-#        'Gateway' => ,
-#        'Destination' => ,
-#        'Source' => ,
-#        'Metric' => ,
-#        'Scope' => ,
-#        'PreferredSource' => ,
-#        'Table' =>
-#      },
-#      'DHCP' => {
-#        'UseDNS' => ,
-#        'UseNTP' => ,
-#        'UseMTU' => ,
-#        'SendHostname' => ,
-#        'UseHostame' => ,
-#        'Hostname' => ,
-#        'UseDomains' => ,
-#        'UseRoutes' => ,
-#        'UseTimezone' => ,
-#        'CriticalConnection' => ,
-#        'ClientIdentifier' => ,
-#        'VendorClassIdentifier' => ,
-#        'DUIDType' => ,
-#        'DUIDRawData' => ,
-#        'IAID' => ,
-#        'RequestBroadcast' => ,
-#        'RouteMetric' =>
-#      },
-#      'IPv6AcceptRA' => {
-#        'UseDNS' => ,
-#        'UseDomains' =>
-#      },
-#      'DHCPServer' => {
-#        'PoolOffset' => ,
-#        'PoolSize' => ,
-#        'DefaultLeaseTimeSec' => ,
-#        'MaxLeaseTimeSec' => ,
-#        'EmitDNS' => ,
-#        'DNS' => ,
-#        'EmitNTP' => ,
-#        'NTP' => ,
-#        'EmitRouter' => ,
-#        'EmitTimezone' => ,
-#        'Timezone' =>
-#      },
-#      'Bridge' => {
-#        'UnicastFlood' => ,
-#        'HairPin' => ,
-#        'UseBPDU' => ,
-#        'FastLeave' => ,
-#        'AllowPortToBeRoot' => ,
-#        'Cost' =>
-#      },
-#      'BridgeFDB' => {
-#        'MACAddress' => ,
-#        'VLANId' =>
-#      },
-#      'BridgeVLAN' => {
-#        'VLAN' => ,
-#        'EgressUntagged' => ,
-#        'PVID' =>
-#      }
-#    }.freeze
-#  end
+  module Network
+    OPTIONS ||= {
+      'Match' => {
+        'MACAddress' => Common::STRING,
+        'Path' => Common::ARRAY,
+        'Driver' => Common::ARRAY,
+        'Type' => Common::ARRAY,
+        'Name' => Common::ARRAY,
+        'Host' => Common::STRING,
+        'Virtualization' => Common::VIRT,
+        'KernelCommandLine' => Common::STRING,
+        'Architecture' => Common::ARCH,
+      },
+      'Link' => {
+        'MACAddress' => Common::STRING,
+        'MTUBytes' => Common::STRING_OR_INT
+      },
+      'Network' => {
+        'Description' => Common::STRING,
+        'DHCP' => {
+          kind_of: [String, Integer, TrueClass, FalseClass],
+          equal_to: %w( yes no ipv4 ipv6 ).concat [true, false]
+        },
+        'DHCPServer' => Common::BOOLEAN,
+        'LinkLocalAddressing' => {
+          kind_of: [String, Integer],
+          equal_to: %w( yes no ipv4 ipv6 ).concat [true, false]
+        },
+        'IPv4LLRoute' => Common::BOOLEAN,
+        'IPv6Token' => Common::STRING,
+        'LLMNR' => {
+          kind_of: [String, Integer, TrueClass, FalseClass],
+          equal_to: ['resolve', true, false]
+        },
+        'MulticastDNS' => {
+          kind_of: [String, Integer, TrueClass, FalseClass],
+          equal_to: ['resolve', true, false]
+        },
+        'DNSSEC' => {
+          kind_of: [String, Integer, TrueClass, FalseClass],
+          equal_to: ['allow-downgrade', true, false]
+        },
+        'DNSSECNegativeTrustAnchors' => Common::ARRAY,
+        'LLDP' => {
+          kind_of: [String, Integer, TrueClass, FalseClass],
+          equal_to: ['routers-only', true, false]
+        },
+        'EmitLLDP' => ,
+        'BindCarrier' => ,
+        'Address' => ,
+        'Gateway' => ,
+        'DNS' => ,
+        'Domains' => ,
+        'NTP' => ,
+        'IPForward' => ,
+        'IPMasquerade' => ,
+        'IPv6PrivacyExtensions' => ,
+        'IPv6AcceptRA' => ,
+        'IPv6DuplicateAddressDetection' => ,
+        'IPv6HopLimit' => ,
+        'ProxyARP' => ,
+        'Bridge' => ,
+        'Bond' => ,
+        'VRF' => ,
+        'VLAN' => ,
+        'MACVLAN' => ,
+        'VXLAN' => ,
+        'Tunnel' =>
+      },
+      'Address' => {
+        'Address' => ,
+        'Peer' => ,
+        'Broadcast' => ,
+        'Label' => ,
+        'PreferredLifetime' =>
+      },
+      'Route' => {
+        'Gateway' => ,
+        'Destination' => ,
+        'Source' => ,
+        'Metric' => ,
+        'Scope' => ,
+        'PreferredSource' => ,
+        'Table' =>
+      },
+      'DHCP' => {
+        'UseDNS' => ,
+        'UseNTP' => ,
+        'UseMTU' => ,
+        'SendHostname' => ,
+        'UseHostame' => ,
+        'Hostname' => ,
+        'UseDomains' => ,
+        'UseRoutes' => ,
+        'UseTimezone' => ,
+        'CriticalConnection' => ,
+        'ClientIdentifier' => ,
+        'VendorClassIdentifier' => ,
+        'DUIDType' => ,
+        'DUIDRawData' => ,
+        'IAID' => ,
+        'RequestBroadcast' => ,
+        'RouteMetric' =>
+      },
+      'IPv6AcceptRA' => {
+        'UseDNS' => ,
+        'UseDomains' =>
+      },
+      'DHCPServer' => {
+        'PoolOffset' => ,
+        'PoolSize' => ,
+        'DefaultLeaseTimeSec' => ,
+        'MaxLeaseTimeSec' => ,
+        'EmitDNS' => ,
+        'DNS' => ,
+        'EmitNTP' => ,
+        'NTP' => ,
+        'EmitRouter' => ,
+        'EmitTimezone' => ,
+        'Timezone' =>
+      },
+      'Bridge' => {
+        'UnicastFlood' => ,
+        'HairPin' => ,
+        'UseBPDU' => ,
+        'FastLeave' => ,
+        'AllowPortToBeRoot' => ,
+        'Cost' =>
+      },
+      'BridgeFDB' => {
+        'MACAddress' => ,
+        'VLANId' =>
+      },
+      'BridgeVLAN' => {
+        'VLAN' => ,
+        'EgressUntagged' => ,
+        'PVID' =>
+      }
+    }.freeze
+  end
 
   module Resolved
     OPTIONS ||= {

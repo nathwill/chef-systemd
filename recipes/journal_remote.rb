@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: resolved
+# Recipe:: journal_remote
 #
-# Copyright 2015 - 2016, The Authors
+# Copyright 2016, The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html
+# https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html
 #
 
-package 'systemd-resolved' do
-  only_if { platform_family?('rhel') }
+package 'systemd-journal-gateway' do
+  only_if { platform_family?('rhel')
 end
 
-service 'systemd-resolved' do
-  action [:enable, :start]
+package 'systemd-journal-remote' do
+  not_if { platform_family?('rhel') }
 end

@@ -34,3 +34,9 @@ systemd_coredump 'my-overrides' do
     compress true
   end
 end
+
+systemd_sleep 'my-overrides' do
+  sleep do
+    suspend_state 'freeze'
+  end
+end

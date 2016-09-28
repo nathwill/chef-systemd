@@ -80,3 +80,14 @@ EOT
     end
   end
 end
+
+control 'creates sleep drop-in' do
+  describe file('/etc/systemd/sleep.conf.d/my-overrides.conf') do
+    its(:content) do
+      should eq <<EOT
+[Sleep]
+SuspendState = freeze
+EOT
+    end
+  end
+end

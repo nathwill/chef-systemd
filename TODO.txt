@@ -9,6 +9,7 @@ machined
 machine-id
 machine-info
 modules-load command
+nspawn
 sleep
 importd
 inhibit

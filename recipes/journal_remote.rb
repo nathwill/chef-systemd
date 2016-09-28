@@ -20,7 +20,7 @@
 #
 
 package 'systemd-journal-gateway' do
-  only_if { platform_family?('rhel')
+  only_if { platform_family?('rhel') }
 end
 
 package 'systemd-journal-remote' do

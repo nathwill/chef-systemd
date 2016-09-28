@@ -27,3 +27,10 @@ systemd_timesyncd 'my-overrides' do
     fallback_ntp 0.upto(3).map { |i| "#{i}.pool.ntp.org" }
   end
 end
+
+systemd_coredump 'my-overrides' do
+  coredump do
+    storage 'external'
+    compress true
+  end
+end

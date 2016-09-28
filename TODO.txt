@@ -1,6 +1,6 @@
 unimplemented system concepts
 -----------------------------
-coredump
+~~coredump~~
 dnssec-trust-anchors
 journal-gateway
 journal-remote

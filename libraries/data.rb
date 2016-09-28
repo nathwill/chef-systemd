@@ -963,7 +963,8 @@ module SystemdCookbook
         'ProcessSizeMax' => Common::INTEGER,
         'ExternalSizeMax' => Common::INTEGER,
         'JournalSizeMax' => Common::INTEGER,
-        'MaxUse' => Common::STRING
+        'MaxUse' => Common::STRING_OR_INT,
+        'KeepFree' => Common::STRING_OR_INT
       }
     }.freeze
   end

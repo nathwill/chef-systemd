@@ -68,3 +68,15 @@ EOT
     end
   end
 end
+
+control 'creates coredump drop-in' do
+  describe file('/etc/systemd/coredump.conf.d/my-overrides.conf') do
+    its(:content) do
+      should eq <<EOT
+[Coredump]
+Storage = external
+Compress = yes
+EOT
+    end
+  end
+end

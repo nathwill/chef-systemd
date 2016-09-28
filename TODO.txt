@@ -1,0 +1,17 @@
+unimplemented system concepts
+-----------------------------
+coredump
+dnssec-trust-anchors
+journal-gateway
+journal-remote
+journal-upload
+machined
+machine-id
+machine-info
+modules-load command
+sleep
+importd
+inhibit
+run
+udev
+preset

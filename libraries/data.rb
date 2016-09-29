@@ -1574,4 +1574,48 @@ module SystemdCookbook
   module User
     OPTIONS ||= System::OPTIONS
   end
+
+  module Nspawn
+    OPTIONS ||= {
+      'Exec' => {
+        'Boot' => Common::BOOLEAN,
+        'ProcessTwo' => Common::BOOLEAN,
+        'Parameters' => Common::ARRAY,
+        'Environment' => { kind_of: [String, Array, Hash] },
+        'User' => Common::STRING,
+        'WorkingDirectory' => Common::ABSOLUTE_PATH,
+        'Capability' => Common::ARRAY,
+        'DropCapability' => Common::ARRAY,
+        'KillSignal' => Common::STRING_OR_INT,
+        'Personality' => Common::ARCH,
+        'MachineID' => Common::STRING,
+        'PrivateUsers' => {
+          kind_of: [TrueClass, FalseClass, String, Integer]
+        },
+        'NotifyReady' => Common::BOOLEAN
+      },
+      'Files' => {
+        'ReadOnly' => Common::BOOLEAN,
+        'Volatile' => {
+          kind_of: [TrueClass, FalseClass, String],
+          equal_to: [true, false, 'state', 'yes', 'no']
+        },
+        'Bind' => Common::STRING,
+        'BindReadOnly' => Common::STRING,
+        'TemporaryFileSystem' => Common::STRING,
+        'PrivateUsersChown' => Common::BOOLEAN
+      },
+      'Network' => {
+        'Private' => Common::BOOLEAN,
+        'VirtualEthernet' => Common::BOOLEAN,
+        'VirtualEthernetExtra' => Common::STRING,
+        'Interface' => Common::ARRAY,
+        'MACVLAN' => Common::ARRAY,
+        'IPVLAN' => Common::ARRAY,
+        'Bridge' => Common::STRING,
+        'Zone' => Common::STRING,
+        'Port' => Common::STRING_OR_INT
+      }
+    }.freeze
+  end
 end

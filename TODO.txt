@@ -1,18 +1,18 @@
 unimplemented system concepts
 -----------------------------
-~~coredump~~
-dnssec-trust-anchors
-journal-gateway
-journal-remote
-journal-upload
-machined
-machine-id
-machine-info
-modules-load command
+~~coredump~~: done
+~~dnssec-trust-anchors~~: no value-add over file resource
+~~journal-gateway~~: service recipe
+~~journal-remote~~: service recipe
+~~journal-upload~~: service recipe
+machinectl
+~~machine-id~~: coming in ohai
+~~machine-info~~: meh
+~~modules-load command~~
 nspawn
-~~sleep~~
-importd
-inhibit
-run
-udev
-preset
+~~sleep~~: done
+~~importd~~: dbus-activated (e.g. via machinectl)
+~~inhibit~~: no value add on execute resource
+~~run~~: no value add on execute resource
+~~udev~~: no value add on file resource
+~~preset~~: no value add on file resource

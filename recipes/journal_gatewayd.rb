@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: journal_remote
+# Recipe:: journal_gatewayd
 #
 # Copyright 2015 - 2016, The Authors
 #
@@ -21,6 +21,6 @@
 
 include_recipe "#{cookbook_name}::journal_extra"
 
-service 'systemd-journal-remote' do
+service 'systemd-journal-gatewayd' do
   action [:enable, :start]
 end

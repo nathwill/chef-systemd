@@ -91,3 +91,21 @@ control 'creates tmpfiles' do
     end
   end
 end
+
+control 'creates nspawn units' do
+  describe file('/etc/systemd/nspawn/Fedora-24.nspawn') do
+    its(:content) do
+      should eq <<EOT
+[Exec]
+Boot = yes
+
+[Files]
+Bind = /tmp:/tmp
+
+[Network]
+Private = no
+VirtualEthernet = no
+EOT
+    end
+  end
+end

@@ -48,3 +48,16 @@ systemd_tmpfile 'my-app' do
   age '10d'
   type 'f'
 end
+
+systemd_nspawn 'Fedora-24' do
+  exec do
+    boot true
+  end
+  files do
+    bind '/tmp:/tmp'
+  end
+  network do
+    private false
+    virtual_ethernet false
+  end
+end

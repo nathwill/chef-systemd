@@ -5,11 +5,37 @@ unimplemented system concepts
 ~~journal-gateway~~: service recipe
 ~~journal-remote~~: service recipe
 ~~journal-upload~~: service recipe
-machinectl
+systemd_machine_image
+  properties:
+    verify
+    limit
+    read_only
+    from
+    to
+    force
+  actions:
+    clone
+    rename
+    remove
+    set-limit
+systemd_machine:
+  properties:
+    uid
+    environment
+    signal
+    kill_who
+  actions:
+    start
+    enable
+    disable
+    poweroff
+    terminate
+    kill
+    bind
 ~~machine-id~~: coming in ohai
 ~~machine-info~~: meh
 ~~modules-load command~~
-nspawn
+~~nspawn units~~: done
 ~~sleep~~: done
 ~~importd~~: dbus-activated (e.g. via machinectl)
 ~~inhibit~~: no value add on execute resource

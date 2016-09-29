@@ -13,11 +13,14 @@ systemd_machine_image
     from
     to
     force
+    path
   actions:
     clone
     rename
     remove
     set-limit
+    import
+    export
 systemd_machine:
   properties:
     uid

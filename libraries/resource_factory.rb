@@ -84,7 +84,7 @@ module SystemdCookbook
             'matches drop-in type' => ->(s) { s.end_with?(resource_type.to_s) }
           }
 
-          property :drop_in_name, name_property: true,
+          property :drop_in_name, identity: true,
                                   default: lazy { "#{override}-#{name}" }
 
           default_action :create

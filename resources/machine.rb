@@ -10,29 +10,29 @@ property :bind, String
 default_action :start
 
 action :start do
-
+  # do stuff
 end
 
 action :enable do
-
+  # do stuff
 end
 
 action :disable do
-
+  # do stuff
 end
 
 action :poweroff do
-
+  # do stuff
 end
 
 action :terminate do
-
+  # do stuff
 end
 
 action :kill do
-
+  # do stuff
 end
 
 action :bind do
-
+  # do stuff
 end

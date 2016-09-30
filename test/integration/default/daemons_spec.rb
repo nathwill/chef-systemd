@@ -91,3 +91,26 @@ EOT
     end
   end
 end
+
+control 'creates journal-upload drop-in' do
+  describe file('/etc/systemd/journal-upload.conf.d/my-override.conf') do
+    its(:content) do
+      should eq <<EOT
+[Upload]
+URL = http://127.0.0.1
+EOT
+    end
+  end
+end
+
+control 'creates journal-remote drop-in' do
+  describe file('/etc/systemd/journal-remote.conf.d/my-override.conf') do
+    its(:content) do
+      should eq <<EOT
+[Remote]
+Seal = yes
+SplitMode = host
+EOT
+    end
+  end
+end

@@ -40,3 +40,16 @@ systemd_sleep 'my-overrides' do
     suspend_state 'freeze'
   end
 end
+
+systemd_journal_upload 'my-override' do
+  upload do
+    url 'http://127.0.0.1'
+  end
+end
+
+systemd_journal_remote 'my-override' do
+  remote do
+    seal true
+    split_mode 'host'
+  end
+end

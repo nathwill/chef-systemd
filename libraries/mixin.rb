@@ -33,7 +33,7 @@ module SystemdCookbook
             end
           end
 
-          SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS.keys.each do |sect|
+          SystemdCookbook.const_get(resource_type.to_s.tr('-', '_').camelcase.to_sym)::OPTIONS.keys.each do |sect|
             define_method(sect.underscore.to_sym) do |&blk|
               @context = sect.underscore.to_sym
               instance_eval(&blk)

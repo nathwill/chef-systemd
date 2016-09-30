@@ -1618,4 +1618,27 @@ module SystemdCookbook
       }
     }.freeze
   end
+
+  module JournalUpload
+    OPTIONS ||= {
+      'Upload' => {
+        'URL' => Common::STRING,
+        'ServerKeyFile' => Common::ABSOLUTE_PATH,
+        'ServerCertificateFile' => Common::ABSOLUTE_PATH,
+        'TrustedCertificateFile' => Common::ABSOLUTE_PATH
+      }
+    }.freeze
+  end
+
+  module JournalRemote
+    OPTIONS ||= {
+      'Remote' => {
+        'Seal' => Common::BOOLEAN,
+        'SplitMode' => { kind_of: String, equal_to: %w( none host ) },
+        'ServerKeyFile' => Common::ABSOLUTE_PATH,
+        'ServerCertificateFile' => Common::ABSOLUTE_PATH,
+        'TrustedCertificateFile' => Common::ABSOLUTE_PATH
+      }
+    }.freeze
+  end
 end

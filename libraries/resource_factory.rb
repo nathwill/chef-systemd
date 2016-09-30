@@ -143,14 +143,14 @@ module SystemdCookbook
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
 
-          resource_name "systemd_#{resource_type}".to_sym
-          provides "systemd_#{resource_type}".to_sym
+          resource_name "systemd_#{resource_type.to_s.tr('-', '_')}".to_sym
+          provides "systemd_#{resource_type.to_s.tr('-', '_')}".to_sym
 
           include SystemdCookbook::Mixin::PropertyHashConversion
           include SystemdCookbook::Mixin::DSL
 
           option_properties(
-            SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
+            SystemdCookbook.const_get(resource_type.to_s.tr('-', '_').to_s.camelcase.to_sym)::OPTIONS
           )
 
           default_action :create
@@ -165,7 +165,7 @@ module SystemdCookbook
 
               r = systemd_unit "#{resource_type}-#{new_resource.name}" do
                 content property_hash(
-                  SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
+                  SystemdCookbook.const_get(resource_type.to_s.tr('-', '_').to_s.camelcase.to_sym)::OPTIONS
                 )
                 action :nothing
               end

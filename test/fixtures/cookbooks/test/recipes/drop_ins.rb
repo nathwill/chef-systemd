@@ -27,6 +27,14 @@ systemd_service_drop_in 'systemd-ask-password-console' do
   end
 end
 
+systemd_service_drop_in 'user-service-drop-in' do
+  override 'dummy.service'
+  user 'vagrant'
+  unit do
+    description 'user-mode drop-in'
+  end
+end
+
 systemd_slice_drop_in 'user-memory-limit-local' do
   override 'user.slice'
   slice do

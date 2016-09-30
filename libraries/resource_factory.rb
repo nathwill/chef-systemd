@@ -83,11 +83,11 @@ module SystemdCookbook
           option_properties(
             SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
           )
-          property :override, String, required: true, callbacks: {
+          property :override, String, required: true, desired_state: false, callbacks: {
             'matches drop-in type' => ->(s) { s.end_with?(resource_type.to_s) }
           }
-
-          property :drop_in_name, identity: true,
+          property :user, String, desired_state: false
+          property :drop_in_name, identity: true, desired_state: false,
                                   default: lazy { "#{override}-#{name}" }
 
           default_action :create
@@ -96,7 +96,8 @@ module SystemdCookbook
             action actn do
               r = new_resource
 
-              conf_d = "/etc/systemd/system/#{r.override}.d"
+              base = r.user ? '/etc/systemd/user' : '/etc/systemd/system'
+              conf_d = ::File.join(base, "#{r.override}.d")
 
               directory conf_d do
                 not_if { r.action == :delete }
@@ -109,7 +110,14 @@ module SystemdCookbook
                 action :nothing
               end
 
-              execute 'systemctl daemon-reload' do
+              cmd = r.user ? 'systemctl --user' : 'systemctl'
+
+              execute 'daemon-reload' do
+                command "#{cmd} daemon-reload"
+                user(r.user) if r.user
+                environment({
+                 'DBUS_SESSION_BUS_ADDRESS' => "unix:path=/run/user/#{node['etc']['passwd'][r.user]['uid']}/bus"
+                }) if r.user
                 action :nothing
                 only_if { r.triggers_reload }
               end
@@ -117,7 +125,7 @@ module SystemdCookbook
               file "#{conf_d}/#{r.name}.conf" do
                 content u.to_ini
                 action actn
-                notifies :run, 'execute[systemctl daemon-reload]', :immediately
+                notifies :run, 'execute[daemon-reload]', :immediately
               end
             end
           end

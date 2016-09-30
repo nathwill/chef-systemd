@@ -42,6 +42,17 @@ EOT
   end
 end
 
+control 'supports user drop-ins' do
+  describe file('/etc/systemd/user/dummy.service.d/user-service-drop-in.conf') do
+    its(:content) do
+      should eq <<EOT
+[Unit]
+Description = user-mode drop-in
+EOT
+    end
+  end
+end
+
 control 'creates slice drop-ins' do
   describe file('/etc/systemd/system/user.slice.d/user-memory-limit-local.conf') do
     its(:content) do

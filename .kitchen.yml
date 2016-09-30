@@ -18,8 +18,14 @@ verifier:
 platforms:
   - name: centos-7.2
   - name: fedora-24
+    run_list:
+      - recipe[yum::dnf_yum_compat]
   - name: debian-8.5
+    run_list:
+      - recipe[apt]
   - name: ubuntu-16.04
+    run_list:
+      - recipe[apt]
 
 suites:
   - name: default

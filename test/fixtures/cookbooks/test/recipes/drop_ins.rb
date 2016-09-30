@@ -33,6 +33,7 @@ systemd_service_drop_in 'user-service-drop-in' do
   unit do
     description 'user-mode drop-in'
   end
+  only_if { platform?('fedora') }
 end
 
 systemd_slice_drop_in 'user-memory-limit-local' do

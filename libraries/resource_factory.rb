@@ -115,9 +115,9 @@ module SystemdCookbook
               execute 'daemon-reload' do
                 command "#{cmd} daemon-reload"
                 user(r.user) if r.user
-                environment({
-                 'DBUS_SESSION_BUS_ADDRESS' => "unix:path=/run/user/#{node['etc']['passwd'][r.user]['uid']}/bus"
-                }) if r.user
+                environment(
+                  'DBUS_SESSION_BUS_ADDRESS' => "unix:path=/run/user/#{node['etc']['passwd'][r.user]['uid']}/bus"
+                ) if r.user
                 action :nothing
                 only_if { r.triggers_reload }
               end

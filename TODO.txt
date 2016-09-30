@@ -1,5 +1,6 @@
 unimplemented system concepts
 -----------------------------
+user-mode support for drop-ins
 ~~coredump~~: done
 ~~dnssec-trust-anchors~~: no value-add over file resource
 ~~journal-gateway~~: service recipe

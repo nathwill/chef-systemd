@@ -39,6 +39,8 @@ module SystemdCookbook
           include SystemdCookbook::Mixin::PropertyHashConversion
           include SystemdCookbook::Mixin::DSL
 
+          property :user, String, desired_state: false
+
           option_properties(
             SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
           )
@@ -49,6 +51,7 @@ module SystemdCookbook
             action actn do
               systemd_unit "#{new_resource.name}.#{resource_type}" do
                 triggers_reload new_resource.triggers_reload
+                user new_resource.user if new_resource.user
                 content property_hash(
                   SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
                 )

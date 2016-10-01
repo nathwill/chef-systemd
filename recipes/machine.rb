@@ -19,6 +19,14 @@
 # https://www.freedesktop.org/software/systemd/man/systemd-networkd.service.html
 #
 
+package 'btrfs-tools' do
+  only_if { platform_family?('debian') }
+end
+
+package 'btrfs-progs' do
+  not_if { platform_family?('debian') }
+end
+
 package 'systemd-container' do
   not_if { platform_family?('rhel') }
 end

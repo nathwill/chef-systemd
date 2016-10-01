@@ -43,12 +43,14 @@ EOT
 end
 
 control 'supports user drop-ins' do
-  describe file('/etc/systemd/user/dummy.service.d/user-service-drop-in.conf') do
-    its(:content) do
-      should eq <<EOT
+  if os[:fedora]
+    describe file('/etc/systemd/user/dummy.service.d/user-service-drop-in.conf') do
+      its(:content) do
+        should eq <<EOT
 [Unit]
 Description = user-mode drop-in
 EOT
+      end
     end
   end
 end

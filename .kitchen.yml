@@ -22,6 +22,7 @@ platforms:
       - recipe[yum::dnf_yum_compat]
   - name: debian-8.5
     run_list:
+      - recipe[debian::backports]
       - recipe[apt]
   - name: ubuntu-16.04
     run_list:

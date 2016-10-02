@@ -46,4 +46,5 @@ systemd_machine:
 ~~run~~: no value add on execute resource
 ~~udev~~: no value add on file resource
 ~~preset~~: no value add on file resource
+~~dbus-systemd gem~~: done!
 DOCS!

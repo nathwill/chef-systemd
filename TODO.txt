@@ -48,3 +48,5 @@ systemd_machine:
 ~~preset~~: no value add on file resource
 ~~dbus-systemd gem~~: done!
 DOCS!
+TESTS!
+update helpers etc to use dbus apis where appropriate

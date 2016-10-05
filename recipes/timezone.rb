@@ -19,9 +19,17 @@
 # https://www.freedesktop.org/software/systemd/man/timedatectl.html
 #
 
-tz = node['systemd']['timezone']
+require 'dbus/systemd/timedated'
 
-execute 'set-timezone' do
-  command "timedatectl set-timezone #{tz}"
-  not_if { SystemdCookbook::Helpers.timezone?(tz) }
+ruby_block 'set-timezone' do
+  tz = node['systemd']['timezone']
+  timedated = DBus::Systemd::Timedated.new
+
+  block do
+    timedated.SetTimezone(tz, false)
+  end
+
+  not_if do
+    timedated.properties['Timezone'] == tz
+  end
 end

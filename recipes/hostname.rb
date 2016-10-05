@@ -19,19 +19,18 @@
 # https://www.freedesktop.org/software/systemd/man/hostnamectl.html
 #
 
-hostname = node['systemd']['hostname']
+require 'dbus/systemd/hostnamed'
 
-# hostnamectl will populate this file,
-# but we manage it directly for idempotency
-file '/etc/hostname' do
-  content hostname
-  not_if { hostname.nil? }
-  notifies :run, 'execute[set-hostname]', :immediately
-end
+ruby_block 'set-hostname' do
+  hostname = node['systemd']['hostname']
 
-# apply immediately; works on all platforms
-execute 'set-hostname' do
-  command "hostnamectl set-hostname #{hostname}"
-  action :nothing
-  not_if { hostname.nil? }
+  hostnamed = DBus::Systemd::Hostnamed.new
+
+  block do
+    hostnamed.SetStaticHostname(hostname, false)
+  end
+
+  not_if do
+    hostnamed.properties['StaticHostname'] == hostname
+  end
 end

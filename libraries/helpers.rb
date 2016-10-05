@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-require 'mixlib/shellout'
-
 module SystemdCookbook
   module Helpers
     def module_loaded?(mod)
@@ -31,18 +29,7 @@ module SystemdCookbook
         File.read('/proc/1/comm').chomp == 'systemd'
     end
 
-    def timezone?(tz)
-      File.symlink?('/etc/localtime') &&
-        File.readlink('/etc/localtime').end_with?(tz)
-    end
-
-    def self.timedatectl!
-      Mixlib::ShellOut.new('timedatectl')
-                      .tap(&:run_command)
-                      .tap(&:error!)
-    end
-
-    module_function :module_loaded?, :systemd_is_pid_1?, :timezone?
+    module_function :module_loaded?, :systemd_is_pid_1?
   end
 end
 

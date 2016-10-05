@@ -22,11 +22,11 @@
 require 'dbus/systemd/timedated'
 
 ruby_block 'set-rtc' do
-  timedated = DBus::Systemd::Timedated.new
   rtc = node['systemd']['real_time_clock']
-
   local_rtc = rtc['mode'] == 'local'
   fix_system = rtc['adjust_system_clock']
+
+  timedated = DBus::Systemd::Timedated.new
 
   block do
     timedated.SetLocalRTC(local_rtc, fix_system, false)

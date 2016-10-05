@@ -19,19 +19,15 @@
 # https://www.freedesktop.org/software/systemd/man/systemd-localed.service.html
 #
 
-require 'dbus/systemd/localed'
-require 'set'
+locale = node['systemd']['locale']
 
-ruby_block 'set-locale' do
-  locale = node['systemd']['locale'].to_kv_pairs
+file '/etc/locale.conf' do
+  content locale.to_h.to_kv_pairs.join("\n")
+  not_if { locale.empty? }
+  notifies :restart, 'service[systemd-localed]', :immediately
+end
 
-  localed = DBus::Systemd::Localed.new
-
-  block do
-    localed.SetLocale(locale, false)
-  end
-
-  not_if do
-    localed.properties['Locale'].to_set == locale.to_set
-  end
+# oneshot service that runs at boot
+service 'systemd-localed' do
+  action :nothing
 end

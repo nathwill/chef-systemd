@@ -17,13 +17,11 @@
 # limitations under the License.
 #
 
-execute 'systemctl daemon-reload' do
-  action :nothing
-end
+require 'dbus/systemd/manager'
 
-ruby_block 'notify-delayed-daemon-reload' do
-  block do
-    Chef::Log.info('Triggering delayed daemon-reload')
+Chef.event_handler do
+  on :run_completed do
+    mgr = DBus::Systemd::Manager.new
+    mgr.Reload
   end
-  notifies :run, 'execute[systemctl daemon-reload]', :delayed
 end

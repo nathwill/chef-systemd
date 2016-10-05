@@ -50,6 +50,6 @@ end
 class Hash
   def to_kv_pairs
     reject { |_, v| v.nil? }
-      .map { |k, v| "#{k}=\"#{v}\"" }
+      .map { |k, v| "#{k}=#{v}" }
   end
 end

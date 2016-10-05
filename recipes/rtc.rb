@@ -19,22 +19,20 @@
 # https://www.freedesktop.org/software/systemd/man/timedatectl.html
 #
 
-rtc = node['systemd']['real_time_clock']
+require 'dbus/systemd/timedated'
 
-mode = case rtc['mode']
-       when 'utc'
-         0
-       when 'local'
-         1
-       else
-         Chef::Application.fatal! 'Unknown RTC mode!'
-       end
+ruby_block 'set-rtc' do
+  timedated = DBus::Systemd::Timedated.new
+  rtc = node['systemd']['real_time_clock']
 
-cmd = ['timedatectl']
-cmd << '--adjust-system-clock' if rtc['adjust_system_clock']
-cmd << "set-local-rtc #{mode}"
+  local_rtc = rtc['mode'] == 'local'
+  fix_system = rtc['adjust_system_clock']
 
-execute 'set-rtc' do
-  command cmd.join(' ')
-  not_if { SystemdCookbook::Helpers.rtc_mode?(rtc['mode']) }
+  block do
+    timedated.SetLocalRTC(local_rtc, fix_system, false)
+  end
+
+  not_if do
+    timedated.properties['LocalRTC'] == local_rtc
+  end
 end

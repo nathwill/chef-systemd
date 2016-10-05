@@ -31,12 +31,6 @@ module SystemdCookbook
         File.read('/proc/1/comm').chomp == 'systemd'
     end
 
-    def rtc_mode?(lu)
-      yn = lu == 'local' ? 'yes' : 'no'
-      status = timedatectl!
-      !(status.stdout !~ Regexp.new("RTC in local TZ: #{yn}"))
-    end
-
     def timezone?(tz)
       File.symlink?('/etc/localtime') &&
         File.readlink('/etc/localtime').end_with?(tz)
@@ -48,7 +42,7 @@ module SystemdCookbook
                       .tap(&:error!)
     end
 
-    module_function :module_loaded?, :systemd_is_pid_1?, :rtc_mode?, :timezone?
+    module_function :module_loaded?, :systemd_is_pid_1?, :timezone?
   end
 end
 

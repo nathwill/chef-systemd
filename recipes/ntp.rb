@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: timesyncd
+# Recipe:: ntp
 #
 # Copyright 2015 - 2016, The Authors
 #
@@ -19,6 +19,23 @@
 # https://www.freedesktop.org/software/systemd/man/systemd-timesyncd.service.html
 #
 
-service 'systemd-timesyncd' do
-  action [:enable, :start]
+require 'dbus/systemd/timedated'
+
+#
+# this manages the timedated NTP property,
+# which correlates to the systemd-timesyncd
+# service being {en,dis}abled/{start,stopp}ed
+#
+ruby_block 'manage-ntp' do
+  enable = node['systemd']['enable_ntp']
+
+  timedated = DBus::Systemd::Timedated.new
+
+  block do
+    timedated.SetNTP(enable, false)
+  end
+
+  not_if do
+    timedated.properties['NTP'] == enable
+  end
 end

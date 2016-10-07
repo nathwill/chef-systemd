@@ -49,6 +49,14 @@ systemd_tmpfile 'my-app' do
   type 'f'
 end
 
+systemd_machine_image 'Fedora-24' do
+  type 'raw'
+  source 'https://dl.fedoraproject.org/pub/fedora/linux/releases/24/CloudImages/x86_64/images/Fedora-Cloud-Base-24-1.2.x86_64.raw.xz'
+  verify 'no'
+  read_only true
+  action [:pull, :set_properties]
+end
+
 systemd_nspawn 'Fedora-24' do
   exec do
     boot true
@@ -61,3 +69,4 @@ systemd_nspawn 'Fedora-24' do
     virtual_ethernet false
   end
 end
+

@@ -1,11 +1,8 @@
 unimplemented system concepts
 -----------------------------
-~~user-mode support for drop-ins~~
-~~coredump~~: done
-~~dnssec-trust-anchors~~: no value-add over file resource
-~~journal-gateway~~: service recipe
-~~journal-remote~~: service recipe
-~~journal-upload~~: service recipe
+DOCS!
+TESTS!
+
 systemd_machine_image
   properties:
     verify
@@ -36,17 +33,8 @@ systemd_machine:
     terminate
     kill
     bind
-~~machine-id~~: coming in ohai
-~~machine-info~~: meh
-~~modules-load command~~
-~~nspawn units~~: done
-~~sleep~~: done
-~~importd~~: dbus-activated (e.g. via machinectl)
-~~inhibit~~: no value add on execute resource
-~~run~~: no value add on execute resource
-~~udev~~: no value add on file resource
-~~preset~~: no value add on file resource
-~~dbus-systemd gem~~: done!
-DOCS!
-TESTS!
-update helpers etc to use dbus apis where appropriate
+systemd_transient_unit
+  name
+  mode
+  properties
+  aux

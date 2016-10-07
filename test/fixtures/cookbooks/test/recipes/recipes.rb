@@ -22,8 +22,8 @@ include_recipe 'systemd::locale'
 include_recipe 'systemd::logind'
 include_recipe 'systemd::machine'
 include_recipe 'systemd::networkd'
+include_recipe 'systemd::ntp' unless platform_family?('rhel')
 include_recipe 'systemd::resolved'
 include_recipe 'systemd::rtc'
-include_recipe 'systemd::timesyncd' unless platform_family?('rhel')
 include_recipe 'systemd::timezone'
 include_recipe 'systemd::vconsole' unless platform_family?('debian')

@@ -4,6 +4,7 @@ require 'dbus/systemd/importd'
 resource_name :systemd_machine_image
 provides :systemd_machine_image
 
+property :wait, [TrueClass, FalseClass], default: true
 property :type, equal_to: %w( tar raw ), default: 'tar'
 property :source, String
 property :verify, String, equal_to: %w( no checksum signature ),
@@ -14,7 +15,7 @@ property :from, String, default: lazy { name }
 property :to, String, default: lazy { name }
 property :force, [TrueClass, FalseClass], default: false
 property :path, String
-property :format, equal_to: %( uncompressed xz bzip2 gzip ),
+property :format, equal_to: %w( uncompressed xz bzip2 gzip ),
                   default: 'uncompressed'
 
 default_action :pull
@@ -23,12 +24,28 @@ action :pull do
   r = new_resource
 
   ruby_block "pull-machine-image-#{r.name}" do
-    importd = DBus::Systemd::Importd::Manager.new
-    machined = DBus::Systemd::Machined::Manager.new
+    bus = DBus::Systemd::Helpers.system_bus
+    importd = DBus::Systemd::Importd::Manager.new(bus)
+    machined = DBus::Systemd::Machined::Manager.new(bus)
 
     block do
-      main = DBus::Main.new
-      main << importd.bus
+      if r.wait
+        wait = DBus::Main.new
+        wait << importd.bus
+      end
+
+      transfer_id = nil
+
+      importd.on_signal('TransferRemoved') do |id, _path, result|
+        begin
+          if %w( cancel failed ).include?(result)
+            Chef::Log.fatal 'Pull failed.'
+            raise
+          end
+        ensure
+          wait.quit
+        end if id == transfer_id
+      end if r.wait
 
       transfer_id = importd.send(
         "Pull#{r.type.capitalize}".to_sym,
@@ -38,19 +55,7 @@ action :pull do
         r.force
       ).first
 
-      importd.on_signal('TransferRemoved') do |id, _path, result|
-        if id == transfer_id
-          begin
-            if %w( cancel failed ).include?(result)
-              raise "Machine image pull #{id} failed: #{result}"
-            end
-          ensure
-            main.quit
-          end
-        end
-      end
-
-      main.run
+      wait.run if r.wait
     end
 
     only_if do
@@ -140,20 +145,39 @@ action :import do
   r = new_resource
 
   ruby_block "import-machine-image-#{r.name}" do
-    importd = DBus::Systemd::Importd::Manager.new
-    machined = DBus::Systemd::Machined::Manager.new
+    bus = DBus::Systemd::Helpers.system_bus
+
+    importd = DBus::Systemd::Importd::Manager.new(bus)
+    machined = DBus::Systemd::Machined::Manager.new(bus)
 
     block do
+      loop = DBus::Main.new
+      loop << bus
+
+      transfer_id = nil
       fd = ::File.open(r.path, 'r')
 
-      importd.send(
+      importd.on_signal('TransferRemoved') do |id, _path, result|
+        begin
+          if %w( canceled failed ).include?(result)
+            Chef::Log.fatal 'Import failed.'
+            raise
+          end
+        ensure
+          fd.close
+          loop.quit
+        end if id == transfer_id
+      end
+
+      transfer_id = importd.send(
         "Import#{r.type.capitalize}".to_sym,
         fd,
         r.name,
         r.force,
         r.read_only
-      )
-      # TODO: close fd on completion
+      ).first
+
+      loop.run
     end
 
     only_if do
@@ -173,21 +197,40 @@ action :export do
     importd = DBus::Systemd::Importd::Manager.new
 
     block do
+      loop = DBus::Main.new
+      loop << importd.bus
+
+      transfer_id = nil
       fd = ::File.open(r.path, 'w')
 
-      import_mgr.send(
+      importd.on_signal('TransferRemoved') do |id, _path, result|
+        begin
+          if %w( canceled failed ).include?(result)
+            Chef::Log.fatal 'Export failed.'
+            raise
+          end
+        ensure
+          fd.close
+          loop.quit
+        end if id == transfer_id
+      end
+
+      transfer_id = import_mgr.send(
         "Export#{r.type.capitalize}".to_sym,
         r.name,
         fd,
         r.format
-      )
-      # TODO: close fd on completion
+      ).first
+
+      loop.run
     end
 
     only_if do
+      r.force || !File.exist?(r.path)
     end
 
     not_if do
+      importd.transfers.detect { |img| img[:image_name] == r.name }
     end
   end
 end

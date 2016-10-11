@@ -18,7 +18,7 @@
 
 require 'spec_helper'
 
-%w( journald networkd resolved timesyncd ).each do |svc|
+%w( journald networkd resolved ).each do |svc|
   describe "systemd::#{svc}" do
     context 'When all attributes are default, on an unspecified platform' do
       cached(:chef_run) do

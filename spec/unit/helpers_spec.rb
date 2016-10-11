@@ -46,37 +46,6 @@ describe SystemdCookbook::Helpers do
       expect(SystemdCookbook::Helpers.systemd_is_pid_1?).to eq false
     end
   end
-
-  describe '#rtc_mode?' do
-    let(:shell_out_local) { double("shell_out_local", stdout: "RTC in local TZ: yes") }
-    let(:shell_out_utc) { double("shell_out_utc", stdout: "RTC in local TZ: no") }
-
-    it 'handles utc mode correctly' do
-      allow(SystemdCookbook::Helpers).to receive(:timedatectl!).and_return(shell_out_utc)
-      expect(SystemdCookbook::Helpers.rtc_mode?('UTC')).to eq true
-      expect(SystemdCookbook::Helpers.rtc_mode?('local')).to eq false
-    end
-
-    it 'handles local mode correctly' do
-      allow(SystemdCookbook::Helpers).to receive(:timedatectl!).and_return(shell_out_local)
-      expect(SystemdCookbook::Helpers.rtc_mode?('local')).to eq true
-      expect(SystemdCookbook::Helpers.rtc_mode?('UTC')).to eq false
-    end
-  end
-
-  describe '#timezone?' do
-    before(:each) do
-      allow(File).to receive(:symlink?).with('/etc/localtime')
-                                       .and_return(true)
-    end
-
-    it 'correctly inspects timezone' do
-      allow(File).to receive(:readlink).with('/etc/localtime')
-                                       .and_return('../usr/share/zoneinfo/UTC')
-      expect(SystemdCookbook::Helpers.timezone?('UTC')).to eq true
-      expect(SystemdCookbook::Helpers.timezone?('America/Los_Angeles')).to eq false
-    end
-  end
 end
 
 describe String do
@@ -96,7 +65,7 @@ end
 describe Hash do
   describe '#to_kv_pairs' do
     it 'correctly converts hashes to kv pairs' do
-      expect({'Foo' => 0, 'Bar' => 1, 'Baz' => 2}.to_kv_pairs).to eq ['Foo="0"', 'Bar="1"', 'Baz="2"']
+      expect({'Foo' => 0, 'Bar' => 1, 'Baz' => 2}.to_kv_pairs).to eq ['Foo=0', 'Bar=1', 'Baz=2']
     end
   end
 end

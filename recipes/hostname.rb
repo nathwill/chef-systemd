@@ -24,13 +24,11 @@ require 'dbus/systemd/hostnamed'
 ruby_block 'set-hostname' do
   hostname = node['systemd']['hostname']
 
-  hostnamed = DBus::Systemd::Hostnamed.new
-
   block do
-    hostnamed.SetStaticHostname(hostname, false)
+    DBus::Systemd::Hostnamed.new.SetStaticHostname(hostname, false)
   end
 
   not_if do
-    hostnamed.properties['StaticHostname'] == hostname
+    DBus::Systemd::Hostnamed.new.properties['StaticHostname'] == hostname
   end
 end

@@ -23,13 +23,12 @@ require 'dbus/systemd/timedated'
 
 ruby_block 'set-timezone' do
   tz = node['systemd']['timezone']
-  timedated = DBus::Systemd::Timedated.new
 
   block do
-    timedated.SetTimezone(tz, false)
+    DBus::Systemd::Timedated.new.SetTimezone(tz, false)
   end
 
   not_if do
-    timedated.properties['Timezone'] == tz
+    DBus::Systemd::Timedated.new.properties['Timezone'] == tz
   end
 end

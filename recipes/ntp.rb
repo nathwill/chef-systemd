@@ -29,13 +29,11 @@ require 'dbus/systemd/timedated'
 ruby_block 'manage-ntp' do
   enable = node['systemd']['enable_ntp']
 
-  timedated = DBus::Systemd::Timedated.new
-
   block do
-    timedated.SetNTP(enable, false)
+    DBus::Systemd::Timedated.new.SetNTP(enable, false)
   end
 
   not_if do
-    timedated.properties['NTP'] == enable
+    DBus::Systemd::Timedated.new.properties['NTP'] == enable
   end
 end

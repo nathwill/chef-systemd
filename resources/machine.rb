@@ -11,7 +11,6 @@ property :bind, String
 property :mkdir, [TrueClass, FalseClass], default: true
 property :read_only, [TrueClass, FalseClass], default: false
 
-
 default_action :start
 
 action :start do

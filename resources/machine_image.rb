@@ -22,7 +22,7 @@ action :pull do
   r = new_resource
 
   cmd = ['machinectl', "pull-#{r.type}", "--verify=#{r.verify}"]
-  cmd << "--force" if r.force
+  cmd << '--force' if r.force
 
   execute "pull-machine-image-#{r.name}" do
     command "#{cmd.join(' ')} #{r.source} #{r.name}"

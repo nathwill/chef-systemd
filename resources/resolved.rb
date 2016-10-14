@@ -2,4 +2,4 @@ def self.resource_type
   :resolved
 end
 
-include SystemdCookbook::ResourceFactory::Daemon
+include SystemdCookbook::ResourceFactory::Misc

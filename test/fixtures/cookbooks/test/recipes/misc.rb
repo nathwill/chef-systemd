@@ -54,7 +54,18 @@ systemd_machine_image 'Fedora-24' do
   source 'https://dl.fedoraproject.org/pub/fedora/linux/releases/24/CloudImages/x86_64/images/Fedora-Cloud-Base-24-1.2.x86_64.raw.xz'
   verify 'no'
   read_only true
-  action [:pull, :set_properties]
+  format 'gzip'
+  path '/var/tmp/Fedora-24.raw.gz'
+  to 'cloned'
+  action [:pull, :set_properties, :export, :clone]
+end
+
+systemd_machine_image 'Fedora-24-b' do
+  type 'raw'
+  verify 'no'
+  format 'gzip'
+  path '/var/tmp/Fedora-24.raw.gz'
+  action [:import]
 end
 
 systemd_nspawn 'Fedora-24' do

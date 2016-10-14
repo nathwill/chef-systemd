@@ -133,7 +133,7 @@ module SystemdCookbook
       end
     end
 
-    module Daemon
+    module Misc
       def self.included(base)
         base.extend ClassMethods
         base.send :build_resource

@@ -93,7 +93,7 @@ control 'creates tmpfiles' do
 end
 
 control 'creates nspawn units' do
-  describe file('/etc/systemd/nspawn/Fedora-24.nspawn') do
+  describe file('/etc/systemd/nspawn/Fedora24.nspawn') do
     its(:content) do
       should eq <<EOT
 [Exec]

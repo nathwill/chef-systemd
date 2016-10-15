@@ -17,7 +17,7 @@ end
 
 control 'manages localed' do
   describe file('/etc/locale.conf') do
-    its(:content) { should eq 'LANG="en_US.UTF-8"' }
+    its(:content) { should eq 'LANG=en_US.UTF-8' }
   end
 
   describe command('localectl status') do
@@ -61,8 +61,8 @@ control 'manages vconsole' do
     describe file('/etc/vconsole.conf') do
       its(:content) do
         should eq <<EOT.chomp
-KEYMAP="us"
-FONT="latarcyrheb-sun16"
+KEYMAP=us
+FONT=latarcyrheb-sun16
 EOT
       end
     end

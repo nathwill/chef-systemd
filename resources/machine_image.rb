@@ -18,115 +18,94 @@ property :verify, String, equal_to: %w( no checksum signature ),
 
 default_action :pull
 
+action_class do
+  def image_exists?(name)
+    mgr = DBus::Systemd::Machined::Manager.new
+    !(!mgr.images.detect { |i| i[:name] == name })
+  end
+end
+
 action :pull do
-  r = new_resource
+  cmd = ["machinectl pull-#{new_resource.type} --verify=#{new_resource.verify}"]
+  cmd << '--force' if new_resource.force
 
-  cmd = ['machinectl', "pull-#{r.type}", "--verify=#{r.verify}"]
-  cmd << '--force' if r.force
-
-  execute "pull-machine-image-#{r.name}" do
-    command "#{cmd.join(' ')} #{r.source} #{r.name}"
+  execute "pull-machine-image-#{new_resource.name}" do
+    command "#{cmd.join(' ')} #{new_resource.source} #{new_resource.name}"
     only_if do
-      mgr = DBus::Systemd::Machined::Manager.new
-      r.force || !mgr.images.detect { |i| i[:name] == r.name }
+      r.force || !image_exists?(new_resource.name)
     end
   end
 end
 
 action :set_properties do
-  r = new_resource
-
-  execute "set-machine-read-only-#{r.name}" do
-    command "machinectl read-only #{r.name} #{r.read_only}"
-    not_if { r.read_only.nil? }
+  execute "set-machine-read-only-#{new_resource.name}" do
+    command "machinectl read-only #{new_resource.name} #{new_resource.read_only}"
+    not_if { new_resource.read_only.nil? }
     only_if do
-      mgr = DBus::Systemd::Machined::Manager.new
-      mgr.image(r.name).properties['ReadOnly'] != r.read_only
+      img = DBus::Systemd::Machined::Image.new(new_resource.name)
+      img.properties['ReadOnly'] != r.read_only
     end
   end
 
-  execute "set-machine-image-limit-bytes-#{r.name}" do
-    command "machinectl set-limit #{r.name} #{r.size_limit}"
-    not_if { r.size_limit.nil? }
+  execute "set-machine-image-limit-bytes-#{new_resource.name}" do
+    command "machinectl set-limit #{new_resource.name} #{new_resource.size_limit}"
+    not_if { new_resource.size_limit.nil? }
   end
 end
 
 action :clone do
-  r = new_resource
-
-  ruby_block "clone-machine-image-#{r.name}" do
+  ruby_block "clone-machine-image-#{new_resource.name}" do
     block do
       mgr = DBus::Systemd::Machined::Manager.new
-      mgr.CloneImage(r.from, r.to, r.read_only)
+      mgr.CloneImage(new_resource.from, new_resource.to, new_resource.read_only)
     end
-
     not_if do
-      mgr = DBus::Systemd::Machined::Manager.new
-      mgr.images.detect { |img| img[:name] == r.to }
+      image_exists?(new_resource.to)
     end
   end
 end
 
 action :rename do
-  r = new_resource
-
-  ruby_block "rename-machine-image-#{r.name}" do
-    block do
-      mgr = DBus::Systemd::Machined::Manager.new
-      mgr.RenameImage(r.from, r.to)
-    end
-
-    not_if do
-      mgr = DBus::Systemd::Machined::Manager.new
-      mgr.images.detect { |img| img[:name] == r.to }
+  execute "rename-machine-image-#{new_resource.name}" do
+    command "machinectl rename #{new_resource.from} #{new_resource.to}"
+    only_if do
+      image_exists?(new_resource.from)
     end
   end
 end
 
 action :remove do
-  r = new_resource
-
-  ruby_block "remove-machine-image-#{r.name}" do
-    block do
-      mgr = DBus::Systemd::Machined::Manager.new
-      mgr.RemoveImage(r.name)
-    end
-
+  execute "remove-machine-image-#{new_resource.name}" do
+    command "machinectl remove #{new_resource.name}"
     only_if do
-      mgr = DBus::Systemd::Machined::Manager.new
-      mgr.images.detect { |img| img[:name] == r.name }
+      image_exists?(new_resource.name)
     end
   end
 end
 
 action :import do
-  r = new_resource
+  cmd = ['machinectl', "import-#{new_resource.type}"]
+  cmd << "--format=#{new_resource.format}" if new_resource.format
+  cmd << '--read-only' if new_resource.read_only
+  cmd << '--force' if new_resource.force
 
-  cmd = ['machinectl', "import-#{r.type}"]
-  cmd << "--format=#{r.format}" if r.format
-  cmd << '--read-only' if r.read_only
-  cmd << '--force' if r.force
-
-  execute "import-machine-image-#{r.name}" do
-    command "#{cmd.join(' ')} #{r.path} #{r.name}"
+  execute "import-machine-image-#{new_resource.name}" do
+    command "#{cmd.join(' ')} #{new_resource.path} #{new_resource.name}"
     only_if do
-      mgr = DBus::Systemd::Machined::Manager.new
-      r.force || !mgr.images.detect { |i| i[:name] == r.name }
+      r.force || !image_exists?(new_resource.name)
     end
   end
 end
 
 action :export do
-  r = new_resource
+  cmd = ['machinectl', "export-#{new_resource.type}"]
+  cmd << "--format=#{new_resource.format}" if new_resource.format
+  cmd << '--force' if new_resource.force
 
-  cmd = ['machinectl', "export-#{r.type}"]
-  cmd << "--format=#{r.format}" if r.format
-  cmd << '--force' if r.force
-
-  execute "export-machine-image-#{r.name}" do
-    command "#{cmd.join(' ')} #{r.name} #{r.path}"
+  execute "export-machine-image-#{new_resource.name}" do
+    command "#{cmd.join(' ')} #{new_resource.name} #{new_resource.path}"
     only_if do
-      r.force || !::File.exist?(r.path)
+      r.force || !::File.exist?(new_resource.path)
     end
   end
 end

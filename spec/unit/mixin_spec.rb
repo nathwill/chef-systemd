@@ -7,12 +7,6 @@ describe SystemdCookbook::Mixin::Unit do
 
   subject(:unit_obj) { unit_class.new('mock') }
 
-  describe '#install' do
-    it 'yields the block' do
-      expect { |b| unit_obj.install(&b) }.to yield_with_no_args
-    end
-  end
-
   describe 'sets unit properties' do
     it 'sets triggers_reload' do
       expect(unit_obj.triggers_reload).to eq true
@@ -42,7 +36,7 @@ describe SystemdCookbook::Mixin::PropertyHashConversion do
       'Header' => {
         'PurplePeopleEater' => 'yes',
         'Days' => 'Monday Tuesday',
-        'Environment' => '"foo=bar" "baz=qux"'
+        'Environment' => 'foo=bar baz=qux'
       }
     }
   end

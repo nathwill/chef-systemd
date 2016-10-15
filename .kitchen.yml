@@ -34,4 +34,4 @@ suites:
       - recipe[test::default]
     attributes:
       systemd:
-        hostname: my-hostname
+        hostname: my-hostname.example.come

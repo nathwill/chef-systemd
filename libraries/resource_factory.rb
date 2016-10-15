@@ -41,9 +41,10 @@ module SystemdCookbook
 
           property :user, String, desired_state: false
 
-          option_properties(
-            SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
-          )
+          data_class = resource_type.to_s.camelcase.to_sym
+          data = SystemdCookbook.const_get(data_class)::OPTIONS
+
+          option_properties data
 
           default_action :create
 
@@ -52,9 +53,7 @@ module SystemdCookbook
               systemd_unit "#{new_resource.name}.#{resource_type}" do
                 triggers_reload new_resource.triggers_reload
                 user new_resource.user if new_resource.user
-                content property_hash(
-                  SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
-                )
+                content property_hash(data)
                 action actn
               end
             end
@@ -80,9 +79,11 @@ module SystemdCookbook
           include SystemdCookbook::Mixin::PropertyHashConversion
           include SystemdCookbook::Mixin::DSL
 
-          option_properties(
-            SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
-          )
+          data_class = resource_type.to_s.camelcase.to_sym
+          data = SystemdCookbook.const_get(data_class)::OPTIONS
+
+          option_properties data
+
           property :override, String, required: true, desired_state: false, callbacks: {
             'matches drop-in type' => ->(s) { s.end_with?(resource_type.to_s) }
           }
@@ -104,9 +105,7 @@ module SystemdCookbook
               end
 
               u = systemd_unit r.drop_in_name do
-                content property_hash(
-                  SystemdCookbook.const_get(resource_type.to_s.camelcase.to_sym)::OPTIONS
-                )
+                content property_hash(data)
                 action :nothing
               end
 
@@ -149,9 +148,10 @@ module SystemdCookbook
           include SystemdCookbook::Mixin::PropertyHashConversion
           include SystemdCookbook::Mixin::DSL
 
-          option_properties(
-            SystemdCookbook.const_get(resource_type.to_s.tr('-', '_').to_s.camelcase.to_sym)::OPTIONS
-          )
+          data_class = resource_type.to_s.tr('-', '_').to_s.camelcase.to_sym
+          data = SystemdCookbook.const_get(data_class)::OPTIONS
+
+          option_properties data
 
           default_action :create
 
@@ -164,9 +164,7 @@ module SystemdCookbook
               end
 
               r = systemd_unit "#{resource_type}-#{new_resource.name}" do
-                content property_hash(
-                  SystemdCookbook.const_get(resource_type.to_s.tr('-', '_').to_s.camelcase.to_sym)::OPTIONS
-                )
+                content property_hash(data)
                 action :nothing
               end
 

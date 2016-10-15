@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Attributes:: locale
+# Attributes:: default
 #
 # Copyright 2015 - 2016, The Authors
 #
@@ -15,6 +15,28 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+
+default['systemd'].tap do |s|
+  # Ref: http://www.freedesktop.org/software/systemd/man/hostname.html
+  s['hostname'] = nil
+
+  # Ref: http://www.freedesktop.org/software/systemd/man/timedatectl.html
+  # See timedatectl list-timezones for options
+  s['timezone'] = 'UTC'
+
+  # Ref: http://www.freedesktop.org/software/systemd/man/timesyncd.conf.html
+  s['enable_ntp'] = true
+
+  # Ref: https://www.freedesktop.org/software/systemd/man/machinectl.html
+  s['machine_pool_limit'] = nil
+end
+
+# Ref: http://www.freedesktop.org/software/systemd/man/timedatectl.html
+default['systemd']['real_time_clock'].tap do |rtc|
+  rtc['mode'] = 'utc'
+  rtc['adjust_system_clock'] = false
+end
 
 # Ref: http://www.freedesktop.org/software/systemd/man/locale.conf.html
 default['systemd']['locale'].tap do |l|
@@ -32,4 +54,13 @@ default['systemd']['locale'].tap do |l|
   l['LC_TELEPHONE'] = nil
   l['LC_MEASUREMENT'] = nil
   l['LC_IDENTIFICATION'] = nil
+end
+
+# Ref: http://www.freedesktop.org/software/systemd/man/vconsole.conf.html
+default['systemd']['vconsole'].tap do |v|
+  v['KEYMAP'] = 'us'
+  v['KEYMAP_TOGGLE'] = nil
+  v['FONT'] = 'latarcyrheb-sun16'
+  v['FONT_MAP'] = nil
+  v['FONT_UNIMAP'] = nil
 end

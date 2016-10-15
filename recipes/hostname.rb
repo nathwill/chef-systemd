@@ -19,16 +19,13 @@
 # https://www.freedesktop.org/software/systemd/man/hostnamectl.html
 #
 
-require 'dbus/systemd/hostnamed'
+ohai 'hostname' do
+  plugin 'hostname'
+  action :nothing
+end
 
-ruby_block 'set-hostname' do
-  hostname = node['systemd']['hostname']
-
-  block do
-    DBus::Systemd::Hostnamed.new.SetStaticHostname(hostname, false)
-  end
-
-  not_if do
-    DBus::Systemd::Hostnamed.new.properties['StaticHostname'] == hostname
-  end
+execute 'set-hostname' do
+  command "hostnamectl set-hostname #{node['systemd']['hostname']}"
+  not_if { node['fqdn'] == node['systemd']['hostname'] }
+  notifies :reload, 'ohai[hostname]', :immediately
 end

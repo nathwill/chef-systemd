@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require_relative 'helpers'
+
 module SystemdCookbook
   module Mixin
     module DSL
@@ -28,12 +30,24 @@ module SystemdCookbook
       module ClassMethods
         def build_dsl
           define_method(:method_missing) do |name, *args, &blk|
-            if @context && respond_to?("#{@context}_#{name}")
-              send("#{@context}_#{name}", *args, &blk)
+            if @context && respond_to?("#{@context}_#{name}".to_sym)
+              send("#{@context}_#{name}".to_sym, *args, &blk)
+            else
+              super
             end
           end
 
-          SystemdCookbook.const_get(resource_type.to_s.tr('-', '_').camelcase.to_sym)::OPTIONS.keys.each do |sect|
+          define_method(:respond_to_missing?) do |name, include_private|
+            if @context && respond_to?("#{@context}_#{name}".to_sym)
+              true
+            else
+              super(name, include_private)
+            end
+          end
+
+          data_class = resource_type.to_s.tr('-', '_').camelcase.to_sym
+
+          SystemdCookbook.const_get(data_class)::OPTIONS.keys.each do |sect|
             define_method(sect.underscore.to_sym) do |&blk|
               @context = sect.underscore.to_sym
               instance_eval(&blk)
@@ -45,10 +59,6 @@ module SystemdCookbook
     end
 
     module Unit
-      def install
-        yield
-      end
-
       def self.included(base)
         base.send :property, :triggers_reload,
                   [TrueClass, FalseClass],
@@ -99,7 +109,7 @@ module SystemdCookbook
         def option_value(obj)
           case obj
           when Hash
-            obj.map { |k, v| "\"#{k}=#{v}\"" }.join(' ')
+            obj.to_kv_pairs.join(' ')
           when Array
             obj.join(' ')
           when TrueClass, FalseClass

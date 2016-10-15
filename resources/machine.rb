@@ -13,13 +13,11 @@ default_action :start
 
 action_class do
   def machine_running?(name)
-    begin
-      machine = DBus::Systemd::Machined::Machine.new(name)
-      machine.properties['State'] == 'running'
-    rescue DBus::Error => e
-      raise e unless e.name == 'org.freedesktop.machine1.NoSuchMachine'
-      false
-    end
+    machine = DBus::Systemd::Machined::Machine.new(name)
+    machine.properties['State'] == 'running'
+  rescue DBus::Error => e
+    raise e unless e.name == 'org.freedesktop.machine1.NoSuchMachine'
+    false
   end
 end
 
@@ -63,7 +61,7 @@ action :terminate do
 end
 
 action :kill do
-  cmd = ['machinectl', 'kill']
+  cmd = %w( machinectl kill )
   cmd << "--signal=#{new_resource.signal}" if new_resource.signal
   cmd << "--kill-who=#{new_resource.kill_who}" if new_resource.kill_who
 

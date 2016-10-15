@@ -3,53 +3,85 @@ require 'dbus/systemd/machined'
 resource_name :systemd_machine
 provides :systemd_machine
 
-property :uid, [String, Integer]
-property :environment, Hash
 property :signal, [String, Integer]
 property :kill_who, String
-property :bind, String
-property :mkdir, [TrueClass, FalseClass], default: true
-property :read_only, [TrueClass, FalseClass], default: false
+property :service, String, default: lazy { "systemd-nspawn@#{name}.service" }
+property :host_path, String
+property :machine_path, String
 
 default_action :start
 
-action :start do
-  r = new_resource
-
-  execute "start-machine-#{r.name}" do
-    command "machinectl start #{r.name}"
-    not_if do
-      begin
-        machine = DBus::Systemd::Machined::Machine.new(r.name)
-        machine.properties['State'] == 'running'
-      rescue DBus::Error => e
-        raise e unless e.name == 'org.freedesktop.machine1.NoSuchMachine'
-        false
-      end
+action_class do
+  def machine_running?(name)
+    begin
+      machine = DBus::Systemd::Machined::Machine.new(name)
+      machine.properties['State'] == 'running'
+    rescue DBus::Error => e
+      raise e unless e.name == 'org.freedesktop.machine1.NoSuchMachine'
+      false
     end
   end
 end
 
-action :enable do
-  # do stuff
-end
-
-action :disable do
-  # do stuff
+action :start do
+  execute "start-machine-#{new_resource.name}" do
+    command "machinectl start #{new_resource.name}"
+    not_if { machine_running?(new_resource.name) }
+  end
 end
 
 action :poweroff do
-  # do stuff
+  execute "poweroff-machine-#{new_resource.name}" do
+    command "machinectl poweroff #{new_resource.name}"
+    only_if { machine_running?(new_resource.name) }
+  end
+end
+
+action :reboot do
+  execute "reboot-machine-#{new_resource.name}" do
+    command "machinectl reboot #{new_resource.name}"
+  end
+end
+
+action :enable do
+  systemd_service new_resource.service do
+    action :enable
+  end
+end
+
+action :disable do
+  systemd_service new_resource.service do
+    action :disable
+  end
 end
 
 action :terminate do
-  # do stuff
+  execute "terminate-machine-#{new_resource.name}" do
+    command "machinectl terminate #{new_resource.name}"
+    only_if { machine_running?(new_resource.name) }
+  end
 end
 
 action :kill do
-  # do stuff
+  cmd = ['machinectl', 'kill']
+  cmd << "--signal=#{new_resource.signal}" if new_resource.signal
+  cmd << "--kill-who=#{new_resource.kill_who}" if new_resource.kill_who
+
+  execute "kill-machine-#{new_resource.name}" do
+    command "#{cmd.join(' ')} #{new_resource.name}"
+  end
 end
 
-action :bind do
-  # do stuff
+action :copy_to do
+  execute "copy-to-machine-#{new_resource.name}" do
+    r = new_resource
+    command "machinectl copy-to #{r.name} #{r.host_path} #{r.machine_path}"
+  end
+end
+
+action :copy_from do
+  execute "copy-from-machine-#{new_resource.name}" do
+    r = new_resource
+    command "machinectl copy-from #{r.name} #{r.machine_path} #{r.host_path}"
+  end
 end

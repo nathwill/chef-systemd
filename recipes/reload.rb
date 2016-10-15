@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: daemon_reload
+# Recipe:: reload
 #
 # Copyright 2015 - 2016, The Authors
 #

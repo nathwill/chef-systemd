@@ -1,4 +1,4 @@
-include_recipe 'systemd::daemon_reload'
+include_recipe 'systemd::reload'
 include_recipe 'systemd::hostname'
 include_recipe 'systemd::journald'
 

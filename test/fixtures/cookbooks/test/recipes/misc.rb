@@ -73,19 +73,23 @@ systemd_nspawn 'Fedora24' do
   exec do
     boot true
   end
-
   files do
     bind '/tmp:/tmp'
   end
-
   network do
     private false
     virtual_ethernet false
   end
 end
 
+require 'tempfile'
+
+tmp = Tempfile.new('Fedora24')
+tmp_path = tmp.path
+tmp.delete
+
 systemd_machine 'Fedora24' do
-  host_path '/var/tmp/Fedora24-passwd'
+  host_path tmp_path
   machine_path '/etc/passwd'
   action [:enable, :start, :copy_from]
 end

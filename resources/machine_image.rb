@@ -32,7 +32,7 @@ action :pull do
   execute "pull-machine-image-#{new_resource.name}" do
     command "#{cmd.join(' ')} #{new_resource.source} #{new_resource.name}"
     only_if do
-      r.force || !image_exists?(new_resource.name)
+      new_resource.force || !image_exists?(new_resource.name)
     end
   end
 end
@@ -43,7 +43,7 @@ action :set_properties do
     not_if { new_resource.read_only.nil? }
     only_if do
       img = DBus::Systemd::Machined::Image.new(new_resource.name)
-      img.properties['ReadOnly'] != r.read_only
+      img.properties['ReadOnly'] != new_resource.read_only
     end
   end
 
@@ -92,7 +92,7 @@ action :import do
   execute "import-machine-image-#{new_resource.name}" do
     command "#{cmd.join(' ')} #{new_resource.path} #{new_resource.name}"
     only_if do
-      r.force || !image_exists?(new_resource.name)
+      new_resource.force || !image_exists?(new_resource.name)
     end
   end
 end
@@ -105,7 +105,7 @@ action :export do
   execute "export-machine-image-#{new_resource.name}" do
     command "#{cmd.join(' ')} #{new_resource.name} #{new_resource.path}"
     only_if do
-      r.force || !::File.exist?(new_resource.path)
+      new_resource.force || !::File.exist?(new_resource.path)
     end
   end
 end

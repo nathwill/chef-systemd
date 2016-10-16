@@ -15,7 +15,6 @@ the systemd project covers a lot of territory, below are some resources that can
 
 We also provide reference documentation for this cookbook:
 
- - [recipe docs](recipes.md)
  - [resource docs](resources.md)
  - [provided examples](examples.md)
 

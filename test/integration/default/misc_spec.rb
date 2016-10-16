@@ -4,7 +4,7 @@ control 'creates system drop-ins' do
       should eq <<EOT
 [Manager]
 DefaultTimeoutStartSec = 30
-DefaultEnvironment = "ENVIRONMENT=production"
+DefaultEnvironment = ENVIRONMENT=production
 EOT
     end
   end
@@ -16,7 +16,7 @@ control 'creates user drop-ins' do
       should eq <<EOT
 [Manager]
 DefaultTimeoutStartSec = 120
-DefaultEnvironment = "ENVIRONMENT=production"
+DefaultEnvironment = ENVIRONMENT=production
 EOT
     end
   end

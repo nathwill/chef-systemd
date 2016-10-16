@@ -19,16 +19,13 @@
 # https://www.freedesktop.org/software/systemd/man/timedatectl.html
 #
 
-require 'dbus/systemd/timedated'
+ohai 'timezone' do
+  plugin 'timezone'
+  action :nothing
+end
 
-ruby_block 'set-timezone' do
-  block do
-    timedated = DBus::Systemd::Timedated.new
-    timedated.SetTimezone(node['systemd']['timezone'], false)
-  end
-
-  not_if do
-    timedated = DBus::Systemd::Timedated.new
-    timedated.properties['Timezone'] == node['systemd']['timezone']
-  end
+execute 'set-timezone' do
+  command "timedatectl set-timezone #{node['systemd']['timezone']}"
+  not_if { node['time']['timezone'] == node['systemd']['timezone'] }
+  notifies :reload, 'ohai[timezone]', :immediately
 end

@@ -1,61 +1,169 @@
-systemd chef cookbook
-=====================
+# systemd chef cookbook
 
 [![Cookbook](http://img.shields.io/cookbook/v/systemd.svg)](https://github.com/nathwill/chef-systemd)
 [![Build Status](https://travis-ci.org/nathwill/chef-systemd.svg?branch=master)](https://travis-ci.org/nathwill/chef-systemd)
 
 A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [systemd][docs].
 
-<a name="toc">Table of Contents</a>
-===================================
+## Recommended reading
 
- - [Recommended Reading](#recommended-reading)
- - [Usage Tips](#usage-tips)
+the systemd project covers a lot of territory, below are some resources that can help with orientation.
 
-<a name="recommended-reading">Recommended Reading</a>
-=====================================================
-
- - This README
  - [Overview of systemd for RHEL 7][rhel]
  - [systemd docs][docs]
  - [Lennart's blog series][blog]
- - libraries in `libraries/*.rb`
- - test cookbook in `test/fixtures/cookbooks/setup`
+
+We also provide reference documentation for this cookbook:
+
+ - [recipe docs](recipes.md)
+ - [resource docs](resources.md)
+ - [provided examples](examples.md)
+
+## Overview
+
+### Attributes
+
+The attributes used by this cookbook are under the `systemd` name space.
+
+|Attribute|Description|Type|Default|
+|---------|-----------|----|-------|
+|hostname|system hostname, set by hostname recipe unless `nil`|String|nil|
+|timezone|system timezone, set by timezone recipe|String|UTC|
+|machine_pool_limit|limits overall disk size of the machine pool in machine recipe unless `nil`|String, Integer|nil|
+|rtc_mode|sets mode of the real-time-clock, either 'utc' or 'local' in rtc recipe|String|utc|
+|fix_rtc|sets whether to correct rtc in rtc recipe|Boolean|false|
+|locale|hash of locale settings for `/etc/locale.conf` in locale recipe|Hash|`{'LANG' => 'en_US.UTF-8'}`|
+|vconsole|hash of vconsole settings for `/etc/vconsole.conf` in vconsole recipe|Hash|`{'KEYMAP' => 'us', 'FONT' => 'latarcyrheb-sun16'}`|
+
+### Recipes
+
+#### hostname
+
+sets the system hostname with hostnamectl and reloads ohai hostname plugin
+
+#### journal_extra
+
+installs package(s) for extra journald functionality like journal-gateway, journal-remote, journal-upload
+
+#### journal_gateway
+
+includes journal_extra and starts/enables journal-gateway service
+
+#### journal_remote
+
+includes journal_extra and starts/enables journal-remote service
+
+#### journal_upload
+
+includes journal_extra and starts/enables journal-upload service
+
+#### journald
+
+starts/enables journald logging service
+
+#### locale
+
+configures system-wide locale settings via /etc/locale.conf and systemd-localed
+
+#### logind
+
+provides no-op logind service resource as notification target
+
+#### machine
+
+installs btrfs tools required by machined, installs machined utilities, sets machine pool disk size limit
+
+#### networkd
+
+installs/enables/starts networkd
+
+#### ntp
+
+enables/starts systemd-timesyncd service
+
+#### reload
+
+schedules an event handler to perform a  systemd manager reload
+at the end of the converge. useful for performing a single reload
+per converge, as may be desirable when using systemd units with
+triggers_reload false.
+
+#### resolved
+
+installs/enables/starts resolved
+
+#### rtc
+
+sets system RTC properties for mode ('utc' or 'local') and whether to correct the RTC
+
+#### timezone
+
+sets system timezone via timedatectl
+
+#### vconsole
+
+configures the virtual console (keyboard mappings, console font, etc) via `/etc/vconsole.conf` and systemd-vconsole-setup.
+
+### Resources
+
+#### Units & Unit Drop-Ins
+
+|Unit Type|Resource|Drop-In Resource|
+|---------|--------|----------------|  
+|automount|systemd_automount|systemd_automount_drop_in|
+|mount|systemd_mount|systemd_mount_drop_in|
+|path|systemd_path|systemd_path_drop_in|
+|service|systemd_service|systemd_service_drop_in|
+|slice|systemd_slice|systemd_slice_drop_in|
+|socket|systemd_socket|systemd_socket_drop_in|
+|swap|systemd_swap|systemd_swap_drop_in|
+|target|systemd_target|systemd_target_drop_in|
+|timer|systemd_timer|systemd_timer_drop_in|
+
+#### System Services
+
+|Name|Resource|
+|----|--------|
+|manager (system)|systemd_system|
+|manager (user)|systemd_user|
+|journal-remote|systemd_journal_remote|
+|journal-upload|systemd_journal_upload|
+|journald|systemd_journald|
+|logind|systemd_logind|
+|resolved|systemd_resolved|
+|timesyncd|systemd_timesyncd|
+
+#### Utilities
+
+|Name|Resource|
+|----|--------|
+|binfmt|systemd_binfmt|
+|coredump|systemd_coredump|
+|modules|systemd_modules|
+|sleep|systemd_sleep|
+|sysctl|systemd_sysctl|
+|sysuser|systemd_sysuser|
+|tmpfile|systemd_tmpfile|
+
+#### Machines
+
+|Name|Resource|
+|----|--------|
+|machine|systemd_machine|
+|machine_image|systemd_machine_image|
+|nspawn|systemd_nspawn|
+
+#### Networking
+
+|Name|Resource|
+|----|--------|
+|network|systemd_network|
+|link|systemd_link|
+|netdev|systemd_netdev|
 
 --
 
-[automount]: http://www.freedesktop.org/software/systemd/man/systemd.automount.html
-[binfmt]: http://www.freedesktop.org/software/systemd/man/binfmt.d.html
-[blog]: http://0pointer.de/blog/projects/systemd-for-admins-1.html
-[bootchart]: http://www.freedesktop.org/software/systemd/man/bootchart.conf.html
+[blog]: https://www.freedesktop.org/wiki/Software/systemd#thesystemdforadministratorsblogseries
 [chef]: https://chef.io
-[coredump]: http://www.freedesktop.org/software/systemd/man/coredump.conf.html
-[docs]: http://www.freedesktop.org/wiki/Software/systemd/
-[exec]: http://www.freedesktop.org/software/systemd/man/systemd.exec.html
-[install]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#[Install]%20Section%20Options
-[journald]: http://www.freedesktop.org/software/systemd/man/journald.conf.html
-[kill]: http://www.freedesktop.org/software/systemd/man/systemd.kill.html
-[link]: http://www.freedesktop.org/software/systemd/man/systemd.link.html
-[logind]: http://www.freedesktop.org/software/systemd/man/logind.conf.html
-[modules]: http://www.freedesktop.org/software/systemd/man/modules-load.d.html
-[mount]: http://www.freedesktop.org/software/systemd/man/systemd.mount.html
-[path]: http://www.freedesktop.org/software/systemd/man/systemd.path.html
-[resolved]: http://www.freedesktop.org/software/systemd/man/resolved.conf.htm/
-[resource_control]: http://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
+[docs]: http://www.freedesktop.org/wiki/Software/systemd
 [rhel]: https://access.redhat.com/articles/754933
-[rules]: http://www.freedesktop.org/software/systemd/man/udev.html#Rules%20Files
-[run]: https://www.freedesktop.org/software/systemd/man/systemd-run.html
-[sd-reload]: https://www.youtube.com/watch?feature=player_detailpage&v=wVk-NWtiIZY#t=385
-[service]: http://www.freedesktop.org/software/systemd/man/systemd.service.html
-[sleep]: http://www.freedesktop.org/software/systemd/man/systemd-sleep.conf.html
-[slice]: http://www.freedesktop.org/software/systemd/man/systemd.slice.html
-[socket]: http://www.freedesktop.org/software/systemd/man/systemd.socket.html
-[swap]: http://www.freedesktop.org/software/systemd/man/systemd.swap.html
-[sysctl]: http://www.freedesktop.org/software/systemd/man/systemd-sysctl.html
-[system]: http://www.freedesktop.org/software/systemd/man/systemd-system.conf.html
-[sysusers]: http://www.freedesktop.org/software/systemd/man/systemd-sysusers.html
-[target]: http://www.freedesktop.org/software/systemd/man/systemd.target.html
-[timer]: http://www.freedesktop.org/software/systemd/man/systemd.timer.html
-[timesync]: http://www.freedesktop.org/software/systemd/man/timesyncd.conf.html
-[tmpfiles]: http://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
-[unit]: http://www.freedesktop.org/software/systemd/man/systemd.unit.html#[Unit]%20Section%20Options

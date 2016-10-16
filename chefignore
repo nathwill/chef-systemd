@@ -79,6 +79,8 @@ tmp
 # Cookbooks #
 #############
 CONTRIBUTING
+docs
+examples
 
 # Strainer #
 ############

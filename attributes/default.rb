@@ -18,49 +18,44 @@
 #
 
 default['systemd'].tap do |s|
-  # Ref: http://www.freedesktop.org/software/systemd/man/hostname.html
+  # http://www.freedesktop.org/software/systemd/man/hostname.html
   s['hostname'] = nil
 
-  # Ref: http://www.freedesktop.org/software/systemd/man/timedatectl.html
-  # See timedatectl list-timezones for options
+  # http://www.freedesktop.org/software/systemd/man/timedatectl.html
+  # See timedatectl list-timezones for valid options
   s['timezone'] = 'UTC'
 
-  # Ref: http://www.freedesktop.org/software/systemd/man/timesyncd.conf.html
-  s['enable_ntp'] = true
-
-  # Ref: https://www.freedesktop.org/software/systemd/man/machinectl.html
+  # https://www.freedesktop.org/software/systemd/man/machinectl.html
   s['machine_pool_limit'] = nil
-end
 
-# Ref: http://www.freedesktop.org/software/systemd/man/timedatectl.html
-default['systemd']['real_time_clock'].tap do |rtc|
-  rtc['mode'] = 'utc'
-  rtc['adjust_system_clock'] = false
-end
+  # http://www.freedesktop.org/software/systemd/man/timedatectl.html
+  s['rtc_mode'] = 'utc'
+  s['fix_rtc'] = false
 
-# Ref: http://www.freedesktop.org/software/systemd/man/locale.conf.html
-default['systemd']['locale'].tap do |l|
-  l['LANG'] = 'en_US.UTF-8'
-  l['LANGUAGE'] = nil
-  l['LC_CTYPE'] = nil
-  l['LC_NUMERIC'] = nil
-  l['LC_TIME'] = nil
-  l['LC_COLLATE'] = nil
-  l['LC_MONETARY'] = nil
-  l['LC_MESSAGES'] = nil
-  l['LC_PAPER'] = nil
-  l['LC_NAME'] = nil
-  l['LC_ADDRESS'] = nil
-  l['LC_TELEPHONE'] = nil
-  l['LC_MEASUREMENT'] = nil
-  l['LC_IDENTIFICATION'] = nil
-end
+  # http://www.freedesktop.org/software/systemd/man/locale.conf.html
+  s['locale'].tap do |l|
+    l['LANG'] = 'en_US.UTF-8'
+    l['LANGUAGE'] = nil
+    l['LC_CTYPE'] = nil
+    l['LC_NUMERIC'] = nil
+    l['LC_TIME'] = nil
+    l['LC_COLLATE'] = nil
+    l['LC_MONETARY'] = nil
+    l['LC_MESSAGES'] = nil
+    l['LC_PAPER'] = nil
+    l['LC_NAME'] = nil
+    l['LC_ADDRESS'] = nil
+    l['LC_TELEPHONE'] = nil
+    l['LC_MEASUREMENT'] = nil
+    l['LC_IDENTIFICATION'] = nil
+  end
 
-# Ref: http://www.freedesktop.org/software/systemd/man/vconsole.conf.html
-default['systemd']['vconsole'].tap do |v|
-  v['KEYMAP'] = 'us'
-  v['KEYMAP_TOGGLE'] = nil
-  v['FONT'] = 'latarcyrheb-sun16'
-  v['FONT_MAP'] = nil
-  v['FONT_UNIMAP'] = nil
+  # http://www.freedesktop.org/software/systemd/man/vconsole.conf.html
+  s['vconsole'].tap do |v|
+    v['KEYMAP'] = 'us'
+    v['KEYMAP_TOGGLE'] = nil
+    v['FONT'] = 'latarcyrheb-sun16'
+    v['FONT_MAP'] = nil
+    v['FONT_UNIMAP'] = nil
+  end
 end

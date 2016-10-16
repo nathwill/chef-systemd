@@ -19,21 +19,6 @@
 # https://www.freedesktop.org/software/systemd/man/systemd-timesyncd.service.html
 #
 
-require 'dbus/systemd/timedated'
-
-#
-# this manages the timedated NTP property,
-# which correlates to the systemd-timesyncd
-# service being {en,dis}abled/{start,stopp}ed
-#
-ruby_block 'manage-ntp' do
-  enable = node['systemd']['enable_ntp']
-
-  block do
-    DBus::Systemd::Timedated.new.SetNTP(enable, false)
-  end
-
-  not_if do
-    DBus::Systemd::Timedated.new.properties['NTP'] == enable
-  end
+service 'systemd-timesyncd' do
+  action [:enable, :start]
 end

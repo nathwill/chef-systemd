@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: systemd
-# Recipe:: ntp
+# Recipe:: timesyncd
 #
 # Copyright 2015 - 2016, The Authors
 #

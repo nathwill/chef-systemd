@@ -31,9 +31,7 @@ package 'systemd-container' do
   not_if { platform_family?('rhel') }
 end
 
-limit = node['systemd']['machine_pool_limit']
-
 execute 'set-machined-pool-limit' do
-  command "machinectl set-limit #{limit}"
-  not_if { limit.nil? }
+  command "machinectl set-limit #{node['systemd']['machine_pool_limit']}"
+  not_if { node['systemd']['machine_pool_limit'].nil? }
 end

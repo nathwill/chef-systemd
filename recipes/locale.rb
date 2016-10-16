@@ -19,11 +19,9 @@
 # https://www.freedesktop.org/software/systemd/man/systemd-localed.service.html
 #
 
-locale = node['systemd']['locale']
-
 file '/etc/locale.conf' do
-  content locale.to_h.to_kv_pairs.join("\n")
-  not_if { locale.empty? }
+  content node['systemd']['locale'].to_h.to_kv_pairs.join("\n")
+  not_if { node['systemd']['locale'].to_h.empty? }
   notifies :restart, 'service[systemd-localed]', :immediately
 end
 

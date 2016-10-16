@@ -19,11 +19,9 @@
 # https://www.freedesktop.org/software/systemd/man/systemd-vconsole-setup.service.html
 #
 
-vconsole = node['systemd']['vconsole']
-
 file '/etc/vconsole.conf' do
-  content vconsole.to_h.to_kv_pairs.join("\n")
-  not_if { vconsole.to_h.empty? }
+  content node['systemd']['vconsole'].to_h.to_kv_pairs.join("\n")
+  not_if { node['systemd']['vconsole'].to_h.empty? }
   notifies :restart, 'service[systemd-vconsole-setup]', :immediately
 end
 

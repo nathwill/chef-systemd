@@ -77,10 +77,6 @@ installs btrfs tools required by machined, installs machined utilities, sets mac
 
 installs/enables/starts networkd
 
-#### ntp
-
-enables/starts systemd-timesyncd service
-
 #### reload
 
 schedules an event handler to perform a  systemd manager reload
@@ -95,6 +91,10 @@ installs/enables/starts resolved
 #### rtc
 
 sets system RTC properties for mode ('utc' or 'local') and whether to correct the RTC
+
+#### timesyncd
+
+enables/starts systemd-timesyncd (NTP-client) service
 
 #### timezone
 

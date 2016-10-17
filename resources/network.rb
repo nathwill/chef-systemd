@@ -1,6 +1,14 @@
 resource_name :systemd_network
 provides :systemd_network
 
+def self.resource_type
+  :network
+end
+
+def resource_type
+  self.class.resource_type
+end
+
 include SystemdCookbook::Mixin::PropertyHashConversion
 include SystemdCookbook::Mixin::DSL
 

@@ -28,4 +28,5 @@ execute 'set-hostname' do
   command "hostnamectl set-hostname #{node['systemd']['hostname']}"
   not_if { node['fqdn'] == node['systemd']['hostname'] }
   notifies :reload, 'ohai[hostname]', :immediately
+  action :run
 end

@@ -1,6 +1,14 @@
 resource_name :systemd_link
 provides :systemd_link
 
+def self.resource_type
+  :link
+end
+
+def resource_type
+  self.class.resource_type
+end
+
 include SystemdCookbook::Mixin::PropertyHashConversion
 include SystemdCookbook::Mixin::DSL
 

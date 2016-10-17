@@ -1,6 +1,14 @@
 resource_name :systemd_nspawn
 provides :systemd_nspawn
 
+def self.resource_type
+  :nspawn
+end
+
+def resource_type
+  self.class.resource_type
+end
+
 include SystemdCookbook::Mixin::PropertyHashConversion
 include SystemdCookbook::Mixin::DSL
 

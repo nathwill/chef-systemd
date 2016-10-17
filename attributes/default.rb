@@ -19,7 +19,7 @@
 
 default['systemd'].tap do |s|
   # http://www.freedesktop.org/software/systemd/man/hostname.html
-  s['hostname'] = nil
+  s['hostname'] = node['fqdn']
 
   # http://www.freedesktop.org/software/systemd/man/timedatectl.html
   # See timedatectl list-timezones for valid options

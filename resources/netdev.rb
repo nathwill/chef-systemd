@@ -1,6 +1,14 @@
 resource_name :systemd_netdev
 provides :systemd_netdev
 
+def self.resource_type
+  :netdev
+end
+
+def resource_type
+  self.class.resource_type
+end
+
 include SystemdCookbook::Mixin::PropertyHashConversion
 include SystemdCookbook::Mixin::DSL
 

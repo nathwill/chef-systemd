@@ -58,6 +58,7 @@ systemd_machine_image 'Fedora24' do
   path '/var/tmp/Fedora24.raw.gz'
   to 'cloned'
   action [:pull, :set_properties, :export, :clone]
+  not_if { platform?('centos') }
 end
 
 systemd_machine_image 'Fedora24b' do
@@ -67,6 +68,7 @@ systemd_machine_image 'Fedora24b' do
   format 'gzip'
   path '/var/tmp/Fedora24.raw.gz'
   action [:import, :set_properties]
+  not_if { platform?('centos') }
 end
 
 systemd_nspawn 'Fedora24' do
@@ -92,4 +94,5 @@ systemd_machine 'Fedora24' do
   host_path tmp_path
   machine_path '/etc/passwd'
   action [:enable, :start, :copy_from]
+  not_if { platform?('centos') }
 end

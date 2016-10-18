@@ -74,6 +74,7 @@ end
 systemd_nspawn 'Fedora24' do
   exec do
     boot true
+    private_users false
   end
   files do
     bind '/tmp:/tmp'

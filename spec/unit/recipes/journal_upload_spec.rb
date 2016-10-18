@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'systemd::journal_upload' do
   context 'default' do
-    let(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
+    cached(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
 
     it 'installs the package' do
       expect(chef_run).to include_recipe('systemd::journal_extra')

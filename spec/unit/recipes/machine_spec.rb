@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'systemd::machine' do
   context 'default' do
-    let(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
+    cached(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
 
     it 'installs btrfs tools' do
       expect(chef_run).to install_package 'btrfs-progs'
@@ -14,7 +14,7 @@ describe 'systemd::machine' do
   end
 
   context 'debian' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::ServerRunner.new(platform: 'debian', version: '8.0')
                             .converge(described_recipe)
     end
@@ -29,7 +29,7 @@ describe 'systemd::machine' do
   end
 
   context 'with machine limits' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::ServerRunner.new do |node|
         node.normal['systemd']['machine_pool_limit'] = '5G'
       end.converge(described_recipe)

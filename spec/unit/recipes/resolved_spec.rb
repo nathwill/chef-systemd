@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'systemd::resolved' do
   context 'rhel' do
-    let(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
+    cached(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
 
     it 'installs the pkg' do
       expect(chef_run).to install_package('systemd-resolved')

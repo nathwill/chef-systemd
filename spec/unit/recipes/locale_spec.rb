@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'systemd::locale' do
   context 'default' do
-    let(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
+    cached(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
 
     it 'manages locale.conf' do
       expect(chef_run).to create_file('/etc/locale.conf').with(

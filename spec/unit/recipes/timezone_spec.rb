@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'systemd::timezone' do
   context 'when timezone differs' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::ServerRunner.new do |node|
         node.normal['time']['timezone'] = 'America/Los_Angeles'
         node.normal['systemd']['timezone'] = 'UTC'

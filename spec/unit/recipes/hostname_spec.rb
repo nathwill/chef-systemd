@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'systemd::hostname' do
   context 'when all attributes are default on an unspecified platform' do
-    let(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
+    cached(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
 
     it 'does not reload ohai' do
       expect(chef_run).to_not reload_ohai('hostname').with(
@@ -16,7 +16,7 @@ describe 'systemd::hostname' do
   end
 
   context 'when hostname and fqdn differ' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::ServerRunner.new do |node|
         node.automatic['fqdn'] = 'a.example.com'
         node.normal['systemd']['hostname'] = 'b.example.com'

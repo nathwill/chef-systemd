@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'systemd::journal_extra' do
   context 'rhel' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::ServerRunner.new.converge(described_recipe)
     end
 
@@ -12,7 +12,7 @@ describe 'systemd::journal_extra' do
   end
 
   context 'debian' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::ServerRunner.new(platform: 'debian', version: '8.2')
                             .converge(described_recipe)
     end

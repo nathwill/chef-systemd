@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'systemd::timesyncd' do
   context 'rhel' do
-    let(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
+    cached(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
 
     it 'manages the service' do
       expect(chef_run).to enable_service 'systemd-timesyncd'

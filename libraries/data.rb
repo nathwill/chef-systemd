@@ -231,7 +231,7 @@ module SystemdCookbook
       }
     }.freeze
     VIRT ||= {
-      kind_of: String,
+      kind_of: [String, TrueClass, FalseClass],
       equal_to: %w(
         qemu
         kvm

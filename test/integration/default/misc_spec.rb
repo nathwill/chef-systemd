@@ -98,6 +98,7 @@ control 'creates nspawn units' do
       should eq <<EOT
 [Exec]
 Boot = yes
+PrivateUsers = no
 
 [Files]
 Bind = /tmp:/tmp
@@ -105,6 +106,70 @@ Bind = /tmp:/tmp
 [Network]
 Private = no
 VirtualEthernet = no
+EOT
+    end
+  end
+end
+
+control 'machine image' do
+  unless os.redhat?
+    describe command('machinectl list-images') do
+      its(:stdout) { should match /Fedora24  raw  no/ }
+      its(:stdout) { should match /Fedora24b raw  yes/ }
+      its(:stdout) { should match /cloned    raw  no/ }
+    end
+  end
+end
+
+control 'machine' do
+  unless os.redhat?
+    describe command('machinectl list') do
+      its(:stdout) { should match /Fedora24 container systemd-nspawn/ }
+    end
+  end
+end
+
+control 'netdev' do
+  describe file('/etc/systemd/network/vlan1.netdev') do
+    its(:content) do
+      should eq <<EOT
+[Match]
+Virtualization = no
+
+[NetDev]
+Name = vlan1
+Kind = vlan
+
+[VLAN]
+Id = 1
+EOT
+    end
+  end
+end
+
+control 'network' do
+  describe file('/etc/systemd/network/bond.network') do
+    its(:content) do
+      should eq <<EOT
+[Match]
+Name = bond1
+
+[Network]
+DHCP = yes
+EOT
+    end
+  end
+end
+
+control 'link' do
+  describe file('/etc/systemd/network/dmz.link') do
+    its(:content) do
+      should eq <<EOT
+[Match]
+MACAddress = 00:a0:de:63:7a:e6
+
+[Link]
+Name = dmz0
 EOT
     end
   end

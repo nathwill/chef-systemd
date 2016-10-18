@@ -52,7 +52,7 @@ end
 
 control 'manages timezone' do
   describe command('timedatectl status') do
-    its(:stdout) { should match /Time zone: UTC/ }
+    its(:stdout) { should match /Time zone: (Etc\/)?UTC/ }
   end
 end
 

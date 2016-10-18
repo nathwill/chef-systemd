@@ -97,3 +97,31 @@ systemd_machine 'Fedora24' do
   action [:enable, :start, :copy_from]
   not_if { platform?('centos') }
 end
+
+systemd_netdev 'vlan1' do
+  match do
+    virtualization false
+  end
+
+  # cannot use sub-resource here, never reaches method_missing context handling
+  net_dev_name 'vlan1'
+
+  net_dev do
+    kind 'vlan'
+  end
+  vlan do
+    id 1
+  end
+end
+
+systemd_link 'dmz' do
+  match do
+    mac_address '00:a0:de:63:7a:e6'
+  end
+  link_name 'dmz0'
+end
+
+systemd_network 'bond' do
+  match_name 'bond1'
+  network_dhcp true
+end

@@ -740,6 +740,7 @@ module Systemd
       'OnUnitInactiveSec' => { kind_of: [String, Integer] },
       'OnCalendar' => {},
       'AccuracySec' => { kind_of: [String, Integer] },
+      'RandomizedDelaySec' => { kind_of: [String, Integer] },
       'WakeSystem' => { kind_of: [TrueClass, FalseClass] },
       'RemainAfterElapse' => { kind_of: [TrueClass, FalseClass] },
       'RandomSec' => { kind_of: [String, Integer] }

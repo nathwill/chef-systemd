@@ -658,6 +658,7 @@ end
 |on_unit_active_sec|see docs|nil|
 |on_unit_inactive_sec|see docs|nil|
 |persistent|see docs|nil|
+|randomized_delay_sec|see docs|nil|
 |unit|see docs|nil|
 |wake_system|see docs|nil|
 

@@ -494,6 +494,7 @@ end
 |exec_stop_post|see docs|nil|
 |exec_stop_pre|see docs|nil|
 |free_bind|see docs|nil|
+|group|see docs|nil|
 |iptos|see docs|nil|
 |ipttl|see docs|nil|
 |keep_alive|see docs|nil|
@@ -532,6 +533,7 @@ end
 |tcp_congestion|see docs|nil|
 |timeout_sec|see docs|nil|
 |transparent|see docs|nil|
+|user|see docs|nil
 
 Also supports:
 

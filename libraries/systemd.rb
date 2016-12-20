@@ -355,18 +355,18 @@ module Systemd
       'DeviceAllow' => {},
       'TasksAccounting' => { kind_of: [TrueClass, FalseClass] },
       'Slice' => {},
-      'TasksMax' => { kind_of: [Integer, String],
-                      callbacks: {
-                        'is a valid symbol' =>
-                        lambda do |val|
-                          if val.is_a?(String)
-                            val == 'infinity'
-                          else
-                            true
-                          end
-                        end
-                      }
-                    }
+      'TasksMax' => {
+        kind_of: [Integer, String],
+        callbacks: {
+          'is a valid symbol' => lambda do |val|
+            if val.is_a?(String)
+              val == 'infinity'
+            else
+              true
+            end
+          end
+        }
+      }
     }.freeze
 
     OPTIONS ||= TRANSIENT_OPTIONS.merge(
@@ -534,8 +534,7 @@ module Systemd
                          )
                        },
                        'RebootArgument' => {},
-                       'FileDescriptorStoreMax' => { kind_of: Integer }
-                      )
+                       'FileDescriptorStoreMax' => { kind_of: Integer })
   end
 
   module Sleep

@@ -26,6 +26,7 @@ A resource-driven [Chef][chef] cookbook for managing GNU/Linux systems via [syst
      - [systemd_socket](#systemd-socket)
      - [systemd_swap](#systemd-swap)
      - [systemd_target](#systemd-target)
+     - [systemd_limit](#systemd-limit)
      - [systemd_timer](#systemd-timer)
    - [Daemons](#daemon-resources)
      - [systemd_journald](#systemd-journald)
@@ -596,6 +597,22 @@ Example usage:
 systemd_target 'plague' do
   description 'Never fear, I is here.'
   documentation 'man:systemd.special(7)'
+end
+```
+
+<a name="systemd-limit"></a>**systemd\_limit**
+
+Unit which describes a systemd limits for service added by package.
+[Documentation][limit]
+
+This unit has no specific options.
+
+Example usage:
+
+```ruby
+systemd_limit 'vsftpd' do
+  nofile '10000:12000'
+  nproc '100:150'
 end
 ```
 

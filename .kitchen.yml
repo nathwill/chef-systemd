@@ -28,6 +28,7 @@ suites:
       - recipe[setup::socket]
       - recipe[setup::swap]
       - recipe[setup::target]
+      - recipe[setup::limit]
       - recipe[setup::timer]
   - name: daemons
     run_list:

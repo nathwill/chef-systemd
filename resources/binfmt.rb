@@ -2,21 +2,21 @@ resource_name :systemd_binfmt
 provides :systemd_binfmt
 
 property :name, String, required: true, name_attribute: true, callbacks: {
-  'does not contain /' => ->(s) { !s.match(Regexp.new('/')) }
+  'does not contain /' => ->(s) { !s.match(Regexp.new('/')) },
 }
 property :type, String, equal_to: %w(M E), default: 'M'
 property :offset, Integer, equal_to: 0.upto(127)
 property :magic, String, required: true, callbacks: {
-  'does not contain /' => ->(s) { !s.match(Regexp.new('/')) }
+  'does not contain /' => ->(s) { !s.match(Regexp.new('/')) },
 }
 property :mask, String
 property :interpreter, String, required: true, callbacks: {
-  'is acceptable length' => ->(s) { s.length <= 127 }
+  'is acceptable length' => ->(s) { s.length <= 127 },
 }
 property :flags, String, callbacks: {
   'only supported flags' => lambda do |spec|
     spec.split(//).all? { |c| %w(P O C).include?(c) }
-  end
+  end,
 }
 
 def as_string

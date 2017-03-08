@@ -5,10 +5,10 @@ property :type, String, equal_to: %w(u g m r), default: 'u'
 property :name, String, name_attribute: true, required: true, callbacks: {
   'is less than 31 chars' => ->(s) { s.length <= 31 },
   'is ascii' => ->(s) { s.ascii_only? },
-  'has non-digit first char' => ->(s) { !s[0].match(/\d/) }
+  'has non-digit first char' => ->(s) { !s[0].match(/\d/) },
 }
 property :id, [String, Integer], callbacks: {
-  'is not a reserved id' => ->(s) { !%w(65535 4294967295).include?(s.to_s) }
+  'is not a reserved id' => ->(s) { !%w(65535 4294967295).include?(s.to_s) },
 }
 property :gecos, String, default: '-'
 property :home, String, default: '-'

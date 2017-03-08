@@ -29,8 +29,6 @@ module SystemdCookbook
       end
 
       module ClassMethods
-        # rubocop: disable AbcSize
-        # rubocop: disable MethodLength
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
 
@@ -73,8 +71,6 @@ module SystemdCookbook
       end
 
       module ClassMethods
-        # rubocop: disable MethodLength
-        # rubocop: disable AbcSize
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
 
@@ -91,7 +87,7 @@ module SystemdCookbook
           option_properties data
 
           property :override, String, required: true, desired_state: false, callbacks: {
-            'matches drop-in type' => ->(s) { s.end_with?(resource_type.to_s) }
+            'matches drop-in type' => ->(s) { s.end_with?(resource_type.to_s) },
           }
           property :user, String, desired_state: false
           property :drop_in_name, identity: true, desired_state: false,
@@ -149,8 +145,6 @@ module SystemdCookbook
       end
 
       module ClassMethods
-        # rubocop: disable AbcSize
-        # rubocop: disable MethodLength
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
 

@@ -33,7 +33,7 @@ action :create do
       new_resource.uid,
       new_resource.gid,
       new_resource.age,
-      new_resource.argument
+      new_resource.argument,
     ].join(' ')
   end
 end

@@ -4,7 +4,7 @@ require 'dbus/systemd/importd'
 resource_name :systemd_machine_image
 provides :systemd_machine_image
 
-property :type, equal_to: %w( tar raw ), default: 'tar'
+property :type, equal_to: %w(tar raw), default: 'tar'
 property :source, String
 property :path, String
 property :size_limit, [String, Integer]
@@ -12,8 +12,8 @@ property :read_only, [TrueClass, FalseClass], default: false
 property :from, String, default: lazy { name }
 property :to, String, default: lazy { name }
 property :force, [TrueClass, FalseClass], default: false
-property :format, equal_to: %w( uncompressed xz bzip2 gzip )
-property :verify, String, equal_to: %w( no checksum signature ),
+property :format, equal_to: %w(uncompressed xz bzip2 gzip)
+property :verify, String, equal_to: %w(no checksum signature),
                           default: 'signature'
 
 default_action :pull

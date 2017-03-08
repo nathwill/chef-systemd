@@ -34,7 +34,7 @@ module SystemdCookbook
     timer
   ).freeze
 
-  BUS_ONLY_UNITS ||= %w( scope ).freeze
+  BUS_ONLY_UNITS ||= %w(scope).freeze
 
   DAEMONS ||= %w(
     journald
@@ -67,7 +67,7 @@ module SystemdCookbook
     ABSOLUTE_PATH ||= {
       kind_of: String,
       callbacks: {
-        'is an absolute path' => -> (spec) { Pathname.new(spec).absolute? }
+        'is an absolute path' => ->(spec) { Pathname.new(spec).absolute? }
       }
     }.freeze
     SOFT_ABSOLUTE_PATH ||= {
@@ -188,7 +188,7 @@ module SystemdCookbook
     }.freeze
     SECURITY ||= {
       kind_of: String,
-      equal_to: %w( selinux apparmor ima smack audit )
+      equal_to: %w(selinux apparmor ima smack audit)
     }.freeze
     SESSION_ACTIONS ||= {
       kind_of: String,
@@ -304,7 +304,7 @@ module SystemdCookbook
         'ConditionACPower' => Common::BOOLEAN,
         'ConditionNeedsUpdate' => {
           kind_of: String,
-          equal_to: %w( /etc /var !/etc !/var )
+          equal_to: %w(/etc /var !/etc !/var)
         },
         'ConditionFirstBoot' => Common::BOOLEAN,
         'ConditionPathExists' => Common::CONDITIONAL_PATH,
@@ -325,7 +325,7 @@ module SystemdCookbook
         'AssertACPower' => Common::BOOLEAN,
         'AssertNeedsUpdate' => {
           kind_of: String,
-          equal_to: %w( /etc /var !/etc !/var )
+          equal_to: %w(/etc /var !/etc !/var)
         },
         'AssertFirstBoot' => Common::BOOLEAN,
         'AssertPathExists' => Common::CONDITIONAL_PATH,
@@ -376,7 +376,7 @@ module SystemdCookbook
       'IOSchedulingPriority' => { kind_of: Integer, equal_to: 0.upto(7).to_a },
       'CPUSchedulingPolicy' => {
         kind_of: String,
-        equal_to: %w( other batch idle fifo rr )
+        equal_to: %w(other batch idle fifo rr)
       },
       'CPUSchedulingPriority' => {
         kind_of: Integer,
@@ -390,7 +390,7 @@ module SystemdCookbook
       'PassEnvironment' => { kind_of: [String, Array] },
       'StandardInput' => {
         kind_of: String,
-        equal_to: %w( null tty tty-force tty-fail socket )
+        equal_to: %w(null tty tty-force tty-fail socket)
       },
       'StandardOutput' => Common::STDALL,
       'StandardError' => Common::STDALL,
@@ -426,7 +426,7 @@ module SystemdCookbook
       },
       'SyslogLevel' => {
         kind_of: String,
-        equal_to: %w( emerg alert crit err warning notice info debug )
+        equal_to: %w(emerg alert crit err warning notice info debug)
       },
       'SyslogLevelPrefix' => Common::BOOLEAN,
       'TimerSlackNSec' => Common::STRING_OR_INT,
@@ -482,12 +482,12 @@ module SystemdCookbook
       },
       'MountFlags' => {
         kind_of: String,
-        equal_to: %w( shared slave private )
+        equal_to: %w(shared slave private)
       },
       'UtmpIdentifier' => Common::STRING,
       'UtmpMode' => {
         kind_of: String,
-        equal_to: %w( init login user )
+        equal_to: %w(init login user)
       },
       'SELinuxContext' => Common::STRING,
       'AppArmorProfile' => Common::STRING,
@@ -515,7 +515,7 @@ module SystemdCookbook
     OPTIONS ||= {
       'KillMode' => {
         kind_of: String,
-        equal_to: %w( control-group process mixed none )
+        equal_to: %w(control-group process mixed none)
       },
       'KillSignal' => Common::STRING_OR_INT,
       'SendSIGHUP' => Common::BOOLEAN,
@@ -642,15 +642,15 @@ module SystemdCookbook
             args = spec.split(' ')
             args.length == 2 &&
               Pathname.new(args[0]).absolute? &&
-              %w( r w m ).include?(args[1])
+              %w(r w m).include?(args[1])
           end
         }
       },
-      'DevicePolicy' => { kind_of: String, equal_to: %w( strict auto closed ) },
+      'DevicePolicy' => { kind_of: String, equal_to: %w(strict auto closed) },
       'Slice' => {
         kind_of: String,
         callbacks: {
-          'is a slice' => -> (spec) { spec.end_with?('.slice') }
+          'is a slice' => ->(spec) { spec.end_with?('.slice') }
         }
       },
       'Delegate' => Common::BOOLEAN
@@ -664,7 +664,7 @@ module SystemdCookbook
           kind_of: String,
           required: true,
           callbacks: {
-            'is an absolute path' => -> (spec) { Pathname.new(spec).absolute? }
+            'is an absolute path' => ->(spec) { Pathname.new(spec).absolute? }
           }
         },
         'DirectoryMode' => Common::STRING,
@@ -700,7 +700,7 @@ module SystemdCookbook
           kind_of: String,
           required: true,
           callbacks: {
-            'absolute path' => -> (s) { Pathname.new(s).absolute? }
+            'absolute path' => ->(s) { Pathname.new(s).absolute? }
           }
         },
         'Type' => Common::STRING,
@@ -745,7 +745,7 @@ module SystemdCookbook
       'Service' => {
         'Type' => {
           kind_of: String,
-          equal_to: %w( simple forking oneshot dbus notify idle )
+          equal_to: %w(simple forking oneshot dbus notify idle)
         },
         'RemainAfterExit' => Common::BOOLEAN,
         'GuessMainPID' => Common::BOOLEAN,
@@ -781,7 +781,7 @@ module SystemdCookbook
         'PermissionsStartOnly' => Common::BOOLEAN,
         'RootDirectoryStartOnly' => Common::BOOLEAN,
         'NonBlocking' => Common::BOOLEAN,
-        'NotifyAccess' => { kind_of: String, equal_to: %w( none main all ) },
+        'NotifyAccess' => { kind_of: String, equal_to: %w(none main all) },
         'Sockets' => Common::ARRAY_OF_UNITS,
         'FailureAction' => Common::POWER,
         'FileDescriptorStoreMax' => Common::INTEGER,
@@ -814,10 +814,10 @@ module SystemdCookbook
         'ListenNetlink' => Common::STRING,
         'ListenMessageQueue' => Common::ABSOLUTE_PATH,
         'ListenUSBFunction' => Common::STRING,
-        'SocketProtocol' => { kind_of: String, equal_to: %w( udplite sctp ) },
+        'SocketProtocol' => { kind_of: String, equal_to: %w(udplite sctp) },
         'BindIPv6Only' => {
           kind_of: String,
-          equal_to: %w( default both ipv6-only )
+          equal_to: %w(default both ipv6-only)
         },
         'Backlog' => Common::INTEGER,
         'BindToDevice' => Common::STRING,
@@ -841,7 +841,7 @@ module SystemdCookbook
           kind_of: [String, Integer],
           callbacks: {
             'is a valid arg' => lambda do |spec|
-              %w( low-delay throughput reliability low-cost ).include?(spec) ||
+              %w(low-delay throughput reliability low-cost).include?(spec) ||
                 spec.is_a?(Integer)
             end
           }
@@ -870,7 +870,7 @@ module SystemdCookbook
         'Service' => {
           kind_of: String,
           callbacks: {
-            'is a service' => -> (s) { s.end_with?('.service') }
+            'is a service' => ->(s) { s.end_with?('.service') }
           }
         },
         'RemoveOnStop' => Common::BOOLEAN,
@@ -893,7 +893,7 @@ module SystemdCookbook
           kind_of: String,
           required: true,
           callbacks: {
-            'is an absolute path' => -> (s) { Pathname.new(s).absolute? }
+            'is an absolute path' => ->(s) { Pathname.new(s).absolute? }
           }
         },
         'Priority' => Common::INTEGER,
@@ -957,7 +957,7 @@ module SystemdCookbook
       'Coredump' => {
         'Storage' => {
           kind_of: String,
-          equal_to: %w( none external journal both )
+          equal_to: %w(none external journal both)
         },
         'Compress' => Common::BOOLEAN,
         'ProcessSizeMax' => Common::INTEGER,
@@ -974,11 +974,11 @@ module SystemdCookbook
       'Journal' => {
         'Storage' => {
           kind_of: String,
-          equal_to: %w( volatile persistent auto none )
+          equal_to: %w(volatile persistent auto none)
         },
         'Compress' => Common::BOOLEAN,
         'Seal' => Common::BOOLEAN,
-        'SplitMode' => { kind_of: String, equal_to: %w( uid login none ) },
+        'SplitMode' => { kind_of: String, equal_to: %w(uid login none) },
         'RateLimitIntervalSec' => Common::STRING_OR_INT,
         'RateLimitBurst' => Common::INTEGER,
         'SystemMaxUse' => Common::STRING,
@@ -1058,14 +1058,14 @@ module SystemdCookbook
         'Description' => Common::STRING,
         'MACAddressPolicy' => {
           kind_of: String,
-          equal_to: %w( persistent random none )
+          equal_to: %w(persistent random none)
         },
         'MACAddress' => Common::STRING,
         'NamePolicy' => {
           kind_of: [String, Array],
           callbacks: {
             'is a valid policy' => lambda do |spec|
-              %w( kernel database onboard slot path mac ).include?(spec)
+              %w(kernel database onboard slot path mac).include?(spec)
             end
           }
         },
@@ -1074,11 +1074,11 @@ module SystemdCookbook
         'BitsPerSecond' => Common::STRING_OR_INT,
         'Duplex' => {
           kind_of: String,
-          equal_to: %w( half full )
+          equal_to: %w(half full)
         },
         'WakeOnLan' => {
           kind_of: String,
-          equal_to: %w( phy magic off )
+          equal_to: %w(phy magic off)
         }
       }
     }.freeze
@@ -1146,19 +1146,19 @@ module SystemdCookbook
       'MACVLAN' => {
         'Mode' => {
           kind_of: String,
-          equal_to: %w( private vepa bridge passthru )
+          equal_to: %w(private vepa bridge passthru)
         }
       },
       'MACVTAP' => {
         'Mode' => {
           kind_of: String,
-          equal_to: %w( private vepa bridge passthru )
+          equal_to: %w(private vepa bridge passthru)
         }
       },
       'IPVLAN' => {
         'Mode' => {
           kind_of: String,
-          equal_to: %w( L2 L3 )
+          equal_to: %w(L2 L3)
         }
       },
       'VXLAN' => {
@@ -1203,7 +1203,7 @@ module SystemdCookbook
         'OutputKey' => Common::STRING_OR_INT,
         'Mode' => {
           kind_of: String,
-          equal_to: %w( ip6ip6 ipip6 any )
+          equal_to: %w(ip6ip6 ipip6 any)
         }
       },
       'Peer' => {
@@ -1251,7 +1251,7 @@ module SystemdCookbook
         },
         'LACPTransmitRate' => {
           kind_of: String,
-          equal_to: %w( fast slow )
+          equal_to: %w(fast slow)
         },
         'MIIMonitorSec' => Common::STRING_OR_INT,
         'UpDelaySec' => Common::STRING_OR_INT,
@@ -1259,22 +1259,22 @@ module SystemdCookbook
         'LearnPacketIntervalSec' => Common::STRING_OR_INT,
         'AdSelect' => {
           kind_of: String,
-          equal_to: %w( stable bandwidth count )
+          equal_to: %w(stable bandwidth count)
         },
         'FailOverMACPolicy' => {
           kind_of: String,
-          equal_to: %w( none active follow )
+          equal_to: %w(none active follow)
         },
         'ARPValidate' => {
           kind_of: String,
-          equal_to: %w( none active backup all )
+          equal_to: %w(none active backup all)
         },
         'ARPIntervalSec' => Common::STRING_OR_INT,
         'ARPIPTargets' => Common::STRING_OR_INT,
         'ARPAllTargets' => Common::ARRAY,
         'PrimaryReselectPolicy' => {
           kind_of: String,
-          equal_to: %w( any all )
+          equal_to: %w(any all)
         },
         'ResendIGMP' => {
           kind_of: Integer,
@@ -1315,12 +1315,12 @@ module SystemdCookbook
         'Description' => Common::STRING,
         'DHCP' => {
           kind_of: [String, Integer, TrueClass, FalseClass],
-          equal_to: %w( yes no ipv4 ipv6 ).concat([true, false])
+          equal_to: %w(yes no ipv4 ipv6).concat([true, false])
         },
         'DHCPServer' => Common::BOOLEAN,
         'LinkLocalAddressing' => {
           kind_of: [String, Integer],
-          equal_to: %w( yes no ipv4 ipv6 ).concat([true, false])
+          equal_to: %w(yes no ipv4 ipv6).concat([true, false])
         },
         'IPv4LLRoute' => Common::BOOLEAN,
         'IPv6Token' => Common::STRING,
@@ -1393,7 +1393,7 @@ module SystemdCookbook
         'Metric' => Common::INTEGER,
         'Scope' => {
           kind_of: String,
-          equal_to: %w( global link host )
+          equal_to: %w(global link host)
         },
         'PreferredSource' => Common::STRING,
         'Table' => Common::INTEGER
@@ -1414,12 +1414,12 @@ module SystemdCookbook
         'CriticalConnection' => Common::BOOLEAN,
         'ClientIdentifier' => {
           kind_of: String,
-          equal_to: %w( mac duid )
+          equal_to: %w(mac duid)
         },
         'VendorClassIdentifier' => Common::STRING,
         'DUIDType' => {
           kind_of: String,
-          equal_to: %w( vendor link-layer-time link-layer uuid )
+          equal_to: %w(vendor link-layer-time link-layer uuid)
         },
         'DUIDRawData' => Common::STRING,
         'IAID' => Common::INTEGER,
@@ -1503,7 +1503,7 @@ module SystemdCookbook
         'LogLevel' => Common::LOGLEVEL,
         'LogTarget' => {
           kind_of: String,
-          equal_to: %w( console journal kmsg journal-or-kmsg null )
+          equal_to: %w(console journal kmsg journal-or-kmsg null)
         },
         'LogColor' => Common::BOOLEAN,
         'LogLocation' => Common::BOOLEAN,
@@ -1524,7 +1524,7 @@ module SystemdCookbook
           callbacks: {
             'is valid arch' => lambda do |spec|
               Array(spec).all? do |a|
-                %w( x86 x86-64 x32 arm native ).include?(a)
+                %w(x86 x86-64 x32 arm native).include?(a)
               end
             end
           }
@@ -1634,7 +1634,7 @@ module SystemdCookbook
     OPTIONS ||= {
       'Remote' => {
         'Seal' => Common::BOOLEAN,
-        'SplitMode' => { kind_of: String, equal_to: %w( none host ) },
+        'SplitMode' => { kind_of: String, equal_to: %w(none host) },
         'ServerKeyFile' => Common::ABSOLUTE_PATH,
         'ServerCertificateFile' => Common::ABSOLUTE_PATH,
         'TrustedCertificateFile' => Common::ABSOLUTE_PATH

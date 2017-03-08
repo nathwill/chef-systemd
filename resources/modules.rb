@@ -6,7 +6,7 @@ property :modules, Array, required: true, default: []
 
 default_action :create
 
-%w( create delete ).map(&:to_sym).each do |actn|
+%w(create delete).map(&:to_sym).each do |actn|
   action actn do
     r = new_resource
 

@@ -29,6 +29,8 @@ module SystemdCookbook
       end
 
       module ClassMethods
+        # rubocop: disable AbcSize
+        # rubocop: disable MethodLength
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
 
@@ -59,6 +61,8 @@ module SystemdCookbook
             end
           end
         end
+        # rubocop: enable AbcSize
+        # rubocop: enable MethodLength
       end
     end
 
@@ -69,6 +73,8 @@ module SystemdCookbook
       end
 
       module ClassMethods
+        # rubocop: disable MethodLength
+        # rubocop: disable AbcSize
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
 
@@ -93,7 +99,7 @@ module SystemdCookbook
 
           default_action :create
 
-          %w( create delete ).map(&:to_sym).each do |actn|
+          %w(create delete).map(&:to_sym).each do |actn|
             action actn do
               r = new_resource
 
@@ -114,9 +120,11 @@ module SystemdCookbook
               execute 'daemon-reload' do
                 command "#{cmd} daemon-reload"
                 user(r.user) if r.user
-                environment(
-                  'DBUS_SESSION_BUS_ADDRESS' => "unix:path=/run/user/#{node['etc']['passwd'][r.user]['uid']}/bus"
-                ) if r.user
+                if r.user
+                  environment(
+                    'DBUS_SESSION_BUS_ADDRESS' => "unix:path=/run/user/#{node['etc']['passwd'][r.user]['uid']}/bus"
+                  )
+                end
                 action :nothing
                 only_if { r.triggers_reload }
               end
@@ -129,6 +137,8 @@ module SystemdCookbook
             end
           end
         end
+        # rubocop: enable MethodLength
+        # rubocop: enable AbcSize
       end
     end
 
@@ -139,6 +149,8 @@ module SystemdCookbook
       end
 
       module ClassMethods
+        # rubocop: disable AbcSize
+        # rubocop: disable MethodLength
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
 
@@ -155,7 +167,7 @@ module SystemdCookbook
 
           default_action :create
 
-          %w( create delete ).map(&:to_sym).each do |actn|
+          %w(create delete).map(&:to_sym).each do |actn|
             action actn do
               conf_d = "/etc/systemd/#{resource_type}.conf.d"
 
@@ -175,6 +187,8 @@ module SystemdCookbook
             end
           end
         end
+        # rubocop: enable MethodLength
+        # rubocop: enable AbcSize
       end
     end
   end

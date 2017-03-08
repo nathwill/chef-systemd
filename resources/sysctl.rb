@@ -13,7 +13,7 @@ end
 
 default_action :create
 
-%w( create delete ).map(&:to_sym).each do |actn|
+%w(create delete).map(&:to_sym).each do |actn|
   action actn do
     file "/etc/sysctl.d/#{new_resource.name}.conf" do
       content new_resource.to_kv

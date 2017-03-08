@@ -16,7 +16,7 @@ option_properties SystemdCookbook::Netdev::OPTIONS
 
 default_action :create
 
-%w( create delete ).map(&:to_sym).each do |actn|
+%w(create delete).map(&:to_sym).each do |actn|
   action actn do
     conf_d = '/etc/systemd/network'
 

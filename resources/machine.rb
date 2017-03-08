@@ -61,7 +61,7 @@ action :terminate do
 end
 
 action :kill do
-  cmd = %w( machinectl kill )
+  cmd = %w(machinectl kill)
   cmd << "--signal=#{new_resource.signal}" if new_resource.signal
   cmd << "--kill-who=#{new_resource.kill_who}" if new_resource.kill_who
 

@@ -33,7 +33,7 @@ if defined?(ChefSpec)
 
     # Define drop-in matchers
     ChefSpec.define_matcher("systemd_#{type}_drop_in".to_sym)
-    %w( create delete ).each do |actn|
+    %w(create delete).each do |actn|
       define_method("#{actn}_systemd_#{type}_drop_in".to_sym) do |resource_name|
         ChefSpec::Matchers::ResourceMatcher.new(
           "systemd_#{type}_drop_in".to_sym, actn.to_sym, resource_name
@@ -46,7 +46,7 @@ if defined?(ChefSpec)
   SystemdCookbook::DAEMONS.each do |daemon|
     ChefSpec.define_matcher("systemd_#{daemon}".to_sym)
 
-    %w( create delete ).each do |actn|
+    %w(create delete).each do |actn|
       define_method("#{actn}_systemd_#{daemon}".to_sym) do |resource_name|
         ChefSpec::Matchers::ResourceMatcher.new(
           "systemd_#{daemon}".to_sym, actn.to_sym, resource_name
@@ -59,7 +59,7 @@ if defined?(ChefSpec)
   SystemdCookbook::UTILS.each do |util|
     ChefSpec.define_matcher("systemd_#{util}".to_sym)
 
-    %w( create delete ).each do |actn|
+    %w(create delete).each do |actn|
       define_method("#{actn}_systemd_#{util}".to_sym) do |resource_name|
         ChefSpec::Matchers::ResourceMatcher.new(
           "systemd_#{util}".to_sym, actn.to_sym, resource_name
@@ -69,7 +69,7 @@ if defined?(ChefSpec)
   end
 
   # module actions
-  %w( load unload ).each do |actn|
+  %w(load unload).each do |actn|
     define_method("#{actn}_systemd_modules".to_sym) do |resource_name|
       ChefSpec::Matchers::ResourceMatcher.new(
         :systemd_modules, actn.to_sym, resource_name

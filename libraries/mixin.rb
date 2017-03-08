@@ -28,6 +28,8 @@ module SystemdCookbook
       end
 
       module ClassMethods
+        # rubocop: disable MethodLength
+        # rubocop: disable AbcSize
         def build_dsl
           define_method(:method_missing) do |name, *args, &blk|
             if @context && respond_to?("#{@context}_#{name}".to_sym)
@@ -55,6 +57,8 @@ module SystemdCookbook
             end
           end
         end
+        # rubocop: enable MethodLength
+        # rubocop: enable AbcSize
       end
     end
 
@@ -85,6 +89,7 @@ module SystemdCookbook
       end
 
       module InstanceMethods
+        # rubocop: disable AbcSize
         def property_hash(options = {})
           result = {}
 
@@ -105,6 +110,7 @@ module SystemdCookbook
 
           result.delete_if { |_, v| v.empty? }
         end
+        # rubocop: enable AbcSize
 
         def option_value(obj)
           case obj

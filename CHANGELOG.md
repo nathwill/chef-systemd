@@ -1,8 +1,12 @@
-# 3.0.0 / 2016-??-??
+# 3.0.0 / 2017-??-??
+
+# 2.1.3 / 2016-11-22
+
+* add RandomizedDelaySec (thanks @szymonpk!)
 
 # 2.1.2 / 2016-09-22
 
-* add apply action for systemd_sysctl chefspec matcher
+* add apply action for systemd_sysctl chefspec matcher (thanks @tylermarshall!)
 
 # 2.1.1 / 2016-09-08
 

@@ -45,13 +45,13 @@ control 'creates modules' do
     its(:content) { should eq 'blacklist pcspkr' }
   end
 
-  describe file('/etc/modules-load.d/zlib.conf') do
-    its(:content) { should eq 'zlib' }
+  describe file('/etc/modules-load.d/vboxguest.conf') do
+    its(:content) { should eq 'vboxguest' }
   end
 
   describe file('/proc/modules') do
     its(:content) { should_not match /^beep/ }
-    its(:content) { should match /^zlib/ }
+    its(:content) { should match /^vboxguest/ }
   end
 end
 

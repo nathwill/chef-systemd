@@ -25,8 +25,8 @@ systemd_modules 'die-beep-die' do
 end
 
 # Test creating, loading
-systemd_modules 'zlib' do
-  modules %w( zlib )
+systemd_modules 'vboxguest' do
+  modules %w( vboxguest )
   action [:create, :load]
 end
 
@@ -47,6 +47,32 @@ systemd_tmpfile 'my-app' do
   path '/tmp/my-app'
   age '10d'
   type 'f'
+end
+
+# Work around bug in Fedora 25 systemd-importd (systemd v231)
+# Ref: https://github.com/systemd/systemd/issues/3996
+systemd_service_drop_in '00-fix-fedora-importd' do
+  override 'systemd-importd.service'
+  only_if { platform?('fedora') }
+  service do
+    system_call_filter %w()
+  end
+end
+
+systemd_service_drop_in '01-fix-fedora-importd' do
+  override 'systemd-importd.service'
+  only_if { platform?('fedora') }
+  service do
+    system_call_filter %w(
+      ~@clock
+      @cpu-emulation
+      @debug
+      @keyring
+      @module
+      @obsolete
+      @raw-io
+    )
+  end
 end
 
 systemd_machine_image 'Fedora24' do

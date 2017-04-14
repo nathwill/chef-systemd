@@ -45,7 +45,6 @@ if defined?(ChefSpec)
   # define daemon drop-in matchers
   SystemdCookbook::DAEMONS.each do |daemon|
     ChefSpec.define_matcher("systemd_#{daemon}".to_sym)
-
     %w(create delete).each do |actn|
       define_method("#{actn}_systemd_#{daemon}".to_sym) do |resource_name|
         ChefSpec::Matchers::ResourceMatcher.new(
@@ -58,7 +57,6 @@ if defined?(ChefSpec)
   # define util matchers
   SystemdCookbook::UTILS.each do |util|
     ChefSpec.define_matcher("systemd_#{util}".to_sym)
-
     %w(create delete).each do |actn|
       define_method("#{actn}_systemd_#{util}".to_sym) do |resource_name|
         ChefSpec::Matchers::ResourceMatcher.new(

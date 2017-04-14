@@ -40,9 +40,9 @@ module SystemdCookbook
           include SystemdCookbook::Mixin::DSL
 
           property :user, String, desired_state: false
-          property :verify, [TrueClass, FalseClass], 
-                            default: true,
-                            desired_state: false
+          property :verify, [TrueClass, FalseClass],
+                   default: true,
+                   desired_state: false
 
           data_class = resource_type.to_s.camelcase.to_sym
           data = SystemdCookbook.const_get(data_class)::OPTIONS

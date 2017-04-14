@@ -40,6 +40,9 @@ module SystemdCookbook
           include SystemdCookbook::Mixin::DSL
 
           property :user, String, desired_state: false
+          property :verify, [TrueClass, FalseClass], 
+                            default: true,
+                            desired_state: false
 
           data_class = resource_type.to_s.camelcase.to_sym
           data = SystemdCookbook.const_get(data_class)::OPTIONS
@@ -54,6 +57,7 @@ module SystemdCookbook
                 triggers_reload new_resource.triggers_reload
                 user new_resource.user if new_resource.user
                 content property_hash(data)
+                verify new_resource.verify
                 action actn
               end
             end

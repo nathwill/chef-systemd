@@ -27,6 +27,7 @@ systemd_mount 'tmp' do
     type 'tmpfs'
     options 'mode=1777,strictatime'
   end
+  verify false
 end
 
 systemd_service 'systemd-ask-password-console' do
@@ -40,6 +41,7 @@ systemd_service 'systemd-ask-password-console' do
     exec_start_pre '-/usr/bin/systemctl stop systemd-ask-password-console.path systemd-ask-password-console.service systemd-ask-password-plymouth.path systemd-ask-password-plymouth.service'
     exec_start '/usr/bin/systemd-tty-ask-password-agent --wall'
   end
+  verify false
 end
 
 systemd_path 'systemd-ask-password-console' do
@@ -54,6 +56,7 @@ systemd_path 'systemd-ask-password-console' do
     directory_not_empty '/run/systemd/ask-password'
     make_directory true
   end
+  verify false
 end
 
 systemd_slice 'user' do

@@ -89,7 +89,7 @@ if defined?(ChefSpec)
   end
 
   %w(journal_remote journal_upload nspawn).each do |misc|
-    ChefSpec.define_matcher("systemd_#{misc}").to_sym)
+    ChefSpec.define_matcher("systemd_#{misc}".to_sym)
     %w(create delete).each do |actn|
       define_method("#{actn}_systemd_#{misc}".to_sym) do |resource_name|
         ChefSpec::Matchers::ResourceMatcher.new(

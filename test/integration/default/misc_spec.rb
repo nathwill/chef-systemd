@@ -1,3 +1,15 @@
+control 'creates bootchart drop-ins' do
+  describe file('/etc/systemd/bootchart.conf.d/my-overrides.conf') do
+    its(:content) do
+      should eq <<EOT
+[Bootchart]
+ScaleX = 100
+ScaleY = 20
+EOT
+    end
+  end
+end
+
 control 'creates system drop-ins' do
   describe file('/etc/systemd/system.conf.d/my-overrides.conf') do
     its(:content) do

@@ -1,3 +1,9 @@
+systemd_bootchart 'my-overrides' do
+  bootchart do
+    scale_x 100
+    scale_y 20
+  end
+end
 
 systemd_system 'my-overrides' do
   manager do

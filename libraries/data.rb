@@ -39,7 +39,6 @@ module SystemdCookbook
   DAEMONS ||= %w(
     journald
     logind
-    networkd
     resolved
     system
     timesyncd

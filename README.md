@@ -102,6 +102,40 @@ configures the virtual console (keyboard mappings, console font, etc) via `/etc/
 
 ### Resources
 
+All resource options for resources configured via INI files support a more convenient notation than enumerating the full property name for every configuration heading. For example, in a service unit:
+
+```ruby
+systemd_service 'sshd.socket' do
+  unit_description 'OpenSSH Server Socket'
+  unit_documentation 'man:sshd(8) man:sshd_config(5)'
+  unit_conflicts 'sshd.service'
+  socket_listen_stream 22
+  socket_accept true
+  install_wanted_by 'sockets.target'
+end
+```
+
+is the same as:
+
+```ruby
+systemd_service 'sshd.socket' do
+  unit do
+    description 'OpenSSH Server Socket'
+    documentation 'man:sshd(8) man:sshd_config(5)'
+    conflicts 'sshd.service'
+  end
+  socket do
+    listen_stream 22
+    accept true
+  end
+  install do
+    wanted_by 'sockets.target'
+  end
+end
+```
+
+Prefixing section headings onto property names is necessary to avoid conflicts between properties in different headings of the same resources. For compactness, only the first form is documented for each resource; which form is easiest to use/read is left for the user to decide.
+
 #### Units & Unit Drop-Ins
 
 |Unit Type|Resource|Drop-In Resource|
@@ -116,32 +150,101 @@ configures the virtual console (keyboard mappings, console font, etc) via `/etc/
 |target|systemd_target|systemd_target_drop_in|
 |timer|systemd_timer|systemd_timer_drop_in|
 
+##### systemd_automount
+
+##### systemd_automount_drop_in
+
+##### systemd_mount
+
+##### systemd_mount_drop_in
+
+##### systemd_path
+
+##### systemd_path_drop_in
+
+##### systemd_service
+
+##### systemd_service_drop_in
+
+##### systemd_slice
+
+##### systemd_slice_drop_in
+
+##### systemd_socket
+
+##### systemd_socket_drop_in
+
+##### systemd_swap
+
+##### systemd_swap_drop_in
+
+##### systemd_target
+
+##### systemd_target_drop_in
+
+##### systemd_timer
+
+##### systemd_timer_drop_in
+
 #### System Services
 
 |Name|Resource|
 |----|--------|
 |manager (system)|systemd_system|
 |manager (user)|systemd_user|
-|journal-remote|systemd_journal_remote|
-|journal-upload|systemd_journal_upload|
 |journald|systemd_journald|
 |logind|systemd_logind|
 |resolved|systemd_resolved|
 |timesyncd|systemd_timesyncd|
+
+##### systemd_system
+
+##### systemd_user
+
+##### systemd_journald
+
+##### systemd_logind
+
+##### systemd_resolved
+
+##### systemd_timesyncd
 
 #### Utilities
 
 |Name|Resource|
 |----|--------|
 |binfmt|systemd_binfmt|
+|bootchart|systemd_bootchart|
 |coredump|systemd_coredump|
+|journal-remote|systemd_journal_remote|
+|journal-upload|systemd_journal_upload|
 |modules|systemd_modules|
 |sleep|systemd_sleep|
 |sysctl|systemd_sysctl|
 |sysuser|systemd_sysuser|
 |tmpfile|systemd_tmpfile|
 
-#### Machines
+##### systemd_binfmt
+
+##### systemd_bootchart
+
+##### systemd_coredump
+
+##### systemd_journal_remote
+
+##### systemd_journal_upload
+
+##### systemd_modules
+
+##### systemd_sleep
+
+##### systemd_sysctl
+
+##### systemd_sysuser
+
+##### systemd_tmpfile
+
+#### Machine Management
 
 |Name|Resource|
 |----|--------|
@@ -149,13 +252,25 @@ configures the virtual console (keyboard mappings, console font, etc) via `/etc/
 |machine_image|systemd_machine_image|
 |nspawn|systemd_nspawn|
 
-#### Networking
+##### systemd_machine
+
+##### systemd_machine_image
+
+##### systemd_nspawn
+
+#### Network Configuration
 
 |Name|Resource|
 |----|--------|
 |network|systemd_network|
 |link|systemd_link|
 |netdev|systemd_netdev|
+
+##### systemd_network
+
+##### systemd_link
+
+##### systemd_netdev
 
 --
 

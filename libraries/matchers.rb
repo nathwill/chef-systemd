@@ -31,7 +31,6 @@ if defined?(ChefSpec)
       end
     end
 
-    # Define drop-in matchers
     ChefSpec.define_matcher("systemd_#{type}_drop_in".to_sym)
     %w(create delete).each do |actn|
       define_method("#{actn}_systemd_#{type}_drop_in".to_sym) do |resource_name|
@@ -42,7 +41,6 @@ if defined?(ChefSpec)
     end
   end
 
-  # define daemon drop-in matchers
   SystemdCookbook::DAEMONS.each do |daemon|
     ChefSpec.define_matcher("systemd_#{daemon}".to_sym)
     %w(create delete).each do |actn|
@@ -54,7 +52,6 @@ if defined?(ChefSpec)
     end
   end
 
-  # define util matchers
   SystemdCookbook::UTILS.each do |util|
     ChefSpec.define_matcher("systemd_#{util}".to_sym)
     %w(create delete).each do |actn|
@@ -66,7 +63,6 @@ if defined?(ChefSpec)
     end
   end
 
-  # module actions
   %w(load unload).each do |actn|
     define_method("#{actn}_systemd_modules".to_sym) do |resource_name|
       ChefSpec::Matchers::ResourceMatcher.new(
@@ -75,10 +71,49 @@ if defined?(ChefSpec)
     end
   end
 
-  # sysctl actions
   define_method(:apply_systemd_sysctl) do |resource_name|
     ChefSpec::Matchers::ResourceMatcher.new(
       :systemd_sysctl, :apply, resource_name
     )
+  end
+
+  SystemdCookbook::NETS.each do |net|
+    ChefSpec.define_matcher("systemd_#{net}".to_sym)
+    %w(create delete).each do |actn|
+      define_method("#{actn}_systemd_#{net}".to_sym) do |resource_name|
+        ChefSpec::Matchers::ResourceMatcher.new(
+          "systemd_#{net}".to_sym, actn.to_sym, resource_name
+        )
+      end
+    end
+  end
+
+  %w(journal_remote journal_upload nspawn).each do |misc|
+    ChefSpec.define_matcher("systemd_#{misc}").to_sym)
+    %w(create delete).each do |actn|
+      define_method("#{actn}_systemd_#{misc}".to_sym) do |resource_name|
+        ChefSpec::Matchers::ResourceMatcher.new(
+          "systemd_#{misc}".to_sym, actn.to_sym, resource_name
+        )
+      end
+    end
+  end
+
+  ChefSpec.define_matcher(:systemd_machine)
+  %w(start poweroff reboot enable disable terminate kill copy_to copy_from).each do |actn|
+    define_method("#{actn}_systemd_machine".to_sym) do |resource_name|
+      ChefSpec::Matchers::ResourceMatcher.new(
+        :systemd_machine, actn.to_sym, resource_name
+      )
+    end
+  end
+
+  ChefSpec.define_matcher(:systemd_machine_image)
+  %w(pull set_properties clone rename remove import export).each do |actn|
+    define_method("#{actn_}_systemd_machine_image".to_sym) do |resource_name|
+      ChefSpec::Matchers::ResourceMatcher.new(
+        :systemd_machine_image, actn.to_sym, resource_name
+      )
+    end
   end
 end

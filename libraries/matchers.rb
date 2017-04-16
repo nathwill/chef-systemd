@@ -110,7 +110,7 @@ if defined?(ChefSpec)
 
   ChefSpec.define_matcher(:systemd_machine_image)
   %w(pull set_properties clone rename remove import export).each do |actn|
-    define_method("#{actn_}_systemd_machine_image".to_sym) do |resource_name|
+    define_method("#{actn}_systemd_machine_image".to_sym) do |resource_name|
       ChefSpec::Matchers::ResourceMatcher.new(
         :systemd_machine_image, actn.to_sym, resource_name
       )

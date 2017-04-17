@@ -153,6 +153,7 @@ Prefixing section headings onto property names is necessary to avoid conflicts b
 ##### systemd_automount
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |automount_where|see docs|nil|String|
 |automount_directory_mode|see docs|nil|String|
 |automount_timeout_idle_sec|see docs|nil|[String, Integer]|
@@ -236,6 +237,7 @@ Prefixing section headings onto property names is necessary to avoid conflicts b
 see systemd_automount docs for additional properties.
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
@@ -243,6 +245,7 @@ see systemd_automount docs for additional properties.
 ##### systemd_mount
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |mount_what|see docs|nil|String|
 |mount_where|see docs|nil|String|
 |mount_type|see docs|nil|String|
@@ -432,12 +435,15 @@ see systemd_automount docs for additional properties.
 see systemd_mount docs for additional properties.
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
 
 ##### systemd_path
 
+|property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |path_path_exists|see docs|nil|String|
 |path_path_exists_glob|see docs|nil|String|
 |path_path_changed|see docs|nil|String|
@@ -526,6 +532,7 @@ see systemd_mount docs for additional properties.
 see systemd_path docs for additional properties.
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
@@ -533,6 +540,7 @@ see systemd_path docs for additional properties.
 ##### systemd_service
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |service_type|see docs|nil|String|
 |service_remain_after_exit|see docs|nil|[TrueClass, FalseClass]|
 |service_guess_main_pid|see docs|nil|[TrueClass, FalseClass]|
@@ -745,6 +753,7 @@ see systemd_path docs for additional properties.
 see systemd_service documentation for additional properties.
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
@@ -752,6 +761,7 @@ see systemd_service documentation for additional properties.
 ##### systemd_slice
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |slice_cpu_accounting|see docs|nil|[TrueClass, FalseClass]|
 |slice_cpu_shares|see docs|nil|Integer|
 |slice_startup_cpu_shares|see docs|nil|Integer|
@@ -858,6 +868,7 @@ see systemd_service documentation for additional properties.
 see systemd_slice documentation for additional properties.
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
@@ -865,6 +876,7 @@ see systemd_slice documentation for additional properties.
 ##### systemd_socket
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |socket_listen_stream|see docs|nil|[String, Integer]|
 |socket_listen_datagram|see docs|nil|[String, Integer]|
 |socket_listen_sequential_packet|see docs|nil|[String, Integer]|
@@ -1103,6 +1115,7 @@ see systemd_slice documentation for additional properties.
 see systemd_socket docuementation for additional properties.
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
@@ -1110,7 +1123,8 @@ see systemd_socket docuementation for additional properties.
 ##### systemd_swap
 
 |property|description|default|kind_of|
-wap_what|see docs|nil|String|
+|--------|-----------|-------|-------|
+|swap_what|see docs|nil|String|
 |swap_priority|see docs|nil|Integer|
 |swap_options|see docs|nil|String|
 |swap_timeout_sec|see docs|nil|[String, Integer]|
@@ -1296,6 +1310,7 @@ wap_what|see docs|nil|String|
 see systemd_swap documentation for additional options.
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
@@ -1303,6 +1318,7 @@ see systemd_swap documentation for additional options.
 ##### systemd_target
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |unit_description|see docs|nil|String|
 |unit_documentation|see docs|nil|[String, Array]|
 |unit_requires|see docs|nil|[String, Array]|
@@ -1383,6 +1399,7 @@ see systemd_swap documentation for additional options.
 see systemd_target documentation for additonal properties.
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
@@ -1390,6 +1407,7 @@ see systemd_target documentation for additonal properties.
 ##### systemd_timer
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |timer_on_active_sec|see docs|nil|[String, Integer]|
 |timer_on_boot_sec|see docs|nil|[String, Integer]|
 |timer_on_startup_sec|see docs|nil|[String, Integer]|
@@ -1482,6 +1500,7 @@ see systemd_target documentation for additonal properties.
 see systemd_timer documentation for additional properties
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
@@ -1500,6 +1519,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_system
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |manager_log_level|see docs|nil|[String, Integer]|
 |manager_log_target|see docs|nil|String|
 |manager_log_color|see docs|nil|[TrueClass, FalseClass]|
@@ -1550,6 +1570,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_user
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |manager_log_level|see docs|nil|[String, Integer]|
 |manager_log_target|see docs|nil|String|
 |manager_log_color|see docs|nil|[TrueClass, FalseClass]|
@@ -1600,6 +1621,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_journald
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |journal_storage|see docs|nil|String|
 |journal_compress|see docs|nil|[TrueClass, FalseClass]|
 |journal_seal|see docs|nil|[TrueClass, FalseClass]|
@@ -1630,6 +1652,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_logind
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |login_n_auto_v_ts|see docs|nil|Integer|
 |login_reserve_vt|see docs|nil|Integer|
 |login_kill_user_processes|see docs|nil|[TrueClass, FalseClass]|
@@ -1657,6 +1680,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_resolved
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |resolve_dns|see docs|nil|[String, Array]|
 |resolve_fallback_dns|see docs|nil|[String, Array]|
 |resolve_domains|see docs|nil|[String, Array]|
@@ -1666,6 +1690,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_timesyncd
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |time_ntp|see docs|nil|[String, Array]|
 |time_fallback_ntp|see docs|nil|[String, Array]|
 
@@ -1687,10 +1712,12 @@ see systemd_timer documentation for additional properties
 ##### systemd_binfmt
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 
 ##### systemd_bootchart
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |bootchart_samples|see docs|nil|Integer|
 |bootchart_frequency|see docs|nil|Numeric|
 |bootchart_relative|see docs|nil|[TrueClass, FalseClass]|
@@ -1706,6 +1733,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_coredump
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |coredump_storage|see docs|nil|String|
 |coredump_compress|see docs|nil|[TrueClass, FalseClass]|
 |coredump_process_size_max|see docs|nil|Integer|
@@ -1717,6 +1745,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_journal_remote
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |remote_seal|see docs|nil|[TrueClass, FalseClass]|
 |remote_split_mode|see docs|nil|String|
 |remote_server_key_file|see docs|nil|String|
@@ -1726,6 +1755,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_journal_upload
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |upload_url|see docs|nil|String|
 |upload_server_key_file|see docs|nil|String|
 |upload_server_certificate_file|see docs|nil|String|
@@ -1734,11 +1764,13 @@ see systemd_timer documentation for additional properties
 ##### systemd_modules
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 
 
 ##### systemd_sleep
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |sleep_suspend_mode|see docs|nil|[String, Array]|
 |sleep_hibernate_mode|see docs|nil|[String, Array]|
 |sleep_hybrid_sleep_mode|see docs|nil|[String, Array]|
@@ -1749,15 +1781,18 @@ see systemd_timer documentation for additional properties
 ##### systemd_sysctl
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 
 
 ##### systemd_sysuser
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 
 ##### systemd_tmpfile
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 
 #### Machine Management
 
@@ -1770,15 +1805,18 @@ see systemd_timer documentation for additional properties
 ##### systemd_machine
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 
 
 ##### systemd_machine_image
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 
 ##### systemd_nspawn
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |exec_boot|see docs|nil|[TrueClass, FalseClass]|
 |exec_process_two|see docs|nil|[TrueClass, FalseClass]|
 |exec_parameters|see docs|nil|[String, Array]|
@@ -1819,6 +1857,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_network
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |match_mac_address|see docs|nil|String|
 |match_path|see docs|nil|[String, Array]|
 |match_driver|see docs|nil|[String, Array]|
@@ -1919,6 +1958,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_link
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |match_mac_address|see docs|nil|String|
 |match_original_name|see docs|nil|[String, Array]|
 |match_path|see docs|nil|[String, Array]|
@@ -1941,6 +1981,7 @@ see systemd_timer documentation for additional properties
 ##### systemd_netdev
 
 |property|description|default|kind_of|
+|--------|-----------|-------|-------|
 |match_host|see docs|nil|String|
 |match_virtualization|see docs|nil|[String, TrueClass, FalseClass]|
 |match_kernel_command_line|see docs|nil|String|

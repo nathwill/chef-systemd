@@ -344,6 +344,7 @@ module SystemdCookbook
   module Install
     OPTIONS ||= {
       'Install' => {
+        'Alias' => Common::ARRAY_OF_UNITS,
         'WantedBy' => Common::ARRAY_OF_UNITS,
         'RequiredBy' => Common::ARRAY_OF_UNITS,
         'Also' => Common::ARRAY_OF_UNITS,

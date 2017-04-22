@@ -1713,6 +1713,12 @@ see systemd_timer documentation for additional properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
+|type|see docs|'M'|String|
+|offset|see docs|nil|Integer|
+|magic|see docs|nil|String|
+|mask|see docs|nil|String|
+|interpreter|see docs|nil|String|
+|flags|see docs|nil|String|
 
 ##### systemd_bootchart
 
@@ -1765,7 +1771,8 @@ see systemd_timer documentation for additional properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
-
+|blacklist|enabling or blacklisting?|false|[TrueClass, FalseClass|
+|modules|array of modules|[]|Array|
 
 ##### systemd_sleep
 
@@ -1782,17 +1789,30 @@ see systemd_timer documentation for additional properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
-
+|name|sysctl name|resource name|String|
+|value|sysctl value|nil|[String, Numeric, Array]|
 
 ##### systemd_sysuser
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
+|type|see docs|u|String|
+|name|see docs|resource name|String|
+|id|see docs|nil|[String, Integer]|
+|gecos|see docs|-|String|
+|home|see docs|-|String|
 
 ##### systemd_tmpfile
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
+|path|see docs|nil|String|
+|mode|see docs|-|[String, Numeric]|
+|uid|see docs|-|String|
+|gid|see docs|-|String|
+|age|see docs|-|String|
+|argument|see docs|-|String|
+|type|see docs|f|String|
 
 #### Machine Management
 
@@ -1804,14 +1824,32 @@ see systemd_timer documentation for additional properties
 
 ##### systemd_machine
 
+Resource for managing systemd [machines][machines].
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
-
+|signal|see docs|nil|[String,Integer|
+|kill_who|see docs|nil|String|
+|service|name of service to act on for enable/disable actions|`systemd-nspawn@#{name}.service`|String|
+|host_path|used for actions when a path on the host is referenced|nil|String|
+|machine_path|used for actions when a path in the machine is referenced|nil|String|
 
 ##### systemd_machine_image
 
+Resource for managing [machine images][images].
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
+|type|see docs|tar|String|
+|source|source of image|nil|String|
+|path|host path for import/export|nil|String|
+|size_limit|see docs|nil|String|
+|read_only|see docs|false|[TrueClass, FalseClass]|
+|from|source name for clone/rename|resource name|String|
+|to|destination name for clone/rename|resource name|String|
+|force|force for import/export/pull|false|[TrueClass, FalseClass]|
+|format|archive format for import/export (see docs for supported options)|nil|String|
+|verify|whether to verify on pull|signature|String|
 
 ##### systemd_nspawn
 
@@ -2070,3 +2108,5 @@ see systemd_timer documentation for additional properties
 [chef]: https://chef.io
 [docs]: http://www.freedesktop.org/wiki/Software/systemd
 [rhel]: https://access.redhat.com/articles/754933
+[machines]: https://www.freedesktop.org/software/systemd/man/machinectl.html#Machine%20Commands
+[images]: https://www.freedesktop.org/software/systemd/man/machinectl.html#Image%20Commands

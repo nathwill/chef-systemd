@@ -19,7 +19,7 @@ We also provide reference [documentation](resources.md) for this cookbook's reso
 
 ### Attributes
 
-The attributes used by this cookbook are under the `systemd` name space.
+The attributes used by this cookbook are under the `systemd` name space (e.g. `node['systemd']['hostname']).
 
 |Attribute|Description|Type|Default|
 |---------|-----------|----|-------|
@@ -67,7 +67,7 @@ provides no-op logind service resource as notification target
 
 #### machine
 
-installs btrfs tools required by machined, installs machined utilities, sets machine pool disk size limit
+installs btrfs tools required by machined, installs machined utilities, sets machine pool disk size limit from corresponding attribute.
 
 #### networkd
 
@@ -105,7 +105,7 @@ configures the virtual console (keyboard mappings, console font, etc) via `/etc/
 All resource options for resources configured via INI files support a more convenient notation than enumerating the full property name for every configuration heading. For example, in a service unit:
 
 ```ruby
-systemd_service 'sshd.socket' do
+systemd_socket 'sshd' do
   unit_description 'OpenSSH Server Socket'
   unit_documentation 'man:sshd(8) man:sshd_config(5)'
   unit_conflicts 'sshd.service'
@@ -118,7 +118,7 @@ end
 is the same as:
 
 ```ruby
-systemd_service 'sshd.socket' do
+systemd_socket 'sshd' do
   unit do
     description 'OpenSSH Server Socket'
     documentation 'man:sshd(8) man:sshd_config(5)'
@@ -134,7 +134,7 @@ systemd_service 'sshd.socket' do
 end
 ```
 
-Prefixing section headings onto property names is necessary to avoid conflicts between properties in different headings of the same resources. For compactness, only the first form is documented for each resource; which form is easiest to use/read is left for the user to decide.
+Prefixing section headings onto property names is necessary to avoid conflicts between properties in different headings of the same resources. For compactness, only the first form is documented for each resource; which form is easiest to use is left for the user to decide.
 
 #### Units & Unit Drop-Ins
 
@@ -151,6 +151,14 @@ Prefixing section headings onto property names is necessary to avoid conflicts b
 |timer|systemd_timer|systemd_timer_drop_in|
 
 ##### systemd_automount
+
+resource for managing [automount][automount] units.
+
+###### Actions
+
+Supports all [systemd_unit actions][sd_unit_actions].
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -234,7 +242,15 @@ Prefixing section headings onto property names is necessary to avoid conflicts b
 
 ##### systemd_automount_drop_in
 
-see systemd_automount docs for additional properties.
+Resource for managing automount unit drop-in files.
+
+###### Actions
+
+Supports `:create` and `:delete` actions.
+
+###### Properties
+
+See systemd_automount docs for additional properties.
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -243,6 +259,14 @@ see systemd_automount docs for additional properties.
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
 
 ##### systemd_mount
+
+Resource for managing [mount units][mount].
+
+###### Actions
+
+Supports all [systemd_unit actions][sd_unit_actions].
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -432,7 +456,15 @@ see systemd_automount docs for additional properties.
 
 ##### systemd_mount_drop_in
 
-see systemd_mount docs for additional properties.
+Resource for managing mount unit drop-in files.
+
+###### Actions
+
+Supports `:create` and `:delete` actions.
+
+###### Properties
+
+see systemd_mount resource for additional properties.
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -441,6 +473,14 @@ see systemd_mount docs for additional properties.
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
 
 ##### systemd_path
+
+Resource for managing [path units][path].
+
+###### Actions
+
+Supports all [systemd_unit actions][sd_unit_actions].
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -529,7 +569,15 @@ see systemd_mount docs for additional properties.
 
 ##### systemd_path_drop_in
 
-see systemd_path docs for additional properties.
+Resource for managing path unit drop-in files.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
+see systemd_path resource for additional properties.
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -538,6 +586,14 @@ see systemd_path docs for additional properties.
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
 
 ##### systemd_service
+
+Resource for managing [service units][service].
+
+###### Actions
+
+Supports all [systemd_unit actions][sd_unit_actions].
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -750,7 +806,15 @@ see systemd_path docs for additional properties.
 
 ##### systemd_service_drop_in
 
-see systemd_service documentation for additional properties.
+Resource for managing service unit drop-in files.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
+see systemd_service resource for additional properties.
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -759,6 +823,14 @@ see systemd_service documentation for additional properties.
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
 
 ##### systemd_slice
+
+Resource for managing [slice units][slice].
+
+###### Actions
+
+Supports all [systemd_unit actions][sd_unit_actions].
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -865,7 +937,15 @@ see systemd_service documentation for additional properties.
 
 ##### systemd_slice_drop_in
 
-see systemd_slice documentation for additional properties.
+Resource for managing slice unit drop-in files.
+
+###### Actions
+
+Supports `:create` and `:delete` actions.
+
+###### Properties
+
+see systemd_slice resource for additional properties.
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -874,6 +954,14 @@ see systemd_slice documentation for additional properties.
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
 
 ##### systemd_socket
+
+Resource for managing [socket units][socket].
+
+###### Actions
+
+Supports all [systemd_unit actions][sd_unit_actions].
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1112,7 +1200,15 @@ see systemd_slice documentation for additional properties.
 
 ##### systemd_socket_drop_in
 
-see systemd_socket docuementation for additional properties.
+Resource for managing socket unit drop-in files.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
+see systemd_socket resource for additional properties.
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1121,6 +1217,14 @@ see systemd_socket docuementation for additional properties.
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
 
 ##### systemd_swap
+
+Resource for managing [swap units][swap].
+
+###### Actions
+
+Supports all [systemd_unit actions][sd_unit_actions].
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1307,7 +1411,15 @@ see systemd_socket docuementation for additional properties.
 
 ##### systemd_swap_drop_in
 
-see systemd_swap documentation for additional options.
+Resource for managing swap unit drop-in files.
+
+###### Actions
+
+Supports `:create` and `:delete` actions.
+
+###### Properties
+
+see systemd_swap resource for additional options.
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1316,6 +1428,14 @@ see systemd_swap documentation for additional options.
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
 
 ##### systemd_target
+
+Resource for managing [target units][target].
+
+###### Actions
+
+Supports all [systemd_unit actions][sd_unit_actions].
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1396,7 +1516,15 @@ see systemd_swap documentation for additional options.
 
 ##### systemd_target_drop_in
 
-see systemd_target documentation for additonal properties.
+Resource for managing target unit drop-in files.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
+see systemd_target resource for additional properties.
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1405,6 +1533,14 @@ see systemd_target documentation for additonal properties.
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
 
 ##### systemd_timer
+
+Resource for managing [timer units][timer].
+
+###### Actions
+
+Supports all [systemd_unit actions][sd_unit_actions].
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1497,7 +1633,15 @@ see systemd_target documentation for additonal properties.
 
 ##### systemd_timer_drop_in
 
-see systemd_timer documentation for additional properties
+Resource for managing timer unit drop-in files.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
+see systemd_timer resource for additional properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -2110,3 +2254,13 @@ Resource for managing [machine images][images].
 [rhel]: https://access.redhat.com/articles/754933
 [machines]: https://www.freedesktop.org/software/systemd/man/machinectl.html#Machine%20Commands
 [images]: https://www.freedesktop.org/software/systemd/man/machinectl.html#Image%20Commands
+[sd_unit_actions]: https://docs.chef.io/resource_systemd_unit.html#actions
+[automount]: https://www.freedesktop.org/software/systemd/man/systemd.automount.html
+[mount]: https://www.freedesktop.org/software/systemd/man/systemd.mount.html
+[path]: https://www.freedesktop.org/software/systemd/man/systemd.path.html
+[service]: https://www.freedesktop.org/software/systemd/man/systemd.service.html
+[slice]: https://www.freedesktop.org/software/systemd/man/systemd.slice.html
+[socket]: https://www.freedesktop.org/software/systemd/man/systemd.socket.html
+[swap]: https://www.freedesktop.org/software/systemd/man/systemd.swap.html
+[target]: https://www.freedesktop.org/software/systemd/man/systemd.target.html
+[timer]: https://www.freedesktop.org/software/systemd/man/systemd.timer.html

@@ -1662,6 +1662,14 @@ see systemd_timer resource for additional properties
 
 ##### systemd_system
 
+Resource for managing systemd [system][system]/session service manager config files.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |manager_log_level|see docs|nil|[String, Integer]|
@@ -1712,6 +1720,14 @@ see systemd_timer resource for additional properties
 |manager_default_limit_rttime|see docs|nil|[String, Integer]|
 
 ##### systemd_user
+
+Resource for managing systemd [user][user]/session service manager configuration files.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1764,6 +1780,14 @@ see systemd_timer resource for additional properties
 
 ##### systemd_journald
 
+Resource for managing [systemd-journald][journald] configuration files.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |journal_storage|see docs|nil|String|
@@ -1795,6 +1819,14 @@ see systemd_timer resource for additional properties
 
 ##### systemd_logind
 
+Resource for managing [systemd-logind][logind] configuration files.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |login_n_auto_v_ts|see docs|nil|Integer|
@@ -1823,6 +1855,14 @@ see systemd_timer resource for additional properties
 
 ##### systemd_resolved
 
+Resource for managing [systemd-resolved][resolved] configuration files.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |resolve_dns|see docs|nil|[String, Array]|
@@ -1833,12 +1873,22 @@ see systemd_timer resource for additional properties
 
 ##### systemd_timesyncd
 
+Resource for managing [systemd-timesyncd][timesyncd] configuration files
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |time_ntp|see docs|nil|[String, Array]|
 |time_fallback_ntp|see docs|nil|[String, Array]|
 
 #### Utilities
+
+###### Properties
 
 |Name|Resource|
 |----|--------|
@@ -1855,6 +1905,14 @@ see systemd_timer resource for additional properties
 
 ##### systemd_binfmt
 
+Resource for managing binary formats for executables via [systemd-binfmt][binfmt].
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |type|see docs|'M'|String|
@@ -1865,6 +1923,14 @@ see systemd_timer resource for additional properties
 |flags|see docs|nil|String|
 
 ##### systemd_bootchart
+
+Resource for managing [systemd-bootchart][bootchart].
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1882,6 +1948,14 @@ see systemd_timer resource for additional properties
 
 ##### systemd_coredump
 
+Resource for managing [systemd-coredump][coredump].
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |coredump_storage|see docs|nil|String|
@@ -1894,6 +1968,14 @@ see systemd_timer resource for additional properties
 
 ##### systemd_journal_remote
 
+Resource for configuring [systemd-journal-remote][journal_remote].
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |remote_seal|see docs|nil|[TrueClass, FalseClass]|
@@ -1904,6 +1986,14 @@ see systemd_timer resource for additional properties
 
 ##### systemd_journal_upload
 
+Resource for configuration [systemd-journal-upload][journal_upload].
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |upload_url|see docs|nil|String|
@@ -1913,12 +2003,28 @@ see systemd_timer resource for additional properties
 
 ##### systemd_modules
 
+Resource for managing kernel modules.
+
+###### Actions
+
+Supports `:create`, `:delete`, `:load`, `:unload` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |blacklist|enabling or blacklisting?|false|[TrueClass, FalseClass|
 |modules|array of modules|[]|Array|
 
 ##### systemd_sleep
+
+Resource for managing system sleep state logic under [systemd-sleep][sleep].
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1931,12 +2037,28 @@ see systemd_timer resource for additional properties
 
 ##### systemd_sysctl
 
+Resource for managing kernel parameters via [systemd-sysctl][sysctl].
+
+###### Actions
+
+Supports `:create`, `:delete`, & `:apply` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |name|sysctl name|resource name|String|
 |value|sysctl value|nil|[String, Numeric, Array]|
 
 ##### systemd_sysuser
+
+Resource for managing system users & groups via [systemd-sysuser][sysuser].
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1947,6 +2069,14 @@ see systemd_timer resource for additional properties
 |home|see docs|-|String|
 
 ##### systemd_tmpfile
+
+Resource for managing temporary files & directories via [systemd-tmpfile][tmpfile].
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1970,6 +2100,12 @@ see systemd_timer resource for additional properties
 
 Resource for managing systemd [machines][machines].
 
+###### Actions
+
+Supports `:start`, `:poweroff`, `:reboot`, `:enable`, `:disable`, `:terminate`, `:kill`, `:copy_to`, `:copy_from` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |signal|see docs|nil|[String,Integer|
@@ -1981,6 +2117,12 @@ Resource for managing systemd [machines][machines].
 ##### systemd_machine_image
 
 Resource for managing [machine images][images].
+
+###### Actions
+
+Supports `:pull`, `:set_properties`, `:clone`, `:rename`, `:remove`, `:import`, `:export` actions.
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -1996,6 +2138,14 @@ Resource for managing [machine images][images].
 |verify|whether to verify on pull|signature|String|
 
 ##### systemd_nspawn
+
+Resource for managing machine (container) configuration via [nspawn units][nspawn].
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -2037,6 +2187,14 @@ Resource for managing [machine images][images].
 |netdev|systemd_netdev|
 
 ##### systemd_network
+
+Resource for managing [network configuration files][network] via systemd-networkd.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -2139,6 +2297,14 @@ Resource for managing [machine images][images].
 
 ##### systemd_link
 
+Resource for managing [network device][link] configuration via systemd-networkd.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
+
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
 |match_mac_address|see docs|nil|String|
@@ -2161,6 +2327,14 @@ Resource for managing [machine images][images].
 |link_wake_on_lan|see docs|nil|String|
 
 ##### systemd_netdev
+
+Resource for managing [virtual network device configuration][netdev] via systemd-networkd.
+
+###### Actions
+
+Supports `:create` & `:delete` actions.
+
+###### Properties
 
 |property|description|default|kind_of|
 |--------|-----------|-------|-------|
@@ -2252,8 +2426,6 @@ Resource for managing [machine images][images].
 [chef]: https://chef.io
 [docs]: http://www.freedesktop.org/wiki/Software/systemd
 [rhel]: https://access.redhat.com/articles/754933
-[machines]: https://www.freedesktop.org/software/systemd/man/machinectl.html#Machine%20Commands
-[images]: https://www.freedesktop.org/software/systemd/man/machinectl.html#Image%20Commands
 [sd_unit_actions]: https://docs.chef.io/resource_systemd_unit.html#actions
 [automount]: https://www.freedesktop.org/software/systemd/man/systemd.automount.html
 [mount]: https://www.freedesktop.org/software/systemd/man/systemd.mount.html
@@ -2264,3 +2436,24 @@ Resource for managing [machine images][images].
 [swap]: https://www.freedesktop.org/software/systemd/man/systemd.swap.html
 [target]: https://www.freedesktop.org/software/systemd/man/systemd.target.html
 [timer]: https://www.freedesktop.org/software/systemd/man/systemd.timer.html
+[system]: https://www.freedesktop.org/software/systemd/man/systemd-system.conf.html
+[user]: https://www.freedesktop.org/software/systemd/man/systemd-user.conf.html
+[journald]: https://www.freedesktop.org/software/systemd/man/systemd-journald.html
+[logind]: https://www.freedesktop.org/software/systemd/man/systemd-logind.html
+[resolved]: https://www.freedesktop.org/software/systemd/man/systemd-resolved.html
+[timesyncd]: https://www.freedesktop.org/software/systemd/man/systemd-timesyncd.html
+[binfmt]: https://www.freedesktop.org/software/systemd/man/binfmt.d.html
+[bootchart]: http://man7.org/linux/man-pages/man1/systemd-bootchart.1.html
+[coredump]: https://www.freedesktop.org/software/systemd/man/systemd-coredump.html
+[journal_remote]: https://www.freedesktop.org/software/systemd/man/systemd-journal-remote.html
+[journal_upload]: https://www.freedesktop.org/software/systemd/man/systemd-journal-upload.html
+[sleep]: https://www.freedesktop.org/software/systemd/man/systemd-sleep.html
+[sysctl]: https://www.freedesktop.org/software/systemd/man/systemd-sysctl.service.html
+[sysuser]: https://www.freedesktop.org/software/systemd/man/systemd-sysusers.service.html
+[tmpfile]: https://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
+[machines]: https://www.freedesktop.org/software/systemd/man/machinectl.html#Machine%20Commands
+[images]: https://www.freedesktop.org/software/systemd/man/machinectl.html#Image%20Commands
+[nspawn]: https://www.freedesktop.org/software/systemd/man/systemd.nspawn.html
+[network]: https://www.freedesktop.org/software/systemd/man/systemd.network.html
+[link]: https://www.freedesktop.org/software/systemd/man/systemd.link.html
+[netdev]: https://www.freedesktop.org/software/systemd/man/systemd.netdev.html

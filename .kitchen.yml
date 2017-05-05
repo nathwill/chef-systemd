@@ -7,8 +7,6 @@ driver:
 
 provisioner:
   name: chef_zero
-  # https://github.com/chef/chef/issues/5362
-  chef_omnibus_install_options: -c current
   # our tmp.mount test unit masks default /tmp path on ubuntu
   root_path: /var/tmp/kitchen
 

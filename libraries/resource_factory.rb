@@ -49,6 +49,11 @@ module SystemdCookbook
 
           option_properties data
 
+          # Avoid chef-sugar before/after filter conflicts
+          # https://github.com/nathwill/chef-systemd/issues/103
+          define_method(:before) { |arg| unit_before arg }
+          define_method(:after) { |arg| unit_after arg }
+
           default_action :create
 
           Chef::Resource::SystemdUnit.allowed_actions.each do |actn|

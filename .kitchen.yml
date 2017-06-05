@@ -29,6 +29,7 @@ platforms:
 suites:
   - name: default
     run_list:
+      - recipe[chef-sugar::default]
       - recipe[test::default]
     attributes:
       systemd:

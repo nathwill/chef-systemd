@@ -1,7 +1,7 @@
 name             'systemd'
-maintainer       'The Authors'
+maintainer       'Nathan Williams'
 maintainer_email 'nath.e.will@gmail.com'
-license          'apache2'
+license          'Apache-2.0'
 description      'chef cookbook for managing linux systems via systemd'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '3.0.0'

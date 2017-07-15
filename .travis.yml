@@ -1,8 +1,22 @@
-sudo: false
+sudo: required
+dist: trusty
 
-language: ruby
-cache: bundler
-rvm:
-- 2.2.3
+addons:
+  apt:
+    sources:
+      - chef-stable-precise
+    packages:
+      - chefdk
 
-script: bundle exec rake default
+install: echo "skip bundle install"
+
+before_script:
+  - eval "$(chef shell-init bash)"
+
+script:
+  - chef --version
+  - chef exec cookstyle --version
+  - chef exec cookstyle
+  - chef exec foodcritic --version
+  - chef exec foodcritic . --exclude spec -f any -P
+  - chef exec rspec

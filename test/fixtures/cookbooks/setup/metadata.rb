@@ -1,3 +1,0 @@
-name 'setup'
-
-depends 'systemd'

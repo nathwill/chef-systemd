@@ -2,7 +2,7 @@
 # Cookbook Name:: systemd
 # Recipe:: hostname
 #
-# Copyright 2015 The Authors
+# Copyright 2015 - 2016, The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,23 +15,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# https://www.freedesktop.org/software/systemd/man/hostnamectl.html
+#
 
-path = '/etc/hostname'
-hostname = node['systemd']['hostname']
-
-file path do
-  content hostname
-  not_if { hostname.nil? }
-  notifies :run, 'execute[set-hostname]', :immediately
-end
-
-# apply immediately; works on all platforms
-execute 'set-hostname' do
-  command "hostnamectl set-hostname #{hostname}"
+ohai 'hostname' do
+  plugin 'hostname'
   action :nothing
-  not_if { hostname.nil? }
 end
 
-service 'systemd-hostnamed' do
-  action :enable
+execute 'set-hostname' do
+  command "hostnamectl set-hostname #{node['systemd']['hostname']}"
+  not_if { node['fqdn'] == node['systemd']['hostname'] }
+  notifies :reload, 'ohai[hostname]', :immediately
+  action :run
 end

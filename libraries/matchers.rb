@@ -1,104 +1,119 @@
+#
+# Cookbook Name:: systemd
+# Library:: SystemdCookbook::Matchers
+#
+# Copyright 2016 The Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+require_relative 'data'
+
 if defined?(ChefSpec)
-  units = %w(
-    automount
-    timer
-    target
-    swap
-    socket
-    mount
-    path
-    service
-    slice
-  )
-
-  daemons = %w(
-    journald
-    logind
-    resolved
-    timesyncd
-  )
-
-  utils = %w(
-    bootchart
-    coredump
-    sleep
-    system
-    user
-  )
-
-  misc = %w(
-    networkd_link
-    sysctl
-    tmpfile
-    binfmt
-    modules
-    sysuser
-    udev_rules
-  )
-
-  actions = %w( create delete ).map(&:to_sym)
-  unit_actions = %w(
-    enable disable start stop restart reload mask unmask set_properties
-  ).map(&:to_sym)
-
-  (units | daemons | utils | misc).each do |type|
+  SystemdCookbook::UNITS.each do |type|
+    # Define unit matchers
     ChefSpec.define_matcher("systemd_#{type}".to_sym)
-    actions.each do |action|
-      define_method("#{action}_systemd_#{type}".to_sym) do |resource_name|
+    Chef::Resource::SystemdUnit.allowed_actions.each do |actn|
+      define_method("#{actn}_systemd_#{type}".to_sym) do |resource_name|
         ChefSpec::Matchers::ResourceMatcher.new(
-          "systemd_#{type}".to_sym,
-          action, resource_name
+          "systemd_#{type}".to_sym, actn.to_sym, resource_name
+        )
+      end
+    end
+
+    ChefSpec.define_matcher("systemd_#{type}_drop_in".to_sym)
+    %w(create delete).each do |actn|
+      define_method("#{actn}_systemd_#{type}_drop_in".to_sym) do |resource_name|
+        ChefSpec::Matchers::ResourceMatcher.new(
+          "systemd_#{type}_drop_in".to_sym, actn.to_sym, resource_name
         )
       end
     end
   end
 
-  define_method(:set_default_systemd_target) do |resource_name|
-    ChefSpec::Matchers::ResourceMatcher.new(
-      :systemd_target, :set_default, resource_name
-    )
-  end
-
-  units.each do |type|
-    unit_actions.each do |action|
-      define_method("#{action}_systemd_#{type}".to_sym) do |resource_name|
+  SystemdCookbook::DAEMONS.each do |daemon|
+    ChefSpec.define_matcher("systemd_#{daemon}".to_sym)
+    %w(create delete).each do |actn|
+      define_method("#{actn}_systemd_#{daemon}".to_sym) do |resource_name|
         ChefSpec::Matchers::ResourceMatcher.new(
-          "systemd_#{type}".to_sym,
-          action, resource_name
+          "systemd_#{daemon}".to_sym, actn.to_sym, resource_name
         )
       end
     end
   end
 
-  ChefSpec.define_matcher(:systemd_modules)
-  %w( load unload ).map(&:to_sym).each do |mod_action|
-    define_method("#{mod_action}_systemd_modules") do |resource_name|
+  SystemdCookbook::UTILS.each do |util|
+    ChefSpec.define_matcher("systemd_#{util}".to_sym)
+    %w(create delete).each do |actn|
+      define_method("#{actn}_systemd_#{util}".to_sym) do |resource_name|
+        ChefSpec::Matchers::ResourceMatcher.new(
+          "systemd_#{util}".to_sym, actn.to_sym, resource_name
+        )
+      end
+    end
+  end
+
+  %w(load unload).each do |actn|
+    define_method("#{actn}_systemd_modules".to_sym) do |resource_name|
       ChefSpec::Matchers::ResourceMatcher.new(
-        :systemd_modules, mod_action, resource_name
+        :systemd_modules, actn.to_sym, resource_name
       )
     end
   end
 
-  ChefSpec.define_matcher(:systemd_run)
-  %w( run stop ).map(&:to_sym).each do |run_action|
-    define_method("#{run_action}_systemd_run") do |resource_name|
-      ChefSpec::Matchers::ResourceMatcher.new(
-        :systemd_run, mod_action, resource_name
-      )
-    end
-  end
-
-  ChefSpec.define_matcher(:systemd_sysctl)
-  define_method('apply_systemd_sysctl') do |resource_name|
+  define_method(:apply_systemd_sysctl) do |resource_name|
     ChefSpec::Matchers::ResourceMatcher.new(
       :systemd_sysctl, :apply, resource_name
     )
   end
 
-  ChefSpec.define_matcher(:systemd_udev_rules)
-  define_method('disable_systemd_udev_rules') do |resource_name|
-    ChefSpec::Matchers::ResourceMatcher.new(
-      :systemd_udev_rules, :disable, resource_name
-    )
+  SystemdCookbook::NETS.each do |net|
+    ChefSpec.define_matcher("systemd_#{net}".to_sym)
+    %w(create delete).each do |actn|
+      define_method("#{actn}_systemd_#{net}".to_sym) do |resource_name|
+        ChefSpec::Matchers::ResourceMatcher.new(
+          "systemd_#{net}".to_sym, actn.to_sym, resource_name
+        )
+      end
+    end
+  end
+
+  %w(journal_remote journal_upload nspawn).each do |misc|
+    ChefSpec.define_matcher("systemd_#{misc}".to_sym)
+    %w(create delete).each do |actn|
+      define_method("#{actn}_systemd_#{misc}".to_sym) do |resource_name|
+        ChefSpec::Matchers::ResourceMatcher.new(
+          "systemd_#{misc}".to_sym, actn.to_sym, resource_name
+        )
+      end
+    end
+  end
+
+  ChefSpec.define_matcher(:systemd_machine)
+  %w(start poweroff reboot enable disable terminate kill copy_to copy_from).each do |actn|
+    define_method("#{actn}_systemd_machine".to_sym) do |resource_name|
+      ChefSpec::Matchers::ResourceMatcher.new(
+        :systemd_machine, actn.to_sym, resource_name
+      )
+    end
+  end
+
+  ChefSpec.define_matcher(:systemd_machine_image)
+  %w(pull set_properties clone rename remove import export).each do |actn|
+    define_method("#{actn}_systemd_machine_image".to_sym) do |resource_name|
+      ChefSpec::Matchers::ResourceMatcher.new(
+        :systemd_machine_image, actn.to_sym, resource_name
+      )
+    end
   end
 end

@@ -2,7 +2,7 @@
 # Cookbook Name:: systemd
 # Recipe:: logind
 #
-# Copyright 2015 The Authors
+# Copyright 2015 - 2016, The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,15 +15,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# https://www.freedesktop.org/software/systemd/man/systemd-logind.service.html
+#
 
-systemd_logind 'logind' do
-  drop_in false
-  node['systemd']['logind'].each_pair do |config, value|
-    send(config.to_sym, value) unless value.nil?
-  end
-  notifies :restart, 'service[systemd-logind]', :delayed
-end
-
+# make available as a notification target
 service 'systemd-logind' do
-  action :enable
+  action :nothing
 end

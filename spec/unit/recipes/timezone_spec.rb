@@ -1,36 +1,22 @@
-#
-# Cookbook Name:: systemd
-# Spec:: timezone
-#
-# Copyright 2015 The Authors
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 require 'spec_helper'
 
 describe 'systemd::timezone' do
-  context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
+  context 'when timezone differs' do
+    cached(:chef_run) do
+      ChefSpec::ServerRunner.new do |node|
+        node.normal['time']['timezone'] = 'America/Los_Angeles'
+        node.normal['systemd']['timezone'] = 'UTC'
+      end.converge(described_recipe)
     end
 
     it 'sets the timezone' do
-      expect(chef_run).to run_execute('timedatectl set-timezone UTC')
+      expect(chef_run).to run_execute('set-timezone').with(
+        command: 'timedatectl set-timezone UTC'
+      )
     end
 
-    it 'converges successfully' do
-      chef_run # This should not raise an error
+    it 'reloads ohai' do
+      expect(chef_run.execute('set-timezone')).to notify('ohai[timezone]').to(:reload).immediately
     end
   end
 end

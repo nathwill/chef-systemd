@@ -2,7 +2,7 @@
 # Cookbook Name:: systemd
 # Recipe:: vconsole
 #
-# Copyright 2015 The Authors
+# Copyright 2015 - 2016, The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-v = node['systemd']['vconsole']
-
-opts = v.reject { |_, o| o.nil? }
+#
+# https://www.freedesktop.org/software/systemd/man/systemd-vconsole-setup.service.html
+#
 
 file '/etc/vconsole.conf' do
-  content opts.map { |k, o| "#{k.upcase}=\"#{o}\"" }.join("\n")
+  content node['systemd']['vconsole'].to_h.to_kv_pairs.join("\n")
+  not_if { node['systemd']['vconsole'].to_h.empty? }
   notifies :restart, 'service[systemd-vconsole-setup]', :immediately
 end
 
 service 'systemd-vconsole-setup' do
-  action :enable
+  action :nothing
 end

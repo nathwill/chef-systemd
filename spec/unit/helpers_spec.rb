@@ -1,89 +1,71 @@
 require 'spec_helper'
 
-describe Systemd::Helpers do
-  let(:unit) do
-    ChefSystemdCookbook::ServiceResource.new('unit')
+describe SystemdCookbook::Helpers do
+  describe '#module_loaded?' do
+    let(:modules) do
+      [
+        'snd 77824 3 snd_pcsp,snd_pcm,snd_timer, Live 0xffffffffa02b8000',
+        'ghash_clmulni_intel 16384 0 - Live 0xffffffffa0253000',
+        'e1000 135168 0 - Live 0xffffffffa0296000',
+        'soundcore 16384 1 snd, Live 0xffffffffa0258000',
+        'acpi_cpufreq 20480 0 - Live 0xffffffffa019e000'
+      ].join("\n")
+    end
+
+    before(:each) do
+      allow(File).to receive(:exist?).with('/proc/modules')
+                                     .and_return(true)
+      allow(File).to receive(:read).with('/proc/modules')
+                                   .and_return(modules)
+    end
+
+    it 'returns true for a loaded module' do
+      expect(SystemdCookbook::Helpers.module_loaded?('e1000')).to eq true
+    end
+
+    it 'returns false for an unloaded module' do
+      expect(SystemdCookbook::Helpers.module_loaded?('xfs')).to eq false
+    end
   end
 
-  let(:drop_in_unit) do
-    d = ChefSystemdCookbook::ServiceResource.new('drop_in')
-    d.drop_in(true)
-    d.override 'httpd'
-    d
+  describe '#systemd_is_pid_1?' do
+    before(:each) do
+      allow(File).to receive(:exist?).with('/proc/1/comm')
+                                     .and_return(true)
+    end
+
+    it 'returns true when systemd is pid 1' do
+      allow(File).to receive(:read).with('/proc/1/comm')
+                                   .and_return('systemd')
+      expect(SystemdCookbook::Helpers.systemd_is_pid_1?).to eq true
+    end
+
+    it 'returns false when systemd is not pid 1' do
+      allow(File).to receive(:read).with('/proc/1/comm')
+                                   .and_return('init')
+      expect(SystemdCookbook::Helpers.systemd_is_pid_1?).to eq false
+    end
+  end
+end
+
+describe String do
+  describe '#underscore' do
+    it 'correctly underscores strings' do
+      expect('DefaultLimitDATA'.underscore).to eq 'default_limit_data'
+    end
   end
 
-  let(:user_unit) do
-    d = ChefSystemdCookbook::ServiceResource.new('user')
-    d.mode :user
-    d
+  describe '#camelcase' do
+    it 'correctly camelcases strings' do
+      expect('default_standard_output'.camelcase).to eq 'DefaultStandardOutput'
+    end
   end
+end
 
-  let(:daemon) do
-    ChefSystemdCookbook::TimesyncdResource.new('daemon')
-  end
-
-  let(:drop_in_daemon) do
-    d = ChefSystemdCookbook::TimesyncdResource.new('drop_in')
-    d.drop_in(true)
-    d
-  end
-
-  it 'lists the correct stub units' do
-    expect(Systemd::Helpers::STUB_UNITS).to match_array [:target, :netdev, :network, :device]
-  end
-
-  it 'lists the correct daemons' do
-    expect(Systemd::Helpers::DAEMONS).to match_array [
-      :journald, :logind, :resolved, :timesyncd
-    ]
-  end
-
-  it 'lists the correct unit types' do
-    expect(Systemd::Helpers::UNITS).to match_array [
-      :service, :socket, :mount, :automount,
-      :swap, :target, :path, :timer, :slice
-    ]
-  end
-
-  it 'sets the appropriate local configuration root' do
-    expect(Systemd::Helpers.local_conf_root).to eq '/etc/systemd'
-  end
-
-  it 'sets the appropriate system unit configuration root' do
-    expect(Systemd::Helpers.unit_conf_root(unit)).to eq '/etc/systemd/system'
-  end
-
-  it 'sets the appropriate user unit configuration root' do
-    expect(Systemd::Helpers.unit_conf_root(user_unit)).to eq '/etc/systemd/user'
-  end
-
-  it 'sets the appropriate daemon conf path' do
-    expect(Systemd::Helpers.conf_path(daemon)).to eq '/etc/systemd/timesyncd.conf.d/daemon.conf'
-  end
-
-  it 'sets the appropriate conf drop_in path' do
-    expect(Systemd::Helpers.conf_path(drop_in_daemon)).to eq '/etc/systemd/timesyncd.conf.d/drop_in.conf'
-  end
-
-  it 'sets the appropriate unit drop_in root' do
-    expect(Systemd::Helpers.conf_drop_in_root(drop_in_unit)).to eq '/etc/systemd/system/httpd.service.d'
-  end
-
-  it 'sets the appropriate unit drop_in path' do
-    expect(Systemd::Helpers.conf_path(drop_in_unit)).to eq '/etc/systemd/system/httpd.service.d/drop_in.conf'
-  end
-
-  it 'sets the appropriate unit path' do
-    expect(Systemd::Helpers.conf_path(unit)).to eq '/etc/systemd/system/unit.service'
-  end
-
-  it 'performs a correct unit hash->ini conversion' do
-    expect(
-      Systemd::Helpers.ini_config({
-        :unit=>["Description=test unit"],
-        :install=>[],
-        :service=>["MemoryLimit=5M", "User=nobody", "Type=oneshot"]
-      })
-    ).to eq "[Unit]\nDescription=test unit\n\n[Service]\nMemoryLimit=5M\nUser=nobody\nType=oneshot\n"
+describe Hash do
+  describe '#to_kv_pairs' do
+    it 'correctly converts hashes to kv pairs' do
+      expect({'Foo' => 0, 'Bar' => 1, 'Baz' => 2}.to_kv_pairs).to eq ['Foo=0', 'Bar=1', 'Baz=2']
+    end
   end
 end

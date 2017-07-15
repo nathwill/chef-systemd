@@ -3,5 +3,5 @@ source 'https://supermarket.chef.io'
 metadata
 
 group :integration do
-  cookbook 'setup', path: 'test/fixtures/cookbooks/setup'
+  cookbook 'test', path: 'test/fixtures/cookbooks/test'
 end

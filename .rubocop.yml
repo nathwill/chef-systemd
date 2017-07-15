@@ -10,3 +10,11 @@ Documentation:
   Enabled: false
 ClassAndModuleChildren:
   Enabled: false
+Metrics/LineLength:
+  Max: 120
+Metrics/MethodLength:
+  Max: 20
+Metrics/ModuleLength:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false

@@ -1,4 +1,20 @@
-# 3.0.0 / 2017-??-??
+# 3.0.1 / 2017-07-17
+
+* fix super use in dsl builder
+
+# 3.0.0 / 2017-07-15
+
+*  remove resources that are incompletely implemented or deprecated in systemd
+  *  udev_rules
+* add machine resources
+* use chef 12.5+ custom resources where possible
+* refactor unit types to use core systemd_unit resource
+* separate drop-in units into their own resource types
+* remove/cleanup attributes/recipes that are easily accomplished using provided resources
+* consolidate integration test suites so the test matrix is less crazy
+* update chefspec matchers
+* adjust testing appropriately
+* update documentation
 
 # 2.1.3 / 2016-11-22
 

@@ -33,7 +33,7 @@ module SystemdCookbook
             if @context && respond_to?("#{@context}_#{name}".to_sym)
               send("#{@context}_#{name}".to_sym, *args, &blk)
             else
-              super
+              super(*args, &blk)
             end
           end
 

@@ -150,6 +150,8 @@ Prefixing section headings onto property names is necessary to avoid conflicts b
 |target|systemd_target|systemd_target_drop_in|
 |timer|systemd_timer|systemd_timer_drop_in|
 
+For resetting properties in drop-ins, use the `resets` property ([example](https://github.com/nathwill/chef-systemd/blob/master/test/fixtures/cookbooks/test/recipes/drop_ins.rb)).
+
 ##### systemd_automount
 
 resource for managing [automount][automount] units.
@@ -257,6 +259,7 @@ See systemd_automount docs for additional properties.
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
+|resets|hash of sections/properties to reset|{}|Hash|
 
 ##### systemd_mount
 
@@ -471,6 +474,7 @@ see systemd_mount resource for additional properties.
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
+|resets|hash of sections/properties to reset|{}|Hash|
 
 ##### systemd_path
 
@@ -584,6 +588,7 @@ see systemd_path resource for additional properties.
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
+|resets|hash of sections/properties to reset|{}|Hash|
 
 ##### systemd_service
 
@@ -821,6 +826,7 @@ see systemd_service resource for additional properties.
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
+|resets|hash of sections/properties to reset|{}|Hash|
 
 ##### systemd_slice
 
@@ -952,6 +958,7 @@ see systemd_slice resource for additional properties.
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
+|resets|hash of sections/properties to reset|{}|Hash|
 
 ##### systemd_socket
 
@@ -1215,6 +1222,7 @@ see systemd_socket resource for additional properties.
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
+|resets|hash of sections/properties to reset|{}|Hash|
 
 ##### systemd_swap
 
@@ -1426,6 +1434,7 @@ see systemd_swap resource for additional options.
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
+|resets|hash of sections/properties to reset|{}|Hash|
 
 ##### systemd_target
 
@@ -1531,6 +1540,7 @@ see systemd_target resource for additional properties.
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
+|resets|hash of sections/properties to reset|{}|Hash|
 
 ##### systemd_timer
 
@@ -1648,6 +1658,7 @@ see systemd_timer resource for additional properties
 |override|name of unit resource is drop-in for|nil|String|
 |user|see systemd_unit docs|nil|String|
 |drop_in_name|combo of override and resource names, used internally by provider|`lazy { "#{override}-#{name}" }`|String|
+|resets|hash of sections/properties to reset|{}|Hash|
 
 #### System Services
 

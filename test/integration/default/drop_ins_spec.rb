@@ -35,8 +35,10 @@ control 'creates service drop-ins' do
   describe file('/etc/systemd/system/systemd-ask-password-console.service.d/systemd-ask-password-console.conf') do
     its(:content) do
       should eq <<EOT
-[Unit]
-Description = blah blah blah
+[Service]
+ExecStart =
+[Service]
+ExecStart = /usr/bin/systemd-tty-ask-password-agent --watch --console
 EOT
     end
   end

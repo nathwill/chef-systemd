@@ -82,6 +82,11 @@ module SystemdCookbook
       module ClassMethods
         def build_resource
           define_method(:resource_type) { self.class.resource_type }
+          define_method(:resets_ini) do
+            resets.map do |k, v|
+              "[#{k}]\n" + v.map { |p| "#{p} =\n" }.join
+            end.join("\n")
+          end
 
           resource_name "systemd_#{resource_type}_drop_in".to_sym
           provides "systemd_#{resource_type}_drop_in".to_sym
@@ -98,6 +103,7 @@ module SystemdCookbook
           property :override, String, required: true, desired_state: false, callbacks: {
             'matches drop-in type' => ->(s) { s.end_with?(resource_type.to_s) },
           }
+          property :resets, Hash, default: {}
           property :user, String, desired_state: false
           property :drop_in_name, identity: true, desired_state: false,
                                   default: lazy { "#{override}-#{name}" }
@@ -122,7 +128,7 @@ module SystemdCookbook
 
               cmd = r.user ? 'systemctl --user' : 'systemctl'
 
-              execute 'daemon-reload' do
+              e = execute 'daemon-reload' do
                 command "#{cmd} daemon-reload"
                 user(r.user) if r.user
                 if r.user
@@ -135,9 +141,9 @@ module SystemdCookbook
               end
 
               file "#{conf_d}/#{r.name}.conf" do
-                content u.to_ini
+                content resets_ini + u.to_ini
                 action actn
-                notifies :run, 'execute[daemon-reload]', :immediately
+                notifies :run, e.to_s, :immediately
               end
             end
           end

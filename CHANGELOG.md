@@ -1,3 +1,7 @@
+# 3.1.0 / 2017-08-04
+
+* add precursor drop-in property for use in resetting or repeating properties (#110, #111)
+
 # 3.0.2 / 2017-07-18
 
 * fix super use in dsl builder, for REAL (thanks @jklare!)

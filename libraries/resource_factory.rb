@@ -98,6 +98,7 @@ module SystemdCookbook
           property :override, String, required: true, desired_state: false, callbacks: {
             'matches drop-in type' => ->(s) { s.end_with?(resource_type.to_s) },
           }
+          property :precursor, Hash, default: {}
           property :user, String, desired_state: false
           property :drop_in_name, identity: true, desired_state: false,
                                   default: lazy { "#{override}-#{name}" }
@@ -115,14 +116,20 @@ module SystemdCookbook
                 not_if { r.action == :delete }
               end
 
+              uc = property_hash(data)
+              precursor.each_pair do |rk, rv|
+                rv.compare_by_identity
+                uc[rk] = rv.merge(uc[rk].to_h)
+              end
+
               u = systemd_unit r.drop_in_name do
-                content property_hash(data)
+                content uc
                 action :nothing
               end
 
               cmd = r.user ? 'systemctl --user' : 'systemctl'
 
-              execute 'daemon-reload' do
+              e = execute 'daemon-reload' do
                 command "#{cmd} daemon-reload"
                 user(r.user) if r.user
                 if r.user
@@ -137,7 +144,7 @@ module SystemdCookbook
               file "#{conf_d}/#{r.name}.conf" do
                 content u.to_ini
                 action actn
-                notifies :run, 'execute[daemon-reload]', :immediately
+                notifies :run, e.to_s, :immediately
               end
             end
           end

@@ -22,7 +22,7 @@ end
 
 systemd_service_drop_in 'systemd-ask-password-console' do
   override 'systemd-ask-password-console.service'
-  resets 'Service' => ['ExecStart']
+  precursor 'Service' => {'ExecStart' => nil}
   service do
     exec_start '/usr/bin/systemd-tty-ask-password-agent --watch --console'
   end

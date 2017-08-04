@@ -36,8 +36,7 @@ control 'creates service drop-ins' do
     its(:content) do
       should eq <<EOT
 [Service]
-ExecStart =
-[Service]
+ExecStart = 
 ExecStart = /usr/bin/systemd-tty-ask-password-agent --watch --console
 EOT
     end

@@ -13,7 +13,7 @@ the systemd project covers a lot of territory, below are some resources that can
  - [systemd docs][docs]
  - [Lennart's blog series][blog]
 
-We also provide reference [documentation](resources.md) for this cookbook's resources.
+We also recommend taking a look at the test cookbook, which doubles as usage examples.
 
 ## Overview
 

@@ -17,6 +17,7 @@ default_action :pull
 
 action_class do
   def image_exists?(name)
+    require 'dbus/systemd/machined'
     mgr = DBus::Systemd::Machined::Manager.new
     !(!mgr.images.detect { |i| i[:name] == name })
   end
@@ -40,6 +41,7 @@ action :set_properties do
     command "machinectl read-only #{new_resource.name} #{new_resource.read_only}"
     not_if { new_resource.read_only.nil? }
     only_if do
+      require 'dbus/systemd/machined'
       img = DBus::Systemd::Machined::Image.new(new_resource.name)
       img.properties['ReadOnly'] != new_resource.read_only
     end
@@ -55,6 +57,7 @@ action :clone do
   require 'dbus/systemd/machined'
   ruby_block "clone-machine-image-#{new_resource.name}" do
     block do
+      require 'dbus/systemd/machined'
       mgr = DBus::Systemd::Machined::Manager.new
       mgr.CloneImage(new_resource.from, new_resource.to, new_resource.read_only)
     end

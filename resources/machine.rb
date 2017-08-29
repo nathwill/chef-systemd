@@ -1,5 +1,3 @@
-require 'dbus/systemd/machined'
-
 resource_name :systemd_machine
 provides :systemd_machine
 
@@ -13,6 +11,7 @@ default_action :start
 
 action_class do
   def machine_running?(name)
+    require 'dbus/systemd/machined'
     machine = DBus::Systemd::Machined::Machine.new(name)
     machine.properties['State'] == 'running'
   rescue DBus::Error => e

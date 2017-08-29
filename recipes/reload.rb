@@ -17,10 +17,9 @@
 # limitations under the License.
 #
 
-require 'dbus/systemd/manager'
-
 Chef.event_handler do
   on :run_completed do
+    require 'dbus/systemd/manager'
     mgr = DBus::Systemd::Manager.new
     mgr.Reload
   end

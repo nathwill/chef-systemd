@@ -19,10 +19,9 @@
 # https://www.freedesktop.org/software/systemd/man/timedatectl.html
 #
 
-require 'dbus/systemd/timedated'
-
 ruby_block 'set-rtc' do
   block do
+    require 'dbus/systemd/timedated'
     DBus::Systemd::Timedated.new.SetLocalRTC(
       node['systemd']['rtc_mode'] == 'local',
       node['systemd']['fix_rtc'], false
@@ -30,6 +29,7 @@ ruby_block 'set-rtc' do
   end
 
   not_if do
+    require 'dbus/systemd/timedated'
     local = node['systemd']['rtc_mode'] == 'local'
     DBus::Systemd::Timedated.new.properties['LocalRTC'] == local
   end

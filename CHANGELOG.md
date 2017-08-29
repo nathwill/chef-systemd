@@ -1,3 +1,7 @@
+# 3.1.1 / 2017-08-29
+
+* move requires for dbus to ease use with chefspec
+
 # 3.1.0 / 2017-08-04
 
 * add precursor drop-in property for use in resetting or repeating properties (#110, #111)

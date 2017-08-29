@@ -18,7 +18,7 @@ platforms:
   - name: fedora-26
     run_list:
       - recipe[yum::dnf_yum_compat]
-  - name: debian-9.0
+  - name: debian-9.1
     run_list:
       - recipe[debian::backports]
       - recipe[apt]

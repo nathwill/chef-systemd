@@ -1,6 +1,3 @@
-require 'dbus/systemd/machined'
-require 'dbus/systemd/importd'
-
 resource_name :systemd_machine_image
 provides :systemd_machine_image
 
@@ -38,6 +35,7 @@ action :pull do
 end
 
 action :set_properties do
+  require 'dbus/systemd/machined'
   execute "set-machine-read-only-#{new_resource.name}" do
     command "machinectl read-only #{new_resource.name} #{new_resource.read_only}"
     not_if { new_resource.read_only.nil? }
@@ -54,6 +52,7 @@ action :set_properties do
 end
 
 action :clone do
+  require 'dbus/systemd/machined'
   ruby_block "clone-machine-image-#{new_resource.name}" do
     block do
       mgr = DBus::Systemd::Machined::Manager.new

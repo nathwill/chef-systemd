@@ -81,29 +81,29 @@ systemd_service_drop_in '01-fix-fedora-importd' do
   end
 end
 
-systemd_machine_image 'Fedora24' do
+systemd_machine_image 'Fedora26' do
   type 'raw'
-  source 'https://dl.fedoraproject.org/pub/fedora/linux/releases/24/CloudImages/x86_64/images/Fedora-Cloud-Base-24-1.2.x86_64.raw.xz'
+  source 'https://dl.fedoraproject.org/pub/fedora/linux/releases/26/CloudImages/x86_64/images/Fedora-Cloud-Base-26-1.5.x86_64.raw.xz'
   verify 'no'
   read_only false
   format 'gzip'
-  path '/var/tmp/Fedora24.raw.gz'
+  path '/var/tmp/Fedora26.raw.gz'
   to 'cloned'
   action [:pull, :set_properties, :export, :clone]
   not_if { platform?('centos') }
 end
 
-systemd_machine_image 'Fedora24b' do
+systemd_machine_image 'Fedora26b' do
   type 'raw'
   verify 'no'
   read_only true
   format 'gzip'
-  path '/var/tmp/Fedora24.raw.gz'
+  path '/var/tmp/Fedora26.raw.gz'
   action [:import, :set_properties]
   not_if { platform?('centos') }
 end
 
-systemd_nspawn 'Fedora24' do
+systemd_nspawn 'Fedora26' do
   exec do
     boot true
     private_users false
@@ -119,11 +119,11 @@ end
 
 require 'tempfile'
 
-tmp = Tempfile.new('Fedora24')
+tmp = Tempfile.new('Fedora26')
 tmp_path = tmp.path
 tmp.delete
 
-systemd_machine 'Fedora24' do
+systemd_machine 'Fedora26' do
   host_path tmp_path
   machine_path '/etc/passwd'
   action [:enable, :start, :copy_from]

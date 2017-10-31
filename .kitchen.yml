@@ -14,11 +14,11 @@ verifier:
   name: inspec
 
 platforms:
-  - name: centos-7.3
+  - name: centos-7.4
   - name: fedora-26
     run_list:
       - recipe[yum::dnf_yum_compat]
-  - name: debian-9.1
+  - name: debian-9.2
     run_list:
       - recipe[debian::backports]
       - recipe[apt]

@@ -4,7 +4,7 @@ maintainer_email 'nath.e.will@gmail.com'
 license          'Apache-2.0'
 description      'chef cookbook for managing linux systems via systemd'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '3.1.1'
+version          '3.1.2'
 chef_version     '>= 12.11' if respond_to?(:chef_version)
 
 depends          'compat_resource'

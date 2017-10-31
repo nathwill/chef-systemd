@@ -1,3 +1,8 @@
+# 3.1.2 / 2017-10-31
+
+* remove respond_to_missing? in mixin, which was causing stack level crashes
+  when using systemd_* resources inside custom resource definitions (#117)
+
 # 3.1.1 / 2017-08-29
 
 * move requires for dbus to ease use with chefspec

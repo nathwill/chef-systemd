@@ -37,14 +37,6 @@ module SystemdCookbook
             end
           end
 
-          define_method(:respond_to_missing?) do |name, include_private|
-            if @context && respond_to?("#{@context}_#{name}".to_sym)
-              true
-            else
-              super(name, include_private)
-            end
-          end
-
           data_class = resource_type.to_s.tr('-', '_').camelcase.to_sym
 
           SystemdCookbook.const_get(data_class)::OPTIONS.keys.each do |sect|

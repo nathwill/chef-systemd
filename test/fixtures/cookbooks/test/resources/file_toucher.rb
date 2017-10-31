@@ -9,7 +9,8 @@ default_action :create
 action :create do
   systemd_service "file-toucher-#{name}" do
     service do
-      exec_start "touch #{path}"
+      type 'oneshot'
+      exec_start "/bin/touch #{path}"
     end
     action :create
   end

@@ -28,6 +28,7 @@ package 'btrfs-progs' do
 end
 
 package 'systemd-container' do
+  default_release "#{node['lsb']['codename']}-backports" if platform?('debian')
   not_if { platform_family?('rhel') }
 end
 

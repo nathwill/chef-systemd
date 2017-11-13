@@ -1,3 +1,7 @@
+# 3.1.3 / 2017-11-13
+
+* use backports for systemd-container package on debian
+
 # 3.1.2 / 2017-10-31
 
 * remove respond_to_missing? in mixin, which was causing stack level crashes

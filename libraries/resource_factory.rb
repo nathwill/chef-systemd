@@ -54,8 +54,6 @@ module SystemdCookbook
           define_method(:before) { |arg| unit_before arg }
           define_method(:after) { |arg| unit_after arg }
 
-          default_action :create
-
           Chef::Resource::SystemdUnit.allowed_actions.each do |actn|
             action actn do
               systemd_unit "#{new_resource.name}.#{resource_type}" do
@@ -102,8 +100,6 @@ module SystemdCookbook
           property :user, String, desired_state: false
           property :drop_in_name, identity: true, desired_state: false,
                                   default: lazy { "#{override}-#{name}" }
-
-          default_action :create
 
           %w(create delete).map(&:to_sym).each do |actn|
             action actn do
@@ -174,8 +170,6 @@ module SystemdCookbook
           data = SystemdCookbook.const_get(data_class)::OPTIONS
 
           option_properties data
-
-          default_action :create
 
           %w(create delete).map(&:to_sym).each do |actn|
             action actn do

@@ -28,8 +28,13 @@ package 'btrfs-progs' do
 end
 
 package 'systemd-container' do
-  default_release "#{node['lsb']['codename']}-backports" if platform?('debian')
-  not_if { platform_family?('rhel') }
+  not_if { platform_family?('rhel') || platform?('debian') }
+end
+
+# workaround for https://github.com/Foodcritic/foodcritic/issues/451
+apt_package 'systemd-container' do
+  default_release "#{node['lsb']['codename']}-backports"
+  only_if { platform?('debian') }
 end
 
 execute 'set-machined-pool-limit' do

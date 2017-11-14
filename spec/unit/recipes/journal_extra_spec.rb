@@ -18,7 +18,7 @@ describe 'systemd::journal_extra' do
     end
 
     it 'installs the package' do
-      expect(chef_run).to install_package('systemd-journal-remote').with(
+      expect(chef_run).to install_apt_package('systemd-journal-remote').with(
         default_release: 'stretch-backports'
       )
     end

@@ -20,7 +20,7 @@ describe 'systemd::machine' do
     end
 
     it 'installs container tools' do
-      expect(chef_run).to install_package 'systemd-container'
+      expect(chef_run).to install_apt_package 'systemd-container'
     end
 
     it 'installs btrfs tools' do

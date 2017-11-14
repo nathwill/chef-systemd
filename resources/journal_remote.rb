@@ -3,3 +3,5 @@ def self.resource_type
 end
 
 include SystemdCookbook::ResourceFactory::Misc
+
+default_action :create

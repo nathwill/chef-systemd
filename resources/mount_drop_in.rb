@@ -9,3 +9,5 @@ property :mount_what, SystemdCookbook::Mount::OPTIONS['Mount']['What']
 
 property :mount_where, SystemdCookbook::Mount::OPTIONS['Mount']['Where']
   .merge(required: false)
+
+default_action :create

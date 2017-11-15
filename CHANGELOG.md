@@ -1,3 +1,8 @@
+# 3.1.4 / 2017-11-15
+
+* make some tweaks to appease supermarket quality metrics
+* add some legacy option names for compatibility with older systemd
+
 # 3.1.3 / 2017-11-13
 
 * use backports for systemd-container package on debian

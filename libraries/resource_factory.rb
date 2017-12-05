@@ -113,7 +113,7 @@ module SystemdCookbook
               end
 
               uc = property_hash(data)
-              precursor.each_pair do |rk, rv|
+              r.precursor.each_pair do |rk, rv|
                 rv.compare_by_identity
                 uc[rk] = rv.merge(uc[rk].to_h)
               end

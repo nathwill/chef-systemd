@@ -1,3 +1,7 @@
+# 3.1.5 / 2017-12-05
+
+* ensure pulling values from new_resource while merging the precursor (thanks @grimm26!)
+
 # 3.1.4 / 2017-11-15
 
 * make some tweaks to appease supermarket quality metrics

@@ -2,7 +2,7 @@ resource_name :systemd_sysuser
 provides :systemd_sysuser
 
 property :type, String, equal_to: %w(u g m r), default: 'u'
-property :name, String, name_attribute: true, required: true, callbacks: {
+property :sysuser_name, String, name_property: true, identity: true, callbacks: {
   'is less than 31 chars' => ->(s) { s.length <= 31 },
   'is ascii' => ->(s) { s.ascii_only? },
   'has non-digit first char' => ->(s) { !s[0].match(/\d/) },

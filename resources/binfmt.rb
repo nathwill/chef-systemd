@@ -1,7 +1,7 @@
 resource_name :systemd_binfmt
 provides :systemd_binfmt
 
-property :name, String, required: true, name_attribute: true, callbacks: {
+property :binfmt_name, String, name_property: true, identity: true, callbacks: {
   'does not contain /' => ->(s) { !s.match(Regexp.new('/')) },
 }
 property :type, String, equal_to: %w(M E), default: 'M'

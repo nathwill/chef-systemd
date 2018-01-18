@@ -666,7 +666,6 @@ module SystemdCookbook
       'Automount' => {
         'Where' => {
           kind_of: String,
-          required: true,
           callbacks: {
             'is an absolute path' => ->(spec) { Pathname.new(spec).absolute? },
           },
@@ -698,11 +697,9 @@ module SystemdCookbook
       'Mount' => {
         'What' => {
           kind_of: String,
-          required: true,
         },
         'Where' => {
           kind_of: String,
-          required: true,
           callbacks: {
             'absolute path' => ->(s) { Pathname.new(s).absolute? },
           },
@@ -895,7 +892,6 @@ module SystemdCookbook
       'Swap' => {
         'What' => {
           kind_of: String,
-          required: true,
           callbacks: {
             'is an absolute path' => ->(s) { Pathname.new(s).absolute? },
           },
@@ -1101,11 +1097,9 @@ module SystemdCookbook
         'Description' => Common::STRING,
         'Name' => {
           kind_of: String,
-          required: true,
         },
         'Kind' => {
           kind_of: String,
-          required: true,
           equal_to: %w(
             bond
             bridge

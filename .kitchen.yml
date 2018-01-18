@@ -15,10 +15,10 @@ verifier:
 
 platforms:
   - name: centos-7.4
-  - name: fedora-26
+  - name: fedora-27
     run_list:
       - recipe[yum::dnf_yum_compat]
-  - name: debian-9.2
+  - name: debian-9.3
     run_list:
       - recipe[debian::backports]
       - recipe[apt]

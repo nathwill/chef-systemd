@@ -55,30 +55,24 @@ systemd_tmpfile 'my-app' do
   type 'f'
 end
 
-# Work around bug in Fedora 25 systemd-importd (systemd v231)
-# Ref: https://github.com/systemd/systemd/issues/3996
-systemd_service_drop_in '00-fix-fedora-importd' do
-  override 'systemd-importd.service'
-  only_if { platform?('fedora') }
-  service do
-    system_call_filter %w()
-  end
+# Fix up unworkably small default machines.raw in Debian
+systemd_mount 'var-lib-machines' do
+  action :stop
+  only_if { platform?('debian') }
 end
 
-systemd_service_drop_in '01-fix-fedora-importd' do
-  override 'systemd-importd.service'
-  only_if { platform?('fedora') }
-  service do
-    system_call_filter %w(
-      ~@clock
-      @cpu-emulation
-      @debug
-      @keyring
-      @module
-      @obsolete
-      @raw-io
-    )
-  end
+file '/var/lib/machines.raw' do
+  action :delete
+  only_if { platform?('debian') }
+end
+
+execute 'fallocate -l 2G /var/lib/machines.raw' do
+  only_if { platform?('debian') }
+end
+
+execute 'mkfs.btrfs /var/lib/machines.raw' do
+  only_if { platform?('debian') }
+  notifies :start, 'systemd_mount[var-lib-machines]', :immediately
 end
 
 systemd_machine_image 'Fedora26' do

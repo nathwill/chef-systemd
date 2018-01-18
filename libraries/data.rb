@@ -1144,7 +1144,6 @@ module SystemdCookbook
       'VLAN' => {
         'Id' => {
           kind_of: Integer,
-          required: true,
           equal_to: 0.upto(4094).to_a,
         },
       },

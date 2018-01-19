@@ -1,3 +1,8 @@
+# 3.1.6 / 2018-01-18
+
+* relax required properties or resources
+* incorporate foodcritic recommendations
+
 # 3.1.5 / 2017-12-05
 
 * ensure pulling values from new_resource while merging the precursor (thanks @grimm26!)

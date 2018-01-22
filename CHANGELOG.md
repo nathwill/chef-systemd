@@ -1,3 +1,7 @@
+# 3.2.0 / 2018-01-22
+
+* change resource sub-block evaluation context to avoid conflict with top-level properties (see #128)
+
 # 3.1.6 / 2018-01-18
 
 * relax required properties or resources

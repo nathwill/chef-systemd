@@ -29,26 +29,15 @@ module SystemdCookbook
 
       module ClassMethods
         def build_dsl
-          define_method(:method_missing) do |name, *args, &blk|
-            if @context && respond_to?("#{@context}_#{name}".to_sym)
-              send("#{@context}_#{name}".to_sym, *args, &blk)
-            else
-              super(name, *args, &blk)
-            end
-          end
-
           data_class = resource_type.to_s.tr('-', '_').camelcase.to_sym
 
           SystemdCookbook.const_get(data_class)::OPTIONS.keys.each do |sect|
-            define_method(sect.underscore.to_sym) do |&blk|
-              @context = sect.underscore.to_sym
-              instance_eval(&blk)
-              @context = nil
+            define_method(sect.underscore.to_sym) do |&block|
+              ctx = SystemdCookbook::OptionEvalContext.new(self, sect.underscore.to_sym)
+              ctx.instance_exec(&block)
             end
           end
         end
-        # rubocop: enable MethodLength
-        # rubocop: enable AbcSize
       end
     end
 
@@ -99,7 +88,6 @@ module SystemdCookbook
 
           result.delete_if { |_, v| v.empty? }
         end
-        # rubocop: enable AbcSize
 
         def option_value(obj)
           case obj

@@ -31,6 +31,29 @@ module SystemdCookbook
 
     module_function :module_loaded?, :systemd_is_pid_1?
   end
+
+  # Create a stub class for evaluating resource sub-blocks outside resource context
+  class OptionEvalContext
+    # parent is the parent resource
+    # context is the sub-block we're in
+    def initialize(parent, context)
+      @parent = parent
+      @context = context
+    end
+
+    def method_missing(method_sym, *args, &block)
+      target_meth = "#{@context}_#{method_sym}".to_sym
+
+      # check for a matching parent method in the context_key
+      # format created by the option_properties helper
+      if @parent.respond_to?(target_meth)
+        @parent.send(target_meth, *args, &block)
+      # check for matching method in the resource context
+      else
+        @parent.send(method_sym, *args, &block)
+      end
+    end
+  end
 end
 
 class String

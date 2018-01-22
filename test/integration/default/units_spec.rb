@@ -44,6 +44,7 @@ control 'creates service units' do
 [Service]
 ExecStart = /usr/bin/systemd-tty-ask-password-agent --wall
 ExecStartPre = -/usr/bin/systemctl stop systemd-ask-password-console.path systemd-ask-password-console.service systemd-ask-password-plymouth.path systemd-ask-password-plymouth.service
+User = root
 
 [Unit]
 Description = forward password reqs to wall

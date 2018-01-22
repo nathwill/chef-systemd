@@ -38,6 +38,7 @@ systemd_service 'systemd-ask-password-console' do
     after %w( systemd-user-session.service )
   end
   service do
+    user 'root'
     exec_start_pre '-/usr/bin/systemctl stop systemd-ask-password-console.path systemd-ask-password-console.service systemd-ask-password-plymouth.path systemd-ask-password-plymouth.service'
     exec_start '/usr/bin/systemd-tty-ask-password-agent --wall'
   end

@@ -20,7 +20,7 @@
 #
 
 ohai 'timezone' do
-  plugin 'timezone'
+  plugin 'time/timezone'
   action :nothing
 end
 

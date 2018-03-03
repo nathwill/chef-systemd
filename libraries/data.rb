@@ -1269,7 +1269,7 @@ module SystemdCookbook
           equal_to: 0.upto(65_535).to_a,
         },
         'PortRange' => Common::STRING,
-        'FlowLabel' => { kind_of: Integer, equal_to: 0.upto(1_048_575).to_a },
+        'FlowLabel' => Common::INTEGER,
       },
       'GENEVE' => {
         'Id' => { kind_of: Integer, equal_to: 0.upto(16_777_215).to_a },
@@ -1283,7 +1283,7 @@ module SystemdCookbook
           kind_of: Integer,
           equal_to: 0.upto(65_535).to_a,
         },
-        'FlowLabel' => { kind_of: Integer, equal_to: 0.upto(1_048_575).to_a },
+        'FlowLabel' => Common::INTEGER,
       },
       'Tunnel' => {
         'Local' => Common::STRING,

@@ -151,6 +151,10 @@ module SystemdCookbook
         end,
       },
     }.freeze
+    CGROUPS ||= {
+      kind_of: String,
+      equal_to: %w( cpu cpuacct io blkio memory devices pids ),
+    }.freeze
     CONDITIONAL_PATH ||= {
       kind_of: String,
       callbacks: {
@@ -287,13 +291,20 @@ module SystemdCookbook
         'RefuseManualStop' => Common::BOOLEAN,
         'AllowIsolate' => Common::BOOLEAN,
         'DefaultDependencies' => Common::BOOLEAN,
+        'CollectMode' => {
+          kind_of: String,
+          equal_to: %w( inactive inactive-or-failed ),
+        },
         'JobTimeoutSec' => Common::STRING_OR_INT,
+        'JobRunningTimeoutSec' => Common::STRING_OR_INT,
         'JobTimeoutAction' => Common::POWER,
         'JobTimeoutRebootArgument' => Common::STRING,
         'StartLimitInterval' => Common::STRING_OR_INT,
         'StartLimitIntervalSec' => Common::STRING_OR_INT,
         'StartLimitBurst' => Common::INTEGER,
         'StartLimitAction' => Common::POWER,
+        'FailureAction' => Common::POWER,
+        'SuccessAction' => Common::POWER,
         'RebootArgument' => Common::STRING,
         'ConditionArchitecture' => Common::ARCH,
         'ConditionVirtualization' => Common::VIRT,
@@ -316,6 +327,9 @@ module SystemdCookbook
         'ConditionDirectoryNotEmpty' => Common::CONDITIONAL_PATH,
         'ConditionFileNotEmpty' => Common::CONDITIONAL_PATH,
         'ConditionFileIsExecutable' => Common::CONDITIONAL_PATH,
+        'ConditionUser' => Common::STRING_OR_INT,
+        'ConditionGroup' => Common::STRING_OR_INT,
+        'ConditionControlGroupController' => Common::CGROUPS,
         'AssertArchitecture' => Common::ARCH,
         'AssertVirtualization' => Common::VIRT,
         'AssertHost' => Common::STRING,
@@ -337,6 +351,9 @@ module SystemdCookbook
         'AssertDirectoryNotEmpty' => Common::CONDITIONAL_PATH,
         'AssertFileNotEmpty' => Common::CONDITIONAL_PATH,
         'AssertFileIsExecutable' => Common::CONDITIONAL_PATH,
+        'AssertUser' => Common::STRING_OR_INT,
+        'AssertGroup' => Common::STRING_OR_INT,
+        'AssertControlGroupController' => Common::CGROUPS,
         'SourcePath' => Common::ABSOLUTE_PATH,
       },
     }.freeze
@@ -356,20 +373,18 @@ module SystemdCookbook
 
   module Exec
     OPTIONS ||= {
-      'WorkingDirectory' => {
-        kind_of: String,
-        callbacks: {
-          'is a valid working directory argument' => lambda do |spec|
-            spec == '~' || Pathname.new(spec.gsub(/^-/, '')).absolute?
-          end,
-        },
-      },
+      'WorkingDirectory' => Common::STRING,
       'RootDirectory' => Common::ABSOLUTE_PATH,
+      'RootImage' => Common::ABSOLUTE_PATH,
+      'MountAPIVFS' => Common::BOOLEAN,
+      'BindPaths' => Common::STRING_OR_ARRAY,
+      'BindReadOnlyPaths' => Common::STRING_OR_ARRAY,
       'User' => Common::STRING_OR_INT,
       'Group' => Common::STRING_OR_INT,
+      'DynamicUser' => Common::BOOLEAN,
       'SupplementaryGroups' => Common::ARRAY,
+      'PAMName' => Common::STRING,
       'Nice' => { kind_of: Integer, equal_to: -20.upto(19).to_a },
-      'OOMScoreAdjust' => { kind_of: Integer, equal_to: -1000.upto(1000).to_a },
       'IOSchedulingClass' => {
         kind_of: [Integer, String],
         equal_to: [0, 1, 2, 3, 'none', 'realtime', 'best-effort', 'idle'],
@@ -386,15 +401,34 @@ module SystemdCookbook
       'CPUSchedulingResetOnFork' => Common::BOOLEAN,
       'CPUAffinity' => { kind_of: [String, Integer, Array] },
       'UMask' => Common::STRING,
+      'KeyringMode' => { kind_of: String, equal_to: %w( inherit private shared ) },
+      'OOMScoreAdjust' => { kind_of: Integer, equal_to: (-1000..1000).to_a },
       'Environment' => { kind_of: [String, Array, Hash] },
       'EnvironmentFile' => Common::SOFT_ABSOLUTE_PATH,
-      'PassEnvironment' => { kind_of: [String, Array] },
+      'PassEnvironment' => Common::STRING_OR_ARRAY,
+      'UnsetEnvironment' => Common::STRING_OR_ARRAY,
       'StandardInput' => {
         kind_of: String,
         equal_to: %w(null tty tty-force tty-fail socket),
       },
       'StandardOutput' => Common::STDALL,
       'StandardError' => Common::STDALL,
+      'StandardInputText' => Common::STRING,
+      'StandardInputData' => Common::STRING,
+      'LogLevelMax' => {
+        kind_of: String,
+        equal_to: %w(
+          emerg
+          alert
+          crit
+          err
+          warning
+          notice
+          info
+          debug
+        ),
+      },
+      'LogExtraFields' => { kind_of: [String, Array, Hash] },
       'TTYPath' => Common::ABSOLUTE_PATH,
       'TTYReset' => Common::BOOLEAN,
       'TTYVHangup' => Common::BOOLEAN,
@@ -447,9 +481,9 @@ module SystemdCookbook
       'LimitNICE' => Common::STRING_OR_INT,
       'LimitRTPRIO' => Common::STRING_OR_INT,
       'LimitRTTIME' => Common::STRING_OR_INT,
-      'PAMName' => Common::STRING,
       'CapabilityBoundingSet' => Common::CAP,
       'AmbientCapabilities' => Common::CAP,
+      'NoNewPrivileges' => Common::BOOLEAN,
       'SecureBits' => {
         kind_of: [String, Array],
         callbacks: {
@@ -476,6 +510,10 @@ module SystemdCookbook
       'PrivateTmp' => Common::BOOLEAN,
       'PrivateDevices' => Common::BOOLEAN,
       'PrivateNetwork' => Common::BOOLEAN,
+      'PrivateUsers' => Common::BOOLEAN,
+      'ProtectKernelTunables' => Common::BOOLEAN,
+      'ProtectKernelModules' => Common::BOOLEAN,
+      'ProtectControlGroups' => Common::BOOLEAN,
       'ProtectSystem' => {
         kind_of: [TrueClass, FalseClass, String],
         equal_to: [true, false, 'full'],
@@ -497,21 +535,29 @@ module SystemdCookbook
       'AppArmorProfile' => Common::STRING,
       'SmackProcessLabel' => Common::STRING,
       'IgnoreSIGPIPE' => Common::BOOLEAN,
-      'NoNewPrivileges' => Common::BOOLEAN,
       'SystemCallFilter' => Common::STRING_OR_ARRAY,
       'SystemCallErrorNumber' => Common::STRING,
       'SystemCallArchitectures' => Common::ARCH,
       'RestrictAddressFamilies' => Common::STRING_OR_ARRAY,
+      'RestrictNamespaces' => { kind_of: [String, TrueClass, FalseClass] },
+      'LockPersonality' => Common::BOOLEAN,
+      'MemoryDenyWriteExecute' => Common::BOOLEAN,
+      'RestrictRealtime' => Common::BOOLEAN,
+      'RemoveIPC' => Common::BOOLEAN,
       'Personality' => Common::ARCH,
-      'RuntimeDirectory' => {
-        kind_of: [String, Array],
-        callbacks: {
-          'only simple, relative paths' => lambda do |spec|
-            Array(spec).all? { |p| !p.include?('/') }
-          end,
-        },
-      },
+      'RuntimeDirectory' => Common::STRING_OR_ARRAY,
+      'StateDirectory' => Common::STRING_OR_ARRAY,
+      'LogsDirectory' => Common::STRING_OR_ARRAY,
+      'ConfigurationDirectory' => Common::STRING_OR_ARRAY,
       'RuntimeDirectoryMode' => Common::STRING,
+      'StateDirectoryMode' => Common::STRING,
+      'CacheDirectoryMode' => Common::STRING,
+      'LogsDirectoryMode' => Common::STRING,
+      'ConfigurationDirectoryMode' => Common::STRING,
+      'RuntimeDirectoryPreserve' => {
+        kind_of: [String, TrueClass, FalseClass],
+        equal_to: [true, false, 'restart'],
+      },
     }.freeze
   end
 
@@ -530,6 +576,8 @@ module SystemdCookbook
   module ResourceControl
     OPTIONS ||= {
       'CPUAccounting' => Common::BOOLEAN,
+      'CPUWeight' => { kind_of: Integer, equal_to: (1..10000).to_a },
+      'StartupCPUWeight' => { kind_of: Integer, equal_to: (1..10000).to_a },
       'CPUShares' => {
         kind_of: Integer,
         equal_to: 2.upto(262_144).to_a,
@@ -547,6 +595,10 @@ module SystemdCookbook
         },
       },
       'MemoryAccounting' => Common::BOOLEAN,
+      'MemoryLow' => Common::STRING_OR_INT,
+      'MemoryHigh' => Common::STRING_OR_INT,
+      'MemoryMax' => Common::STRING_OR_INT,
+      'MemorySwapMax' => Common::STRING_OR_INT,
       'MemoryLimit' => Common::STRING_OR_INT,
       'TasksAccounting' => Common::BOOLEAN,
       'TasksMax' => {
@@ -599,6 +651,9 @@ module SystemdCookbook
           end,
         },
       },
+      'IPAccounting' => Common::BOOLEAN,
+      'IPAddressAllow' => Common::STRING_OR_ARRAY,
+      'IPAddressDeny' => Common::STRING_OR_ARRAY,
       'BlockIOAccounting' => Common::BOOLEAN,
       'BlockIOWeight' => {
         kind_of: Integer,
@@ -707,6 +762,8 @@ module SystemdCookbook
         'Type' => Common::STRING,
         'Options' => Common::STRING,
         'SloppyOptions' => Common::BOOLEAN,
+        'LazyUnmount' => Common::BOOLEAN,
+        'ForceUnmount' => Common::BOOLEAN,
         'DirectoryMode' => Common::STRING,
         'TimeoutSec' => Common::STRING_OR_INT,
       }.merge(Exec::OPTIONS)
@@ -782,7 +839,7 @@ module SystemdCookbook
         'PermissionsStartOnly' => Common::BOOLEAN,
         'RootDirectoryStartOnly' => Common::BOOLEAN,
         'NonBlocking' => Common::BOOLEAN,
-        'NotifyAccess' => { kind_of: String, equal_to: %w(none main all) },
+        'NotifyAccess' => { kind_of: String, equal_to: %w(none main exec all) },
         'Sockets' => Common::ARRAY_OF_UNITS,
         'FailureAction' => Common::POWER,
         'FileDescriptorStoreMax' => Common::INTEGER,
@@ -996,12 +1053,14 @@ module SystemdCookbook
         'ForwardToSyslog' => Common::BOOLEAN,
         'ForwardToKMsg' => Common::BOOLEAN,
         'ForwardToConsole' => Common::BOOLEAN,
+        'ForwardToWall' => Common::BOOLEAN,
         'MaxLevelStore' => Common::LOGLEVEL,
         'MaxLevelSyslog' => Common::LOGLEVEL,
         'MaxLevelKMsg' => Common::LOGLEVEL,
         'MaxLevelConsole' => Common::LOGLEVEL,
         'MaxLevelWall' => Common::LOGLEVEL,
         'TTYPath' => Common::ABSOLUTE_PATH,
+        'LineMax' => Common::STRING_OR_INT,
       },
     }.freeze
   end
@@ -1057,6 +1116,7 @@ module SystemdCookbook
       },
       'Link' => {
         'Description' => Common::STRING,
+        'Alias' => Common::STRING,
         'MACAddressPolicy' => {
           kind_of: String,
           equal_to: %w(persistent random none),
@@ -1077,10 +1137,19 @@ module SystemdCookbook
           kind_of: String,
           equal_to: %w(half full),
         },
+        'AutoNegotiation' => Common::BOOLEAN,
         'WakeOnLan' => {
           kind_of: String,
-          equal_to: %w(phy magic off),
+          equal_to: %w(phy unicast multicast broadcast arp magic secureon off),
         },
+        'Port' => {
+          kind_of: String,
+          equal_to: %w(tp aui bnc mii fibre),
+        },
+        'TCPSegmentationOffload' => Common::BOOLEAN,
+        'TCP6SegmentationOffload' => Common::BOOLEAN,
+        'GenericSegmentationOffload' => Common::BOOLEAN,
+        'LargeReceiveOffload' => Common::BOOLEAN,
       },
     }.freeze
   end
@@ -1121,7 +1190,10 @@ module SystemdCookbook
             vti
             vti6
             vxlan
+            geneve
             vrf
+            vcan
+            vxcan
           ),
         },
         'MTUBytes' => Common::STRING_OR_INT,
@@ -1131,15 +1203,24 @@ module SystemdCookbook
         'HelloTimeSec' => Common::STRING_OR_INT,
         'MaxAgeSec' => Common::STRING_OR_INT,
         'ForwardDelaySec' => Common::STRING_OR_INT,
+        'AgeingTimeSec' => Common::STRING_OR_INT,
+        'Priority' => { kind_of: Integer, equal_to: (0..65535).to_a },
+        'GroupForwardMask' => Common::STRING,
+        'DefaultPVID' => { kind_of: [String, Integer], equal_to: (1..4094).to_a.push('none') },
         'MulticastQuerier' => Common::BOOLEAN,
         'MulticastSnooping' => Common::BOOLEAN,
         'VLANFiltering' => Common::BOOLEAN,
+        'STP' => Common::BOOLEAN,
       },
       'VLAN' => {
         'Id' => {
           kind_of: Integer,
           equal_to: 0.upto(4094).to_a,
         },
+        'GVRP' => Common::BOOLEAN,
+        'MVRP' => Common::BOOLEAN,
+        'LooseBinding' => Common::BOOLEAN,
+        'ReorderHeader' => Common::BOOLEAN,
       },
       'MACVLAN' => {
         'Mode' => {
@@ -1161,6 +1242,8 @@ module SystemdCookbook
       },
       'VXLAN' => {
         'Id' => Common::INTEGER,
+        'Remote' => Common::STRING,
+        'Local' => Common::STRING,
         'Group' => Common::STRING,
         'TOS' => Common::STRING,
         'TTL' => {
@@ -1178,12 +1261,29 @@ module SystemdCookbook
         'UDPCheckSum' => Common::BOOLEAN,
         'UDP6ZeroChecksumTx' => Common::BOOLEAN,
         'UDP6ZeroChecksumRx' => Common::BOOLEAN,
+        'RemoteChecksumTx' => Common::BOOLEAN,
+        'RemoteChecksumRx' => Common::BOOLEAN,
         'GroupPolicyExtension' => Common::BOOLEAN,
         'DestinationPort' => {
           kind_of: Integer,
           equal_to: 0.upto(65_535).to_a,
         },
         'PortRange' => Common::STRING,
+        'FlowLabel' => { kind_of: Integer, equal_to: 0.upto(1_048_575).to_a },
+      },
+      'GENEVE' => {
+        'Id' => { kind_of: Integer, equal_to: 0.upto(16_777_215).to_a },
+        'Remote' => Common::STRING,
+        'TOS' => { kind_of: Integer, equal_to: 1.upto(255).to_a },
+        'TTL' => { kind_of: Integer, equal_to: 1.upto(255).to_a },
+        'UDPChecksum' => Common::BOOLEAN,
+        'UDP6ZeroChecksumTx' => Common::BOOLEAN,
+        'UDP6ZeroChecksumRx' => Common::BOOLEAN,
+        'DestinationPort' => {
+          kind_of: Integer,
+          equal_to: 0.upto(65_535).to_a,
+        },
+        'FlowLabel' => { kind_of: Integer, equal_to: 0.upto(1_048_575).to_a },
       },
       'Tunnel' => {
         'Local' => Common::STRING,
@@ -1204,10 +1304,14 @@ module SystemdCookbook
           kind_of: String,
           equal_to: %w(ip6ip6 ipip6 any),
         },
+        'Independent' => Common::BOOLEAN,
       },
       'Peer' => {
         'Name' => Common::STRING,
         'MACAddress' => Common::STRING,
+      },
+      'VXCAN' => {
+        'Peer' => Common::STRING,
       },
       'Tun' => {
         'OneQueue' => Common::BOOLEAN,
@@ -1309,6 +1413,9 @@ module SystemdCookbook
       'Link' => {
         'MACAddress' => Common::STRING,
         'MTUBytes' => Common::STRING_OR_INT,
+        'ARP' => Common::BOOLEAN,
+        'Unmanaged' => Common::BOOLEAN,
+        'RequiredForOnline' => Common::BOOLEAN,
       },
       'Network' => {
         'Description' => Common::STRING,
@@ -1368,6 +1475,9 @@ module SystemdCookbook
         'IPv6DuplicateAddressDetection' => Common::INTEGER,
         'IPv6HopLimit' => Common::INTEGER,
         'IPv4ProxyARP' => Common::BOOLEAN,
+        'IPv6ProxyNDP' => Common::BOOLEAN,
+        'IPv6ProxyNDPAddress' => Common::STRING,
+        'IPv6PrefixDelegation' => Common::BOOLEAN,
         'ProxyARP' => Common::BOOLEAN,
         'Bridge' => Common::STRING,
         'Bond' => Common::STRING,
@@ -1376,6 +1486,9 @@ module SystemdCookbook
         'MACVLAN' => Common::STRING,
         'VXLAN' => Common::STRING,
         'Tunnel' => Common::STRING,
+        'ActiveSlave' => Common::BOOLEAN,
+        'PrimarySlave' => Common::BOOLEAN,
+        'ConfigureWithoutCarrier' => Common::BOOLEAN,
       },
       'Address' => {
         'Address' => Common::STRING,
@@ -1386,23 +1499,54 @@ module SystemdCookbook
           kind_of: [String, Integer],
           equal_to: ['forever', 'infinity', 0],
         },
+        'Scope' => {
+          kind_of: [Integer, String],
+          equal_to: 0.upto(255).to_a.concat(%w(global link host)),
+        },
+        'HomeAddress' => Common::BOOLEAN,
+        'DuplicateAddressDetection' => Common::BOOLEAN,
+        'ManageTemporaryAddress' => Common::BOOLEAN,
+        'PrefixRoute' => Common::BOOLEAN,
+        'AutoJoin' => Common::BOOLEAN,
+      },
+      'IPv6AddressLabel' => {
+        'Label' => Common::INTEGER,
+        'Prefix' => Common::STRING,
+      },
+      'RoutingPolicyRule' => {
+        'TypeOfService' => { kind_of: Integer, equal_to: 0.upto(255).to_a },
+        'From' => Common::STRING,
+        'To' => Common::STRING,
+        'FirewallMark' => Common::INTEGER,
+        'Table' => Common::INTEGER,
+        'Priority' => Common::INTEGER,
+        'IncomingInterface' => Common::STRING,
+        'OutgoingInterface' => Common::STRING,
       },
       'Route' => {
         'Gateway' => Common::STRING,
+        'GatewayOnlink' => Common::BOOLEAN,
         'Destination' => Common::STRING,
         'Source' => Common::STRING,
         'Metric' => Common::INTEGER,
+        'IPv6Preference' => { kind_of: String, equal_to: %w(low medium high) },
         'Scope' => {
           kind_of: String,
           equal_to: %w(global link host),
         },
         'PreferredSource' => Common::STRING,
         'Table' => Common::INTEGER,
+        'Protocol' => {
+          kind_of: [Integer, String],
+          equal_to: 0.upto(255).to_a.concat(%w(kernel boot static)),
+        },
+        'Type' => Common::STRING,
       },
       'DHCP' => {
         'UseDNS' => Common::BOOLEAN,
         'UseNTP' => Common::BOOLEAN,
         'UseMTU' => Common::BOOLEAN,
+        'Anonymize' => Common::BOOLEAN,
         'SendHostname' => Common::BOOLEAN,
         'UseHostame' => Common::BOOLEAN,
         'Hostname' => Common::STRING,
@@ -1426,6 +1570,8 @@ module SystemdCookbook
         'IAID' => Common::INTEGER,
         'RequestBroadcast' => Common::BOOLEAN,
         'RouteMetric' => Common::INTEGER,
+        'RouteTable' => Common::INTEGER,
+        'ListenPort' => Common::INTEGER,
       },
       'IPv6AcceptRA' => {
         'UseDNS' => Common::BOOLEAN,
@@ -1433,6 +1579,7 @@ module SystemdCookbook
           kind_of: [TrueClass, FalseClass, String],
           equal_to: [true, false, 'route'],
         },
+        'RouteTable' => Common::INTEGER,
       },
       'DHCPServer' => {
         'PoolOffset' => Common::STRING,
@@ -1447,6 +1594,23 @@ module SystemdCookbook
         'EmitTimezone' => Common::BOOLEAN,
         'Timezone' => Common::STRING,
       },
+      'IPv6PrefixDelegation' => {
+        'Managed' => Common::BOOLEAN,
+        'OtherInformation' => Common::BOOLEAN,
+        'RouterLifetimeSec' => Common::STRING_OR_INT,
+        'EmitDNS' => Common::BOOLEAN,
+        'DNS' => Common::ARRAY,
+        'EmitDomains' => Common::BOOLEAN,
+        'Domains' => Common::STRING_OR_ARRAY,
+        'DNSLifetimeSec' => Common::STRING_OR_INT,
+      },
+      'IPv6Prefix' => {
+        'AddressAutoconfiguration' => Common::BOOLEAN,
+        'OnLink' => Common::BOOLEAN,
+        'Prefix' => Common::STRING,
+        'PreferredLifetimeSec' => Common::STRING_OR_INT,
+        'ValidLifetimeSec' => Common::STRING_OR_INT,
+      },
       'Bridge' => {
         'UnicastFlood' => Common::BOOLEAN,
         'HairPin' => Common::BOOLEAN,
@@ -1454,6 +1618,7 @@ module SystemdCookbook
         'FastLeave' => Common::BOOLEAN,
         'AllowPortToBeRoot' => Common::BOOLEAN,
         'Cost' => Common::INTEGER,
+        'Priority' => { kind_of: Integer, equal_to: 0.upto(63).to_a },
       },
       'BridgeFDB' => {
         'MACAddress' => Common::STRING,
@@ -1477,9 +1642,18 @@ module SystemdCookbook
           kind_of: [String, TrueClass, FalseClass],
           equal_to: [true, false, 'resolve'],
         },
+        'MulticastDNS' => {
+          kind_of: [TrueClass, FalseClass, String],
+          equal_to: [true, false, 'resolve'],
+        },
         'DNSSEC' => {
           kind_of: [String, TrueClass, FalseClass],
           equal_to: [true, false, 'allow-downgrade'],
+        },
+        'Cache' => Common::BOOLEAN,
+        'DNSStubListener' => {
+          kind_of: [String, TrueClass, FalseClass],
+          equal_to: [true, false, 'tcp', 'udp'],
         },
       },
     }.freeze
@@ -1520,6 +1694,7 @@ module SystemdCookbook
         'JoinControllers' => Common::ARRAY,
         'RuntimeWatchdogSec' => Common::STRING_OR_INT,
         'ShutdownWatchdogSec' => Common::STRING_OR_INT,
+        'WatchdogDevice' => Common::STRING,
         'CapabilityBoundingSet' => Common::CAP,
         'SystemCallArchitectures' => {
           kind_of: [String, Array],
@@ -1544,6 +1719,7 @@ module SystemdCookbook
         'DefaultBlockIOAccounting' => ResourceControl::OPTIONS['BlockIOAccounting'],
         'DefaultMemoryAccounting' => ResourceControl::OPTIONS['MemoryAccounting'],
         'DefaultTasksAccounting' => ResourceControl::OPTIONS['TasksAccounting'],
+        'DefaultIPAccounting' => ResourceControl::OPTIONS['IPAccounting'],
         'DefaultTasksMax' => ResourceControl::OPTIONS['TasksMax'],
         'DefaultLimitCPU' => Exec::OPTIONS['LimitCPU'],
         'DefaultLimitFSIZE' => Exec::OPTIONS['LimitFSIZE'],
@@ -1570,6 +1746,9 @@ module SystemdCookbook
       'Time' => {
         'NTP' => Common::STRING_OR_ARRAY,
         'FallbackNTP' => Common::STRING_OR_ARRAY,
+        'RootDistanceMaxSec' => Common::STRING_OR_INT,
+        'PollIntervalMinSec' => Common::STRING_OR_INT,
+        'PollIntervalMaxSec' => Common::STRING_OR_INT,
       },
     }.freeze
   end
@@ -1587,6 +1766,7 @@ module SystemdCookbook
         'Environment' => { kind_of: [String, Array, Hash] },
         'User' => Common::STRING,
         'WorkingDirectory' => Common::ABSOLUTE_PATH,
+        'PivotRoot' => Common::STRING,
         'Capability' => Common::ARRAY,
         'DropCapability' => Common::ARRAY,
         'KillSignal' => Common::STRING_OR_INT,
@@ -1596,6 +1776,7 @@ module SystemdCookbook
           kind_of: [TrueClass, FalseClass, String, Integer],
         },
         'NotifyReady' => Common::BOOLEAN,
+        'SystemCallFilter' => Common::STRING_OR_ARRAY,
       },
       'Files' => {
         'ReadOnly' => Common::BOOLEAN,
@@ -1606,6 +1787,8 @@ module SystemdCookbook
         'Bind' => Common::STRING,
         'BindReadOnly' => Common::STRING,
         'TemporaryFileSystem' => Common::STRING,
+        'Overlay' => Common::STRING,
+        'OverlayReadOnly' => Common::STRING,
         'PrivateUsersChown' => Common::BOOLEAN,
       },
       'Network' => {

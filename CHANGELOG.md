@@ -1,3 +1,7 @@
+# 3.2.2 / 2018 -03-07
+
+* add options for latest systemd
+
 # 3.2.1 / 2018-02-26
 
 * fix ohai plugin path

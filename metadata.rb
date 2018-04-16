@@ -5,9 +5,7 @@ license          'Apache-2.0'
 description      'chef cookbook for managing linux systems via systemd'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '3.2.2'
-chef_version     '>= 12.11' if respond_to?(:chef_version)
-
-depends          'compat_resource'
+chef_version     '>= 12.19' if respond_to?(:chef_version)
 
 supports         'arch'
 supports         'fedora'

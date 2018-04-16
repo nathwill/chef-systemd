@@ -1,3 +1,8 @@
+# 3.2.3 / 2018-04-16
+
+* remove deprecated compat_resource dependency
+* fix precursor option merge
+
 # 3.2.2 / 2018 -03-07
 
 * add options for latest systemd

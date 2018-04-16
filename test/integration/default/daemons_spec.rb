@@ -36,7 +36,8 @@ EOT
 end
 
 control 'creates timesyncd drop-ins' do
-  if os[:fedora]
+  case os[:name]
+  when 'fedora'
     describe file('/etc/systemd/timesyncd.conf.d/my-overrides.conf') do
       its(:content) do
         should eq <<EOT
@@ -46,7 +47,7 @@ FallbackNTP = 0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org
 EOT
       end
     end
-  elsif os[:debian]
+  when 'debian'
     describe file('/etc/systemd/timesyncd.conf.d/my-overrides.conf') do
       its(:content) do
         should eq <<EOT
@@ -56,7 +57,7 @@ FallbackNTP = 0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org
 EOT
       end
     end
-  elsif os[:ubuntu]
+  when 'ubuntu'
     describe file('/etc/systemd/timesyncd.conf.d/my-overrides.conf') do
       its(:content) do
         should eq <<EOT

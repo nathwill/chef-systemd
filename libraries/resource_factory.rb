@@ -115,7 +115,12 @@ module SystemdCookbook
               uc = property_hash(data)
               r.precursor.each_pair do |rk, rv|
                 rv.compare_by_identity
-                uc[rk] = rv.merge(uc[rk].to_h)
+
+                uc[rk].to_h.each_pair do |k, v|
+                  rv[k.dup] = v
+                end
+
+                uc[rk] = rv
               end
 
               u = systemd_unit r.drop_in_name do

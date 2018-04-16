@@ -44,7 +44,7 @@ EOT
 end
 
 control 'supports user drop-ins' do
-  if os[:fedora]
+  if os[:name] == 'fedora'
     describe file('/etc/systemd/user/dummy.service.d/user-service-drop-in.conf') do
       its(:content) do
         should eq <<EOT

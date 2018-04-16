@@ -117,7 +117,7 @@ module SystemdCookbook
                 rv.compare_by_identity
 
                 uc[rk].to_h.each_pair do |k, v|
-		  rv[k.dup] = v
+                  rv[k.dup] = v
                 end
 
                 uc[rk] = rv

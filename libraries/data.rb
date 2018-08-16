@@ -138,7 +138,7 @@ module SystemdCookbook
       kind_of: [String, Array],
       callbacks: {
         'contains only valid URIs' => lambda do |spec|
-          Array(spec).all? { |u| u =~ /\A#{URI.regexp}\z/ }
+          Array(spec).all? { |u| u =~ /\A#{URI::DEFAULT_PARSER.make_regexp}\z/ }
         end,
       },
     }.freeze

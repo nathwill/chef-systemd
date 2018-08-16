@@ -7,5 +7,3 @@ RSpec.configure do |config|
   config.platform = 'centos'
   config.version = '7.3.1611'
 end
-
-ChefSpec::Coverage.start!

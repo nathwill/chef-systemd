@@ -66,8 +66,6 @@ module SystemdCookbook
             end
           end
         end
-        # rubocop: enable AbcSize
-        # rubocop: enable MethodLength
       end
     end
 
@@ -150,8 +148,6 @@ module SystemdCookbook
             end
           end
         end
-        # rubocop: enable MethodLength
-        # rubocop: enable AbcSize
       end
     end
 
@@ -196,8 +192,6 @@ module SystemdCookbook
             end
           end
         end
-        # rubocop: enable MethodLength
-        # rubocop: enable AbcSize
       end
     end
   end

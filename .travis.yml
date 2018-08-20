@@ -12,11 +12,11 @@ install: echo "skip bundle install"
 
 before_script:
   - eval "$(chef shell-init bash)"
-
-script:
   - chef --version
   - chef exec cookstyle --version
-  - chef exec cookstyle
   - chef exec foodcritic --version
+
+script:
+  - chef exec cookstyle
   - chef exec foodcritic . --exclude spec -f any -P
   - chef exec rspec

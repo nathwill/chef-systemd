@@ -1,3 +1,7 @@
+# 3.2.4 / 2018-10-23
+
+* move StartLimitInterval to Service (thanks @joshuaswett!)
+
 # 3.2.3 / 2018-04-16
 
 * remove deprecated compat_resource dependency

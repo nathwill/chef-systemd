@@ -1,3 +1,7 @@
+3.2.5 / ????-??-??
+
+* under development
+
 # 3.2.4 / 2018-10-23
 
 * move StartLimitInterval to Service (thanks @joshuaswett!)

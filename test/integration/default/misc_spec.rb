@@ -105,7 +105,7 @@ control 'creates tmpfiles' do
 end
 
 control 'creates nspawn units' do
-  describe file('/etc/systemd/nspawn/Fedora27.nspawn') do
+  describe file('/etc/systemd/nspawn/Fedora32.nspawn') do
     its(:content) do
       should eq <<EOT
 [Exec]
@@ -126,8 +126,8 @@ end
 control 'machine image' do
   unless os.redhat?
     describe command('machinectl list-images') do
-      its(:stdout) { should match /Fedora27  raw  no/ }
-      its(:stdout) { should match /Fedora27b raw  yes/ }
+      its(:stdout) { should match /Fedora32  raw  no/ }
+      its(:stdout) { should match /Fedora32b raw  yes/ }
       its(:stdout) { should match /cloned    raw  no/ }
     end
   end
@@ -136,7 +136,7 @@ end
 control 'machine' do
   unless os.redhat?
     describe command('machinectl list') do
-      its(:stdout) { should match /Fedora27 container systemd-nspawn/ }
+      its(:stdout) { should match /Fedora32 container systemd-nspawn/ }
     end
   end
 end

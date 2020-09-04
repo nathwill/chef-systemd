@@ -75,29 +75,29 @@ execute 'mkfs.btrfs /var/lib/machines.raw' do
   notifies :start, 'systemd_mount[var-lib-machines]', :immediately
 end
 
-systemd_machine_image 'Fedora27' do
+systemd_machine_image 'Fedora32' do
   type 'raw'
-  source 'https://dl.fedoraproject.org/pub/fedora/linux/releases/27/CloudImages/x86_64/images/Fedora-Cloud-Base-27-1.6.x86_64.raw.xz'
+  source 'https://dl.fedoraproject.org/pub/fedora/linux/releases/32/Cloud/x86_64/images/Fedora-Cloud-Base-32-1.6.x86_64.raw.xz'
   verify 'no'
   read_only false
   format 'gzip'
-  path '/var/tmp/Fedora27.raw.gz'
+  path '/var/tmp/Fedora32.raw.gz'
   to 'cloned'
   action [:pull, :set_properties, :export, :clone]
   not_if { platform?('centos') }
 end
 
-systemd_machine_image 'Fedora27b' do
+systemd_machine_image 'Fedora32b' do
   type 'raw'
   verify 'no'
   read_only true
   format 'gzip'
-  path '/var/tmp/Fedora27.raw.gz'
+  path '/var/tmp/Fedora32.raw.gz'
   action [:import, :set_properties]
   not_if { platform?('centos') }
 end
 
-systemd_nspawn 'Fedora27' do
+systemd_nspawn 'Fedora32' do
   exec do
     boot true
     private_users false
@@ -113,11 +113,11 @@ end
 
 require 'tempfile'
 
-tmp = Tempfile.new('Fedora27')
+tmp = Tempfile.new('Fedora32')
 tmp_path = tmp.path
 tmp.delete
 
-systemd_machine 'Fedora27' do
+systemd_machine 'Fedora32' do
   host_path tmp_path
   machine_path '/etc/passwd'
   action [:enable, :start, :copy_from]

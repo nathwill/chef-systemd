@@ -61,7 +61,7 @@ module SystemdCookbook
           options.each_pair do |section, opts|
             opts.each_pair do |opt, conf|
               property "#{section.underscore}_#{opt.underscore}".to_sym,
-                       conf.merge(desired_state: false)
+                       **conf.merge(desired_state: false)
             end
           end
         end

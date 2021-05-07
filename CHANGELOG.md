@@ -1,6 +1,6 @@
-3.2.5 / ????-??-??
+# 3.2.5 / 2021-05-07
 
-* under development
+* fix keyword arguments in chef 17
 
 # 3.2.4 / 2018-10-23
 

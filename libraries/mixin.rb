@@ -80,7 +80,8 @@ module SystemdCookbook
               [
                 opt.camelcase,
                 option_value(
-                  send("#{section.underscore}_#{opt.underscore}".to_sym)
+                  send("#{section.underscore}_#{opt.underscore}".to_sym),
+                  "#{section.underscore}_#{opt.underscore}"
                 ),
               ]
             end.to_h
@@ -89,12 +90,22 @@ module SystemdCookbook
           result.delete_if { |_, v| v.empty? }
         end
 
-        def option_value(obj)
+        def option_value(obj, name=nil)
+          expected_types = self.class.properties[name.to_sym].validation_options[:kind_of]
+          if expected_types.kind_of?(Array) and expected_types.include?(SystemdCookbook::Common::ArrayToKeep)
+            keep_array=true
+          else
+            keep_array = false
+          end
           case obj
           when Hash
             obj.to_kv_pairs.join(' ')
           when Array
-            obj.join(' ')
+            if keep_array
+              obj
+            else
+              obj.join(' ')
+            end
           when TrueClass, FalseClass
             obj ? 'yes' : 'no'
           else

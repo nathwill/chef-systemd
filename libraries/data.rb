@@ -63,6 +63,9 @@ module SystemdCookbook
   ).freeze
 
   module Common
+    class ArrayToKeep < Array
+    end
+
     ABSOLUTE_PATH ||= {
       kind_of: String,
       callbacks: {
@@ -117,6 +120,9 @@ module SystemdCookbook
           Array(spec).all? { |p| Pathname.new(p).absolute? }
         end,
       },
+    }.freeze
+    ARRAY_OF_ADDRESSES ||= {
+      kind_of: [String, Array, ArrayToKeep],
     }.freeze
     ARRAY_OF_SOFT_ABSOLUTE_PATHS ||= {
       kind_of: [String, Array],
@@ -1456,7 +1462,7 @@ module SystemdCookbook
           ).concat([true, false]),
         },
         'BindCarrier' => Common::ARRAY,
-        'Address' => Common::STRING,
+        'Address' => Common::ARRAY_OF_ADDRESSES,
         'Gateway' => Common::STRING,
         'DNS' => Common::STRING,
         'Domains' => Common::ARRAY,

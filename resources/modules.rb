@@ -1,8 +1,10 @@
 resource_name :systemd_modules
 provides :systemd_modules
 
-property :blacklist, [TrueClass, FalseClass], default: false
-property :modules, Array, required: true, default: []
+property :blacklist, [true, false], default: false
+property :modules, Array, required: true
+
+unified_mode true
 
 default_action :create
 

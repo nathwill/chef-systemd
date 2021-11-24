@@ -3,7 +3,7 @@ control 'creates automount drop-ins' do
     its(:content) do
       should eq <<EOT
 [Automount]
-TimeoutIdleSec = 90min
+TimeoutIdleSec=90min
 EOT
     end
   end
@@ -14,7 +14,7 @@ control 'creates mount drop-ins' do
     its(:content) do
       should eq <<EOT
 [Mount]
-SloppyOptions = yes
+SloppyOptions=yes
 EOT
     end
   end
@@ -25,7 +25,7 @@ control 'creates path drop-ins' do
     its(:content) do
       should eq <<EOT
 [Path]
-DirectoryMode = 0755
+DirectoryMode=0755
 EOT
     end
   end
@@ -36,8 +36,8 @@ control 'creates service drop-ins' do
     its(:content) do
       should eq <<EOT
 [Service]
-ExecStart = 
-ExecStart = /usr/bin/systemd-tty-ask-password-agent --watch --console
+ExecStart=
+ExecStart=/usr/bin/systemd-tty-ask-password-agent --watch --console
 EOT
     end
   end
@@ -49,7 +49,7 @@ control 'supports user drop-ins' do
       its(:content) do
         should eq <<EOT
 [Unit]
-Description = user-mode drop-in
+Description=user-mode drop-in
 EOT
       end
     end
@@ -61,7 +61,7 @@ control 'creates slice drop-ins' do
     its(:content) do
       should eq <<EOT
 [Slice]
-MemoryLimit = 256G
+MemoryLimit=256G
 EOT
     end
   end
@@ -72,7 +72,7 @@ control 'creates socket drop-ins' do
     its(:content) do
       should eq <<EOT
 [Socket]
-ReceiveBuffer = 16M
+ReceiveBuffer=16M
 EOT
     end
   end
@@ -83,7 +83,7 @@ control 'creates swap drop-ins' do
     its(:content) do
       should eq <<EOT
 [Swap]
-TimeoutSec = 120
+TimeoutSec=120
 EOT
     end
   end
@@ -94,7 +94,7 @@ control 'creates target drop-ins' do
     its(:content) do
       should eq <<EOT
 [Unit]
-Description = my really cool app
+Description=my really cool app
 EOT
     end
   end
@@ -105,7 +105,7 @@ control 'creates timer drop-in' do
     its(:content) do
       should eq <<EOT
 [Timer]
-OnUnitActiveSec = 1h
+OnUnitActiveSec=1h
 EOT
     end
   end

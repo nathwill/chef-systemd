@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: systemd
+# Cookbook:: systemd
 # Library:: SystemdCookbook::ResourceFactory
 #
-# Copyright 2016 The Authors
+# Copyright:: 2016 The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ module SystemdCookbook
           include SystemdCookbook::Mixin::DSL
 
           property :user, String, desired_state: false
-          property :verify, [TrueClass, FalseClass],
+          property :verify, [true, false],
                    default: true,
                    desired_state: false
 
@@ -96,8 +96,8 @@ module SystemdCookbook
           }
           property :precursor, Hash, default: {}
           property :user, String, desired_state: false
-          property :drop_in_name, identity: true, desired_state: false,
-                                  default: lazy { "#{override}-#{name}" }
+          property :drop_in_name, String, identity: true, desired_state: false,
+                                          default: lazy { "#{override}-#{name}" }
 
           %w(create delete).map(&:to_sym).each do |actn|
             action actn do

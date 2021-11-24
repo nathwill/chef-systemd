@@ -14,6 +14,8 @@ include SystemdCookbook::Mixin::DSL
 
 option_properties SystemdCookbook::Link::OPTIONS
 
+unified_mode true
+
 default_action :create
 
 %w(create delete).map(&:to_sym).each do |actn|

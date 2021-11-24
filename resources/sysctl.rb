@@ -11,6 +11,8 @@ def to_cli
   "#{name}='#{Array(value).join(' ')}'"
 end
 
+unified_mode true
+
 default_action :create
 
 %w(create delete).map(&:to_sym).each do |actn|

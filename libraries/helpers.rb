@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: systemd
+# Cookbook:: systemd
 # Library:: SystemdCookbook::Helpers
 #
-# Copyright 2016 The Authors
+# Copyright:: 2016 The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,8 +25,7 @@ module SystemdCookbook
     end
 
     def systemd_is_pid_1?
-      File.exist?('/proc/1/comm') &&
-        File.read('/proc/1/comm').chomp == 'systemd'
+      systemd?
     end
 
     module_function :module_loaded?, :systemd_is_pid_1?
@@ -72,7 +71,7 @@ end
 
 class Hash
   def to_kv_pairs
-    reject { |_, v| v.nil? }
+    compact
       .map { |k, v| "#{k}=#{v}" }
   end
 end

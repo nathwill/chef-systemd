@@ -3,8 +3,8 @@ control 'creates bootchart drop-ins' do
     its(:content) do
       should eq <<EOT
 [Bootchart]
-ScaleX = 100
-ScaleY = 20
+ScaleX=100
+ScaleY=20
 EOT
     end
   end
@@ -15,8 +15,8 @@ control 'creates system drop-ins' do
     its(:content) do
       should eq <<EOT
 [Manager]
-DefaultTimeoutStartSec = 30
-DefaultEnvironment = ENVIRONMENT=production
+DefaultTimeoutStartSec=30
+DefaultEnvironment=ENVIRONMENT=production
 EOT
     end
   end
@@ -27,8 +27,8 @@ control 'creates user drop-ins' do
     its(:content) do
       should eq <<EOT
 [Manager]
-DefaultTimeoutStartSec = 120
-DefaultEnvironment = ENVIRONMENT=production
+DefaultTimeoutStartSec=120
+DefaultEnvironment=ENVIRONMENT=production
 EOT
     end
   end
@@ -109,15 +109,15 @@ control 'creates nspawn units' do
     its(:content) do
       should eq <<EOT
 [Exec]
-Boot = yes
-PrivateUsers = no
+Boot=yes
+PrivateUsers=no
 
 [Files]
-Bind = /tmp:/tmp
+Bind=/tmp:/tmp
 
 [Network]
-Private = no
-VirtualEthernet = no
+Private=no
+VirtualEthernet=no
 EOT
     end
   end
@@ -146,14 +146,14 @@ control 'netdev' do
     its(:content) do
       should eq <<EOT
 [Match]
-Virtualization = no
+Virtualization=no
 
 [NetDev]
-Name = vlan1
-Kind = vlan
+Name=vlan1
+Kind=vlan
 
 [VLAN]
-Id = 1
+Id=1
 EOT
     end
   end
@@ -164,10 +164,10 @@ control 'network' do
     its(:content) do
       should eq <<EOT
 [Match]
-Name = bond1
+Name=bond1
 
 [Network]
-DHCP = yes
+DHCP=yes
 EOT
     end
   end
@@ -178,10 +178,10 @@ control 'link' do
     its(:content) do
       should eq <<EOT
 [Match]
-MACAddress = 00:a0:de:63:7a:e6
+MACAddress=00:a0:de:63:7a:e6
 
 [Link]
-Name = dmz0
+Name=dmz0
 EOT
     end
   end

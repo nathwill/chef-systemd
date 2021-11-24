@@ -26,6 +26,8 @@ def as_string
     .prepend(':')
 end
 
+unified_mode true
+
 default_action :create
 
 %w(create delete).map(&:to_sym).each do |actn|

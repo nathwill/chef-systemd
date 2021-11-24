@@ -15,7 +15,7 @@ describe 'systemd::machine' do
 
   context 'debian' do
     cached(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'debian', version: '9.0')
+      ChefSpec::ServerRunner.new(platform: 'debian', version: '11')
                             .converge(described_recipe)
     end
 

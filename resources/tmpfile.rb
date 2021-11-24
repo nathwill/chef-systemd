@@ -15,6 +15,8 @@ def fpath
   "/etc/tmpfiles.d/#{name}.conf"
 end
 
+unified_mode true
+
 default_action :create
 
 action :create do

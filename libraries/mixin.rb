@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: systemd
+# Cookbook:: systemd
 # Library:: SystemdCookbook::Mixin
 #
-# Copyright 2016 The Authors
+# Copyright:: 2016 The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ module SystemdCookbook
         def build_dsl
           data_class = resource_type.to_s.tr('-', '_').camelcase.to_sym
 
-          SystemdCookbook.const_get(data_class)::OPTIONS.keys.each do |sect|
+          SystemdCookbook.const_get(data_class)::OPTIONS.each_key do |sect|
             define_method(sect.underscore.to_sym) do |&block|
               ctx = SystemdCookbook::OptionEvalContext.new(self, sect.underscore.to_sym)
               ctx.instance_exec(&block)

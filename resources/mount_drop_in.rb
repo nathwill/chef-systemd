@@ -10,4 +10,6 @@ property :mount_what, SystemdCookbook::Mount::OPTIONS['Mount']['What']
 property :mount_where, SystemdCookbook::Mount::OPTIONS['Mount']['Where']
   .merge(required: false)
 
+unified_mode true
+
 default_action :create

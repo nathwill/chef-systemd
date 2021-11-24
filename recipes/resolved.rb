@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: systemd
+# Cookbook:: systemd
 # Recipe:: resolved
 #
-# Copyright 2015 - 2016, The Authors
+# Copyright:: 2015 - 2016, The Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,6 @@
 #
 # https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html
 #
-
-package 'systemd-resolved' do
-  only_if { platform_family?('rhel') }
-end
 
 service 'systemd-resolved' do
   action [:enable, :start]

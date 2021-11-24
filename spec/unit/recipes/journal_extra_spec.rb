@@ -13,13 +13,13 @@ describe 'systemd::journal_extra' do
 
   context 'debian' do
     cached(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'debian', version: '9.0')
+      ChefSpec::ServerRunner.new(platform: 'debian', version: '11')
                             .converge(described_recipe)
     end
 
     it 'installs the package' do
       expect(chef_run).to install_apt_package('systemd-journal-remote').with(
-        default_release: 'stretch-backports'
+        default_release: 'bullseye-backports'
       )
     end
   end

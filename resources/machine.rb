@@ -7,6 +7,8 @@ property :service, String, default: lazy { "systemd-nspawn@#{name}.service" }
 property :host_path, String
 property :machine_path, String
 
+unified_mode true
+
 default_action :start
 
 action_class do

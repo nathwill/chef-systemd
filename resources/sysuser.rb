@@ -17,6 +17,8 @@ def as_string
   "#{type} #{name} #{id} \"#{gecos}\" #{home}"
 end
 
+unified_mode true
+
 default_action :create
 
 %w(create delete).map(&:to_sym).each do |actn|

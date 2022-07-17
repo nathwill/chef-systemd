@@ -17,6 +17,7 @@ supports         'ubuntu', '>= 15.04'
   supports         p, '>= 7.0'
 end
 
+gem              'ruby-dbus', '~> 0.14', '< 0.18' if respond_to?(:gem)
 gem              'dbus-systemd', '~> 1.1' if respond_to?(:gem)
 
 source_url       'https://github.com/nathwill/chef-systemd' if respond_to?(:source_url)
